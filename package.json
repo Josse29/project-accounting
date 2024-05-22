@@ -1,0 +1,22 @@
+{
+  "name": "3.pos-kasir-electron",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "josse",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^30.0.1"
+  },
+  "dependencies": {
+    "@electron/remote": "^2.1.2",
+    "fs": "^0.0.1-security",
+    "imask": "^7.6.0",
+    "path": "^0.12.7",
+    "sqlite3": "^5.1.7",
+    "url": "^0.11.3"
+  }
+}

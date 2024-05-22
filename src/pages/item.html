@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Item-page</title>
+  <!-- Framework css bootstrap -->
+  <link rel="stylesheet" href="./../third-party/bootstrap.min.css" />
+  <!-- Fontawesome -->
+  <link rel="stylesheet" href="./../third-party/fontawesome-web/css/all.min.css" />
+  <!-- my css -->
+  <link rel="stylesheet" href="./../css/item.css" />
+</head>
+
+<body>
+  <div class="top-navigation">
+    <h2 class="ms-3">Accouting Software</h2>
+    <div class="d-flex gap-2">
+      <div class="d-flex me-4">
+        <i class="fa-solid fa-user custome-me"></i>
+        <h5>Josse Surya Pinem</h5>
+      </div>
+      <div class="d-flex gap-2">
+        <i class="fa-regular fa-window-restore custome-me" id="minWindow" data-bs-toggle="tooltip" data-bs-html="true"
+          data-bs-title="<h6>Minimize</h6>"></i>
+        <i class="fa-solid fa-right-from-bracket custome-me" id="closeWindow" data-bs-toggle="tooltip"
+          data-bs-html="true" data-bs-title="<h6>Quit</h6>"></i>
+      </div>
+    </div>
+  </div>
+  <div class="side-navigation">
+    <div class="logo">
+      <img src="./../img/logo.png" alt="" />
+    </div>
+    <!-- links -->
+    <div class="text-white mt-5">
+      <!-- dashboard -->
+      <div class="text-center mb-5 custome-me" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-html="true"
+        data-bs-title="<h4>Home</h4>" id="dashboardWindow">
+        <i class="fa-solid fa-house fs-3"></i>
+      </div>
+      <!-- order -->
+      <div class="text-center mb-5 custome-me" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-html="true"
+        data-bs-title="<h4>Order</h4>" id="orderWindow">
+        <i class="fa-solid fa-utensils fs-3"></i>
+      </div>
+      <!-- item -->
+      <div class="text-center mb-5 custome-me" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-html="true"
+        data-bs-title="<h4>Items</h4>" id="itemWindow">
+        <i class="fa-solid fa-file-circle-plus fs-3 custome-me-active"></i>
+      </div>
+      <!-- data -->
+      <div class="text-center mb-5 custome-me" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-html="true"
+        data-bs-title="<h4>Data</h4>" id="dataWindow">
+        <i class="fa-solid fa-chart-simple fs-3"></i>
+      </div>
+      <!-- users -->
+      <div class="text-center mb-5 custome-me" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-html="true"
+        data-bs-title="<h4>Users</h4>" id="usersWindow">
+        <i class="fa-solid fa-users fs-3"></i>
+      </div>
+      <!-- about -->
+      <div class="text-center mb-5 custome-me" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-html="true"
+        data-bs-title="<h4>About-us</h4>" id="aboutWindow">
+        <i class="fa-solid fa-city fs-3"></i>
+      </div>
+    </div>
+  </div>
+  <div class="container-custome-me">
+    <!-- section first -->
+    <div
+      class="bg-white d-flex justify-content-between align-items-center rounded-3 shadow-sm px-4 py-3 mb-4 border-l-custome-me">
+      <div class="d-flex gap-3 align-items-center">
+        <i class="fa-solid fa-file-circle-plus fs-3"></i>
+        <h1>Items</h1>
+      </div>
+      <h4 class="hari-tanggal-tahun"></h4>
+    </div>
+    <!-- section second -->
+    <div class="bg-white d-flex w-100 gap-4 rounded-3 shadow-sm px-4 py-3">
+      <!-- Products -->
+      <div style="width: 65%">
+        <div class="card">
+          <h3 class="card-header text-white" style="background-color: #273eec">
+            Products
+          </h3>
+          <div class="card-body">
+            <!-- tambah. export products -->
+            <div class="d-flex justify-content-start gap-2 mb-3">
+              <button type="button" class="btn hover-by-me" style="background-color: #3c50e0; color: white"
+                data-bs-toggle="modal" data-bs-target="#productsModal">
+                <span class="d-flex gap-2 align-items-center" data-bs-toggle="tooltip" data-bs-html="true"
+                  data-bs-title="<span>tambah-product</span>" data-bs-placement="bottom">
+                  <i class="fa-solid fa-folder-plus fs-4"></i>
+                  <span>Tambah Product</span>
+                </span>
+              </button>
+              <button type="button" class="btn btn-success" id="product-export-excel" data-bs-toggle="tooltip"
+                data-bs-html="true" data-bs-title="<span>export-product.xls</span>" data-bs-placement="bottom">
+                <i class="fa-solid fa-file-excel fs-4"></i>
+              </button>
+              <button type="button" class="btn text-white" id="product-export-pdf" data-bs-toggle="tooltip"
+                data-bs-html="true" data-bs-title="<span>export-product.pdf</span>" data-bs-placement="bottom">
+                <i class="fa-solid fa-file-pdf fs-4"></i>
+              </button>
+              <button type="button" class="btn" id="product-export-print" data-bs-toggle="tooltip" data-bs-html="true"
+                data-bs-title="<span>print-product</span>" data-bs-placement="bottom">
+                <i class="fa-solid fa-print fs-4"></i>
+              </button>
+            </div>
+            <!-- search products & total row -->
+            <div class="d-flex mb-3 gap-2">
+              <select class="form-select focus-by-me w-25" aria-label="Default select example" id="product_limit">
+                <option value="2">2</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="40">40</option>
+              </select>
+              <div class="input-group w-75">
+                <input type="text" class="form-control focus-by-me" placeholder="masukkan nama product..."
+                  id="search-product" />
+                <span class="input-group-text hover-by-me" style="background-color: #3c50e0; color: white"
+                  id="search-product">Search</span>
+              </div>
+            </div>
+            <!-- tabel product -->
+            <div style="max-height: 270px; overflow: auto">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th class="text-center">No</th>
+                    <th>Name</th>
+                    <th>Kategori</th>
+                    <th>Price</th>
+                    <th class="text-center">Aksi</th>
+                  </tr>
+                </thead>
+                <!-- from db -->
+                <tbody id="data-products"></tbody>
+              </table>
+            </div>
+            <!-- pagination menu first, prev, active, next, last -->
+            <div class="w-100 d-flex justify-content-center">
+              <div class="btn-group gap-2">
+                <button type="button" class="btn border border-2" id="product_first_page">
+                  <i class="fa-solid fa-backward-fast fs-6"></i>
+                </button>
+                <button type="button" class="btn border border-2" id="product_prev_page">
+                  <i class="fa-solid fa-backward-step fs-6"></i>
+                </button>
+                <button type="button" class="btn border border-2 fs-6" id="product_offset">
+                  1
+                </button>
+                <button type="button" class="btn fs-6" id="product_offset_last" style="
+                      background-color: #273eec;
+                      color: white;
+                      border: 4px solid #99a4f9;
+                    "></button>
+                <button type="button" class="btn border border-2" id="product_next_page">
+                  <i class="fa-solid fa-forward-step fs-6"></i>
+                </button>
+                <button type="button" class="btn border border-2" id="product_last_page">
+                  <i class="fa-solid fa-forward-fast fs-6"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- category -->
+      <div style="width: 35%">
+        <div class="card">
+          <h3 class="card-header text-white bg-primary">Category</h3>
+          <div class="card-body">
+            <!-- tambah category -->
+            <button class="btn d-flex gap-2 mb-3 bg-primary text-white" data-bs-toggle="modal"
+              data-bs-target="#categoryModal">
+              <i class="fa-solid fa-folder-plus fs-4"></i>
+              <span>Tambah Kategori</span>
+            </button>
+            <!-- search category -->
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" placeholder="masukkan keyword kategori..." />
+              <span class="input-group-text bg-primary text-white">Search</span>
+            </div>
+            <!-- table category -->
+            <div style="max-height: 270px; overflow: auto">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th class="text-center">No</th>
+                    <th>Name</th>
+                    <th class="text-center">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="text-center align-content-center">1</td>
+                    <td class="text-nowrap align-content-center">
+                      Nasi-Goreng
+                    </td>
+                    <td>
+                      <div class="d-flex w-100 justify-content-center gap-2">
+                        <button class="btn btn-success text-white">
+                          <i class="fa-solid fa-eye"></i>
+                        </button>
+                        <button class="btn btn-primary text-white">
+                          <i class="fa-solid fa-pencil"></i>
+                        </button>
+                        <button class="btn btn-danger text-white">
+                          <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="w-100 d-flex justify-content-center">
+              <div class="btn-group gap-2">
+                <button type="button" class="btn border border-2">
+                  <i class="fa-solid fa-backward-fast fs-6"></i>
+                </button>
+                <button type="button" class="btn border border-2">
+                  <i class="fa-solid fa-backward-step fs-6"></i>
+                </button>
+                <button type="button" class="btn border border-2 fs-6">
+                  1
+                </button>
+                <button type="button" class="btn btn-primary">2</button>
+                <button type="button" class="btn border border-2">
+                  <i class="fa-solid fa-forward-step fs-6"></i>
+                </button>
+                <button type="button" class="btn border border-2">
+                  <i class="fa-solid fa-forward-fast fs-6"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- section third -->
+    <div class="bg-white d-flex w-100 gap-4 rounded-3 shadow-sm px-4 py-3">
+      <!-- satuan -->
+      <div style="width: 35%">
+        <div class="card">
+          <h3 class="card-header text-white" style="background-color: #009ef7">
+            Satuan
+          </h3>
+          <div class="card-body">
+            <!-- tambah satuan -->
+            <button class="btn d-flex gap-2 mb-3 text-white" style="background-color: #009ef7" data-bs-toggle="modal"
+              data-bs-target="#satuanModal">
+              <i class="fa-solid fa-folder-plus fs-4"></i>
+              <span>Tambah Satuan</span>
+            </button>
+            <!-- search satuan -->
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" placeholder="masukkan keyword kategori..." />
+              <span class="input-group-text text-white" style="background-color: #009ef7">Search</span>
+            </div>
+            <div style="max-height: 270px; overflow: auto">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th class="text-center">No</th>
+                    <th>Name</th>
+                    <th class="text-center">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="text-center align-content-center">1</td>
+                    <td class="text-nowrap align-content-center">Kg</td>
+                    <td>
+                      <div class="d-flex w-100 justify-content-center gap-2">
+                        <button class="btn btn-success text-white">
+                          <i class="fa-solid fa-eye"></i>
+                        </button>
+                        <button class="btn btn-primary text-white">
+                          <i class="fa-solid fa-pencil"></i>
+                        </button>
+                        <button class="btn btn-danger text-white">
+                          <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- pagination -->
+            <div class="w-100 d-flex justify-content-center">
+              <div class="btn-group gap-2">
+                <button type="button" class="btn border border-2">
+                  <i class="fa-solid fa-backward-fast fs-6"></i>
+                </button>
+                <button type="button" class="btn border border-2">
+                  <i class="fa-solid fa-backward-step fs-6"></i>
+                </button>
+                <button type="button" class="btn border border-2 fs-6">
+                  1
+                </button>
+                <button type="button" class="btn text-white" style="background-color: #009ef7">
+                  2
+                </button>
+                <button type="button" class="btn border border-2">
+                  <i class="fa-solid fa-forward-step fs-6"></i>
+                </button>
+                <button type="button" class="btn border border-2">
+                  <i class="fa-solid fa-forward-fast fs-6"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- persediaan -->
+      <div style="width: 65%">
+        <div class="card persediaan">
+          <h3 class="card-header text-white" style="background-color: #3b82f6">
+            Persediaan
+          </h3>
+          <div class="card-body">
+            <!-- tambah persediaan -->
+            <button class="btn d-flex gap-2 mb-3 text-white" style="background-color: #3b82f6" data-bs-toggle="modal"
+              data-bs-target="#persediaanModal">
+              <i class="fa-solid fa-folder-plus fs-4"></i>
+              <span>Tambah Persediaan</span>
+            </button>
+            <!-- search persediaan -->
+            <div class="input-group mb-3">
+              <input type="text" class="form-control custome-me" placeholder="masukkan keyword persediaan..." />
+              <span class="input-group-text text-white" style="background-color: #3b82f6">Search</span>
+            </div>
+            <!-- table persediaan  -->
+            <div style="max-height: 270px; overflow: auto">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th class="text-center">No</th>
+                    <th>Hari / Tanggal</th>
+                    <th>Name</th>
+                    <th>Nama supplier</th>
+                    <th class="text-center">Qty</th>
+                    <th class="text-center">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="text-center align-content-center">1</td>
+                    <td class="align-content-center">Tuesday , 20-04-2024</td>
+                    <td class="align-content-center text-nowrap">Ikan</td>
+                    <td class="align-content-center text-nowrap">
+                      PT.indah, tbk
+                    </td>
+                    <td class="text-nowrap align-content-center text-center">
+                      1
+                    </td>
+                    <td>
+                      <div class="d-flex w-100 justify-content-center gap-2">
+                        <button class="btn btn-success text-white">
+                          <i class="fa-solid fa-eye"></i>
+                        </button>
+                        <button class="btn btn-primary text-white">
+                          <i class="fa-solid fa-pencil"></i>
+                        </button>
+                        <button class="btn btn-danger text-white">
+                          <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- pagination persediaan -->
+            <div class="w-100 d-flex justify-content-center">
+              <div class="btn-group gap-2">
+                <button type="button" class="btn border border-2">
+                  <i class="fa-solid fa-backward-fast fs-6"></i>
+                </button>
+                <button type="button" class="btn border border-2">
+                  <i class="fa-solid fa-backward-step fs-6"></i>
+                </button>
+                <button type="button" class="btn border border-2 fs-6">
+                  1
+                </button>
+                <button type="button" class="btn text-white" style="background-color: #3b82f6">
+                  2
+                </button>
+                <button type="button" class="btn border border-2">
+                  <i class="fa-solid fa-forward-step fs-6"></i>
+                </button>
+                <button type="button" class="btn border border-2">
+                  <i class="fa-solid fa-forward-fast fs-6"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- all modals -->
+  <div>
+    <!-- Product-Modal -->
+    <div>
+      <!-- Products-create-Modal -->
+      <div class="modal fade" id="productsModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header py-2" style="background-color: #3c50e0; color: white">
+              <h1 class="modal-title fs-3" id="exampleModalLabel">Menu</h1>
+            </div>
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="product-name" class="form-label fs-4">Nama</label>
+                <input type="text" class="form-control" id="product-name" placeholder="masukkan nama menu..." />
+              </div>
+              <div class="mb-3">
+                <label for="product-price" class="form-label fs-4">Price</label>
+                <input type="text" class="form-control" id="product-price" placeholder="masukkan nama menu..." />
+              </div>
+              <div class="mb-3">
+                <label for="categories" class="form-label fs-4">Kategori</label>
+                <select class="form-select" aria-label="Default select example" id="categories">
+                  <option selected>Open this select menu</option>
+                  <option value="1">One</option>
+                  <option value="2">Two</option>
+                  <option value="3">Three</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="imageProduct" class="form-label fs-4">Image :</label>
+                <input class="form-control" type="file" id="imageProduct" multiple />
+              </div>
+              <div class="mb-3">
+                <label for="product-keterangan" class="form-label fs-4">Keterangan</label>
+                <textarea class="form-control" id="product-keterangan"></textarea>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                Close
+              </button>
+              <button type="button" class="btn" style="background-color: #3c50e0; color: white" id="submit_product">
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Product edit Modal -->
+      <div class="modal fade" id="editProductModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header" style="background-color: #273eec;">
+              <h1 class="modal-title fs-2 text-white text-capitalize" id="editProductModalLabel">
+                Edit
+              </h1>
+            </div>
+            <div class="modal-body fs-4">
+              <div class="mb-3">
+                <label for="name-product" class="form-label">Name :</label>
+                <input type="text" class="form-control" id="name-product" placeholder="ex:product-1">
+              </div>
+              <div class="mb-3">
+                <label for="price-product" class="form-label">Price :</label>
+                <input type="text" class="form-control" id="price-product" placeholder="ex:product-1">
+              </div>
+              <div class="mb-3">
+                <label for="category-product" class="form-label">Category :</label>
+                <input type="text" class="form-control" id="category-product" placeholder="ex:product-1">
+              </div>
+              <div class="mb-3">
+                <label for="category-product" class="form-label">Category :</label>
+                <input type="text" class="form-control" id="category-product" placeholder="ex:product-1">
+              </div>
+              <div class="mb-3">
+                <label for="image_product" class="form-label">Default file input example</label>
+                <input class="form-control" type="file" id="image-product">
+              </div>
+              <div class="mb-3">
+                <label for="keterangan-product" class="form-label">Example textarea</label>
+                <textarea class="form-control" id="keterangan-product" rows="3"></textarea>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary d-flex align-items-center gap-2" data-bs-dismiss="modal">
+                <i class=" fa-solid fa-times me-1 fs-4"></i>
+                <span class="fs-5">No</span>
+              </button>
+              <button type="button" class="btn text-white d-flex align-items-center gap-2" id="submit-edit-product"
+                style="background-color: #273eec;">
+                <i class="fa-solid fa-check me-1 fs-4"></i>
+                <span class="fs-5">Yes</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Product delete Modal -->
+      <div class="modal fade" id="confirmDeleteProductModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header bg-danger">
+              <h1 class="modal-title fs-2 text-white" id="confirmDeleteProductModalLabel">
+                Modal
+              </h1>
+            </div>
+            <div class="modal-body text-center">
+              <i class="fa-solid fa-triangle-exclamation text-danger" style="font-size: 120px"></i>
+              <h4 class="my-3" id="confirm-text"></h4>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary d-flex align-items-center gap-2" data-bs-dismiss="modal">
+                <i class="fa-solid fa-times me-1 fs-4"></i>
+                <span class="fs-5">No</span>
+              </button>
+              <button type="button" class="btn btn-danger d-flex align-items-center gap-2" id="sureDelete">
+                <i class="fa-solid fa-check me-1 fs-4"></i>
+                <span class="fs-5">Yes</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Category-Modal -->
+    <div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header py-2 bg-primary">
+            <h1 class="modal-title fs-3 text-white" id="exampleModalLabel">
+              Category
+            </h1>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="Nama" class="form-label fs-4">Nama</label>
+              <input type="email" class="form-control" id="nama-category" placeholder="masukkan kata kategori" />
+            </div>
+            <div class="mb-3">
+              <label for="price" class="form-label fs-4">Keterangan</label>
+              <textarea class="form-control" id="price"></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+              Close
+            </button>
+            <button type="button" class="btn btn-primary">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Satuan-Modal -->
+    <div class="modal fade" id="satuanModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header py-2" style="background-color: #009ef7">
+            <h1 class="modal-title fs-3 text-white" id="exampleModalLabel">
+              Satuan
+            </h1>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="Nama" class="form-label fs-4">Nama</label>
+              <input type="email" class="form-control" id="Nama" placeholder="masukkan satuan.." />
+            </div>
+            <div class="mb-3">
+              <label for="price" class="form-label fs-4">Keterangan</label>
+              <textarea class="form-control" id="price"></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+              Close
+            </button>
+            <button type="button" class="btn btn-primary" style="background-color: #009ef7">
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Persediaan-Modal -->
+    <div class="modal fade" id="persediaanModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header py-2" style="background-color: #3b82f6">
+            <h1 class="modal-title fs-3 text-white" id="exampleModalLabel">
+              Persediaan
+            </h1>
+          </div>
+          <div class="modal-body">
+            <div class="text-end">
+              <div class="hari-tanggal-tahun fs-4"></div>
+              <span class="jam"></span>
+              <span class="menit"></span>
+              <span class="detik"></span>
+            </div>
+            <div class="mb-3">
+              <label for="Nama" class="form-label fs-4">Nama</label>
+              <select class="form-select" aria-label="Default select example">
+                <option selected>Open this select menu</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+              </select>
+            </div>
+            <div class="mb-3 d-flex align-items-center">
+              <label for="qty" class="form-label fs-4 w-50">Qty</label>
+              <div class="input-group w-50">
+                <button type="button" class="btn border border-2 fs-4">
+                  -
+                </button>
+                <input type="text" class="form-control" id="qty" placeholder="input stock" style="width: 20px" />
+                <button type="button" class="btn border border-2 fs-4">
+                  +
+                </button>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="harga" class="form-label fs-4">Price</label>
+              <input type="text" class="form-control" id="harga" placeholder="masukkan harga...." />
+            </div>
+            <div class="mb-3">
+              <label for="keterangan" class="form-label fs-4">Keterangan</label>
+              <textarea class="form-control" id="keterangan"></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+              Close
+            </button>
+            <button type="button" class="btn btn-primary" style="background-color: #3b82f6">
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- bootstrap js  -->
+  <script src="./../third-party/bootstrap.bundle.min.js"></script>
+  <!-- jquery & config with electron-jquery -->
+  <script>
+    if (typeof module === "object") {
+      window.module = module;
+      module = undefined;
+    }
+  </script>
+  <script src="./../third-party/jquery-3.7.1.min.js"></script>
+  <script>
+    if (window.module) module = window.module;
+  </script>
+  <!-- myscript -->
+  <script src="./../js/require.js"></script>
+  <script type="module" src="./../js/item.js"></script>
+</body>
+
+</html>
