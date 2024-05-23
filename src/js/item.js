@@ -63,22 +63,40 @@ $(document).ready(function () {
   // UI tr Product from dbsqlite
   const uitrProduct = (el) => {
     return `<tr>
-                <td class="text-center align-content-center">${el.id} test</td>
+                <td class="text-center align-content-center">${el.id}</td>
                 <td class="text-nowrap align-content-center">${el.name}</td>
                 <td class="text-nowrap align-content-center">${el.category}</td>
                 <td class="align-content-center">${el.price}</td>
                 <td>
                   <div class="d-flex w-100 justify-content-center gap-2">
-                    <button class="btn btn-success text-white" data-bs-toggle="tooltip" data-bs-html="true"
+                    <button 
+                    class="btn btn-success text-white" data-bs-toggle="tooltip" 
+                    data-bs-html="true"
                     data-bs-title="<span>print-product</span>" data-bs-placement="bottom">
                       <i class="fa-solid fa-eye"></i>
                     </button>
-                    <button class="btn btn-primary text-white" data-bs-toggle="modal" data-bs-target="#editProductModal" id="editProduct" data-productid="${el.id}"  data-productname="${el.name}" data-productprice="${el.price}" data-productketerangan="${el.keterangan}" data-productcategory="${el.category}">
-                      <i class="fa-solid fa-pencil" data-bs-toggle="tooltip" data-bs-html="true"
+                    <button 
+                    class="btn btn-primary text-white" data-bs-toggle="modal" data-bs-target="#editProductModal" 
+                    id="editProduct" 
+                    data-productid="${el.id}"  
+                    data-productname="${el.name}" 
+                    data-productprice="${el.price}" data-productketerangan="${el.keterangan}" 
+                    data-productcategory="${el.category}">
+                      <i 
+                      class="fa-solid fa-pencil" 
+                      data-bs-toggle="tooltip" 
+                      data-bs-html="true"
                       data-bs-title="<span>edit-${el.name}</span>" data-bs-placement="bottom"></i>
                     </button>
-                    <button class="btn btn-danger text-white" id="deleteProduct" data-productid="${el.id}" data-productname="${el.name}" data-bs-toggle="modal" data-bs-target="#confirmDeleteProductModal">
-                      <i class="fa-solid fa-trash-can" data-bs-toggle="tooltip" data-bs-html="true"
+                    <button 
+                    class="btn btn-danger text-white" 
+                    id="deleteProduct" 
+                    data-productid="${el.id}" 
+                    data-productname="${el.name}" 
+                    data-bs-toggle="modal" data-bs-target="#confirmDeleteProductModal">
+                      <i 
+                      class="fa-solid fa-trash-can" data-bs-toggle="tooltip" 
+                      data-bs-html="true"
                       data-bs-title="<span>hapus-${el.name}</span>" data-bs-placement="bottom"></i>
                     </button>
                   </div>
@@ -118,10 +136,10 @@ $(document).ready(function () {
       }
     }
   );
-  const getProductsAgain = (limit, offset) => {
+  const getProductsAgain = () => {
     getProducts(
-      limit,
-      offset,
+      $("#product_limit").val(),
+      $("#product_offset").text().trim(),
       $("input#search-product").val(),
       (status, response) => {
         if (status) {
@@ -131,6 +149,7 @@ $(document).ready(function () {
           });
           $("#data-products").html(tr);
           reinitializeTooltips();
+          console.log("berhasil")
         }
         if (!status) {
           console.err(response);
@@ -347,9 +366,9 @@ $(document).ready(function () {
   // 2. Create Product
   $("#submit_product").on("click", () => {
     insertProducts(
-      productName,
-      priceProduct,
-      keteranganProduct,
+      $("#product-name").val(),
+      $("#product-price").val(),
+      $("#product-keterangan").val(),
       (status, response) => {
         if (status) {
           console.log(response);
@@ -394,6 +413,7 @@ $(document).ready(function () {
               WHERE id = '${product.productid}'`, (err) => {
         if (!err) {
           console.log("berhasil")
+          getProductsAgain()
         }
         if (err) {
           console.log("gagal")
@@ -490,4 +510,95 @@ $(document).ready(function () {
       }
     });
   });
-})  
+
+  // ui category
+  const uiTrCategory = (el) => {
+    return `<tr>
+            <td class="text-center align-content-center">${el.id}</td>
+            <td class="text-nowrap align-content-center">
+              ${el.category}
+            </td>
+            <td class="text-nowrap align-content-center">
+              ${el.keterangan}
+            </td>
+            <td>
+              <div class="d-flex w-100 justify-content-center gap-2">
+                <button class="btn btn-success text-white">
+                  <i class="fa-solid fa-eye"></i>
+                </button>
+                <button 
+                  class="btn btn-primary text-white" 
+                  data-bs-toggle="modal" 
+                  data-bs-target="#categoryModalEdit"
+                  id="editCategory"
+                  data-categoryid="${el.id}"
+                  data-categorynama="${el.category}" 
+                  data-categoryketerangan="${el.keterangan}"   
+                  >
+                    <i 
+                    class="fa-solid fa-pencil" 
+                    data-bs-toggle="tooltip" 
+                    data-bs-html="true"
+                    data-bs-title="<span>edit-${el.category}</span>" data-bs-placement="bottom"></i>
+                </button>
+                <button class="btn btn-danger text-white">
+                  <i class="fa-solid fa-trash-can"></i>
+                </button>
+              </div>
+            </td>
+          </tr>`
+  }
+  // 1. create-category
+  $("#category-submit").on("click", () => {
+    db.run(`INSERT 
+    INTO categories (category, keterangan) 
+    VALUES ('${$("#category-nama").val()}','${$("#category-keterangan").val()}')`, (err) => {
+      if (!err) {
+        console.log("kategori berhasil ditambahkan")
+      }
+      if (err) {
+        console.log("kategori gagal ditambahkan")
+      }
+    });
+  })
+  // 2. read-category
+  db.all(`SELECT * 
+          FROM categories `, (err, res) => {
+    if (!err) {
+      let tr = ``
+      res.forEach((el) => {
+        tr += uiTrCategory(el)
+      })
+      $("#category-data").html(tr)
+      reinitializeTooltips();
+    }
+    if (err) {
+      return callback(false, err);
+    }
+  });
+  // 3.update-category
+  $(document).on("click", "#editCategory", function () {
+    const category = this.dataset;
+    console.log(category.categorynama)
+    $("#categoryModalLabelEdit").html(category.categorynama)
+    $("#categoryNama").html(category.categorynama)
+    $("#categoryKeterangan").html(category.categoryketerangan)
+    $("#category-nama").val(category.categorynama)
+    $("#category-keterangan").val(category.categoryketerangan)
+    console.log($("#category-keterangan").val())
+  });
+})
+// $("#edit-category-submit").on("click", () => {
+//   db.run(`UPDATE products
+//           SET category = '${$("#category-nama").val()}',
+//               keterangan = '${$("#category-keterangan").val()}'
+//           WHERE id = '${category.categoryid}'`, (err) => {
+//     if (!err) {
+//       console.log("berhasil")
+//       getProductsAgain()
+//     }
+//     if (err) {
+//       console.log("gagal")
+//     }
+//   })
+// })

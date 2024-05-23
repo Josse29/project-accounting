@@ -93,3 +93,16 @@ button#product-export-print{
 button#product-export-print:hover{
   background-color: rgb(212, 54, 36);
 }
+button#submit-edit-product{
+  background-color: #273eec;
+}
+button#submit-edit-product:hover{
+  background-color: #112ae9;
+}
+button#category-export-pdf{
+  color: white;
+  background-color:rgb(223, 41, 21) ;
+}
+button#category-export-pdf:hover{
+  background-color: rgb(194, 29, 10);
+}

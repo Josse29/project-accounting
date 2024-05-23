@@ -173,7 +173,7 @@ const createUsersPage = () => {
   });
   usersPage.setFullScreen(true);
   usersPage.loadFile("src/pages/users.html");
-  remote.usersPage(usersPage.webContents);
+  remote.enable(usersPage.webContents);
   ipcMain.on("minimize-window:users-page", () => {
     usersPage.minimize();
   });

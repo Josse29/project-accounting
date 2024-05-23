@@ -1,16 +1,18 @@
 export const queryGetProducts = (limitProduct, offsetProduct) => {
   return `SELECT * 
           FROM products 
-          ORDER BY ID ASC 
+          ORDER BY ID DESC 
           LIMIT ${limitProduct} 
           OFFSET ${offsetProduct}`;
 };
 export const queryinsertProducts = (name, price, keterangan) => {
-  return `INSERT INTO products (name, price,keterangan) 
+  return `INSERT 
+          INTO products (name, price,keterangan) 
           VALUES ('${name}','${price}','${keterangan}')`;
 };
 export const queryDeleteProductId = (id) => {
-  return `DELETE FROM products
+  return `DELETE 
+          FROM products
           WHERE id = ${id} `;
 };
 export const queryTotalRowProducts = `SELECT COUNT(*) AS TOTAL_ROW FROM products`;

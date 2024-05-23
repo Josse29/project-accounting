@@ -175,16 +175,36 @@
         <div class="card">
           <h3 class="card-header text-white bg-primary">Category</h3>
           <div class="card-body">
-            <!-- tambah category -->
-            <button class="btn d-flex gap-2 mb-3 bg-primary text-white" data-bs-toggle="modal"
-              data-bs-target="#categoryModal">
-              <i class="fa-solid fa-folder-plus fs-4"></i>
-              <span>Tambah Kategori</span>
-            </button>
+            <!-- tambah category dan export pdf -->
+            <div class="d-flex gap-3 mb-3">
+              <button class="btn d-flex gap-2 bg-primary text-white" data-bs-toggle="modal"
+                data-bs-target="#categoryModal">
+                <span data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="<span>tambah-category</span>"
+                  data-bs-placement="bottom">
+                  <i class="fa-solid fa-folder-plus fs-4"></i>
+                  <span>Tambah Kategori</span>
+                </span>
+              </button>
+              <button type="button" class="btn text-white" id="category-export-pdf" data-bs-toggle="tooltip"
+                data-bs-html="true" data-bs-title="<span>export-category.pdf</span>" data-bs-placement="bottom">
+                <i class="fa-solid fa-file-pdf fs-4"></i>
+              </button>
+            </div>
             <!-- search category -->
-            <div class="input-group mb-3">
-              <input type="text" class="form-control" placeholder="masukkan keyword kategori..." />
-              <span class="input-group-text bg-primary text-white">Search</span>
+            <div class="d-flex mb-3 gap-3">
+              <select class="form-select w-auto" aria-label="Default select example" id="category-limit">
+                <option value="2">2</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="40">40</option>
+              </select>
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="masukkan keyword kategori..."
+                  id="category-search" />
+                <span class="input-group-text bg-primary text-white" id="category-search">Search</span>
+              </div>
             </div>
             <!-- table category -->
             <div style="max-height: 270px; overflow: auto">
@@ -193,29 +213,11 @@
                   <tr>
                     <th class="text-center">No</th>
                     <th>Name</th>
+                    <th>Keterangan</th>
                     <th class="text-center">Aksi</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr>
-                    <td class="text-center align-content-center">1</td>
-                    <td class="text-nowrap align-content-center">
-                      Nasi-Goreng
-                    </td>
-                    <td>
-                      <div class="d-flex w-100 justify-content-center gap-2">
-                        <button class="btn btn-success text-white">
-                          <i class="fa-solid fa-eye"></i>
-                        </button>
-                        <button class="btn btn-primary text-white">
-                          <i class="fa-solid fa-pencil"></i>
-                        </button>
-                        <button class="btn btn-danger text-white">
-                          <i class="fa-solid fa-trash-can"></i>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
+                <tbody id="category-data">
                 </tbody>
               </table>
             </div>
@@ -455,7 +457,7 @@
           </div>
         </div>
       </div>
-      <!-- Product edit Modal -->
+      <!-- edit Product Modal -->
       <div class="modal fade" id="editProductModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
           <div class="modal-content">
@@ -492,20 +494,17 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary d-flex align-items-center gap-2" data-bs-dismiss="modal">
-                <i class=" fa-solid fa-times me-1 fs-4"></i>
-                <span class="fs-5">No</span>
+                Close
               </button>
-              <button type="button" class="btn text-white d-flex align-items-center gap-2" id="submit-edit-product"
-                style="background-color: #273eec;">
-                <i class="fa-solid fa-check me-1 fs-4"></i>
-                <span class="fs-5">Yes</span>
+              <button type="button" class="btn text-white d-flex align-items-center gap-2" id="submit-edit-product">
+                Save
               </button>
             </div>
           </div>
         </div>
       </div>
       <!-- Product delete Modal -->
-      <div class="modal fade" id="confirmDeleteProductModal" tabindex="-1">
+      <div class=" modal fade" id="confirmDeleteProductModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
           <div class="modal-content">
             <div class="modal-header bg-danger">
@@ -532,29 +531,62 @@
       </div>
     </div>
     <!-- Category-Modal -->
-    <div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content">
-          <div class="modal-header py-2 bg-primary">
-            <h1 class="modal-title fs-3 text-white" id="exampleModalLabel">
-              Category
-            </h1>
-          </div>
-          <div class="modal-body">
-            <div class="mb-3">
-              <label for="Nama" class="form-label fs-4">Nama</label>
-              <input type="email" class="form-control" id="nama-category" placeholder="masukkan kata kategori" />
+    <div>
+      <!-- create category modal-->
+      <div class="modal fade" id="categoryModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header py-2 bg-primary">
+              <h1 class="modal-title fs-3 text-white" id="exampleModalLabel">
+                Category
+              </h1>
             </div>
-            <div class="mb-3">
-              <label for="price" class="form-label fs-4">Keterangan</label>
-              <textarea class="form-control" id="price"></textarea>
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="category-nama" class="form-label fs-4">Nama</label>
+                <input type="text" class="form-control" id="category-nama" placeholder="masukkan kata kategori" />
+              </div>
+              <div class="mb-3">
+                <label for="category-keterangan" class="form-label fs-4">Keterangan</label>
+                <textarea class="form-control" id="category-keterangan"></textarea>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                Close
+              </button>
+              <button type="button" class="btn btn-primary" id="category-submit">Save</button>
             </div>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-              Close
-            </button>
-            <button type="button" class="btn btn-primary">Save</button>
+        </div>
+      </div>
+      <!-- edit category modal-->
+      <div class="modal fade" id="categoryModalEdit" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header py-2 bg-primary">
+              <h1 class="modal-title fs-3 text-white" id="categoryModalLabelEdit">
+                Category
+              </h1>
+            </div>
+            <div class="modal-body fs-4">
+              <p id="categoryNama"></p>
+              <p id="categoryKeterangan"></p>
+              <div class="mb-3">
+                <label for="category-nama" class="form-label">Nama Kategori</label>
+                <input type="text" class="form-control" id="category-nama" placeholder="masukkan kata kategori">
+              </div>
+              <div class="mb-3">
+                <label for="category-keterangan" class="form-label">Keterangan</label>
+                <textarea class="form-control" id="category-keterangan" placeholder="ex:tets" rows="3"></textarea>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                Close
+              </button>
+              <button type="button" class="btn btn-primary" id="edit-category-submit">Save</button>
+            </div>
           </div>
         </div>
       </div>

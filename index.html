@@ -1,126 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My-Cashier</title>
-    <!-- css bootstrap -->
-    <link
-      rel="stylesheet"
-      href="./src/third-party/bootstrap.min.css"
-      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-      crossorigin="anonymous"
-    />
-    <!-- font awesome -->
-    <link
-      rel="stylesheet"
-      href="./src/third-party/fontawesome-web/css/all.min.css"
-    />
-    <!-- my css -->
-    <link rel="stylesheet" href="./src/css/login.css" />
-  </head>
-  <body>
-    <!-- Nav -->
-    <div class="bg-black d-flex justify-content-between py-2 px-3">
-      <div class="d-flex align-items-center gap-3">
-        <img src="./src/img/logo.png" alt="" class="custome-me" />
-        <span class="text-white">My-Cashier</span>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My-Cashier</title>
+  <!-- css bootstrap -->
+  <link rel="stylesheet" href="./src/third-party/bootstrap.min.css" />
+  <!-- font awesome -->
+  <link rel="stylesheet" href="./src/third-party/fontawesome-web/css/all.min.css" />
+  <!-- my css -->
+  <link rel="stylesheet" href="./src/css/login.css" />
+</head>
+
+<body>
+  <!-- Nav -->
+  <div class="bg-black d-flex justify-content-between py-2 px-3">
+    <div class="d-flex align-items-center gap-3">
+      <img src="./src/img/logo.png" alt="" class="custome-me" />
+      <span class="text-white">My-Cashier</span>
+    </div>
+    <div class="d-flex align-items-center gap-2">
+      <div class="me-3 text-white">
+        <span class="hari-tanggal-tahun"></span>
+        <span class="jam-menit-detik"></span>
       </div>
-      <div class="d-flex align-items-center gap-2">
-        <div class="me-3 text-white">
-          <span class="hari-tanggal-tahun"></span>
-          <span class="jam-menit-detik"></span>
-        </div>
-        <div class="bg-primary rounded icon-me" id="minWindow">
-          <i class="fa-solid fa-minus text-white"></i>
-        </div>
-        <div class="bg-secondary rounded icon-me" id="minMaxWindow">
-          <i class="fa-regular fa-window-maximize text-white"></i>
-        </div>
-        <div class="bg-danger rounded icon-me" id="closeWindow">
-          <i class="fa-solid fa-power-off text-white"></i>
-        </div>
+      <div class="bg-primary rounded icon-me" id="minWindow">
+        <i class="fa-solid fa-minus text-white"></i>
+      </div>
+      <div class="bg-secondary rounded icon-me" id="minMaxWindow">
+        <i class="fa-regular fa-window-maximize text-white"></i>
+      </div>
+      <div class="bg-danger rounded icon-me" id="closeWindow">
+        <i class="fa-solid fa-power-off text-white"></i>
       </div>
     </div>
+  </div>
 
-    <!-- sectino image and register -->
-    <div class="sections">
-      <div class="section-first"></div>
-      <div class="section-second mb-5">
-        <h1>Login Here</h1>
-        <h5>Welcome back you’ve been missed !</h5>
-        <form>
-          <!-- email -->
-          <div class="mb-3">
-            <label for="email" class="form-label custome-me"
-              >Email address</label
-            >
-            <input
-              type="email"
-              class="form-control custome-me"
-              id="email"
-              placeholder="input your email..."
-            />
-          </div>
-          <!-- password -->
-          <div class="mb-3">
-            <div
-              class="d-flex justify-content-between align-items-center w-100"
-            >
-              <label for="password" class="form-label custome-me"
-                >Password</label
-              >
-              <div class="toggle-password">
-                <label
-                  class="fa-solid fa-eye me-2 hide-password"
-                  for="toggle-password"
-                ></label>
-              </div>
-              <input type="checkbox" id="toggle-password" class="d-none" />
+  <!-- sectino image and register -->
+  <div class="sections">
+    <div class="section-first"></div>
+    <div class="section-second mb-5">
+      <h1>Login Here</h1>
+      <h5>Welcome back you’ve been missed !</h5>
+      <form>
+        <!-- email -->
+        <div class="mb-3">
+          <label for="email" class="form-label custome-me">Email address</label>
+          <input type="email" class="form-control custome-me" id="email" placeholder="input your email..." />
+        </div>
+        <!-- password -->
+        <div class="mb-3">
+          <div class="d-flex justify-content-between align-items-center w-100">
+            <label for="password" class="form-label custome-me">Password</label>
+            <div class="toggle-password">
+              <label class="fa-solid fa-eye me-2 hide-password" for="toggle-password"></label>
             </div>
-            <input
-              type="password"
-              class="form-control custome-me"
-              id="password"
-              placeholder="********"
-            />
-            <h5 class="forgot-password">forgot password ?</h5>
+            <input type="checkbox" id="toggle-password" class="d-none" />
           </div>
-          <!-- submit -->
-          <button
-            type="submit"
-            class="btn w-100 text-white custome-me"
-            id="login"
-          >
-            Submit
-          </button>
-        </form>
-        <div class="d-flex gap-2 my-3 w-100 register">
-          <p>haven't an account ?</p>
-          <p class="fw-bold" style="cursor: pointer">
-            <i class="fa-regular fa-hand-point-right"></i> Register here !
-          </p>
+          <input type="password" class="form-control custome-me" id="password" placeholder="********" />
+          <h5 class="forgot-password">forgot password ?</h5>
         </div>
+        <!-- submit -->
+        <button type="submit" class="btn w-100 text-white custome-me" id="login">
+          Submit
+        </button>
+      </form>
+      <div class="d-flex gap-2 my-3 w-100 register">
+        <p>haven't an account ?</p>
+        <p class="fw-bold" style="cursor: pointer">
+          <i class="fa-regular fa-hand-point-right"></i> Register here !
+        </p>
       </div>
     </div>
+  </div>
 
-    <!-- js bootstrap -->
-    <script src="./src/third-party/bootstrap.bundle.min.js"></script>
+  <!-- js bootstrap -->
+  <script src="./src/third-party/bootstrap.bundle.min.js"></script>
 
-    <!-- jquery -->
-    <script>
-      if (typeof module === "object") {
-        window.module = module;
-        module = undefined;
-      }
-    </script>
-    <script src="./src/third-party/jquery-3.7.1.min.js"></script>
-    <script>
-      if (window.module) module = window.module;
-    </script>
+  <!-- jquery -->
+  <script>
+    if (typeof module === "object") {
+      window.module = module;
+      module = undefined;
+    }
+  </script>
+  <script src="./src/third-party/jquery-3.7.1.min.js"></script>
+  <script>
+    if (window.module) module = window.module;
+  </script>
 
-    <!-- my script  -->
-    <script src="./src/js/require.js"></script>
-    <script type="module" src="./src/js/index.js"></script>
-  </body>
+  <!-- my script  -->
+  <script src="./src/js/require.js"></script>
+  <script type="module" src="./src/js/index.js"></script>
+</body>
+
 </html>
