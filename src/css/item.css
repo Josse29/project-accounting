@@ -106,3 +106,13 @@ button#category-export-pdf{
 button#category-export-pdf:hover{
   background-color: rgb(194, 29, 10);
 }
+i#cancel-image{
+  position: absolute;
+  right: -10px;
+  top: -22px; 
+  font-size: 32px;
+  cursor: pointer;
+}
+#productsModalDetail::-webkit-scrollbar {
+  display: none;
+}

@@ -5,6 +5,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Item-page</title>
+  <!-- <script>
+    function previewImage(event) {
+      const reader = new FileReader();
+      reader.onload = function () {
+        const preview = document.getElementById('preview');
+        preview.src = reader.result;
+      }
+      reader.readAsDataURL(event.target.files[0]);
+    }
+  </script> -->
   <!-- Framework css bootstrap -->
   <link rel="stylesheet" href="./../third-party/bootstrap.min.css" />
   <!-- Fontawesome -->
@@ -412,6 +422,42 @@
   <div>
     <!-- Product-Modal -->
     <div>
+      <!-- Products-detail-Modal -->
+      <div class="modal fade" id="productsModalDetail" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header py-2" style="background-color: #3c50e0; color: white">
+              <h1 class="modal-title fs-3" id="detailProductModalLabel">Menu</h1>
+            </div>
+            <div class="modal-body">
+              <!-- nama -->
+              <div class="mb-3">
+                <label for="product-name" class="form-label fs-4">Nama</label>
+                <h4 id="detail-product-name" class="ms-2"></h4>
+              </div>
+              <!-- image -->
+              <div class="mb-3">
+                <label for="detailimageProduct" class="form-label fs-4 d-block">Image :</label>
+                <img src="" alt="" class="w-100 my-3 h-auto" id="detail-product-image">
+              </div>
+              <!-- price -->
+              <div class="mb-3">
+                <label for="product-price" class="form-label fs-4">Price</label>
+                <h4 id="detail-product-price" class="ms-2"></h4>
+              </div>
+              <!-- kategori -->
+              <div class="mb-3">
+                <label for="categories" class="form-label fs-4">Kategori</label>
+                <h4 id="detail-category-price" class="ms-2"></h4>
+              </div>
+              <div class="mb-3">
+                <label for="product-price" class="form-label fs-4">Keterangan</label>
+                <h5 id="detail-product-keterangan" class="ms-2"></h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <!-- Products-create-Modal -->
       <div class="modal fade" id="productsModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -420,14 +466,17 @@
               <h1 class="modal-title fs-3" id="exampleModalLabel">Menu</h1>
             </div>
             <div class="modal-body">
+              <!-- nama -->
               <div class="mb-3">
                 <label for="product-name" class="form-label fs-4">Nama</label>
                 <input type="text" class="form-control" id="product-name" placeholder="masukkan nama menu..." />
               </div>
+              <!-- price -->
               <div class="mb-3">
                 <label for="product-price" class="form-label fs-4">Price</label>
                 <input type="text" class="form-control" id="product-price" placeholder="masukkan nama menu..." />
               </div>
+              <!-- kategori -->
               <div class="mb-3">
                 <label for="categories" class="form-label fs-4">Kategori</label>
                 <select class="form-select" aria-label="Default select example" id="categories">
@@ -437,10 +486,16 @@
                   <option value="3">Three</option>
                 </select>
               </div>
+              <!-- image -->
               <div class="mb-3">
-                <label for="imageProduct" class="form-label fs-4">Image :</label>
-                <input class="form-control" type="file" id="imageProduct" multiple />
+                <label for="imageProduct" class="form-label fs-4 d-block">Image :</label>
+                <div class="position-relative d-none" id="section-image">
+                  <i class="fa-solid fa-circle-xmark text-danger" id="cancel-image"></i>
+                  <img src="" alt="" class="w-100 h-auto" id="create-image-product-preview">
+                </div>
+                <input class="form-control" type="file" id="create-image-product" />
               </div>
+              <!-- submit -->
               <div class="mb-3">
                 <label for="product-keterangan" class="form-label fs-4">Keterangan</label>
                 <textarea class="form-control" id="product-keterangan"></textarea>
@@ -467,29 +522,36 @@
               </h1>
             </div>
             <div class="modal-body fs-4">
+              <!-- name product -->
               <div class="mb-3">
-                <label for="name-product" class="form-label">Name :</label>
-                <input type="text" class="form-control" id="name-product" placeholder="ex:product-1">
+                <label for="edit-name-product" class="form-label">Name :</label>
+                <input type="text" class="form-control" id="edit-name-product" placeholder="ex:product-1">
               </div>
+              <!-- price product -->
               <div class="mb-3">
-                <label for="price-product" class="form-label">Price :</label>
-                <input type="text" class="form-control" id="price-product" placeholder="ex:product-1">
+                <label for="edit-price-product" class="form-label">Price :</label>
+                <input type="text" class="form-control" id="edit-price-product" placeholder="ex:product-1">
               </div>
+              <!-- category-product -->
               <div class="mb-3">
-                <label for="category-product" class="form-label">Category :</label>
-                <input type="text" class="form-control" id="category-product" placeholder="ex:product-1">
+                <label for="edit-category-product" class="form-label">Category :</label>
+                <select class="form-select" aria-label="Default select example" id="edit-category-product">
+                  <option selected>Open this select menu</option>
+                  <option value="1">One</option>
+                  <option value="2">Two</option>
+                  <option value="3">Three</option>
+                </select>
               </div>
+              <!-- image product -->
               <div class="mb-3">
-                <label for="category-product" class="form-label">Category :</label>
-                <input type="text" class="form-control" id="category-product" placeholder="ex:product-1">
+                <label for="edit-image-product" class="form-label">Image</label>
+                <img src="" alt="" id="edit-image-product" class="d-block w-100 mb-3">
+                <input class="form-control" type="file" id="edit-image-product">
               </div>
+              <!-- keterangan product -->
               <div class="mb-3">
-                <label for="image_product" class="form-label">Default file input example</label>
-                <input class="form-control" type="file" id="image-product">
-              </div>
-              <div class="mb-3">
-                <label for="keterangan-product" class="form-label">Example textarea</label>
-                <textarea class="form-control" id="keterangan-product" rows="3"></textarea>
+                <label for="edit-keterangan-product" class="form-label">Keterangan</label>
+                <textarea class="form-control" id="edit-keterangan-product" rows="3"></textarea>
               </div>
             </div>
             <div class="modal-footer">
@@ -573,12 +635,12 @@
               <p id="categoryNama"></p>
               <p id="categoryKeterangan"></p>
               <div class="mb-3">
-                <label for="category-nama" class="form-label">Nama Kategori</label>
-                <input type="text" class="form-control" id="category-nama" placeholder="masukkan kata kategori">
+                <label for="edit-category-nama" class="form-label">Nama Kategori</label>
+                <input type="text" class="form-control" id="edit-category-nama" placeholder="masukkan kata kategori">
               </div>
               <div class="mb-3">
-                <label for="category-keterangan" class="form-label">Keterangan</label>
-                <textarea class="form-control" id="category-keterangan" placeholder="ex:tets" rows="3"></textarea>
+                <label for="edit-category-keterangan" class="form-label">Keterangan</label>
+                <textarea class="form-control" id="edit-category-keterangan" placeholder="ex:tets" rows="3"></textarea>
               </div>
             </div>
             <div class="modal-footer">
@@ -590,9 +652,36 @@
           </div>
         </div>
       </div>
+      <!-- delete-category-modal -->
+      <div class=" modal fade" id="confirmDeleteCategoryModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header bg-danger">
+              <h1 class="modal-title fs-2 text-white" id="confirmDeleteCategoryModalLabel">
+                Modal
+              </h1>
+            </div>
+            <div class="modal-body text-center">
+              <i class="fa-solid fa-triangle-exclamation text-danger" style="font-size: 120px"></i>
+              <h4 class="my-3" id="confirm-text-delete-category"></h4>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary d-flex align-items-center gap-2" data-bs-dismiss="modal">
+                <i class="fa-solid fa-times me-1 fs-4"></i>
+                <span class="fs-5">No</span>
+              </button>
+              <button type="button" class="btn btn-danger d-flex align-items-center gap-2" id="sure-delete-category">
+                <i class="fa-solid fa-check me-1 fs-4"></i>
+                <span class="fs-5">Yes</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <!-- Satuan-Modal -->
-    <div class="modal fade" id="satuanModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="categoryModalDelete" tabindex="-1" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-header py-2" style="background-color: #009ef7">

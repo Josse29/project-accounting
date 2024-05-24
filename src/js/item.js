@@ -70,10 +70,20 @@ $(document).ready(function () {
                 <td>
                   <div class="d-flex w-100 justify-content-center gap-2">
                     <button 
-                    class="btn btn-success text-white" data-bs-toggle="tooltip" 
-                    data-bs-html="true"
-                    data-bs-title="<span>print-product</span>" data-bs-placement="bottom">
-                      <i class="fa-solid fa-eye"></i>
+                    class="btn btn-success text-white"
+                    data-bs-toggle="modal" data-bs-target="#productsModalDetail" 
+                    id="detailProduct" 
+                    data-productid="${el.id}"  
+                    data-productname="${el.name}" 
+                    data-productprice="${el.price}" data-productketerangan="${el.keterangan}" 
+                    data-productcategory="${el.category}"
+                    data-productimage="${el.image}">
+                      <i 
+                      class="fa-solid fa-eye"
+                      data-bs-toggle="tooltip" 
+                      data-bs-html="true"
+                      data-bs-title="<span>lihat-'${el.name}'</span>" data-bs-placement="bottom"
+                      ></i>
                     </button>
                     <button 
                     class="btn btn-primary text-white" data-bs-toggle="modal" data-bs-target="#editProductModal" 
@@ -81,7 +91,8 @@ $(document).ready(function () {
                     data-productid="${el.id}"  
                     data-productname="${el.name}" 
                     data-productprice="${el.price}" data-productketerangan="${el.keterangan}" 
-                    data-productcategory="${el.category}">
+                    data-productcategory="${el.category}"
+                    data-productimage="${el.image}">
                       <i 
                       class="fa-solid fa-pencil" 
                       data-bs-toggle="tooltip" 
@@ -118,6 +129,7 @@ $(document).ready(function () {
         });
         $("#data-products").html(tr);
         reinitializeTooltips()
+        console.log(response)
         lastOffsetProducts(
           $("#product_limit").val(),
           $("input#search-product").val(),
@@ -362,7 +374,8 @@ $(document).ready(function () {
       }
     );
   });
-
+  const file = document.getElementById('create-image-product').files
+  console.log(file)
   // 2. Create Product
   $("#submit_product").on("click", () => {
     insertProducts(
@@ -380,6 +393,49 @@ $(document).ready(function () {
       }
     );
   });
+  // const file = document.getElementById('create-image-product').files
+  // // with image
+  // if (file.length > 0) {
+  //   const reader = new FileReader()
+  //   reader.onload = () => {
+  //     const imageBase64 = reader.result
+  //     insertProducts(
+  //       $("#product-name").val(),
+  //       $("#product-price").val(),
+  //       $("#product-keterangan").val(),
+  //       imageBase64,
+  //       (status, response) => {
+  //         if (status) {
+  //           console.log(response);
+  //           getProductsAgain();
+  //         }
+  //         if (!status) {
+  //           console.error(response);
+  //         }
+  //       }
+  //     );
+  //   }
+  //   if (file[0]) {
+  //     reader.readAsDataURL(file[0]);
+  //   }
+  // }
+  // // without image
+  // if (file.length < 0) {
+  //   insertProducts(
+  //     $("#product-name").val(),
+  //     $("#product-price").val(),
+  //     $("#product-keterangan").val(),
+  //     (status, response) => {
+  //       if (status) {
+  //         console.log(response);
+  //         getProductsAgain();
+  //       }
+  //       if (!status) {
+  //         console.error(response);
+  //       }
+  //     }
+  //   );
+  // }
 
   // 3. Delete Product event binding mckkkk
   $(document).on("click", "#deleteProduct", function () {
@@ -404,9 +460,11 @@ $(document).ready(function () {
   $(document).on("click", "#editProduct", function () {
     const product = this.dataset;
     $("#editProductModalLabel").html(product.productname)
-    $("#name-product").val(product.productname)
-    $("#price-product").val(product.productprice)
-    $("#keterangan-product").val(product.productketerangan)
+    $("#edit-name-product").val(product.productname)
+    $("#edit-price-product").val(product.productprice)
+    $("#edit-keterangan-product").val(product.productketerangan)
+    console.log("image " + product.productimage === null)
+    $("img#edit-image-product").attr("src", product.productimage)
     $("#submit-edit-product").on("click", () => {
       db.run(`UPDATE products
               SET name = '${$("#name-product").val()}' 
@@ -422,7 +480,38 @@ $(document).ready(function () {
     })
   });
 
-  // export excel
+  // 5.detail-product
+  $(document).on("click", "#detailProduct", function () {
+    const product = this.dataset;
+    console.log(product)
+    $("#detailProductModalLabel").html(product.productname)
+    $("#detail-product-name").text(product.productname)
+    document.getElementById('detail-product-image').src = `${product.productimage}`
+    $("#detail-product-price").text(product.productprice)
+    $("#detail-category-price").text(product.productcategory)
+    $("#detail-product-keterangan").text(product.productketerangan)
+  });
+
+  // preview-image-product
+  $("#create-image-product").on("change", (event) => {
+    const files = event.target.files
+    if (files.length > 0) {
+      const reader = new FileReader();
+      reader.onload = function () {
+        const preview = document.getElementById('create-image-product-preview');
+        preview.src = reader.result;
+        preview.classList.add("mb-3")
+        $("#section-image").removeClass("d-none")
+      }
+      reader.readAsDataURL(event.target.files[0]);
+    }
+  })
+  $("#cancel-image").on("click", () => {
+    $("#create-image-product").val("")
+    $("#section-image").addClass("d-none")
+  })
+
+  // export excel product
   $("#product-export-excel").on("click", () => {
     let file_path = dialog.showSaveDialogSync({
       filters: [{ name: "microsoft-excel", extensions: ["csv"] }],
@@ -453,7 +542,7 @@ $(document).ready(function () {
       }
     });
   });
-  // export pdf
+  // export pdf product
   $("#product-export-pdf").on("click", () => {
     let file_path = dialog.showSaveDialogSync({
       title: "Export Data",
@@ -485,7 +574,7 @@ $(document).ready(function () {
       });
     }
   });
-  // export pdf
+  // export pdf product
   $("#product-export-print").on("click", () => {
     db.all(`SELECT * FROM products ORDER BY id DESC`, (err, result) => {
       if (!err) {
@@ -541,8 +630,21 @@ $(document).ready(function () {
                     data-bs-html="true"
                     data-bs-title="<span>edit-${el.category}</span>" data-bs-placement="bottom"></i>
                 </button>
-                <button class="btn btn-danger text-white">
-                  <i class="fa-solid fa-trash-can"></i>
+                <button 
+                class="btn btn-danger text-white"
+                data-bs-toggle="modal" 
+                data-bs-target="#confirmDeleteCategoryModal"
+                id="deleteCategory"
+                data-categoryid="${el.id}"
+                data-categorynama="${el.category}" 
+                data-categoryketerangan="${el.keterangan}"
+                >
+                  <i 
+                  class="fa-solid fa-trash-can"
+                  data-bs-toggle="tooltip" 
+                  data-bs-html="true"
+                  data-bs-title="<span>hapus-${el.category}</span>" data-bs-placement="bottom"
+                  ></i>
                 </button>
               </div>
             </td>
@@ -579,26 +681,41 @@ $(document).ready(function () {
   // 3.update-category
   $(document).on("click", "#editCategory", function () {
     const category = this.dataset;
-    console.log(category.categorynama)
     $("#categoryModalLabelEdit").html(category.categorynama)
-    $("#categoryNama").html(category.categorynama)
-    $("#categoryKeterangan").html(category.categoryketerangan)
-    $("#category-nama").val(category.categorynama)
-    $("#category-keterangan").val(category.categoryketerangan)
-    console.log($("#category-keterangan").val())
+    $("#edit-category-nama").val(category.categorynama)
+    $("#edit-category-keterangan").val(category.categoryketerangan)
+    $("#edit-category-submit").on("click", () => {
+      db.run(`UPDATE products
+              SET category = '${$("#edit-category-nama").val()}',
+                  keterangan = '${$("#edit-category-keterangan").val()}'
+              WHERE id = '${category.categoryid}'`, (err) => {
+        if (!err) {
+          console.log("berhasil diperbaharui")
+        }
+        if (err) {
+          console.log("gagal")
+        }
+      })
+    })
+  });
+  // 4.delete-category
+  $(document).on("click", "#deleteCategory", function () {
+    const category = this.dataset;
+    $("#confirmDeleteCategoryModalLabel").html(category.categorynama)
+    const konfirmasiDelete = `Apakah anda yakin menghapus - <span class="fw-bold">${category.categorynama}</span> ?`;
+    $("#confirmDeleteProductModalLabel").html(category.categorynama);
+    $("#confirm-text-delete-category").html(konfirmasiDelete);
+    $("#sure-delete-category").on("click", () => {
+      db.run(`DELETE 
+      FROM categories
+      WHERE id = ${category.categoryid}`, (err) => {
+        if (!err) {
+          console.log("berhasil dihapus")
+        }
+        if (err) {
+          console.log("gagal dihapus");
+        }
+      });
+    });
   });
 })
-// $("#edit-category-submit").on("click", () => {
-//   db.run(`UPDATE products
-//           SET category = '${$("#category-nama").val()}',
-//               keterangan = '${$("#category-keterangan").val()}'
-//           WHERE id = '${category.categoryid}'`, (err) => {
-//     if (!err) {
-//       console.log("berhasil")
-//       getProductsAgain()
-//     }
-//     if (err) {
-//       console.log("gagal")
-//     }
-//   })
-// })

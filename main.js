@@ -11,6 +11,7 @@ const fs = require("fs");
 const path = require("path");
 const url = require("url");
 remote.initialize();
+// all-pages
 let loginPage;
 let registerPage;
 let dashboardPage;
@@ -206,7 +207,7 @@ const createAboutPage = () => {
     loginPage.show();
   });
 };
-// start ipc load-page
+// ipc-load:pages
 ipcMain.on("load:register-page", () => {
   createRegisterPage();
 });
@@ -228,7 +229,7 @@ ipcMain.on("load:users-page", () => {
 ipcMain.on("load:about-page", () => {
   createAboutPage();
 });
-// end ipc load-page
+// export-pdf
 let productPDF;
 ipcMain.on("pdf:product", (event, thead, tbody, file_path) => {
   productPDF = new BrowserWindow({
@@ -292,7 +293,6 @@ ipcMain.on("print:product", (event, thead, tbody) => {
     })
   });
 });
-
 app.whenReady().then(() => {
   createLoginPage();
   app.on("activate", () => {
