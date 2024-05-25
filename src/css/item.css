@@ -93,10 +93,10 @@ button#product-export-print{
 button#product-export-print:hover{
   background-color: rgb(212, 54, 36);
 }
-button#submit-edit-product{
+button#edit-product-submit{
   background-color: #273eec;
 }
-button#submit-edit-product:hover{
+button#edit-product-submit:hover{
   background-color: #112ae9;
 }
 button#category-export-pdf{
@@ -107,6 +107,13 @@ button#category-export-pdf:hover{
   background-color: rgb(194, 29, 10);
 }
 i#cancel-image{
+  position: absolute;
+  right: -10px;
+  top: -22px; 
+  font-size: 32px;
+  cursor: pointer;
+}
+i#edit-product-cancel-image{
   position: absolute;
   right: -10px;
   top: -22px; 

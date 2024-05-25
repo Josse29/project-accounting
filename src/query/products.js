@@ -5,9 +5,17 @@ export const queryGetProducts = (limitProduct, offsetProduct) => {
           LIMIT ${limitProduct} 
           OFFSET ${offsetProduct}`;
 };
-export const queryinsertProducts = (name, price, keterangan, image) => {
-  return `INSERT INTO products (name, price, keterangan,image) 
+export const queryinsertProducts = (name, price, keterangan, image = "") => {
+  // without image
+  if (image === "") {
+    return `INSERT INTO products (name, price, keterangan) 
+          VALUES ('${name}','${price}','${keterangan}')`;
+  }
+  // with image
+  if (image !== "") {
+    return `INSERT INTO products (name, price, keterangan,image) 
           VALUES ('${name}','${price}','${keterangan}','${image}')`;
+  }
 };
 export const queryDeleteProductId = (id) => {
   return `DELETE 

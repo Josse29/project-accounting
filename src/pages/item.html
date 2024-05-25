@@ -5,16 +5,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Item-page</title>
-  <!-- <script>
-    function previewImage(event) {
-      const reader = new FileReader();
-      reader.onload = function () {
-        const preview = document.getElementById('preview');
-        preview.src = reader.result;
-      }
-      reader.readAsDataURL(event.target.files[0]);
-    }
-  </script> -->
   <!-- Framework css bootstrap -->
   <link rel="stylesheet" href="./../third-party/bootstrap.min.css" />
   <!-- Fontawesome -->
@@ -422,7 +412,7 @@
   <div>
     <!-- Product-Modal -->
     <div>
-      <!-- Products-detail-Modal -->
+      <!-- products-detail-modal -->
       <div class="modal fade" id="productsModalDetail" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
@@ -438,7 +428,8 @@
               <!-- image -->
               <div class="mb-3">
                 <label for="detailimageProduct" class="form-label fs-4 d-block">Image :</label>
-                <img src="" alt="" class="w-100 my-3 h-auto" id="detail-product-image">
+                <img src="" alt="" class="w-100 h-auto" id="detail-product-image">
+                <h5 class="ms-2" id="detail-no-image"></h5>
               </div>
               <!-- price -->
               <div class="mb-3">
@@ -458,7 +449,7 @@
           </div>
         </div>
       </div>
-      <!-- Products-create-Modal -->
+      <!-- products-create-modal-->
       <div class="modal fade" id="productsModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
           <div class="modal-content">
@@ -512,7 +503,7 @@
           </div>
         </div>
       </div>
-      <!-- edit Product Modal -->
+      <!-- products-edit-modal -->
       <div class="modal fade" id="editProductModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
           <div class="modal-content">
@@ -524,13 +515,13 @@
             <div class="modal-body fs-4">
               <!-- name product -->
               <div class="mb-3">
-                <label for="edit-name-product" class="form-label">Name :</label>
-                <input type="text" class="form-control" id="edit-name-product" placeholder="ex:product-1">
+                <label for="edit-product-name" class="form-label">Name :</label>
+                <input type="text" class="form-control" id="edit-product-name" placeholder="ex:product-1">
               </div>
               <!-- price product -->
               <div class="mb-3">
-                <label for="edit-price-product" class="form-label">Price :</label>
-                <input type="text" class="form-control" id="edit-price-product" placeholder="ex:product-1">
+                <label for="edit-product-price" class="form-label">Price :</label>
+                <input type="text" class="form-control" id="edit-product-price" placeholder="ex:product-1">
               </div>
               <!-- category-product -->
               <div class="mb-3">
@@ -545,27 +536,30 @@
               <!-- image product -->
               <div class="mb-3">
                 <label for="edit-image-product" class="form-label">Image</label>
-                <img src="" alt="" id="edit-image-product" class="d-block w-100 mb-3">
-                <input class="form-control" type="file" id="edit-image-product">
+                <div class="position-relative d-block mb-3" id="section-edit-product-img">
+                  <i class="fa-solid fa-circle-xmark text-danger" id="edit-product-cancel-image"></i>
+                  <img src="" alt="" id="edit-product-image" class="w-100">
+                </div>
+                <input class="form-control" type="file" id="edit-product-image-file">
               </div>
               <!-- keterangan product -->
               <div class="mb-3">
                 <label for="edit-keterangan-product" class="form-label">Keterangan</label>
-                <textarea class="form-control" id="edit-keterangan-product" rows="3"></textarea>
+                <textarea class="form-control" id="edit-product-keterangan" rows="3"></textarea>
               </div>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary d-flex align-items-center gap-2" data-bs-dismiss="modal">
                 Close
               </button>
-              <button type="button" class="btn text-white d-flex align-items-center gap-2" id="submit-edit-product">
+              <button type="button" class="btn text-white d-flex align-items-center gap-2" id="edit-product-submit">
                 Save
               </button>
             </div>
           </div>
         </div>
       </div>
-      <!-- Product delete Modal -->
+      <!-- products-delete-modal -->
       <div class=" modal fade" id="confirmDeleteProductModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
           <div class="modal-content">

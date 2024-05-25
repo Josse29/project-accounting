@@ -72,8 +72,8 @@ export const lastOffsetProducts = (limitProduct, searchVal, callback) => {
     });
   }
 };
-export const insertProducts = (name, price, keterangan, callback) => {
-  db.run(queryinsertProducts(name, price, keterangan), (err) => {
+export const insertProducts = (name, price, keterangan, image, callback) => {
+  db.run(queryinsertProducts(name, price, keterangan, image), (err) => {
     if (!err) {
       return callback(true, "berhasil ditambahkan");
     }

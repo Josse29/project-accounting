@@ -82,7 +82,7 @@ $(document).ready(function () {
                       class="fa-solid fa-eye"
                       data-bs-toggle="tooltip" 
                       data-bs-html="true"
-                      data-bs-title="<span>lihat-'${el.name}'</span>" data-bs-placement="bottom"
+                      data-bs-title="<span>lihat-${el.name}</span>" data-bs-placement="bottom"
                       ></i>
                     </button>
                     <button 
@@ -129,14 +129,12 @@ $(document).ready(function () {
         });
         $("#data-products").html(tr);
         reinitializeTooltips()
-        console.log(response)
         lastOffsetProducts(
           $("#product_limit").val(),
           $("input#search-product").val(),
           (status, response) => {
             if (status) {
               $("#product_offset_last").text(response);
-              console.log("last page : " + response);
             }
             if (!status) {
               console.log(response);
@@ -151,8 +149,8 @@ $(document).ready(function () {
   const getProductsAgain = () => {
     getProducts(
       $("#product_limit").val(),
-      $("#product_offset").text().trim(),
-      $("input#search-product").val(),
+      1,
+      "",
       (status, response) => {
         if (status) {
           let tr = ``;
@@ -161,7 +159,6 @@ $(document).ready(function () {
           });
           $("#data-products").html(tr);
           reinitializeTooltips();
-          console.log("berhasil")
         }
         if (!status) {
           console.err(response);
@@ -374,69 +371,55 @@ $(document).ready(function () {
       }
     );
   });
-  const file = document.getElementById('create-image-product').files
-  console.log(file)
   // 2. Create Product
   $("#submit_product").on("click", () => {
-    insertProducts(
-      $("#product-name").val(),
-      $("#product-price").val(),
-      $("#product-keterangan").val(),
-      (status, response) => {
-        if (status) {
-          console.log(response);
-          getProductsAgain();
-        }
-        if (!status) {
-          console.error(response);
-        }
+    const file = document.getElementById('create-image-product').files
+    // with image
+    if (file.length > 0) {
+      const reader = new FileReader()
+      reader.onload = () => {
+        const imageBase64 = reader.result
+        insertProducts(
+          $("#product-name").val(),
+          $("#product-price").val(),
+          $("#product-keterangan").val(),
+          imageBase64,
+          (status, response) => {
+            if (status) {
+              console.log("upload image + form")
+              console.log(response);
+              getProductsAgain();
+            }
+            if (!status) {
+              console.error(response);
+            }
+          }
+        );
       }
-    );
+      if (file[0]) {
+        reader.readAsDataURL(file[0]);
+      }
+    }
+    // without image
+    if (file.length < 1) {
+      insertProducts(
+        $("#product-name").val(),
+        $("#product-price").val(),
+        $("#product-keterangan").val(),
+        "",
+        (status, response) => {
+          if (status) {
+            console.log(response);
+            console.log("upload imageless + form")
+            getProductsAgain();
+          }
+          if (!status) {
+            console.error(response);
+          }
+        }
+      );
+    }
   });
-  // const file = document.getElementById('create-image-product').files
-  // // with image
-  // if (file.length > 0) {
-  //   const reader = new FileReader()
-  //   reader.onload = () => {
-  //     const imageBase64 = reader.result
-  //     insertProducts(
-  //       $("#product-name").val(),
-  //       $("#product-price").val(),
-  //       $("#product-keterangan").val(),
-  //       imageBase64,
-  //       (status, response) => {
-  //         if (status) {
-  //           console.log(response);
-  //           getProductsAgain();
-  //         }
-  //         if (!status) {
-  //           console.error(response);
-  //         }
-  //       }
-  //     );
-  //   }
-  //   if (file[0]) {
-  //     reader.readAsDataURL(file[0]);
-  //   }
-  // }
-  // // without image
-  // if (file.length < 0) {
-  //   insertProducts(
-  //     $("#product-name").val(),
-  //     $("#product-price").val(),
-  //     $("#product-keterangan").val(),
-  //     (status, response) => {
-  //       if (status) {
-  //         console.log(response);
-  //         getProductsAgain();
-  //       }
-  //       if (!status) {
-  //         console.error(response);
-  //       }
-  //     }
-  //   );
-  // }
-
   // 3. Delete Product event binding mckkkk
   $(document).on("click", "#deleteProduct", function () {
     const product = this.dataset;
@@ -455,31 +438,102 @@ $(document).ready(function () {
       });
     });
   });
-
-  // 4. Edit product
+  // 4. Edit product mck kesell
   $(document).on("click", "#editProduct", function () {
+    // get value from params 
     const product = this.dataset;
+    // all-input-product
     $("#editProductModalLabel").html(product.productname)
-    $("#edit-name-product").val(product.productname)
-    $("#edit-price-product").val(product.productprice)
-    $("#edit-keterangan-product").val(product.productketerangan)
-    console.log("image " + product.productimage === null)
-    $("img#edit-image-product").attr("src", product.productimage)
-    $("#submit-edit-product").on("click", () => {
+    $("#edit-product-name").val(product.productname)
+    $("#edit-product-price").val(product.productprice)
+    $("#edit-product-keterangan").val(product.productketerangan)
+    const file = document.getElementById('edit-product-image-file').files
+    // it doesn't exist productimage from params
+    if (product.productimage === "null") {
+      $("img#edit-product-image").attr("src", "")
+      $("#section-edit-product-img").addClass("d-none")
+    }
+    // it exist productimage from params
+    if (product.productimage !== "null") {
+      $("#section-edit-product-img").removeClass("d-none")
+      $("img#edit-product-image").attr("src", product.productimage)
+    }
+    // preview-image-productedit and update with image
+    $("#edit-product-image-file").on("change", (event) => {
+      const files = event.target.files
+      if (files.length > 0) {
+        $("#section-edit-product-img").removeClass("d-none")
+        const reader = new FileReader();
+        reader.onload = function () {
+          const preview = document.getElementById('edit-product-image');
+          const imgbase64 = reader.result
+          preview.src = imgbase64;
+          console.log(files)
+        }
+        reader.readAsDataURL(event.target.files[0]);
+      }
+    })
+    $("#edit-product-submit").on("click", () => {
+      if (file.length > 0 && file[0].name) {
+        console.log(file.length)
+        const reader = new FileReader()
+        reader.onload = () => {
+          const imageBase64 = reader.result
+          db.run(`UPDATE products
+              SET name = '${$("#edit-product-name").val()}',
+                  price = '${$("#edit-product-price").val()}',
+                  keterangan = '${$("#edit-product-keterangan").val()}', 
+                  image = '${imageBase64}'
+              WHERE id = '${product.productid}'`, (err) => {
+            if (!err) {
+              console.log("berhasil diupdated dengan gambar")
+              getProductsAgain()
+            }
+            if (err) {
+              console.log(err)
+              console.log("gagal updated")
+            }
+          })
+        }
+        if (file[0]) {
+          reader.readAsDataURL(file[0]);
+        }
+      }
+      else {
+        db.run(`UPDATE products
+                SET name = '${$("#edit-product-name").val()}',
+                    price = '${$("#edit-product-price").val()}',
+                    keterangan = '${$("#edit-product-keterangan").val()}'
+                WHERE id = '${product.productid}'`, (err) => {
+          if (!err) {
+            console.log("berhasil diupdated tanpa gambar")
+            getProductsAgain()
+          }
+          if (err) {
+            console.log(err)
+            console.log("gagal updated")
+          }
+        })
+      }
+    })
+    // remove-image
+    $("#edit-product-cancel-image").on("click", () => {
       db.run(`UPDATE products
-              SET name = '${$("#name-product").val()}' 
+              SET image = 'null'
               WHERE id = '${product.productid}'`, (err) => {
         if (!err) {
-          console.log("berhasil")
+          console.log("berhasil-hapus gambar ")
+          $("#edit-product-image-file").val("")
+          $("#section-edit-product-img").addClass("d-none")
           getProductsAgain()
         }
         if (err) {
-          console.log("gagal")
+          console.log(err)
+          console.log("gagal-hapus-gambar")
         }
       })
     })
   });
-
   // 5.detail-product
   $(document).on("click", "#detailProduct", function () {
     const product = this.dataset;
@@ -487,6 +541,10 @@ $(document).ready(function () {
     $("#detailProductModalLabel").html(product.productname)
     $("#detail-product-name").text(product.productname)
     document.getElementById('detail-product-image').src = `${product.productimage}`
+    if (product.productimage === "null") {
+      $("#detail-product-image").addClass("d-none")
+      $("#detail-no-image").text(`no - image displayed`)
+    }
     $("#detail-product-price").text(product.productprice)
     $("#detail-category-price").text(product.productcategory)
     $("#detail-product-keterangan").text(product.productketerangan)
@@ -506,6 +564,7 @@ $(document).ready(function () {
       reader.readAsDataURL(event.target.files[0]);
     }
   })
+  // cancel-product-create-image
   $("#cancel-image").on("click", () => {
     $("#create-image-product").val("")
     $("#section-image").addClass("d-none")
@@ -552,19 +611,19 @@ $(document).ready(function () {
       file_path = file_path.replace(/\\/g, "/");
       db.all(`SELECT * FROM products ORDER BY id DESC`, (err, result) => {
         if (!err) {
-          let thead = `<tr>
+          let thead = `< tr >
                         <th>Id</th>
                         <th>Nama Produk</th>
                         <th>Harga Produk</th>
                         <th>Keterangan</th>
-                      </tr>`;
+                      </ > `;
           let tbody = "";
           result.forEach((row) => {
-            tbody += `<tr>
+            tbody += `< tr >
                       <td>${row.name}</td>
                       <td>${row.price}</td>
                       <td>${row.keterangan}</td>
-                    </tr>`;
+                    </ > `;
           });
           ipcRenderer.send("pdf:product", thead, tbody, file_path);
         }
@@ -578,19 +637,19 @@ $(document).ready(function () {
   $("#product-export-print").on("click", () => {
     db.all(`SELECT * FROM products ORDER BY id DESC`, (err, result) => {
       if (!err) {
-        let thead = `<tr>
+        let thead = `< tr >
                         <th>Id</th>
                         <th>Nama Produk</th>
                         <th>Harga Produk</th>
                         <th>Keterangan</th>
-                      </tr>`;
+                      </ > `;
         let tbody = "";
         result.forEach((row) => {
-          tbody += `<tr>
+          tbody += `< tr >
                       <td>${row.name}</td>
                       <td>${row.price}</td>
                       <td>${row.keterangan}</td>
-                    </tr>`;
+                    </ > `;
         });
         ipcRenderer.send("print:product", thead, tbody);
       }
@@ -599,7 +658,6 @@ $(document).ready(function () {
       }
     });
   });
-
   // ui category
   const uiTrCategory = (el) => {
     return `<tr>
@@ -648,13 +706,13 @@ $(document).ready(function () {
                 </button>
               </div>
             </td>
-          </tr>`
+          </ > `
   }
   // 1. create-category
   $("#category-submit").on("click", () => {
     db.run(`INSERT 
-    INTO categories (category, keterangan) 
-    VALUES ('${$("#category-nama").val()}','${$("#category-keterangan").val()}')`, (err) => {
+    INTO categories(category, keterangan) 
+    VALUES('${$("#category-nama").val()}', '${$("#category-keterangan").val()}')`, (err) => {
       if (!err) {
         console.log("kategori berhasil ditambahkan")
       }
@@ -664,8 +722,8 @@ $(document).ready(function () {
     });
   })
   // 2. read-category
-  db.all(`SELECT * 
-          FROM categories `, (err, res) => {
+  db.all(`SELECT *
+      FROM categories`, (err, res) => {
     if (!err) {
       let tr = ``
       res.forEach((el) => {
@@ -685,12 +743,12 @@ $(document).ready(function () {
     $("#edit-category-nama").val(category.categorynama)
     $("#edit-category-keterangan").val(category.categoryketerangan)
     $("#edit-category-submit").on("click", () => {
-      db.run(`UPDATE products
+      db.run(`UPDATE categories
               SET category = '${$("#edit-category-nama").val()}',
                   keterangan = '${$("#edit-category-keterangan").val()}'
               WHERE id = '${category.categoryid}'`, (err) => {
         if (!err) {
-          console.log("berhasil diperbaharui")
+          console.log("category berhasil diperbaharui")
         }
         if (err) {
           console.log("gagal")
@@ -702,7 +760,7 @@ $(document).ready(function () {
   $(document).on("click", "#deleteCategory", function () {
     const category = this.dataset;
     $("#confirmDeleteCategoryModalLabel").html(category.categorynama)
-    const konfirmasiDelete = `Apakah anda yakin menghapus - <span class="fw-bold">${category.categorynama}</span> ?`;
+    const konfirmasiDelete = `Apakah anda yakin menghapus - <span class="fw-bold">${category.categorynama}</span> ? `;
     $("#confirmDeleteProductModalLabel").html(category.categorynama);
     $("#confirm-text-delete-category").html(konfirmasiDelete);
     $("#sure-delete-category").on("click", () => {
