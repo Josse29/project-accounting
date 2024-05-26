@@ -447,7 +447,6 @@ $(document).ready(function () {
     $("#edit-product-name").val(product.productname)
     $("#edit-product-price").val(product.productprice)
     $("#edit-product-keterangan").val(product.productketerangan)
-    const file = document.getElementById('edit-product-image-file').files
     // it doesn't exist productimage from params
     if (product.productimage === "null") {
       $("img#edit-product-image").attr("src", "")
@@ -458,7 +457,7 @@ $(document).ready(function () {
       $("#section-edit-product-img").removeClass("d-none")
       $("img#edit-product-image").attr("src", product.productimage)
     }
-    // preview-image-productedit and update with image
+    // preview-image-productedit keselll
     $("#edit-product-image-file").on("change", (event) => {
       const files = event.target.files
       if (files.length > 0) {
@@ -468,23 +467,25 @@ $(document).ready(function () {
           const preview = document.getElementById('edit-product-image');
           const imgbase64 = reader.result
           preview.src = imgbase64;
-          console.log(files)
         }
         reader.readAsDataURL(event.target.files[0]);
       }
     })
+
+    // action image kesell xxx
     $("#edit-product-submit").on("click", () => {
-      if (file.length > 0 && file[0].name) {
-        console.log(file.length)
+      // with image
+      const file = document.getElementById('edit-product-image-file').files
+      if (file.length > 0) {
         const reader = new FileReader()
-        reader.onload = () => {
-          const imageBase64 = reader.result
+        reader.onload = function () {
+          const imgbase64 = reader.result
           db.run(`UPDATE products
-              SET name = '${$("#edit-product-name").val()}',
-                  price = '${$("#edit-product-price").val()}',
-                  keterangan = '${$("#edit-product-keterangan").val()}', 
-                  image = '${imageBase64}'
-              WHERE id = '${product.productid}'`, (err) => {
+                  SET name = '${$("#edit-product-name").val()}',
+                      price = '${$("#edit-product-price").val()}',
+                      keterangan = '${$("#edit-product-keterangan").val()}', 
+                      image = '${imgbase64}'
+                  WHERE id = '${product.productid}'`, (err) => {
             if (!err) {
               console.log("berhasil diupdated dengan gambar")
               getProductsAgain()
@@ -496,15 +497,15 @@ $(document).ready(function () {
           })
         }
         if (file[0]) {
-          reader.readAsDataURL(file[0]);
+          reader.readAsDataURL(file[0])
         }
       }
-      else {
+      if (file.length < 1) {
         db.run(`UPDATE products
-                SET name = '${$("#edit-product-name").val()}',
-                    price = '${$("#edit-product-price").val()}',
-                    keterangan = '${$("#edit-product-keterangan").val()}'
-                WHERE id = '${product.productid}'`, (err) => {
+                      SET name = '${$("#edit-product-name").val()}',
+                          price = '${$("#edit-product-price").val()}',
+                          keterangan = '${$("#edit-product-keterangan").val()}'
+                      WHERE id = '${product.productid}'`, (err) => {
           if (!err) {
             console.log("berhasil diupdated tanpa gambar")
             getProductsAgain()
@@ -706,8 +707,23 @@ $(document).ready(function () {
                 </button>
               </div>
             </td>
-          </ > `
+          </tr> `
   }
+  const uiListCategory = (el) => {
+    return `<option value=${el.id}>${el.category}</option>`
+  }
+  db.all(`SELECT * FROM categories`, (err, res) => {
+    if (!err) {
+      let option = ``
+      res.forEach((el) => {
+        option += uiListCategory(el)
+      })
+      $("#create-categories-selection").html(option)
+    }
+    if (err) {
+      console.log(res)
+    }
+  })
   // 1. create-category
   $("#category-submit").on("click", () => {
     db.run(`INSERT 
