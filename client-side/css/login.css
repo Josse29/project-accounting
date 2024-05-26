@@ -1,0 +1,111 @@
+@font-face {
+    font-family: "poppins";
+    src: url("./../third-party/Poppins-Regular.ttf");
+  }
+  * {
+    font-family: "poppins";
+  }
+  body::-webkit-scrollbar {
+    display: none;
+    -webkit-app-region: drag;
+  }
+  div.icon-me {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+  }
+  img.custome-me {
+    width: 30px;
+    height: 30px;
+  }
+  .sections {
+    display: flex;
+  }
+  .section-first {
+    width: 60vw;
+    background-image: url("./../images/welcome.jpg");
+    height: 100vh;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    transition: background-position 0.5s ease-in-out;
+    cursor: pointer;
+  }
+  .section-first:hover {
+    width: 60vw;
+    background-image: url("./../images/welcome.jpg");
+    height: 100vh;
+    background-position: top;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  .section-second {
+    width: 40vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 0px 32px;
+  }
+  .section-second h1 {
+    font-size: 48px;
+    font-weight: bolder;
+    width: 100%;
+    margin-bottom: 15px;
+    color: #3669cc;
+  }
+  .section-second h5 {
+    font-weight: bolder;
+    width: 100%;
+    margin-bottom: 22px;
+  }
+  .section-second form {
+    width: 100%;
+  }
+  .section-second form label.custome-me {
+    font-size: 20px;
+    color: #1f41bb;
+    font-weight: 900;
+  }
+  .section-second form h5.forgot-password {
+    font-size: 15px;
+    color: #1f41bb;
+    cursor: pointer;
+    font-weight: 500;
+    margin-top: 12px;
+    text-align: right;
+    font-style: italic;
+  }
+  .section-second form label.show-password {
+    font-size: 20px;
+    color: #1f41bb;
+    font-weight: 900;
+    cursor: pointer;
+  }
+  .section-second form label.hide-password {
+    font-size: 20px;
+    color: #1f41bb;
+    font-weight: 900;
+    cursor: pointer;
+  }
+  .section-second form input.custome-me {
+    background-color: #f1f4ff;
+    border: 1px solid #f1f4ff;
+  }
+  .section-second form input.custome-me::placeholder {
+    color: #566bb7;
+  }
+  .section-second form input.custome-me:focus {
+    border: 3px solid #1f41bb;
+    box-shadow: 0 0 0 0.3rem #f1f4ff;
+  }
+  .section-second form button.custome-me {
+    background-color: #1f41bb;
+  }
+  .section-second form button.custome-me:hover {
+    background-color: #516ac5;
+  }
+  

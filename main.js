@@ -5,7 +5,7 @@ const {
   screen,
   dialog,
 } = require("electron/main");
-const db = require("./src/config/database/db_config");
+const db = require("./client-side/config/db");
 const remote = require("@electron/remote/main");
 const fs = require("fs");
 const path = require("path");
@@ -60,7 +60,8 @@ const createRegisterPage = () => {
     height: 720,
     autoHideMenuBar: true,
   });
-  registerPage.loadFile("./src/pages/register.html");
+  registerPage.loadFile("./client-side/pages/register.html");
+  remote.enable(loginPage.webContents);
 };
 const createDashboardPage = () => {
   dashboardPage = new BrowserWindow({

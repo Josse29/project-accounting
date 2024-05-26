@@ -1,0 +1,14 @@
+@font-face {
+    font-family: "poppins";
+    src: url("./../third-party/Poppins-Regular.ttf");
+  }
+  * {
+    font-family: "poppins";
+  }
+  .btn-register-me:hover {
+    background-color: #1654ce;
+  }
+  .btn-register-me {
+    background-color: #3669cc;
+  }
+  
