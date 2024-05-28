@@ -22,16 +22,16 @@
                 <h5>Josse Surya Pinem</h5>
             </div>
             <div class="d-flex gap-2">
-                <i class="fa-regular fa-window-restore custome-me" id="minWindow" data-bs-toggle="tooltip"
+                <i class="fa-regular fa-window-restore custome-me" id="minimize-dashboard" data-bs-toggle="tooltip"
                     data-bs-html="true" data-bs-title="<h6>Minimize</h6>"></i>
-                <i class="fa-solid fa-right-from-bracket custome-me" id="closeWindow" data-bs-toggle="tooltip"
+                <i class="fa-solid fa-right-from-bracket custome-me" id="close-dashboard" data-bs-toggle="tooltip"
                     data-bs-html="true" data-bs-title="<h6>Quit</h6>"></i>
             </div>
         </div>
     </div>
     <div class="side-navigation">
         <div class="logo">
-            <img src="./../img/logo.png" alt="" />
+            <img src="./../images/logo.png" alt="" />
         </div>
         <!-- links -->
         <div class="text-white mt-5">
@@ -47,12 +47,12 @@
             </div>
             <!-- inventory -->
             <div class="text-center mb-5 custome-me" data-bs-toggle="tooltip" data-bs-placement="right"
-                data-bs-html="true" data-bs-title="<h4>Inventory</h4>" id="itemWindow">
+                data-bs-html="true" data-bs-title="<h4>Inventory</h4>" id="inventoryWindow">
                 <i class="fa-solid fa-file-circle-plus fs-3"></i>
             </div>
-            <!-- data -->
+            <!-- transaksi -->
             <div class="text-center mb-5 custome-me" data-bs-toggle="tooltip" data-bs-placement="right"
-                data-bs-html="true" data-bs-title="<h4>Data</h4>" id="dataWindow">
+                data-bs-html="true" data-bs-title="<h4>Transaksi</h4>" id="transaksiWindow">
                 <i class="fa-solid fa-chart-simple fs-3"></i>
             </div>
             <!-- users -->
@@ -62,7 +62,7 @@
             </div>
             <!-- about -->
             <div class="text-center mb-5 custome-me" data-bs-toggle="tooltip" data-bs-placement="left"
-                data-bs-html="true" data-bs-title="<h4>About-us</h4>" id="aboutWindow">
+                data-bs-html="true" data-bs-title="<h4>About-us</h4>">
                 <i class="fa-solid fa-city fs-3 custome-me-active"></i>
             </div>
         </div>
@@ -128,7 +128,7 @@
                 </div>
                 <div class="card-body">
                     <div class="d-flex justify-content-center align-items-center gap-3">
-                        <img src="./../img/josse.jpg" alt="" style="width: 300px; height: 400px" />
+                        <img src="./../images/josse.jpg" alt="" style="width: 300px; height: 400px" />
                         <div>
                             <h3 class="text-end">
                                 Josse Surya Pinem - Javascript Interested !
@@ -202,8 +202,8 @@
         if (window.module) module = window.module;
     </script>
     <!-- myscript -->
-    <script src="./../js/require.js"></script>
-    <script type="module" src="./../js/ipc/about.js"></script>
+    <script src="./../require/index.js"></script>
+    <script type="module" src="./../js/utils/ipc.js"></script>
 </body>
 
 </html>

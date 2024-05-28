@@ -1,13 +1,50 @@
 // login page
-export const sendIpcMinWinLogin = () => {
-    ipcRenderer.send("minimize-window:login-page");
-};
-export const sendIpcMinMaxWinLogin = () => {
+$("#minimize-login").on("click", () => {
+    ipcRenderer.send("minimize-window:login-page")
+});
+$("#min-max-login").on("click", () => {
     ipcRenderer.send("minimize-maximize-window:login-page");
-};
-export const sendIpcCloseWindowLogin = () => {
+});
+$("#close-login").on("click", () => {
     ipcRenderer.send("close-window:login-page");
-};
+});
+$(".register").on("click", () => {
+    ipcRenderer.send("load:register-page");
+});
+$("#login").on("click", () => {
+    ipcRenderer.send("load:dashboard-page");
+});
+
+// dashboard page
+$("#minimize-dashboard").on("click", () => {
+    sendIpcMinDash()
+})
+$("#close-dashboard").on("click", () => {
+    sendIpcCloseDash()
+})
+$("#orderWindow").on("click", () => {
+    sendIpcLoadOrder()
+    sendIpcHideDash()
+})
+$("#inventoryWindow").on("click", () => {
+    sendIpcLoadInventory()
+    sendIpcHideDash()
+})
+$("#transaksiWindow").on("click", () => {
+    sendIpcLoadTransaksi()
+    sendIpcHideDash()
+})
+$("#usersWindow").on("click", () => {
+    sendIpcLoadUsers()
+    sendIpcHideDash()
+})
+$("#aboutWindow").on("click", () => {
+    sendIpcLoadAbout()
+    sendIpcHideDash()
+})
+$("#close-dashboard").on("click", () => {
+    ipcRenderer.send("close-window:dashboard-page");
+})
 
 // load-all-pages
 export const sendIpcLoadRegister = () => {
@@ -19,11 +56,11 @@ export const sendIpcLoadDashboard = () => {
 export const sendIpcLoadOrder = () => {
     ipcRenderer.send("load:order-page");
 };
-export const sendIpcLoadItem = () => {
-    ipcRenderer.send("load:item-page");
+export const sendIpcLoadInventory = () => {
+    ipcRenderer.send("load:inventory-page");
 };
-export const sendIpcLoadData = () => {
-    ipcRenderer.send("load:data-page");
+export const sendIpcLoadTransaksi = () => {
+    ipcRenderer.send("load:transaksi-page");
 };
 export const sendIpcLoadUsers = () => {
     ipcRenderer.send("load:users-page");
@@ -31,43 +68,41 @@ export const sendIpcLoadUsers = () => {
 export const sendIpcLoadAbout = () => {
     ipcRenderer.send("load:about-page");
 };
+// export-pdf
 export const sendIpcLoadPDFProduct = () => {
     ipcRenderer.send("pdf:product");
 };
-// dashboard page
-export const sendIpcMinWinDash = () => {
-    ipcRenderer.send("minimize-window:dashboard-page");
-};
-export const sendIpcCloseWindowDash = () => {
-    ipcRenderer.send("close-window:dashboard-page");
-};
+
+// dashboard
+export const sendIpcCloseDash = () => {
+    ipcRenderer.send("close-window:dashboard-page")
+}
 export const sendIpcHideDash = () => {
     ipcRenderer.send("hide-window:dashboard-page");
 };
-export const sendIpcMinMaxDash = () => {
-    ipcRenderer.send("minimize-maximize-window:dashboard-page");
+export const sendIpcMinDash = () => {
+    ipcRenderer.send("minimize-window:dashboard-page");
 };
-
 // order pages
-export const sendIpcMinWinOrder = () => {
+$("#minimize-window-order").on("click", () => {
+    sendIpcMinimizeWindowOrder()
+})
+$("#close-window-order").on("click", () => {
+    sendIpcCloseWindowOrder()
+})
+export const sendIpcMinimizeWindowOrder = () => {
     ipcRenderer.send("minimize-window:order-page");
 };
 export const sendIpcCloseWindowOrder = () => {
     ipcRenderer.send("close-window:order-page");
 };
-export const sendIpcHideWindowOrder = () => {
-    ipcRenderer.send("hide-window:order-page");
-};
 
-// items pages
-export const sendIpcMinWinItems = () => {
-    ipcRenderer.send("minimize-window:item-page");
-};
+// inventory pages
 export const sendIpcCloseWindowItem = () => {
-    ipcRenderer.send("close-window:item-page");
+    ipcRenderer.send("close-window:inventory-page");
 };
 export const sendIpcHideWindowItem = () => {
-    ipcRenderer.send("hide-window:item-page");
+    ipcRenderer.send("hide-window:inventory-page");
 };
 
 // data pages

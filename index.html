@@ -21,23 +21,29 @@
       <span class="text-white">My-Cashier</span>
     </div>
     <div class="d-flex align-items-center gap-2">
+      <!-- time -->
       <div class="me-3 text-white">
-        <span class="hari-tanggal-tahun"></span>
-        <span class="jam-menit-detik"></span>
+        <span class="hari-tanggal-tahun me-2"></span>
+        <span class="jam"></span>
+        <span class="menit"></span>
+        <span class="detik"></span>
       </div>
-      <div class="bg-primary rounded icon-me" id="minWindow">
+      <!-- minimize window -->
+      <div class="bg-primary rounded icon-me" id="minimize-login">
         <i class="fa-solid fa-minus text-white"></i>
       </div>
-      <div class="bg-secondary rounded icon-me" id="minMaxWindow">
+      <!-- maximize window -->
+      <div class="bg-secondary rounded icon-me" id="min-max-login">
         <i class="fa-regular fa-window-maximize text-white"></i>
       </div>
-      <div class="bg-danger rounded icon-me" id="closeWindow">
+      <!-- close app -->
+      <div class="bg-danger rounded icon-me" id="close-login">
         <i class="fa-solid fa-power-off text-white"></i>
       </div>
     </div>
   </div>
 
-  <!-- sectino image and register -->
+  <!-- section image and register -->
   <div class="sections">
     <div class="section-first"></div>
     <div class="section-second mb-5">
@@ -92,7 +98,9 @@
 
   <!-- my script  -->
   <script src="./client-side/require/index.js"></script>
-  <script type="module" src="./client-side/js/pages/login.js"></script>
+  <script type="module" src="./client-side/js/utils/ipc.js"></script>
+  <script type="module" src="./client-side/js/models/users/login.js"></script>
+  <script type="module" src="./client-side/js/utils/updateUi.js"></script>
 </body>
 
 </html>

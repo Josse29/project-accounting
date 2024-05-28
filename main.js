@@ -16,11 +16,11 @@ let loginPage;
 let registerPage;
 let dashboardPage;
 let orderPage;
-let itemPage;
-let dataPage;
+let inventoryPage;
+let transaksiPage;
 let usersPage;
 let aboutPage;
-
+// 1 loginpage
 const createLoginPage = () => {
   loginPage = new BrowserWindow({
     webPreferences: {
@@ -32,6 +32,7 @@ const createLoginPage = () => {
     autoHideMenuBar: true,
   });
   loginPage.loadFile("index.html");
+  remote.enable(loginPage.webContents);
   db.serialize(() => {
     console.log("terhubung ke sqlite3...");
   });
@@ -49,7 +50,8 @@ const createLoginPage = () => {
     app.quit();
   });
 };
-const createRegisterPage = () => {
+// 2 register page
+ipcMain.on("load:register-page", () => {
   registerPage = new BrowserWindow({
     webPreferences: {
       nodeIntegration: true,
@@ -61,9 +63,10 @@ const createRegisterPage = () => {
     autoHideMenuBar: true,
   });
   registerPage.loadFile("./client-side/pages/register.html");
-  remote.enable(loginPage.webContents);
-};
-const createDashboardPage = () => {
+  remote.enable(registerPage.webContents);
+});
+// 3 dashboard page
+ipcMain.on("load:dashboard-page", () => {
   dashboardPage = new BrowserWindow({
     webPreferences: {
       nodeIntegration: true,
@@ -71,19 +74,12 @@ const createDashboardPage = () => {
     },
     autoHideMenuBar: true,
   });
-  dashboardPage.loadFile("src/pages/dashboard.html");
+  dashboardPage.loadFile("./client-side/pages/dashboard.html");
   dashboardPage.webContents.on("did-finish-load", () => {
     loginPage.hide();
   });
   remote.enable(dashboardPage.webContents);
   dashboardPage.setFullScreen(true);
-  ipcMain.on("minimize-maximize-window:dashboard-page", () => {
-    if (dashboardPage.isMaximized()) {
-      dashboardPage.unmaximize();
-    } else {
-      dashboardPage.maximize();
-    }
-  });
   ipcMain.on("hide-window:dashboard-page", () => {
     dashboardPage.hide();
   });
@@ -94,8 +90,9 @@ const createDashboardPage = () => {
     dashboardPage.hide();
     loginPage.show();
   });
-};
-const createOrderPage = () => {
+});
+// 4 order page
+ipcMain.on("load:order-page", () => {
   orderPage = new BrowserWindow({
     webPreferences: {
       nodeIntegration: true,
@@ -104,12 +101,8 @@ const createOrderPage = () => {
     frame: false,
   });
   orderPage.setFullScreen(true);
-  orderPage.loadFile("src/pages/order.html");
+  orderPage.loadFile("./client-side/pages/order.html");
   remote.enable(orderPage.webContents);
-  // orderPage.webContents.on("did-finish-load", () => {
-  //   dashboardPage.hide();
-  //   loginPage.hide();
-  // });
   ipcMain.on("minimize-window:order-page", () => {
     orderPage.minimize();
   });
@@ -120,52 +113,52 @@ const createOrderPage = () => {
     orderPage.hide();
     loginPage.show();
   });
-};
-const createItemPage = () => {
-  itemPage = new BrowserWindow({
+});
+// 5 inventory page
+ipcMain.on("load:inventory-page", () => {
+  inventoryPage = new BrowserWindow({
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+    },
+    // frame: true,
+  });
+  inventoryPage.setFullScreen(true);
+  inventoryPage.loadFile("./client-side/pages/inventory.html");
+  remote.enable(inventoryPage.webContents);
+  ipcMain.on("minimize-window:inventory-page", () => {
+    inventoryPage.minimize();
+  });
+  ipcMain.on("close-window:inventory-page", () => {
+    inventoryPage.hide();
+    loginPage.show();
+  });
+});
+// 6 transaksi page
+ipcMain.on("load:transksi-page", () => {
+  transaksiPage = new BrowserWindow({
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
     },
     frame: false,
   });
-  itemPage.setFullScreen(true);
-  itemPage.loadFile("src/pages/item.html");
-  remote.enable(itemPage.webContents);
-  ipcMain.on("minimize-window:item-page", () => {
-    itemPage.minimize();
+  transaksiPage.setFullScreen(true);
+  transaksiPage.loadFile("./client-side/pages/transaksi.html");
+  remote.enable(transaksiPage.webContents);
+  ipcMain.on("minimize-window:transaksi-page", () => {
+    transaksiPage.minimize();
   });
-  ipcMain.on("hide-window:item-page", () => {
-    itemPage.hide();
+  ipcMain.on("hide-window:transaksi-page", () => {
+    transaksiPage.hide();
   });
-  ipcMain.on("close-window:item-page", () => {
-    itemPage.hide();
+  ipcMain.on("close-window:transaksi-page", () => {
+    transaksiPage.hide();
     loginPage.show();
   });
-};
-const createDataPage = () => {
-  dataPage = new BrowserWindow({
-    webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
-    },
-    frame: false,
-  });
-  dataPage.setFullScreen(true);
-  dataPage.loadFile("src/pages/data.html");
-  remote.enable(dataPage.webContents);
-  ipcMain.on("minimize-window:data-page", () => {
-    dataPage.minimize();
-  });
-  ipcMain.on("hide-window:data-page", () => {
-    dataPage.hide();
-  });
-  ipcMain.on("close-window:data-page", () => {
-    dataPage.hide();
-    loginPage.show();
-  });
-};
-const createUsersPage = () => {
+});
+// 7 users pages
+ipcMain.on("load:users-page", () => {
   usersPage = new BrowserWindow({
     webPreferences: {
       nodeIntegration: true,
@@ -174,7 +167,7 @@ const createUsersPage = () => {
     frame: false,
   });
   usersPage.setFullScreen(true);
-  usersPage.loadFile("src/pages/users.html");
+  usersPage.loadFile("./client-side/pages/users.html");
   remote.enable(usersPage.webContents);
   ipcMain.on("minimize-window:users-page", () => {
     usersPage.minimize();
@@ -186,17 +179,18 @@ const createUsersPage = () => {
     usersPage.hide();
     loginPage.show();
   });
-};
-const createAboutPage = () => {
+});
+// 8 about page
+ipcMain.on("load:about-page", () => {
   aboutPage = new BrowserWindow({
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
     },
-    frame: false,
+    // frame: false,
   });
   aboutPage.setFullScreen(true);
-  aboutPage.loadFile("src/pages/about-us.html");
+  aboutPage.loadFile("./client-side/pages/about-us.html");
   ipcMain.on("minimize-window:about-page", () => {
     aboutPage.minimize();
   });
@@ -207,28 +201,6 @@ const createAboutPage = () => {
     aboutPage.hide();
     loginPage.show();
   });
-};
-// ipc-load:pages
-ipcMain.on("load:register-page", () => {
-  createRegisterPage();
-});
-ipcMain.on("load:dashboard-page", () => {
-  createDashboardPage();
-});
-ipcMain.on("load:order-page", () => {
-  createOrderPage();
-});
-ipcMain.on("load:item-page", () => {
-  createItemPage();
-});
-ipcMain.on("load:data-page", () => {
-  createDataPage();
-});
-ipcMain.on("load:users-page", () => {
-  createUsersPage();
-});
-ipcMain.on("load:about-page", () => {
-  createAboutPage();
 });
 // export-pdf
 let productPDF;
