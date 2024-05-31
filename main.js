@@ -98,7 +98,7 @@ ipcMain.on("load:order-page", () => {
       nodeIntegration: true,
       contextIsolation: false,
     },
-    frame: false,
+    // frame: false,
   });
   orderPage.setFullScreen(true);
   orderPage.loadFile("./client-side/pages/order.html");
@@ -129,13 +129,16 @@ ipcMain.on("load:inventory-page", () => {
   ipcMain.on("minimize-window:inventory-page", () => {
     inventoryPage.minimize();
   });
+  ipcMain.on("hide-window:inventory-page", () => {
+    inventoryPage.hide();
+  });
   ipcMain.on("close-window:inventory-page", () => {
     inventoryPage.hide();
     loginPage.show();
   });
 });
 // 6 transaksi page
-ipcMain.on("load:transksi-page", () => {
+ipcMain.on("load:transaksi-page", () => {
   transaksiPage = new BrowserWindow({
     webPreferences: {
       nodeIntegration: true,

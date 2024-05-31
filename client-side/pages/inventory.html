@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard-page</title>
+    <title>Inventory-page</title>
     <!-- Framework css bootstrap -->
     <link rel="stylesheet" href="./../third-party/bootstrap.min.css" />
     <!-- Fontawesome -->
@@ -22,10 +22,10 @@
                 <h5>Josse Surya Pinem</h5>
             </div>
             <div class="d-flex gap-2">
-                <i class="fa-regular fa-window-restore custome-me" id="minimize-dashboard" data-bs-toggle="tooltip"
-                    data-bs-html="true" data-bs-title="<h6>Minimize</h6>"></i>
-                <i class="fa-solid fa-right-from-bracket custome-me" id="close-dashboard" data-bs-toggle="tooltip"
-                    data-bs-html="true" data-bs-title="<h6>Quit</h6>"></i>
+                <i class="fa-regular fa-window-restore custome-me" id="minimize-window-inventory"
+                    data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="<h6>Minimize</h6>"></i>
+                <i class="fa-solid fa-right-from-bracket custome-me" id="close-window-inventory"
+                    data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="<h6>Quit</h6>"></i>
             </div>
         </div>
     </div>
@@ -37,12 +37,12 @@
         <div class="text-white mt-5">
             <!-- dashboard -->
             <div class="text-center mb-5 custome-me" data-bs-toggle="tooltip" data-bs-placement="right"
-                data-bs-html="true" data-bs-title="<h4>Home</h4>" id="dashboardWindow">
+                data-bs-html="true" data-bs-title="<h4>Home</h4>" id="dashboardWindowInventory">
                 <i class="fa-solid fa-house fs-3"></i>
             </div>
             <!-- order -->
             <div class="text-center mb-5 custome-me" data-bs-toggle="tooltip" data-bs-placement="right"
-                data-bs-html="true" data-bs-title="<h4>Order</h4>" id="orderWindow">
+                data-bs-html="true" data-bs-title="<h4>Order</h4>" id="orderWindowInventory">
                 <i class="fa-solid fa-utensils fs-3"></i>
             </div>
             <!-- inventory -->
@@ -52,17 +52,17 @@
             </div>
             <!-- transaksi -->
             <div class="text-center mb-5 custome-me" data-bs-toggle="tooltip" data-bs-placement="right"
-                data-bs-html="true" data-bs-title="<h4>Transaksi</h4>" id="transaksiWindow">
+                data-bs-html="true" data-bs-title="<h4>Transaksi</h4>" id="transaksiWindowInventory">
                 <i class="fa-solid fa-chart-simple fs-3"></i>
             </div>
             <!-- users -->
             <div class="text-center mb-5 custome-me" data-bs-toggle="tooltip" data-bs-placement="right"
-                data-bs-html="true" data-bs-title="<h4>Users</h4>" id="usersWindow">
+                data-bs-html="true" data-bs-title="<h4>Users</h4>" id="usersWindowInventory">
                 <i class="fa-solid fa-users fs-3"></i>
             </div>
             <!-- about -->
             <div class="text-center mb-5 custome-me" data-bs-toggle="tooltip" data-bs-placement="left"
-                data-bs-html="true" data-bs-title="<h4>About-us</h4>" id="aboutWindow">
+                data-bs-html="true" data-bs-title="<h4>About-us</h4>" id="aboutWindowInventory">
                 <i class="fa-solid fa-city fs-3"></i>
             </div>
         </div>
@@ -422,7 +422,7 @@
         <div>
             <!-- products-detail-modal -->
             <div class="modal fade" id="productsModalDetail" tabindex="-1">
-                <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                     <div class="modal-content">
                         <div class="modal-header py-2" style="background-color: #3c50e0; color: white">
                             <h1 class="modal-title fs-3" id="detailProductModalLabel">Menu</h1>
@@ -804,6 +804,9 @@
     <!-- myscript -->
     <script src="./../require/index.js"></script>
     <script type="module" src="./../js/utils/ipc.js"></script>
+    <script type="module" src="./../js/utils/updateUi.js"></script>
+    <script type="module" src="./../js/models/products/index.js"></script>
+    <script type="module" src="./../js/models/categories/index.js"></script>
 </body>
 
 </html>

@@ -42,38 +42,152 @@ $("#aboutWindow").on("click", () => {
     sendIpcLoadAbout()
     sendIpcHideDash()
 })
-$("#close-dashboard").on("click", () => {
-    ipcRenderer.send("close-window:dashboard-page");
+
+// order page
+$("#minimize-window-order").on("click", () => {
+    sendIpcMinimizeWindowOrder()
+})
+$("#close-window-order").on("click", () => {
+    sendIpcCloseWindowOrder()
+})
+$("#dashboardWindowOrder").on("click", () => {
+    sendIpcLoadDashboard()
+    sendIpcHideOrder()
+})
+$("#inventoryWindowOrder").on("click", () => {
+    sendIpcLoadInventory()
+    sendIpcHideOrder()
+})
+$("#transaksiWindowOrder").on("click", () => {
+    sendIpcLoadTransaksi()
+    sendIpcHideOrder()
+})
+$("#usersWindowOrder").on("click", () => {
+    sendIpcLoadUsers()
+    sendIpcHideOrder()
+})
+$("#aboutWindowOrder").on("click", () => {
+    sendIpcLoadAbout()
+    sendIpcHideOrder()
+})
+
+// inventory page
+$("#minimize-window-inventory").on("click", () => {
+    sendIpcMinimizeWindowInventory()
+})
+$("#close-window-inventory").on("click", () => {
+    sendIpcCloseWindowInventory()
+})
+$("#dashboardWindowInventory").on("click", () => {
+    sendIpcLoadDashboard()
+    sendIpcHideInventory()
+})
+$("#orderWindowInventory").on("click", () => {
+    sendIpcLoadOrder()
+    sendIpcHideInventory()
+})
+$("#transaksiWindowInventory").on("click", () => {
+    sendIpcLoadTransaksi()
+    sendIpcHideInventory()
+})
+$("#usersWindowInventory").on("click", () => {
+    sendIpcLoadUsers()
+    sendIpcHideInventory()
+})
+$("#aboutWindowInventory").on("click", () => {
+    sendIpcLoadAbout()
+    sendIpcHideInventory()
+})
+
+// transaction page
+$("#minimize-transaction").on("click", () => {
+    sendIpcMinimizeWindowTransaction()
+})
+$("#close-transaction").on("click", () => {
+    sendIpcCloseWindowTransaction()
+})
+$("#dashboardWindowTransaction").on("click", () => {
+    sendIpcLoadDashboard()
+    sendIpcHideTransaction()
+})
+$("#orderWindowTransaction").on("click", () => {
+    sendIpcLoadOrder()
+    sendIpcHideTransaction()
+})
+$("#inventoryWindowTransaction").on("click", () => {
+    sendIpcLoadInventory()
+    sendIpcHideTransaction()
+})
+$("#usersWindowTransaction").on("click", () => {
+    sendIpcLoadUsers()
+    sendIpcHideTransaction()
+})
+$("#aboutWindowTransaction").on("click", () => {
+    sendIpcLoadAbout()
+    sendIpcHideTransaction()
+})
+
+// users-page
+$("#minimize-users").on("click", () => {
+    sendIpcMinimizeWindowUsers()
+})
+$("#close-users").on("click", () => {
+    sendIpcCloseWindowUsers()
+})
+$("#dashboardWindowUsers").on("click", () => {
+    sendIpcLoadDashboard()
+    sendIpcHideUsers()
+})
+$("#orderWindowUsers").on("click", () => {
+    sendIpcLoadOrder()
+    sendIpcHideUsers()
+})
+$("#inventoryWindowUsers").on("click", () => {
+    sendIpcLoadInventory()
+    sendIpcHideUsers()
+})
+$("#transaksiWindowUsers").on("click", () => {
+    sendIpcLoadTransaksi()
+    sendIpcHideUsers()
+})
+$("#aboutWindowUsers").on("click", () => {
+    sendIpcLoadAbout()
+    sendIpcHideUsers()
+})
+
+// about=page
+$("#minimize-about").on("click", () => {
+    sendIpcMinimizeWindowAbout()
+})
+$("#close-about").on("click", () => {
+    sendIpcCloseWindowAbout()
+})
+$("#dashboardWindowAbout").on("click", () => {
+    sendIpcLoadDashboard()
+    sendIpcHideAbout()
+})
+$("#orderWindowAbout").on("click", () => {
+    sendIpcLoadOrder()
+    sendIpcHideAbout()
+})
+$("#inventoryWindowAbout").on("click", () => {
+    sendIpcLoadInventory()
+    sendIpcHideAbout()
+})
+$("#transaksiWindowAbout").on("click", () => {
+    sendIpcLoadTransaksi()
+    sendIpcHideAbout()
+})
+$("#usersWindowAbout").on("click", () => {
+    sendIpcLoadUsers()
+    sendIpcHideAbout()
 })
 
 // load-all-pages
-export const sendIpcLoadRegister = () => {
-    ipcRenderer.send("load:register-page");
-};
+// 1.dashboard
 export const sendIpcLoadDashboard = () => {
     ipcRenderer.send("load:dashboard-page");
 };
-export const sendIpcLoadOrder = () => {
-    ipcRenderer.send("load:order-page");
-};
-export const sendIpcLoadInventory = () => {
-    ipcRenderer.send("load:inventory-page");
-};
-export const sendIpcLoadTransaksi = () => {
-    ipcRenderer.send("load:transaksi-page");
-};
-export const sendIpcLoadUsers = () => {
-    ipcRenderer.send("load:users-page");
-};
-export const sendIpcLoadAbout = () => {
-    ipcRenderer.send("load:about-page");
-};
-// export-pdf
-export const sendIpcLoadPDFProduct = () => {
-    ipcRenderer.send("pdf:product");
-};
-
-// dashboard
 export const sendIpcCloseDash = () => {
     ipcRenderer.send("close-window:dashboard-page")
 }
@@ -83,57 +197,76 @@ export const sendIpcHideDash = () => {
 export const sendIpcMinDash = () => {
     ipcRenderer.send("minimize-window:dashboard-page");
 };
-// order pages
-$("#minimize-window-order").on("click", () => {
-    sendIpcMinimizeWindowOrder()
-})
-$("#close-window-order").on("click", () => {
-    sendIpcCloseWindowOrder()
-})
+export const sendIpcLoadRegister = () => {
+    ipcRenderer.send("load:register-page");
+};
+// 2 order
+export const sendIpcLoadOrder = () => {
+    ipcRenderer.send("load:order-page");
+};
 export const sendIpcMinimizeWindowOrder = () => {
     ipcRenderer.send("minimize-window:order-page");
+};
+export const sendIpcHideOrder = () => {
+    ipcRenderer.send("hide-window:order-page");
 };
 export const sendIpcCloseWindowOrder = () => {
     ipcRenderer.send("close-window:order-page");
 };
-
-// inventory pages
-export const sendIpcCloseWindowItem = () => {
-    ipcRenderer.send("close-window:inventory-page");
+// 3 inventory
+export const sendIpcLoadInventory = () => {
+    ipcRenderer.send("load:inventory-page");
 };
-export const sendIpcHideWindowItem = () => {
+export const sendIpcMinimizeWindowInventory = () => {
+    ipcRenderer.send("minimize-window:inventory-page");
+};
+export const sendIpcHideInventory = () => {
     ipcRenderer.send("hide-window:inventory-page");
 };
-
-// data pages
-export const sendIpcMinWinData = () => {
-    ipcRenderer.send("minimize-window:data-page");
+export const sendIpcCloseWindowInventory = () => {
+    ipcRenderer.send("close-window:inventory-page");
 };
-export const sendIpcCloseWindowData = () => {
-    ipcRenderer.send("close-window:data-page");
+// 4 transaksi
+export const sendIpcLoadTransaksi = () => {
+    ipcRenderer.send("load:transaksi-page");
 };
-export const sendIpcHideWindowData = () => {
-    ipcRenderer.send("hide-window:data-page");
+export const sendIpcMinimizeWindowTransaction = () => {
+    ipcRenderer.send("minimize-window:transaksi-page");
 };
-
-// users pages
-export const sendIpcMinWinUsers = () => {
+export const sendIpcHideTransaction = () => {
+    ipcRenderer.send("hide-window:transaksi-page");
+};
+export const sendIpcCloseWindowTransaction = () => {
+    ipcRenderer.send("close-window:transaksi-page");
+};
+// 5. users
+export const sendIpcLoadUsers = () => {
+    ipcRenderer.send("load:users-page");
+};
+export const sendIpcMinimizeWindowUsers = () => {
     ipcRenderer.send("minimize-window:users-page");
+};
+export const sendIpcHideUsers = () => {
+    ipcRenderer.send("hide-window:users-page");
 };
 export const sendIpcCloseWindowUsers = () => {
     ipcRenderer.send("close-window:users-page");
 };
-export const sendIpcHideWindowUsers = () => {
-    ipcRenderer.send("hide-window:users-page");
+// 6. about
+export const sendIpcLoadAbout = () => {
+    ipcRenderer.send("load:about-page");
 };
-
-// about pages
-export const sendIpcMinWinAbout = () => {
+export const sendIpcMinimizeWindowAbout = () => {
     ipcRenderer.send("minimize-window:about-page");
+};
+export const sendIpcHideAbout = () => {
+    ipcRenderer.send("hide-window:about-page");
 };
 export const sendIpcCloseWindowAbout = () => {
     ipcRenderer.send("close-window:about-page");
 };
-export const sendIpcHideWindowAbout = () => {
-    ipcRenderer.send("hide-window:about-page");
+// export-pdf
+export const sendIpcLoadPDFProduct = () => {
+    ipcRenderer.send("pdf:product");
 };
+
