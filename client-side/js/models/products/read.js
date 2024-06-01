@@ -35,7 +35,6 @@ $(document).ready(function () {
             }
         }
     );
-
     // get first page product
     $("#product_first_page").on("click", () => {
         getProducts(
@@ -216,6 +215,26 @@ $(document).ready(function () {
         );
     });
 
+    // // get-detail-product 
+    $(document).on("click", "#detailProduct", function () {
+        const product = this.dataset;
+        $("#detailProductModalLabel").html(product.productname)
+        $("#detail-product-name").text(product.productname)
+        // if exist image
+        if (product.productimage !== "null") {
+            $("img#detail-product-image").attr("src", product.productimage)
+            $("#detail-product-image").removeClass("d-none")
+        }
+        // if not exist image
+        if (product.productimage === "null") {
+            $("#detail-product-image").addClass("d-none")
+            $("#detail-no-image").text(`no - image displayed`)
+            $("img#detail-product-image").attr("src", "")
+        }
+        $("#detail-product-price").text(product.productprice)
+        $("#detail-category-price").text(product.productcategory)
+        $("#detail-product-keterangan").text(product.productketerangan)
+    });
     // get previous based on value search product
     $("span#search-product").on("click", () => {
         getProducts(
@@ -251,23 +270,8 @@ $(document).ready(function () {
         );
     });
 
-    // get-detail-product 
-    $(document).on("click", "#detailProduct", function () {
-        const product = this.dataset;
-        console.log(product)
-        $("#detailProductModalLabel").html(product.productname)
-        $("#detail-product-name").text(product.productname)
-        document.getElementById('detail-product-image').src = `${product.productimage}`
-        if (product.productimage === "null") {
-            $("#detail-product-image").addClass("d-none")
-            $("#detail-no-image").text(`no - image displayed`)
-        }
-        $("#detail-product-price").text(product.productprice)
-        $("#detail-category-price").text(product.productcategory)
-        $("#detail-product-keterangan").text(product.productketerangan)
-    });
-
 })
+
 export const getProductsAgain = () => {
     getProducts(
         $("#product_limit").val(),

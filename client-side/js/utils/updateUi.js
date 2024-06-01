@@ -4,7 +4,7 @@ $(document).ready(function () {
     const updateTimeHTML = () => {
         $(".hari-tanggal-tahun").html(`${timeIndonesian().indonesiaDayMonthYear}`)
         $(".jam").html(`${timeIndonesian().indonesiaHour} : `)
-        $(".menit").html(`${timeIndonesian().indonesiaHour} : `)
+        $(".menit").html(`${timeIndonesian().indonesiaMinute} : `)
         $(".detik").html(`${timeIndonesian().indonesiaSecond}`)
     }
 
