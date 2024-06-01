@@ -1,9 +1,3 @@
-// reinit tooltip 
-export const reinitializeTooltips = () => {
-  const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-  const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
-};
-
 // UI tr Product from dbsqlite
 export const uitrProduct = (el) => {
   return `<tr>
@@ -56,5 +50,5 @@ export const uitrProduct = (el) => {
                     </button>
                   </div>
                 </td>
-              </tr>`;
+          </tr>`;
 };

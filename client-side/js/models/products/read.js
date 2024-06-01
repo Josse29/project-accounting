@@ -1,5 +1,7 @@
 import { getProducts, lastOffsetProducts } from "../../../../serverless-side/functions/product.js";
-import { reinitializeTooltips, uitrProduct } from "./ui.js";
+import { reinitializeTooltips } from "../../utils/updateUi.js";
+import { uitrProduct } from "./ui.js";
+
 
 $(document).ready(function () {
 

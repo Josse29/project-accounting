@@ -7,7 +7,7 @@ export const queryinsertProducts = (name, price, keterangan, image = "") => {
     }
     // with image
     if (image !== "") {
-        return `INSERT INTO products (name, price, keterangan,image) 
+        return `INSERT INTO products (name, price, keterangan, image) 
             VALUES ('${name}','${price}','${keterangan}','${image}')`;
     }
 };

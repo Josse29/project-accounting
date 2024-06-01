@@ -216,7 +216,7 @@ ipcMain.on("pdf:product", (event, thead, tbody, file_path) => {
     // frame: false,
   });
   remote.enable(productPDF.webContents);
-  productPDF.loadFile("src/pdf/product.html");
+  productPDF.loadFile("./client-side/pdf/product.html");
   productPDF.webContents.on("dom-ready", () => {
     productPDF.webContents.send("tables:product", thead, tbody, file_path);
   });
@@ -254,7 +254,7 @@ ipcMain.on("print:product", (event, thead, tbody) => {
     // frame: false,
   });
   remote.enable(productPrint.webContents);
-  productPrint.loadFile("src/print/product.html");
+  productPrint.loadFile("./client-side/print/product.html");
   productPrint.webContents.on("dom-ready", () => {
     productPrint.webContents.send("tables:product", thead, tbody);
   });
