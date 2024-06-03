@@ -23,6 +23,28 @@ const createTables = () => {
     });
 };
 
+const getProducts = () => {
+    db.all(`SELECT 
+                Product.id, 
+                Product.name, 
+                Product.price, 
+                Product.category_id, 
+                Category.name AS category_name, 
+                Product.created_at, 
+                Product.updated_at 
+            FROM Product 
+            LEFT JOIN Category ON Product.category_id = Category.id`,
+        [],
+        (err, rows) => {
+            if (err) {
+                return console.error(err.message);
+            }
+            rows.forEach((row) => {
+                console.log(row);
+            });
+        });
+};
+
 // Insert a new product
 const insertProduct = (name, price, categoryId) => {
     db.run(`INSERT INTO Product (name, price, category_id) VALUES (?, ?, ?)`, [name, price, categoryId], function (err) {
@@ -56,7 +78,7 @@ const deleteProduct = (id) => {
 // Example usage
 db.serialize(() => {
     createTables();
-
+    getProducts()
     insertProduct('Laptop', 999.99, 1);
     updateProduct(1, 'Gaming Laptop', 1299.99, 1);
     deleteProduct(1);

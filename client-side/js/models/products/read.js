@@ -35,6 +35,7 @@ $(document).ready(function () {
             }
         }
     );
+
     // get first page product
     $("#product_first_page").on("click", () => {
         getProducts(
@@ -218,6 +219,7 @@ $(document).ready(function () {
     // // get-detail-product 
     $(document).on("click", "#detailProduct", function () {
         const product = this.dataset;
+        console.log(product.productimage)
         $("#detailProductModalLabel").html(product.productname)
         $("#detail-product-name").text(product.productname)
         // if exist image
@@ -235,6 +237,7 @@ $(document).ready(function () {
         $("#detail-category-price").text(product.productcategory)
         $("#detail-product-keterangan").text(product.productketerangan)
     });
+
     // get previous based on value search product
     $("span#search-product").on("click", () => {
         getProducts(
@@ -284,6 +287,18 @@ export const getProductsAgain = () => {
                     tr += uitrProduct(el);
                 });
                 $("#data-products").html(tr);
+                lastOffsetProducts(
+                    $("#product_limit").val(),
+                    $("input#search-product").val(),
+                    (status, response) => {
+                        if (status) {
+                            $("#product_offset_last").text(response);
+                        }
+                        if (!status) {
+                            console.log(response);
+                        }
+                    }
+                );
                 reinitializeTooltips();
             }
             if (!status) {

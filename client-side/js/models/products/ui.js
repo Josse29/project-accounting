@@ -1,3 +1,5 @@
+import { alertSuccessMe } from "../../utils/updateUi.js";
+
 // UI tr Product from dbsqlite
 export const uitrProduct = (el) => {
   return `<tr>
@@ -55,3 +57,19 @@ export const uitrProduct = (el) => {
                 </td>
           </tr>`;
 };
+// make alert success after action crud 
+export const successCreate = (res) => {
+  $("#sectionSuccessCreate").html(alertSuccessMe(res))
+  setTimeout(() => {
+    $("#sectionSuccessCreate").html("")
+  }, 15000);
+}
+// blank value after submit action 
+export const blankValue = () => {
+  $("#product-name").val("")
+  $("#product-price").val("")
+  $("#product-keterangan").val("")
+  $("#create-categories-selection").val("")
+  $("#create-image-product").val("")
+  $("#section-image").addClass("d-none")
+}

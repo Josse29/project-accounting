@@ -1,25 +1,34 @@
 import { insertProducts } from "../../../../serverless-side/functions/product.js";
 import { getProductsAgain } from "./read.js";
+import { blankValue, successCreate } from "./ui.js";
 
 $(document).ready(function () {
     // create product
     $("#submit_product").on("click", () => {
+        const productName = $("#product-name").val()
+        const productPrice = $("#product-price").val()
+        const productInfo = $("#product-keterangan").val()
+        const productCategoryId = $("#create-categories-selection").val()
         const file = document.getElementById('create-image-product').files
+
         // with image
         if (file.length > 0) {
             const reader = new FileReader()
             reader.onload = () => {
                 const imageBase64 = reader.result
                 insertProducts(
-                    $("#product-name").val(),
-                    $("#product-price").val(),
-                    $("#product-keterangan").val(),
+                    productName,
+                    productPrice,
+                    productInfo,
                     imageBase64,
+                    productCategoryId,
                     (status, response) => {
                         if (status) {
-                            console.log("upload image + form")
+                            console.log("create with image")
                             console.log(response);
                             getProductsAgain();
+                            successCreate(response)
+                            blankValue()
                         }
                         if (!status) {
                             console.error(response);
@@ -31,18 +40,22 @@ $(document).ready(function () {
                 reader.readAsDataURL(file[0]);
             }
         }
+
         // without image
         if (file.length < 1) {
             insertProducts(
-                $("#product-name").val(),
-                $("#product-price").val(),
-                $("#product-keterangan").val(),
+                productName,
+                productPrice,
+                productInfo,
                 "null",
+                productCategoryId,
                 (status, response) => {
                     if (status) {
                         console.log(response);
                         console.log("upload imageless + form")
                         getProductsAgain();
+                        successCreate(response)
+                        blankValue()
                     }
                     if (!status) {
                         console.error(response);

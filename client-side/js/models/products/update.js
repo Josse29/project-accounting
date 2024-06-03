@@ -27,7 +27,6 @@ $(document).ready(function () {
 
         // action image kesell xxx
         $("#edit-product-submit").on("click", () => {
-
             // with image
             const file = document.getElementById('edit-product-image-file').files
             if (file.length > 0) {

@@ -132,6 +132,9 @@
                                     style="background-color: #3c50e0; color: white" id="search-product">Search</span>
                             </div>
                         </div>
+                        <!-- alert success -->
+                        <div id="sectionSuccessCreate">
+                        </div>
                         <!-- tabel product -->
                         <div style="max-height: 270px; overflow: auto">
                             <table class="table table-striped">
@@ -160,11 +163,10 @@
                                 <button type="button" class="btn border border-2 fs-6" id="product_offset">
                                     1
                                 </button>
-                                <button type="button" class="btn fs-6" id="product_offset_last" style="
-                          background-color: #273eec;
-                          color: white;
-                          border: 4px solid #99a4f9;
-                        "></button>
+                                <button type="button" class="btn fs-6" id="product_offset_last" style="                          background-color: #273eec;
+                                color: white;
+                                border: 4px solid #99a4f9;
+                                "></button>
                                 <button type="button" class="btn border border-2" id="product_next_page">
                                     <i class="fa-solid fa-forward-step fs-6"></i>
                                 </button>
@@ -508,7 +510,7 @@
                                 Close
                             </button>
                             <button type="button" class="btn" style="background-color: #3c50e0; color: white"
-                                id="submit_product">
+                                id="submit_product" data-bs-dismiss="modal">
                                 Save
                             </button>
                         </div>

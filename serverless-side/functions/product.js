@@ -65,10 +65,10 @@ export const lastOffsetProducts = (limitProduct, searchVal, callback) => {
         });
     }
 };
-export const insertProducts = (name, price, keterangan, image, callback) => {
-    db.run(queryinsertProducts(name, price, keterangan, image), (err) => {
+export const insertProducts = (name, price, keterangan, image, categoryId, callback) => {
+    db.run(queryinsertProducts(name, price, keterangan, image, categoryId), (err) => {
         if (!err) {
-            return callback(true, "berhasil ditambahkan");
+            return callback(true, `Product <b class='text-capitalize'>${name}</b> berhasil ditambahkan`);
         }
         if (err) {
             return callback(false, err);

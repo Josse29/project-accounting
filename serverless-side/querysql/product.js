@@ -1,23 +1,38 @@
+// init table & column
 const tableName = `Products`
-const productName = `ProductName`
-const productPrice = `ProductPrice`
-const productInfo = `ProductInfo`
-const productImg = `ProductImage`
-const categoryId = `CategoryId`
+const colProductName = `ProductName`
+const colProductPrice = `ProductPrice`
+const colProductInfo = `ProductInfo`
+const colProductImg = `ProductImage`
+const colProductCategoryId = `CategoryId`
+
 // 1.CREATE 
-export const queryinsertProducts = (name, price, keterangan, image = "") => {
+export const queryinsertProducts = (name, price, productInfo, image = "null", categoryId) => {
     // without image
-    if (image === "") {
-        return `INSERT INTO ${tableName} (${productName}, ${productPrice}, ${productInfo}) 
-                VALUES ('${name}','${price}','${keterangan}')`;
+    if (image === "null") {
+        return `INSERT 
+                INTO ${tableName} 
+                (${colProductName}, ${colProductPrice}, ${colProductInfo}, ${colProductCategoryId}) 
+                VALUES 
+                ('${name}', '${price}', '${productInfo}', '${categoryId}' )`;
     }
     // with image
-    if (image !== "") {
-        return `INSERT INTO ${tableName} (${productName}, ${productPrice}, ${productInfo}, ${productImg}) 
-                VALUES ('${name}','${price}','${keterangan}','${image}')`;
+    if (image !== "null") {
+        return `INSERT 
+                INTO ${tableName} 
+                (${colProductName}, ${colProductPrice}, ${colProductInfo}, ${colProductImg}, ${colProductCategoryId}) 
+                VALUES ('${name}', '${price}', '${productInfo}', '${image}', '${categoryId}')`;
     }
 };
 // 2.READ
+
+export const queryGetProductsJoin = () => {
+    return `SELECT *
+            from Products
+            JOIN categories
+            ON Products.CategoryId = categories.id `
+
+}
 export const queryGetProducts = (limitProduct, offsetProduct) => {
     return `SELECT * 
             FROM ${tableName} 
@@ -32,9 +47,9 @@ export const querySearchProduct = (
     searchProduct
 ) => {
     return `SELECT * FROM ${tableName}
-            WHERE ${productName} LIKE '%${searchProduct}%' ESCAPE '!' OR 
-                  ${productPrice} LIKE '%${searchProduct}%' ESCAPE '!' OR 
-                  ${productInfo} LIKE '%${searchProduct}%' ESCAPE '!' 
+            WHERE ${colProductName} LIKE '%${searchProduct}%' ESCAPE '!' OR 
+                  ${colProductPrice} LIKE '%${searchProduct}%' ESCAPE '!' OR 
+                  ${colProductInfo} LIKE '%${searchProduct}%' ESCAPE '!' 
             ORDER BY ID ASC 
             LIMIT ${limitProduct} 
             OFFSET ${offsetProduct}`;
@@ -42,9 +57,9 @@ export const querySearchProduct = (
 export const querySearchTotalRowProducts = (searchProduct) => {
     return `SELECT COUNT(*) AS TOTAL_ROW 
             FROM  ${tableName} 
-            WHERE ${productName} LIKE '%${searchProduct}%' ESCAPE '!' OR 
-                  ${productPrice} LIKE '%${searchProduct}%' ESCAPE '!' OR 
-                  ${productInfo} LIKE '%${searchProduct}%' ESCAPE '!'`;
+            WHERE ${colProductName} LIKE '%${searchProduct}%' ESCAPE '!' OR 
+                  ${colProductPrice} LIKE '%${searchProduct}%' ESCAPE '!' OR 
+                  ${colProductInfo} LIKE '%${searchProduct}%' ESCAPE '!'`;
 };
 // 3.UPDATE
 
