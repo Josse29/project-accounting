@@ -17,6 +17,7 @@ $(document).ready(function () {
                     tr += uitrProduct(el);
                 });
                 $("#data-products").html(tr);
+                console.log(response)
                 reinitializeTooltips()
                 lastOffsetProducts(
                     $("#product_limit").val(),
@@ -30,9 +31,8 @@ $(document).ready(function () {
                         }
                     }
                 );
-            } else {
-                console.error(response);
             }
+            if (!status) { console.error(response) }
         }
     );
 
@@ -219,20 +219,24 @@ $(document).ready(function () {
     // // get-detail-product 
     $(document).on("click", "#detailProduct", function () {
         const product = this.dataset;
-        console.log(product.productimage)
+
         $("#detailProductModalLabel").html(product.productname)
         $("#detail-product-name").text(product.productname)
+
         // if exist image
         if (product.productimage !== "null") {
             $("img#detail-product-image").attr("src", product.productimage)
             $("#detail-product-image").removeClass("d-none")
+            $("#detail-no-image").text(``)
         }
+
         // if not exist image
         if (product.productimage === "null") {
             $("#detail-product-image").addClass("d-none")
             $("#detail-no-image").text(`no - image displayed`)
             $("img#detail-product-image").attr("src", "")
         }
+
         $("#detail-product-price").text(product.productprice)
         $("#detail-category-price").text(product.productcategory)
         $("#detail-product-keterangan").text(product.productketerangan)
@@ -293,6 +297,7 @@ export const getProductsAgain = () => {
                     (status, response) => {
                         if (status) {
                             $("#product_offset_last").text(response);
+                            $("#product_offset").text(1)
                         }
                         if (!status) {
                             console.log(response);

@@ -1,4 +1,8 @@
+import { getCategory } from "../../../../serverless-side/functions/categories.js";
+import { updateProduct } from "../../../../serverless-side/functions/product.js";
+import { uiListCategory } from "../categories/ui.js";
 import { getProductsAgain } from "./read.js";
+import { successActionProduct } from "./ui.js";
 
 $(document).ready(function () {
     // upadte | event binding
@@ -24,28 +28,45 @@ $(document).ready(function () {
             $("#section-edit-product-img").removeClass("d-none")
             $("img#edit-product-image").attr("src", product.productimage)
         }
-
+        // mckkkk
+        getCategory((status, response) => {
+            if (status) {
+                let categoyEditProduct = ``
+                response.forEach((el) => {
+                    let selected = el.CategoryId === parseInt(product.productcategory) ? ' selected' : '';
+                    categoyEditProduct += `<option value="${el.CategoryId}"${selected}>${el.CategoryName}</option>`;
+                });
+                console.log(categoyEditProduct);
+                // $("#edit-category-product").html(categoyEditProduct);
+            } else {
+                console.error(response);
+            }
+        });
         // action image kesell xxx
         $("#edit-product-submit").on("click", () => {
-            // with image
+
+            // all - input
+            const productId = product.productid
+            const productCategoryId = product.productcategory
+            const productName = $("#edit-product-name").val()
+            const productPrice = $("#edit-product-price").val()
+            const productInfo = $("#edit-product-keterangan").val()
             const file = document.getElementById('edit-product-image-file').files
+            // $("#edit-category-product")
+
+            // with image
             if (file.length > 0) {
                 const reader = new FileReader()
                 reader.onload = function () {
                     const imgbase64 = reader.result
-                    db.run(`UPDATE products
-                            SET name = '${$("#edit-product-name").val()}',
-                                price = '${$("#edit-product-price").val()}',
-                                keterangan = '${$("#edit-product-keterangan").val()}', 
-                                image = '${imgbase64}'
-                            WHERE id = '${product.productid}'`, (err) => {
-                        if (!err) {
-                            console.log("berhasil diupdated dengan gambar")
+                    updateProduct(productId, productName, productPrice, productInfo, imgbase64, (status, response) => {
+                        if (status) {
+                            console.log(response)
                             getProductsAgain()
+                            successActionProduct(response)
                         }
-                        if (err) {
-                            console.log(err)
-                            console.log("gagal updated")
+                        if (!status) {
+                            console.log(response)
                         }
                     })
                 }
@@ -55,18 +76,14 @@ $(document).ready(function () {
             }
             // without image
             if (file.length < 1) {
-                db.run(`UPDATE products
-                      SET name = '${$("#edit-product-name").val()}',
-                          price = '${$("#edit-product-price").val()}',
-                          keterangan = '${$("#edit-product-keterangan").val()}'
-                      WHERE id = '${product.productid}'`, (err) => {
-                    if (!err) {
-                        console.log("berhasil diupdated tanpa gambar")
+                updateProduct(productId, productName, productPrice, productInfo, "", (status, response) => {
+                    if (status) {
+                        console.log(response)
                         getProductsAgain()
+                        successActionProduct(response)
                     }
-                    if (err) {
-                        console.log(err)
-                        console.log("gagal updated")
+                    if (!status) {
+                        console.error(response)
                     }
                 })
             }

@@ -1,3 +1,7 @@
+import { deleteCategory } from "../../../../serverless-side/functions/categories.js";
+import { getCategoryAgain } from "./read.js";
+import { successActionCategory } from "./ui.js";
+
 $(document).on("click", "#deleteCategory", function () {
     const category = this.dataset;
     $("#confirmDeleteCategoryModalLabel").html(category.categorynama)
@@ -5,15 +9,15 @@ $(document).on("click", "#deleteCategory", function () {
     $("#confirmDeleteProductModalLabel").html(category.categorynama);
     $("#confirm-text-delete-category").html(konfirmasiDelete);
     $("#sure-delete-category").on("click", () => {
-        db.run(`DELETE 
-      FROM categories
-      WHERE id = ${category.categoryid}`, (err) => {
-            if (!err) {
-                console.log("berhasil dihapus")
+        deleteCategory(category.categoryid, category.categorynama, (status, response) => {
+            if (status) {
+                getCategoryAgain();
+                console.log(response)
+                successActionCategory(response)
             }
-            if (err) {
-                console.log("gagal dihapus");
+            if (!status) {
+                console.error(response)
             }
-        });
+        })
     });
 });

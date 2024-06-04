@@ -1,5 +1,17 @@
-import { queryGetProducts, querySearchProduct, querySearchTotalRowProducts, queryTotalRowProducts, queryinsertProducts } from "../querysql/product.js";
+import { queryDeleteProductId, queryGetProducts, querySearchProduct, querySearchTotalRowProducts, queryTotalRowProducts, queryUpdateProduct, queryinsertProducts } from "../querysql/product.js";
 
+// 1.CREATE
+export const insertProducts = (name, price, keterangan, image, categoryId, callback) => {
+    db.run(queryinsertProducts(name, price, keterangan, image, categoryId), (err) => {
+        if (!err) {
+            return callback(true, `Product <b class='text-capitalize'>${name}</b> berhasil ditambahkan`);
+        }
+        if (err) {
+            return callback(false, err);
+        }
+    });
+};
+// 2.READ
 export const getProducts = (
     limitProduct,
     offsetProduct,
@@ -65,20 +77,22 @@ export const lastOffsetProducts = (limitProduct, searchVal, callback) => {
         });
     }
 };
-export const insertProducts = (name, price, keterangan, image, categoryId, callback) => {
-    db.run(queryinsertProducts(name, price, keterangan, image, categoryId), (err) => {
+// 3.UPDATE
+export const updateProduct = (productId, productName, productPrice, productInfo, productImg, callback) => {
+    db.run(queryUpdateProduct(productId, productName, productPrice, productInfo, productImg), (err) => {
         if (!err) {
-            return callback(true, `Product <b class='text-capitalize'>${name}</b> berhasil ditambahkan`);
+            return callback(true, `Product <b class='text-capitalize'>${productName}</b> berhasil diperbaharui`)
         }
         if (err) {
-            return callback(false, err);
+            return callback(false, err)
         }
-    });
-};
-export const deleteProductId = (id, callback) => {
+    })
+}
+// 4.DELETE
+export const deleteProductId = (id, productName, callback) => {
     db.run(queryDeleteProductId(id), (err) => {
         if (!err) {
-            return callback(true, "berhasil dihapus");
+            return callback(true, `Product <b class='text-capitalize'>${productName}</b> berhasil diperbaharui`);
         }
         if (err) {
             return callback(false, err);

@@ -1,15 +1,18 @@
+import { createCategory } from "../../../../serverless-side/functions/categories.js";
 import { getCategoryAgain } from "./read.js";
+import { successActionCategory } from "./ui.js";
 
 $("#category-submit").on("click", () => {
-    db.run(`INSERT 
-            INTO categories (category, keterangan) 
-            VALUES ('${$("#category-nama").val()}', '${$("#category-keterangan").val()}')`, (err) => {
-        if (!err) {
-            console.log("kategori berhasil ditambahkan")
-            getCategoryAgain()
+    const categoryName = $("#category-nama").val()
+    const categoryInfo = $("#category-keterangan").val()
+    createCategory(categoryName, categoryInfo, (status, response) => {
+        if (status) {
+            getCategoryAgain();
+            console.log(response)
+            successActionCategory(response)
         }
-        if (err) {
-            console.log("kategori gagal ditambahkan")
+        if (!status) {
+            console.error(response)
         }
-    });
+    })
 })

@@ -1,48 +1,37 @@
+import { getCategory } from "../../../../serverless-side/functions/categories.js";
 import { reinitializeTooltips } from "../../utils/updateUi.js";
 import { uiListCategory, uiTrCategory } from "./ui.js";
-// for table categories
-db.all(`SELECT *
-        FROM categories`, (err, res) => {
-    if (!err) {
+getCategory((status, response) => {
+    if (status) {
         let tr = ``
-        res.forEach((el) => {
-            tr += uiTrCategory(el)
-        })
-        $("#category-data").html(tr)
-        reinitializeTooltips();
-    }
-    if (err) {
-        console.error(err)
-        // return callback(false, err);
-    }
-});
-// for list categories
-db.all(`SELECT * FROM categories`, (err, res) => {
-    if (!err) {
         let option = ``
-        res.forEach((el) => {
+        response.forEach((el) => {
+            tr += uiTrCategory(el)
             option += uiListCategory(el)
         })
+        $("#category-data").html(tr)
         $("#create-categories-selection").html(option)
+        reinitializeTooltips();
     }
-    if (err) {
-        console.log(res)
+    if (!status) {
+        console.error(response)
     }
 })
 export const getCategoryAgain = () => {
-    db.all(`SELECT *
-            FROM categories`, (err, res) => {
-        if (!err) {
+    getCategory((status, response) => {
+        if (status) {
             let tr = ``
-            res.forEach((el) => {
+            let option = ``
+            response.forEach((el) => {
                 tr += uiTrCategory(el)
+                option += uiListCategory(el)
             })
             $("#category-data").html(tr)
+            $("#create-categories-selection").html(option)
             reinitializeTooltips();
         }
-        if (err) {
-            console.error(err)
-            // return callback(false, err);
+        if (!status) {
+            console.error(response)
         }
-    });
+    })
 }

@@ -1,6 +1,6 @@
 import { insertProducts } from "../../../../serverless-side/functions/product.js";
 import { getProductsAgain } from "./read.js";
-import { blankValue, successCreate } from "./ui.js";
+import { createBlankValue, successActionProduct } from "./ui.js";
 
 $(document).ready(function () {
     // create product
@@ -27,8 +27,8 @@ $(document).ready(function () {
                             console.log("create with image")
                             console.log(response);
                             getProductsAgain();
-                            successCreate(response)
-                            blankValue()
+                            successActionProduct(response)
+                            createBlankValue()
                         }
                         if (!status) {
                             console.error(response);
@@ -54,8 +54,8 @@ $(document).ready(function () {
                         console.log(response);
                         console.log("upload imageless + form")
                         getProductsAgain();
-                        successCreate(response)
-                        blankValue()
+                        createBlankValue()
+                        successActionProduct(response)
                     }
                     if (!status) {
                         console.error(response);

@@ -1,42 +1,38 @@
+// create-table
+// CREATE TABLE Product (
+//     ProductId INTEGER PRIMARY KEY AUTOINCREMENT,
+//     ProductName VARCHAR(255),
+//     ProductImage BLOB,
+//     ProductInfo TEXT,
+//     ProductPrice REAL,
+//     ProductCategoryId INTEGER, 
+//     FOREIGN KEY (ProductCategoryId) REFERENCES Category(CategoryId)
+//     );
+
 // init table & column
-const tableName = `Products`
+const tableName = `Product`
+const colProductId = `ProductId`
 const colProductName = `ProductName`
 const colProductPrice = `ProductPrice`
 const colProductInfo = `ProductInfo`
 const colProductImg = `ProductImage`
-const colProductCategoryId = `CategoryId`
+const colProductCategoryId = `ProductCategoryId`
 
 // 1.CREATE 
-export const queryinsertProducts = (name, price, productInfo, image = "null", categoryId) => {
-    // without image
-    if (image === "null") {
-        return `INSERT 
-                INTO ${tableName} 
-                (${colProductName}, ${colProductPrice}, ${colProductInfo}, ${colProductCategoryId}) 
-                VALUES 
-                ('${name}', '${price}', '${productInfo}', '${categoryId}' )`;
-    }
-    // with image
-    if (image !== "null") {
-        return `INSERT 
-                INTO ${tableName} 
+export const queryinsertProducts = (name, price, productInfo, image, categoryId) => {
+    return `INSERT 
+            INTO ${tableName} 
                 (${colProductName}, ${colProductPrice}, ${colProductInfo}, ${colProductImg}, ${colProductCategoryId}) 
-                VALUES ('${name}', '${price}', '${productInfo}', '${image}', '${categoryId}')`;
-    }
+            VALUES 
+                ('${name}', '${price}', '${productInfo}', '${image}', '${categoryId}')`;
 };
+
 // 2.READ
-
-export const queryGetProductsJoin = () => {
-    return `SELECT *
-            from Products
-            JOIN categories
-            ON Products.CategoryId = categories.id `
-
-}
 export const queryGetProducts = (limitProduct, offsetProduct) => {
-    return `SELECT * 
-            FROM ${tableName} 
-            ORDER BY ID DESC 
+    return `SELECT *
+            FROM ${tableName}
+            LEFT JOIN Category ON ${tableName}.${colProductCategoryId} = Category.CategoryId
+            ORDER BY ${tableName}.${colProductId} DESC 
             LIMIT ${limitProduct} 
             OFFSET ${offsetProduct}`;
 };
@@ -61,13 +57,32 @@ export const querySearchTotalRowProducts = (searchProduct) => {
                   ${colProductPrice} LIKE '%${searchProduct}%' ESCAPE '!' OR 
                   ${colProductInfo} LIKE '%${searchProduct}%' ESCAPE '!'`;
 };
-// 3.UPDATE
 
+// 3.UPDATE
+export const queryUpdateProduct = (productId, productName, productPrice, productInfo, productImg) => {
+    // with image
+    if (productImg !== "") {
+        return `UPDATE ${tableName}
+            SET ${colProductName} = '${productName}',
+                ${colProductPrice} = '${productPrice}',
+                ${colProductInfo} = '${productInfo}',
+                ${colProductImg} = '${productImg}'
+            WHERE ${colProductId} = '${productId}'`
+    }
+    // without image
+    if (productImg === "") {
+        return `UPDATE ${tableName}
+            SET ${colProductName} = '${productName}',
+                ${colProductPrice} = '${productPrice}',
+                ${colProductInfo} = '${productInfo}'
+            WHERE ${colProductId} = '${productId}'`
+    }
+}
 // 4. DELETE
 export const queryDeleteProductId = (id) => {
     return `DELETE 
             FROM ${tableName} 
-            WHERE id = ${id} `;
+            WHERE ${colProductId} = ${id} `;
 };
 
 

@@ -1,11 +1,11 @@
 export const uiTrCategory = (el) => {
   return `<tr>
-            <td class="text-center align-content-center">${el.id}</td>
+            <td class="text-center align-content-center">${el.CategoryId}</td>
             <td class="text-nowrap align-content-center">
-              ${el.category}
+              ${el.CategoryName}
             </td>
             <td class="text-nowrap align-content-center">
-              ${el.keterangan}
+              ${el.CategoryInfo}
             </td>
             <td>
               <div class="d-flex w-100 justify-content-center gap-2">
@@ -17,15 +17,15 @@ export const uiTrCategory = (el) => {
                   data-bs-toggle="modal" 
                   data-bs-target="#categoryModalEdit"
                   id="editCategory"
-                  data-categoryid="${el.id}"
-                  data-categorynama="${el.category}" 
-                  data-categoryketerangan="${el.keterangan}"   
+                  data-categoryid="${el.CategoryId}"
+                  data-categorynama="${el.CategoryName}" 
+                  data-categoryketerangan="${el.CategoryInfo}"   
                   >
                     <i 
                     class="fa-solid fa-pencil" 
                     data-bs-toggle="tooltip" 
                     data-bs-html="true"
-                    data-bs-title="<span>edit-${el.category}</span>" 
+                    data-bs-title="<span>edit-${el.CategoryName}</span>" 
                     data-bs-placement="bottom">
                     </i>
                 </button>
@@ -34,15 +34,15 @@ export const uiTrCategory = (el) => {
                 data-bs-toggle="modal" 
                 data-bs-target="#confirmDeleteCategoryModal"
                 id="deleteCategory"
-                data-categoryid="${el.id}"
-                data-categorynama="${el.category}" 
-                data-categoryketerangan="${el.keterangan}"
+                data-categoryid="${el.CategoryId}"
+                data-categorynama="${el.CategoryName}" 
+                data-categoryketerangan="${el.CategoryInfo}"
                 >
                   <i 
                   class="fa-solid fa-trash-can"
                   data-bs-toggle="tooltip" 
                   data-bs-html="true"
-                  data-bs-title="<span>hapus-${el.category}</span>" data-bs-placement="bottom"
+                  data-bs-title="<span>hapus-${el.CategoryName}</span>" data-bs-placement="bottom"
                   ></i>
                 </button>
               </div>
@@ -50,5 +50,14 @@ export const uiTrCategory = (el) => {
           </tr> `
 }
 export const uiListCategory = (el) => {
-  return `<option value=${el.id}>${el.category}</option>`
+  return `<option value=${el.CategoryId}>${el.CategoryName}</option>`
+}
+export const successActionCategory = (res) => {
+  const alertSuccessMe = `<div class="alert alert-success" role="alert">
+                            ${res}
+                          </div>`
+  $("#sectionSuccessActionCategory").html(alertSuccessMe)
+  setTimeout(() => {
+    $("#sectionSuccessActionCategory").html("")
+  }, 15000);
 }

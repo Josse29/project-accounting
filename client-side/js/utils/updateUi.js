@@ -19,10 +19,3 @@ export const reinitializeTooltips = () => {
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
 };
-
-// alert success by me 
-export const alertSuccessMe = (res) => {
-    return `<div class="alert alert-success" role="alert">
-              ${res}
-            </div>`
-}
