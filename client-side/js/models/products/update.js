@@ -36,8 +36,7 @@ $(document).ready(function () {
                     let selected = el.CategoryId === parseInt(product.productcategory) ? ' selected' : '';
                     categoyEditProduct += `<option value="${el.CategoryId}"${selected}>${el.CategoryName}</option>`;
                 });
-                console.log(categoyEditProduct);
-                // $("#edit-category-product").html(categoyEditProduct);
+                $("#edit-category-product").html(categoyEditProduct);
             } else {
                 console.error(response);
             }
@@ -47,23 +46,23 @@ $(document).ready(function () {
 
             // all - input
             const productId = product.productid
-            const productCategoryId = product.productcategory
             const productName = $("#edit-product-name").val()
+            const productCategoryId = $("#edit-category-product").val()
             const productPrice = $("#edit-product-price").val()
             const productInfo = $("#edit-product-keterangan").val()
             const file = document.getElementById('edit-product-image-file').files
-            // $("#edit-category-product")
 
             // with image
             if (file.length > 0) {
                 const reader = new FileReader()
                 reader.onload = function () {
                     const imgbase64 = reader.result
-                    updateProduct(productId, productName, productPrice, productInfo, imgbase64, (status, response) => {
+                    updateProduct(productId, productName, productCategoryId, productPrice, productInfo, imgbase64, (status, response) => {
                         if (status) {
                             console.log(response)
                             getProductsAgain()
                             successActionProduct(response)
+                            $("#edit-product-image-file").val("")
                         }
                         if (!status) {
                             console.log(response)
@@ -76,7 +75,7 @@ $(document).ready(function () {
             }
             // without image
             if (file.length < 1) {
-                updateProduct(productId, productName, productPrice, productInfo, "", (status, response) => {
+                updateProduct(productId, productName, productCategoryId, productPrice, productInfo, "", (status, response) => {
                     if (status) {
                         console.log(response)
                         getProductsAgain()

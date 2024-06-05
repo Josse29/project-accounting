@@ -65,6 +65,18 @@ export const successActionProduct = (res) => {
     $("#sectionSuccessActionProduct").html("")
   }, 15000);
 }
+// when total product row 0 being seaching
+export const trProductZeroSearch = (searchVal) => {
+  return `<tr>
+              <td colspan="5" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">product ${searchVal} tidak ditemukan....</td>
+            </tr>`
+}
+// when total product row 0 being seaching
+export const trProductZero = () => {
+  return `<tr>
+              <td colspan="5" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">tidak ada product....</td>
+            </tr>`
+}
 // blank value after submit action 
 export const createBlankValue = () => {
   $("#product-name").val("")
