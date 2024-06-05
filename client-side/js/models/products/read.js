@@ -51,6 +51,7 @@ $(document).ready(function () {
             console.error(response)
         }
     })
+
     // get first page product
     $("#product_first_page").on("click", () => {
         getProducts(
@@ -102,9 +103,9 @@ $(document).ready(function () {
         }
         if (currentOffset < 1) {
             getProducts(
-                limit,
-                $("#product_offset_last").text(),
                 $("input#search-product").val(),
+                limit,
+                currentOffset,
                 (status, response) => {
                     if (status) {
                         let tr = ``;
@@ -151,9 +152,9 @@ $(document).ready(function () {
         }
         if (currentOffset > lastOffset) {
             getProducts(
+                $("input#search-product").val(),
                 limit,
                 1,
-                $("input#search-product").val(),
                 (status, response) => {
                     if (status) {
                         let tr = ``;

@@ -23,7 +23,7 @@ export const queryInsertCategory = (categoryName, categoryInfo) => {
 export const queryGetCategory = () => {
     return `SELECT *
             FROM ${tableName}
-            ORDER BY ${colCategoryId} DESC`
+            ORDER BY ${colCategoryName} ASC`
 }
 // 3.UPDATE
 export const queryUpdateCategory = (categoryId, categoryName, categoryInfo) => {

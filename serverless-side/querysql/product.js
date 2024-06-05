@@ -35,7 +35,7 @@ export const queryGetProducts = (searchProduct, limitProduct, offsetProduct) => 
         return `SELECT *
                 FROM ${tableName}
                 LEFT JOIN Category ON ${tableName}.${colProductCategoryId} = Category.CategoryId
-                ORDER BY ${tableName}.${colProductId} DESC 
+                ORDER BY ${tableName}.${colProductName} ASC 
                 LIMIT ${limitProduct} 
                 OFFSET ${offsetProduct}`;
     }
@@ -47,7 +47,7 @@ export const queryGetProducts = (searchProduct, limitProduct, offsetProduct) => 
                 WHERE ${tableName}.${colProductName} LIKE '%${searchProduct}%' ESCAPE '!' OR 
                       ${tableName}.${colProductPrice} LIKE '%${searchProduct}%' ESCAPE '!' OR 
                       ${tableName}.${colProductInfo} LIKE '%${searchProduct}%' ESCAPE '!' 
-                ORDER BY ${tableName}.${colProductId} ASC 
+                ORDER BY ${tableName}.${colProductName} ASC 
                 LIMIT ${limitProduct} 
                 OFFSET ${offsetProduct}`;
     }
