@@ -231,12 +231,8 @@ ipcMain.on("pdf:product", (event, thead, tbody, file_path) => {
       .then((data) => {
         fs.writeFile(file_path, data, (err) => {
           if (err) throw err;
-          dialog.showMessageBoxSync({
-            title: "Alert",
-            type: "info",
-            message: "Successfully export data to PDF",
-          });
-          console.log(file_path);
+          productPDF.close()
+          inventoryPage.webContents.send("success:pdf-product", file_path)
         });
       })
       .catch((error) => {

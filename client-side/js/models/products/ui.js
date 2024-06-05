@@ -63,7 +63,7 @@ export const successActionProduct = (res) => {
   $("#sectionSuccessActionProduct").html(alertSuccessMe)
   setTimeout(() => {
     $("#sectionSuccessActionProduct").html("")
-  }, 15000);
+  }, 20000);
 }
 // when total product row 0 being seaching
 export const trProductZeroSearch = (searchVal) => {
@@ -86,3 +86,7 @@ export const createBlankValue = () => {
   $("#create-image-product").val("")
   $("#section-image").addClass("d-none")
 }
+// success create pdf
+ipcRenderer.on("success:pdf-product", (e, file_path) => {
+  successActionProduct(`File PDF tersimpan di ${file_path}`)
+})

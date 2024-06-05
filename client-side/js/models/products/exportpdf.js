@@ -7,11 +7,16 @@ $("#product-export-pdf").on("click", () => {
     });
     if (file_path) {
         file_path = file_path.replace(/\\/g, "/");
-        db.all(`SELECT * FROM products ORDER BY id DESC`, (err, result) => {
+        db.all(`SELECT 
+                ProductId, ProductName, CategoryName, ProductPrice, ProductInfo, ProductImage 
+                FROM Product
+                LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId  
+                ORDER BY Product.ProductId DESC`, (err, result) => {
             if (!err) {
                 let thead = `<tr>
                                 <th>Id</th>
                                 <th>Nama Produk</th>
+                                <th>Kategori</th>
                                 <th>Harga Produk</th>
                                 <th>Keterangan</th>
                                 <th>Gambar</th>
@@ -19,12 +24,13 @@ $("#product-export-pdf").on("click", () => {
                 let tbody = "";
                 result.forEach((row) => {
                     tbody += `<tr>
-                                <td class="text-center text-nowrap align-content-center">${row.id}</td>
-                                <td class="text-nowrap align-content-center">${row.name}</td>
-                                <td class="text-nowrap align-content-center">${row.price}</td>
-                                <td class="text-nowrap align-content-center">${row.keterangan}</td>
+                                <td class="text-center text-nowrap align-content-center">${row.ProductId}</td>
+                                <td class="text-nowrap align-content-center">${row.ProductName}</td>
+                                <td class="text-nowrap align-content-center">${row.CategoryName}</td>
+                                <td class="text-nowrap align-content-center">${row.ProductPrice}</td>
+                                <td class="text-nowrap align-content-center">${row.ProductInfo}</td>
                                 <td style="width:200px">
-                                <img src="${row.image}" style="width:100%"/>
+                                    <img src="${row.ProductImage}" style="width:100%"/>
                                 </td>
                             </tr>`;
                 });
@@ -38,24 +44,30 @@ $("#product-export-pdf").on("click", () => {
 });
 // export pdf product
 $("#product-export-print").on("click", () => {
-    db.all(`SELECT * FROM products ORDER BY id DESC`, (err, result) => {
+    db.all(`SELECT 
+            ProductId, ProductName, CategoryName, ProductPrice, ProductInfo, ProductImage 
+            FROM Product
+            LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId  
+            ORDER BY Product.ProductId DESC`, (err, result) => {
         if (!err) {
             let thead = `<tr>
                             <th>Id</th>
                             <th>Nama Produk</th>
+                            <th>Kategori</th>
                             <th>Harga Produk</th>
                             <th>Keterangan</th>
                             <th>Gambar</th>
-                        </tr>`;
+                        </tr> `;
             let tbody = "";
             result.forEach((row) => {
                 tbody += `<tr>
-                            <td class="text-center text-nowrap align-content-center">${row.id}</td>
-                            <td class="text-nowrap align-content-center">${row.name}</td>
-                            <td class="text-nowrap align-content-center">${row.price}</td>
-                            <td class="text-nowrap align-content-center">${row.keterangan}</td>
+                            <td class="text-center text-nowrap align-content-center">${row.ProductId}</td>
+                            <td class="text-nowrap align-content-center">${row.ProductName}</td>
+                            <td class="text-nowrap align-content-center">${row.CategoryName}</td>
+                            <td class="text-nowrap align-content-center">${row.ProductPrice}</td>
+                            <td class="text-nowrap align-content-center">${row.ProductInfo}</td>
                             <td style="width:200px">
-                            <img src="${row.image}" style="width:100%"/>
+                                <img src="${row.ProductImage}" style="width:100%"/>
                             </td>
                         </tr>`;
             });

@@ -1,6 +1,5 @@
 import { getCategory } from "../../../../serverless-side/functions/categories.js";
 import { updateProduct } from "../../../../serverless-side/functions/product.js";
-import { uiListCategory } from "../categories/ui.js";
 import { getProductsAgain } from "./read.js";
 import { successActionProduct } from "./ui.js";
 

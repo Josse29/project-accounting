@@ -23,9 +23,9 @@ const colProductImg = `ProductImage`
 export const queryinsertProducts = (name, price, productInfo, image, categoryId) => {
     return `INSERT 
             INTO ${tableName} 
-                (${colProductName}, ${colProductPrice}, ${colProductInfo}, ${colProductImg}, ${colProductCategoryId}) 
+            (${colProductName}, ${colProductPrice}, ${colProductInfo}, ${colProductImg}, ${colProductCategoryId}) 
             VALUES 
-                ('${name}', '${price}', '${productInfo}', '${image}', '${categoryId}')`;
+            ('${name}', '${price}', '${productInfo}', '${image}', '${categoryId}')`;
 };
 
 // 2.READ
