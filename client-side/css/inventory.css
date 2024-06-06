@@ -123,4 +123,35 @@
   #productsModalDetail::-webkit-scrollbar {
     display: none;
   }
-  
+  button#btnInventoryModal{
+    background-color: #3b82f6
+  }
+  button#btnInventoryModal:hover{
+    background-color: #2076ff;
+  }
+  button#inventory-export-pdf{
+    color: white;
+    background-color:rgb(249, 97, 46) ;
+  }
+  button#inventory-export-pdf:hover{
+    color: white;
+    background-color:rgb(236, 71, 17) ;
+  }
+  button#inventory-export-print{
+    color: white;
+    background-color:rgb(249, 66, 46) ;
+  }
+  button#inventory-export-print:hover{
+    background-color: rgb(212, 54, 36);
+  }
+  /* mckkk for tbody scrolll*/
+  /* tbody {
+      display: block;
+      height: 250px;
+      overflow: auto;
+  }
+  thead, tbody tr {
+      display: table; 
+      width: 100%;
+      table-layout: fixed;
+  } */

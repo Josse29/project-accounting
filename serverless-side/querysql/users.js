@@ -1,11 +1,11 @@
 // CREATE TABLE users(
-//     id integer primary key autoincrement,
-//     email varchar(255) not null unique, 
-//     fullname varchar(255), 
-//     password varchar(255), 
-//     photo varchar(255), 
-//     position varchar(255), 
-// accept BOOLEAN DEFAULT FALSE);
+//     UserId integer primary key autoincrement,
+//     UserEmail varchar(255) not null unique, 
+//     UserFullname varchar(255), 
+//     UserPassword varchar(255), 
+//     UserPhoto varchar(255), 
+//     UserPosition varchar(255), 
+//     UserAccept BOOLEAN DEFAULT FALSE);
 
 export const queryRegister = (email, fullname, password) => {
     return `INSERT 

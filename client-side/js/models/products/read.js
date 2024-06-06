@@ -295,48 +295,55 @@ $(document).ready(function () {
 
     // get product based on value search product event keyup
     $("input#search-product").on("keyup", () => {
-        getProducts(
-            $("input#search-product").val(),
-            $("#product_limit").val(),
-            $("#product_offset").text().trim(),
-            (status, response) => {
-                if (status) {
-                    let tr = ``;
-                    response.forEach((el) => {
-                        tr += uitrProduct(el);
-                    });
-                    $("#data-products").html(tr);
-                    reinitializeTooltips();
-                    lastOffsetProducts(
-                        $("#product_limit").val(),
+        getTotalProduct($("input#search-product").val(), (status, response) => {
+            if (status) {
+                // if total row product lesser than 1 | not exist product
+                if (response < 1) {
+                    $("#data-products").html(trProductZeroSearch($("input#search-product").val()));
+                    $("#paginationProduct").addClass("d-none")
+                }
+                // if total row product is equal greater than 1 |  exist product
+                if (response >= 1) {
+                    $("#paginationProduct").removeClass("d-none")
+                    getProducts(
                         $("input#search-product").val(),
+                        $("#product_limit").val(),
+                        $("#product_offset").text().trim(),
                         (status, response) => {
                             if (status) {
-                                $("#product_offset_last").text(response);
-                                console.log("last page : " + response);
+                                let tr = ``;
+                                response.forEach((el) => {
+                                    tr += uitrProduct(el);
+                                });
+                                $("#data-products").html(tr);
+                                reinitializeTooltips();
+                                lastOffsetProducts(
+                                    $("#product_limit").val(),
+                                    $("input#search-product").val(),
+                                    (status, response) => {
+                                        if (status) {
+                                            $("#product_offset_last").text(response);
+                                            console.log("last page : " + response);
+                                        }
+                                        if (!status) {
+                                            console.log(response);
+                                        }
+                                    }
+                                );
                             }
                             if (!status) {
-                                console.log(response);
+                                console.err(response);
                             }
                         }
                     );
-                    getTotalProduct($("input#search-product").val(), (status, response) => {
-                        if (status) {
-                            if (response < 1) {
-                                $("#data-products").html(trProductZeroSearch($("input#search-product").val()));
-                            }
-                            $("#totalAllProduct").html(response)
-                        }
-                        if (!status) {
-                            console.error(response)
-                        }
-                    })
                 }
-                if (!status) {
-                    console.err(response);
-                }
+                $("#totalAllProduct").html(response)
             }
-        );
+            if (!status) {
+                console.error(response)
+            }
+        })
+
     });
 })
 
@@ -350,7 +357,7 @@ export const getProductsAgain = () => {
                 $("#data-products").html(trProductZero())
                 $("#paginationProduct").addClass("d-none")
             }
-            // if total row product is equal greater than 1 | not exist product
+            // if total row product is equal greater than 1 |  exist product
             if (response >= 1) {
                 getProducts(
                     $("input#search-product").val(),
