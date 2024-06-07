@@ -74,21 +74,21 @@ export const queryUpdateProduct = (productId, productName, productCategoryId, pr
     // with image
     if (productImg !== "") {
         return `UPDATE ${tableName}
-            SET ${colProductName} = '${productName}',
-                ${colProductCategoryId} = '${productCategoryId}',
-                ${colProductPrice} = '${productPrice}',
-                ${colProductInfo} = '${productInfo}',
-                ${colProductImg} = '${productImg}'
-            WHERE ${colProductId} = '${productId}'`
+                SET ${colProductName} = '${productName}',
+                    ${colProductCategoryId} = '${productCategoryId}',
+                    ${colProductPrice} = '${productPrice}',
+                    ${colProductInfo} = '${productInfo}',
+                    ${colProductImg} = '${productImg}'
+                WHERE ${colProductId} = '${productId}'`
     }
     // without image
     if (productImg === "") {
         return `UPDATE ${tableName}
-            SET ${colProductName} = '${productName}',
-                ${colProductCategoryId} = '${productCategoryId}',
-                ${colProductPrice} ='${productPrice}',
-                ${colProductInfo} = '${productInfo}'
-            WHERE ${colProductId} = '${productId}'`
+                SET ${colProductName} = '${productName}',
+                    ${colProductCategoryId} = '${productCategoryId}',
+                    ${colProductPrice} ='${productPrice}',
+                    ${colProductInfo} = '${productInfo}'
+                WHERE ${colProductId} = '${productId}'`
     }
 }
 // 4. DELETE

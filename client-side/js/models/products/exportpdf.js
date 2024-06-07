@@ -8,7 +8,7 @@ $("#product-export-pdf").on("click", () => {
     if (file_path) {
         file_path = file_path.replace(/\\/g, "/");
         db.all(`SELECT 
-                ProductId, ProductName, CategoryName, ProductPrice, ProductInfo, ProductImage 
+                Product.ProductId, Product.ProductName, Category.CategoryName, Product.ProductPrice, Product.ProductInfo, Product.ProductImage 
                 FROM Product
                 LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId  
                 ORDER BY Product.ProductId DESC`, (err, result) => {

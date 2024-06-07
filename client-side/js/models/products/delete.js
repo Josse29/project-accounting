@@ -6,11 +6,13 @@ $(document).ready(function () {
     // Delete Product event binding mckkkk
     $(document).on("click", "#deleteProduct", function () {
         const product = this.dataset;
-        const konfirmasiDelete = `Apakah anda yakin menghapus - <span class="fw-bold">${product.productname}</span> ?`;
-        $("#confirmDeleteProductModalLabel").html(product.productname);
+        const productid = product.productid
+        const productName = product.productname
+        const konfirmasiDelete = `Apakah anda yakin menghapus - <span class="fw-bold">${productName}</span> ?`;
+        $("#confirmDeleteProductModalLabel").text(productName);
         $("#confirm-text").html(konfirmasiDelete);
         $("#sureDelete").on("click", () => {
-            deleteProductId(product.productid, product.productname, (status, response) => {
+            deleteProductId(productid, productName, (status, response) => {
                 if (status) {
                     console.log(response);
                     getProductsAgain();

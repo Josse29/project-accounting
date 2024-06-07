@@ -44,7 +44,7 @@ $(document).ready(function () {
         $("#edit-product-submit").on("click", () => {
 
             // all - input
-            const productId = product.productid
+            const productId = parseInt(product.productid)
             const productName = $("#edit-product-name").val()
             const productCategoryId = $("#edit-category-product").val()
             const productPrice = $("#edit-product-price").val()

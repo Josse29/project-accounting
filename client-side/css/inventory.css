@@ -144,6 +144,12 @@
   button#inventory-export-print:hover{
     background-color: rgb(212, 54, 36);
   }
+  button#btn-create-satuan{
+    background-color: #009ef7;
+  }
+  button#btn-create-satuan:hover{
+    background-color: #0396ea;
+  }
   /* mckkk for tbody scrolll*/
   /* tbody {
       display: block;

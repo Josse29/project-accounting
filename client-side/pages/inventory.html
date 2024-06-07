@@ -77,13 +77,14 @@
             </div>
             <h4 class="hari-tanggal-tahun"></h4>
         </div>
+        <!-- section second -->
         <div class="bg-white py-3 shadow-sm rounded-3">
             <!-- section first table inventory -->
             <div class="bg-white d-flex w-100 gap-4 px-4 py-3">
                 <!-- inventory -->
                 <div class="card w-100">
                     <h3 class="card-header text-white" style="background-color: #3b82f6">
-                        Persediaan
+                        Inventory
                     </h3>
                     <div class="card-body">
                         <!-- section button group create export etc -->
@@ -91,10 +92,14 @@
                             <!-- btn group create, export inventory -->
                             <div class="btn-group gap-2">
                                 <!-- tambah inventory -->
-                                <button id="btnInventoryModal" class="btn btn-primary text-white d-flex gap-2"
-                                    data-bs-toggle="modal" data-bs-target="#inventoryModal">
-                                    <i class="fa-solid fa-folder-plus fs-4"></i>
-                                    <span class="text-nowrap fs-5">Tambah Persediaan</span>
+                                <button id="btnInventoryModal" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#createinventoryModal">
+                                    <span class="d-flex gap-2 align-items-center" data-bs-toggle="tooltip"
+                                        data-bs-html="true" data-bs-title="<span>tambah-inventory</span>"
+                                        data-bs-placement="bottom">
+                                        <i class="fa-solid fa-folder-plus fs-4"></i>
+                                        <span class="text-nowrap">Tambah Inventory</span>
+                                    </span>
                                 </button>
                                 <!-- export product excel -->
                                 <button type="button" class="btn btn-success" id="inventory-export-excel"
@@ -252,11 +257,11 @@
                                             data-bs-html="true" data-bs-title="<span>tambah-product</span>"
                                             data-bs-placement="bottom">
                                             <i class="fa-solid fa-folder-plus fs-4"></i>
-                                            <span>Tambah Product</span>
+                                            <span class="text-nowrap">Tambah Product</span>
                                         </span>
                                     </button>
                                     <!-- export product excel -->
-                                    <button type="button" class="btn btn-success" id="product-export-excel"
+                                    <button type=" button" class="btn btn-success" id="product-export-excel"
                                         data-bs-toggle="tooltip" data-bs-html="true"
                                         data-bs-title="<span>export-product.xls</span>" data-bs-placement="bottom">
                                         <i class="fa-solid fa-file-excel fs-4"></i>
@@ -356,13 +361,14 @@
                             <div id="sectionSuccessActionCategory">
                             </div>
                             <!-- tambah category dan export pdf -->
-                            <div class="d-flex gap-3 mb-3">
-                                <button class="btn d-flex gap-2 bg-primary text-white" data-bs-toggle="modal"
+                            <div class="btn-group gap-2 mb-3">
+                                <button class="btn bg-primary text-white" data-bs-toggle="modal"
                                     data-bs-target="#categoryModal">
-                                    <span data-bs-toggle="tooltip" data-bs-html="true"
-                                        data-bs-title="<span>tambah-category</span>" data-bs-placement="bottom">
+                                    <span class="d-flex gap-2 align-items-center" data-bs-toggle="tooltip"
+                                        data-bs-html="true" data-bs-title="<span>tambah-kategori</span>"
+                                        data-bs-placement="bottom">
                                         <i class="fa-solid fa-folder-plus fs-4"></i>
-                                        <span>Tambah Kategori</span>
+                                        <span class="text-nowrap">Tambah Kategori</span>
                                     </span>
                                 </button>
                                 <button type="button" class="btn text-white" id="category-export-pdf"
@@ -429,7 +435,7 @@
                     </div>
                 </div>
             </div>
-            <!-- section third table inventory -->
+            <!-- section third table satuan & supplier -->
             <div class="bg-white d-flex w-100 gap-4 px-4 py-3">
                 <!-- satuan -->
                 <div style="width: 35%">
@@ -439,10 +445,14 @@
                         </h3>
                         <div class="card-body">
                             <!-- tambah satuan -->
-                            <button class="btn d-flex gap-2 mb-3 text-white" style="background-color: #009ef7"
-                                data-bs-toggle="modal" data-bs-target="#satuanModal">
-                                <i class="fa-solid fa-folder-plus fs-4"></i>
-                                <span>Tambah Satuan</span>
+                            <button class="btn mb-3 text-white" data-bs-toggle="modal"
+                                data-bs-target="#createSatuanModal" id="btn-create-satuan">
+                                <span class="d-flex gap-2 align-items-center" data-bs-toggle="tooltip"
+                                    data-bs-html="true" data-bs-title="<span>tambah-satuan</span>"
+                                    data-bs-placement="bottom">
+                                    <i class="fa-solid fa-folder-plus fs-4"></i>
+                                    <span class="text-nowrap">Tambah Satuan</span>
+                                </span>
                             </button>
                             <!-- search satuan -->
                             <div class="input-group mb-3">
@@ -450,6 +460,8 @@
                                 <span class="input-group-text text-white"
                                     style="background-color: #009ef7">Search</span>
                             </div>
+                            <div id="sectionSuccessActionSatuan"></div>
+                            <!-- table satuan -->
                             <div style="max-height: 270px; overflow: auto">
                                 <table class="table table-striped">
                                     <thead>
@@ -459,7 +471,7 @@
                                             <th class="text-center">Aksi</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="satuan-data">
                                         <tr>
                                             <td class="text-center align-content-center">1</td>
                                             <td class="text-nowrap align-content-center">Kg</td>
@@ -598,6 +610,80 @@
     </div>
     <!-- all modals -->
     <div>
+        <!-- Inventory-Modal -->
+        <div>
+            <!-- create inventory -->
+            <div class="modal fade" id="createinventoryModal" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header py-2" style="background-color: #3b82f6">
+                            <h1 class="modal-title fs-3 text-white" id="exampleModalLabel">
+                                Inventory
+                            </h1>
+                        </div>
+                        <div class="modal-body">
+                            <div class="text-end">
+                                <div class="hari-tanggal-tahun fs-4"></div>
+                                <span class="jam"></span>
+                                <span class="menit"></span>
+                                <span class="detik"></span>
+                            </div>
+                            <!-- Nama Product -->
+                            <div class="mb-3">
+                                <label for="create-productname-ref-supplier" class="form-label fs-4">Nama
+                                    Produk</label>
+                                <select class="form-select" aria-label="Default select example"
+                                    id="create-productname-ref-supplier">
+                                    <option selected>Open this select menu</option>
+                                    <option value="1">One</option>
+                                    <option value="2">Two</option>
+                                    <option value="3">Three</option>
+                                </select>
+                            </div>
+                            <!-- Nama Supplier -->
+                            <div class="mb-3">
+                                <label for="create-suppliername-ref-supplier" class="form-label fs-4"
+                                    id="product-supplier">Nama Supplier</label>
+                                <select class="form-select" aria-label="Default select example"
+                                    id="create-suppliername-ref-supplier">
+                                    <option selected>Open this select menu</option>
+                                    <option value="1">One</option>
+                                    <option value="2">Two</option>
+                                    <option value="3">Three</option>
+                                </select>
+                            </div>
+                            <!-- QTY -->
+                            <div class="mb-3 d-flex align-items-center">
+                                <label for="qty" class="form-label fs-4 w-50">Qty</label>
+                                <div class="input-group w-50">
+                                    <button type="button" class="btn border border-2 fs-4">
+                                        -
+                                    </button>
+                                    <input type="text" class="form-control" id="qty" placeholder="input stock"
+                                        style="width: 20px" />
+                                    <button type="button" class="btn border border-2 fs-4">
+                                        +
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- KETERANGAN -->
+                            <div class="mb-3">
+                                <label for="keterangan" class="form-label fs-4">Keterangan</label>
+                                <textarea class="form-control" id="keterangan"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                                Close
+                            </button>
+                            <button type="button" class="btn btn-primary" style="background-color: #3b82f6">
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Product-Modal -->
         <div>
             <!-- products-detail-modal -->
@@ -882,110 +968,130 @@
             </div>
         </div>
         <!-- Satuan-Modal -->
-        <div class="modal fade" id="categoryModalDelete" tabindex="-1" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                <div class="modal-content">
-                    <div class="modal-header py-2" style="background-color: #009ef7">
-                        <h1 class="modal-title fs-3 text-white" id="exampleModalLabel">
-                            Satuan
-                        </h1>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="Nama" class="form-label fs-4">Nama</label>
-                            <input type="email" class="form-control" id="Nama" placeholder="masukkan satuan.." />
-                        </div>
-                        <div class="mb-3">
-                            <label for="price" class="form-label fs-4">Keterangan</label>
-                            <textarea class="form-control" id="price"></textarea>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-                            Close
-                        </button>
-                        <button type="button" class="btn btn-primary" style="background-color: #009ef7">
-                            Save
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Inventory-Modal -->
         <div>
-            <!-- create inventory -->
-            <div class="modal fade" id="inventoryModal" tabindex="-1">
+            <!-- create satuan -->
+            <div class="modal fade" id="createSatuanModal" tabindex="-1">
                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                     <div class="modal-content">
                         <div class="modal-header py-2" style="background-color: #3b82f6">
                             <h1 class="modal-title fs-3 text-white" id="exampleModalLabel">
-                                Persediaan
+                                Satuan
                             </h1>
                         </div>
                         <div class="modal-body">
-                            <div class="text-end">
-                                <div class="hari-tanggal-tahun fs-4"></div>
-                                <span class="jam"></span>
-                                <span class="menit"></span>
-                                <span class="detik"></span>
-                            </div>
-                            <!-- Nama Product -->
+                            <!--CreateSatuanNama -->
                             <div class="mb-3">
-                                <label for="create-productname-ref-supplier" class="form-label fs-4">Nama
-                                    Produk</label>
-                                <select class="form-select" aria-label="Default select example"
-                                    id="create-productname-ref-supplier">
-                                    <option selected>Open this select menu</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
-                                </select>
-                            </div>
-                            <!-- Nama Supplier -->
-                            <div class="mb-3">
-                                <label for="create-suppliername-ref-supplier" class="form-label fs-4"
-                                    id="product-supplier">Nama Supplier</label>
-                                <select class="form-select" aria-label="Default select example"
-                                    id="create-suppliername-ref-supplier">
-                                    <option selected>Open this select menu</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
-                                </select>
-                            </div>
-                            <!-- QTY -->
-                            <div class="mb-3 d-flex align-items-center">
-                                <label for="qty" class="form-label fs-4 w-50">Qty</label>
-                                <div class="input-group w-50">
-                                    <button type="button" class="btn border border-2 fs-4">
-                                        -
-                                    </button>
-                                    <input type="text" class="form-control" id="qty" placeholder="input stock"
-                                        style="width: 20px" />
-                                    <button type="button" class="btn border border-2 fs-4">
-                                        +
-                                    </button>
-                                </div>
+                                <label for="create-satuan-name" class="form-label fs-4">Nama
+                                    Satuan</label>
+                                <input type="text" id="create-satuan-name" class="form-control"
+                                    placeholder="masukkan satuan">
                             </div>
                             <!-- KETERANGAN -->
                             <div class="mb-3">
-                                <label for="keterangan" class="form-label fs-4">Keterangan</label>
-                                <textarea class="form-control" id="keterangan"></textarea>
+                                <label for="create-satuan-keterangan" class="form-label fs-4">Keterangan</label>
+                                <textarea class="form-control" id="create-satuan-keterangan"></textarea>
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
                                 Close
                             </button>
-                            <button type="button" class="btn btn-primary" style="background-color: #3b82f6">
+                            <button id="product-create-submit" type="button" class="btn btn-primary"
+                                data-bs-dismiss="modal">
                                 Save
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- detail satuan -->
+            <div class="modal fade" id="satuanModalDetail" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header py-2" style="background-color: #3b82f6">
+                            <h1 class="modal-title fs-3 text-white" id="detailSatuanModalLabel">
+                                Satuan
+                            </h1>
+                        </div>
+                        <div class="modal-body">
+                            <!--DetailSatuanNama -->
+                            <div class="mb-3">
+                                <label id="detail-satuan-name" class="form-label fs-4">Nama
+                                    Satuan</label>
+                            </div>
+                            <!-- DetailSatuanNama -->
+                            <div class="mb-3">
+                                <label id="detail-satuan-keterangan" class="form-label fs-4">Keterangan</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- update satuan -->
+            <div class="modal fade" id="satuanUpdateModal" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header py-2" style="background-color: #3b82f6">
+                            <h1 class="modal-title fs-3 text-white" id="updateSatuanModalLabel">
+                                Satuan
+                            </h1>
+                        </div>
+                        <div class="modal-body">
+                            <!--UpdateSatuanNama -->
+                            <div class="mb-3">
+                                <label for="update-satuan-name" class="form-label fs-4">Nama
+                                    Satuan</label>
+                                <input type="text" id="update-satuan-name" class="form-control"
+                                    placeholder="masukkan satuan">
+                            </div>
+                            <!-- UpdateSatuanInfo -->
+                            <div class="mb-3">
+                                <label for="update-satuan-info" class="form-label fs-4">Keterangan</label>
+                                <textarea class="form-control" id="update-satuan-info"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                                Close
+                            </button>
+                            <button id="satuan-update-submit" type="button" class="btn btn-primary"
+                                data-bs-dismiss="modal">
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- delete satuan -->
+            <div class="modal fade" id="satuanDeleteModal" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header bg-danger">
+                            <h1 class="modal-title fs-2 text-white" id="satuanDeleteModalLabel">
+                                Modal
+                            </h1>
+                        </div>
+                        <div class="modal-body text-center">
+                            <i class="fa-solid fa-triangle-exclamation text-danger" style="font-size: 120px"></i>
+                            <h4 class="my-3" id="satuan-delete-satuanname"></h4>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary d-flex align-items-center gap-2"
+                                data-bs-dismiss="modal">
+                                <i class="fa-solid fa-times me-1 fs-4"></i>
+                                <span class="fs-5">No</span>
+                            </button>
+                            <button type="button" class="btn btn-danger d-flex align-items-center gap-2"
+                                id="satuan-delete-sure" data-bs-dismiss="modal">
+                                <i class="fa-solid fa-check me-1 fs-4"></i>
+                                <span class="fs-5">Yes</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
     </div>
     <!-- bootstrap js  -->
     <script src="./../third-party/bootstrap.bundle.min.js"></script>
@@ -1006,6 +1112,7 @@
     <script type="module" src="./../js/utils/updateUi.js"></script>
     <script type="module" src="./../js/models/products/index.js"></script>
     <script type="module" src="./../js/models/categories/index.js"></script>
+    <script type="module" src="./../js/models/satuan/index.js"></script>
 </body>
 
 </html>

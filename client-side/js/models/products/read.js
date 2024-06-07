@@ -16,10 +16,13 @@ $(document).ready(function () {
             }
             // if total row product is equal greater than 1 | not exist product
             if (response >= 1) {
+                const searchProduct = $("input#search-product").val()
+                const limitProduct = parseInt($("#product_limit").val())
+                const pageProduct = parseInt($("#product_offset").text().trim())
                 getProducts(
-                    $("input#search-product").val(),
-                    $("#product_limit").val(),
-                    $("#product_offset").text().trim(),
+                    searchProduct,
+                    limitProduct,
+                    pageProduct,
                     (status, response) => {
                         if (status) {
                             let tr = ``;
@@ -30,8 +33,8 @@ $(document).ready(function () {
                             reinitializeTooltips()
                             $("#paginationProduct").removeClass("d-none")
                             lastOffsetProducts(
-                                $("#product_limit").val(),
-                                $("input#search-product").val(),
+                                limitProduct,
+                                searchProduct,
                                 (status, response) => {
                                     if (status) {
                                         $("#product_offset_last").text(response);
@@ -54,10 +57,13 @@ $(document).ready(function () {
 
     // get first page product
     $("#product_first_page").on("click", () => {
+        const searchProduct = $("input#search-product").val()
+        const limitProduct = parseInt($("#product_limit").val())
+        const pageProduct = 1
         getProducts(
-            $("input#search-product").val(),
-            $("#product_limit").val(),
-            1,
+            searchProduct,
+            limitProduct,
+            pageProduct,
             (status, response) => {
                 if (status) {
                     let tr = ``;
@@ -77,12 +83,14 @@ $(document).ready(function () {
 
     // get previous page product
     $("#product_prev_page").on("click", () => {
-        let limit = $("#product_limit").val();
+        const limit = $("#product_limit").val();
+        const searchProduct = $("input#search-product").val()
         let offset = parseInt($("#product_offset").text().trim());
         let currentOffset = (offset -= 1);
+        const lastPage = $("#product_offset_last").text()
         if (currentOffset >= 1) {
             getProducts(
-                $("input#search-product").val(),
+                searchProduct,
                 limit,
                 currentOffset,
                 (status, response) => {
@@ -103,9 +111,9 @@ $(document).ready(function () {
         }
         if (currentOffset < 1) {
             getProducts(
-                $("input#search-product").val(),
+                searchProduct,
                 limit,
-                currentOffset,
+                lastPage,
                 (status, response) => {
                     if (status) {
                         let tr = ``;
@@ -125,13 +133,14 @@ $(document).ready(function () {
 
     // get next page product
     $("#product_next_page").on("click", () => {
-        let limit = $("#product_limit").val();
+        const searchProduct = $("input#search-product").val()
+        let limit = parseInt($("#product_limit").val());
         let lastOffset = $("#product_offset_last").text();
         let offset = parseInt($("#product_offset").text().trim());
         let currentOffset = (offset += 1);
         if (currentOffset <= lastOffset) {
             getProducts(
-                $("input#search-product").val(),
+                searchProduct,
                 limit,
                 currentOffset,
                 (status, response) => {
@@ -175,10 +184,13 @@ $(document).ready(function () {
 
     // get last page product
     $("#product_last_page").on("click", () => {
+        const searchProduct = $("input#search-product").val()
+        const limitProduct = parseInt($("#product_limit").val())
+        const pageProduct = parseInt($("#product_offset_last").text())
         getProducts(
-            $("input#search-product").val(),
-            $("#product_limit").val(),
-            $("#product_offset_last").text(),
+            searchProduct,
+            limitProduct,
+            pageProduct,
             (status, response) => {
                 if (status) {
                     let tr = ``;
@@ -198,10 +210,13 @@ $(document).ready(function () {
 
     // get product based on limit 
     $("#product_limit").change(function () {
+        const searchProduct = $("input#search-product").val()
+        const limitProduct = parseInt($(this).val())
+        const pageProduct = 1
         getProducts(
-            $("input#search-product").val(),
-            $(this).val(),
-            1,
+            searchProduct,
+            limitProduct,
+            pageProduct,
             (status, response) => {
                 if (status) {
                     let tr = ``;
@@ -212,8 +227,8 @@ $(document).ready(function () {
                     $("#product_offset").text(1);
                     reinitializeTooltips();
                     lastOffsetProducts(
-                        $("#product_limit").val(),
-                        $("input#search-product").val(),
+                        limitProduct,
+                        searchProduct,
                         (status, response) => {
                             if (status) {
                                 $("#product_offset_last").text(response);
@@ -232,7 +247,116 @@ $(document).ready(function () {
         );
     });
 
-    // // get-detail-product 
+    // get product based on value search product event click
+    $("span#search-product").on("click", () => {
+        getTotalProduct($("input#search-product").val(), (status, response) => {
+            if (status) {
+                // if total row product lesser than 1 | not exist product
+                if (response < 1) {
+                    $("#data-products").html(trProductZeroSearch($("input#search-product").val()));
+                    $("#paginationProduct").addClass("d-none")
+                }
+                // if total row product is equal greater than 1 |  exist product
+                if (response >= 1) {
+                    $("#paginationProduct").removeClass("d-none")
+                    const searchProduct = $("input#search-product").val()
+                    const limitProduct = parseInt($("#product_limit").val())
+                    const pageProduct = parseInt($("#product_offset").text().trim())
+                    getProducts(
+                        searchProduct,
+                        limitProduct,
+                        pageProduct,
+                        (status, response) => {
+                            if (status) {
+                                let tr = ``;
+                                response.forEach((el) => {
+                                    tr += uitrProduct(el);
+                                });
+                                $("#data-products").html(tr);
+                                reinitializeTooltips();
+                                lastOffsetProducts(
+                                    limitProduct,
+                                    searchProduct,
+                                    (status, response) => {
+                                        if (status) {
+                                            $("#product_offset_last").text(response);
+                                            console.log("last page : " + response);
+                                        }
+                                        if (!status) {
+                                            console.log(response);
+                                        }
+                                    }
+                                );
+                            }
+                            if (!status) {
+                                console.err(response);
+                            }
+                        }
+                    );
+                }
+                $("#totalAllProduct").html(response)
+            }
+            if (!status) {
+                console.error(response)
+            }
+        })
+    });
+
+    // get product based on value search product event keyup
+    $("input#search-product").on("keyup", () => {
+        const searchProduct = $("input#search-product").val()
+        const limitProduct = parseInt($("#product_limit").val())
+        const pageProduct = parseInt($("#product_offset").text().trim())
+        getTotalProduct(searchProduct, (status, response) => {
+            if (status) {
+                // if total row product lesser than 1 | not exist product
+                if (response < 1) {
+                    $("#data-products").html(trProductZeroSearch(searchProduct));
+                    $("#paginationProduct").addClass("d-none")
+                }
+                // if total row product is equal greater than 1 |  exist product
+                if (response >= 1) {
+                    $("#paginationProduct").removeClass("d-none")
+                    getProducts(
+                        searchProduct,
+                        limitProduct,
+                        pageProduct,
+                        (status, response) => {
+                            if (status) {
+                                let tr = ``;
+                                response.forEach((el) => {
+                                    tr += uitrProduct(el);
+                                });
+                                $("#data-products").html(tr);
+                                reinitializeTooltips();
+                                lastOffsetProducts(
+                                    limitProduct,
+                                    searchProduct,
+                                    (status, response) => {
+                                        if (status) {
+                                            $("#product_offset_last").text(response);
+                                        }
+                                        if (!status) {
+                                            console.log(response);
+                                        }
+                                    }
+                                );
+                            }
+                            if (!status) {
+                                console.err(response);
+                            }
+                        }
+                    );
+                }
+                $("#totalAllProduct").html(response)
+            }
+            if (!status) {
+                console.error(response)
+            }
+        })
+    });
+
+    // get-detail-product 
     $(document).on("click", "#detailProduct", function () {
         const product = this.dataset;
 
@@ -257,99 +381,14 @@ $(document).ready(function () {
         $("#detail-category-price").text(product.productcategory)
         $("#detail-product-keterangan").text(product.productketerangan)
     });
-
-    // get product based on value search product event click
-    $("span#search-product").on("click", () => {
-        getProducts(
-            $("input#search-product").val(),
-            $("#product_limit").val(),
-            $("#product_offset").text().trim(),
-            (status, response) => {
-                if (status) {
-                    let tr = ``;
-                    response.forEach((el) => {
-                        tr += uitrProduct(el);
-                    });
-                    $("#data-products").html(tr);
-                    reinitializeTooltips();
-                    lastOffsetProducts(
-                        $("#product_limit").val(),
-                        $("input#search-product").val(),
-                        (status, response) => {
-                            if (status) {
-                                $("#product_offset_last").text(response);
-                                console.log("last page : " + response);
-                            }
-                            if (!status) {
-                                console.log(response);
-                            }
-                        }
-                    );
-                }
-                if (!status) {
-                    console.err(response);
-                }
-            }
-        );
-    });
-
-    // get product based on value search product event keyup
-    $("input#search-product").on("keyup", () => {
-        getTotalProduct($("input#search-product").val(), (status, response) => {
-            if (status) {
-                // if total row product lesser than 1 | not exist product
-                if (response < 1) {
-                    $("#data-products").html(trProductZeroSearch($("input#search-product").val()));
-                    $("#paginationProduct").addClass("d-none")
-                }
-                // if total row product is equal greater than 1 |  exist product
-                if (response >= 1) {
-                    $("#paginationProduct").removeClass("d-none")
-                    getProducts(
-                        $("input#search-product").val(),
-                        $("#product_limit").val(),
-                        $("#product_offset").text().trim(),
-                        (status, response) => {
-                            if (status) {
-                                let tr = ``;
-                                response.forEach((el) => {
-                                    tr += uitrProduct(el);
-                                });
-                                $("#data-products").html(tr);
-                                reinitializeTooltips();
-                                lastOffsetProducts(
-                                    $("#product_limit").val(),
-                                    $("input#search-product").val(),
-                                    (status, response) => {
-                                        if (status) {
-                                            $("#product_offset_last").text(response);
-                                            console.log("last page : " + response);
-                                        }
-                                        if (!status) {
-                                            console.log(response);
-                                        }
-                                    }
-                                );
-                            }
-                            if (!status) {
-                                console.err(response);
-                            }
-                        }
-                    );
-                }
-                $("#totalAllProduct").html(response)
-            }
-            if (!status) {
-                console.error(response)
-            }
-        })
-
-    });
 })
 
 export const getProductsAgain = () => {
     // get total row , get all product, lastoffsetproducts
-    getTotalProduct($("input#search-product").val(), (status, response) => {
+    const searchProduct = $("input#search-product").val()
+    const limitProduct = parseInt($("#product_limit").val())
+    const pageProduct = 1
+    getTotalProduct(searchProduct, (status, response) => {
         if (status) {
             $("#totalAllProduct").html(response)
             // if total row product lesser than 1 | not exist product
@@ -360,9 +399,9 @@ export const getProductsAgain = () => {
             // if total row product is equal greater than 1 |  exist product
             if (response >= 1) {
                 getProducts(
-                    $("input#search-product").val(),
-                    $("#product_limit").val(),
-                    $("#product_offset").text().trim(),
+                    searchProduct,
+                    limitProduct,
+                    pageProduct,
                     (status, response) => {
                         if (status) {
                             let tr = ``;
@@ -372,6 +411,7 @@ export const getProductsAgain = () => {
                             $("#data-products").html(tr);
                             reinitializeTooltips()
                             $("#paginationProduct").removeClass("d-none")
+                            $("#product_offset").text(1)
                             lastOffsetProducts(
                                 $("#product_limit").val(),
                                 $("input#search-product").val(),

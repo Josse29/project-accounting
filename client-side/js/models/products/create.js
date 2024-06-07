@@ -40,7 +40,6 @@ $(document).ready(function () {
                 reader.readAsDataURL(file[0]);
             }
         }
-
         // without image
         if (file.length < 1) {
             insertProducts(

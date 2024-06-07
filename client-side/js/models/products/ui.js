@@ -9,7 +9,8 @@ export const uitrProduct = (el) => {
                   <div class="d-flex w-100 justify-content-center gap-2">
                     <button 
                     class="btn btn-success text-white"
-                    data-bs-toggle="modal" data-bs-target="#productsModalDetail" 
+                    data-bs-toggle="modal" 
+                    data-bs-target="#productsModalDetail" 
                     id="detailProduct" 
                     data-productid="${el.ProductId}"  
                     data-productname="${el.ProductName}" 

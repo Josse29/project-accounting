@@ -8,7 +8,7 @@ $(document).ready(function () {
         });
         file_path = file_path.replace(/\\/g, "/");
         db.all(`SELECT 
-                ProductName, CategoryName, ProductPrice, ProductInfo 
+                Product.ProductName, Category.CategoryName, Product.ProductPrice, Product.ProductInfo 
                 FROM Product
                 LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId  
                 ORDER BY Product.ProductId DESC`, (err, result) => {
