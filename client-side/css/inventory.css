@@ -150,6 +150,21 @@
   button#btn-create-satuan:hover{
     background-color: #0396ea;
   }
+  button#supplier-export-pdf{
+    color: white;
+    background-color:rgb(249, 97, 46) ;
+  }
+  button#supplier-export-pdf:hover{
+    color: white;
+    background-color:rgb(236, 71, 17) ;
+  }
+  button#supplier-export-print{
+    color: white;
+    background-color:rgb(249, 66, 46) ;
+  }
+  button#supplier-export-print:hover{
+    background-color: rgb(212, 54, 36);
+  }
   /* mckkk for tbody scrolll*/
   /* tbody {
       display: block;

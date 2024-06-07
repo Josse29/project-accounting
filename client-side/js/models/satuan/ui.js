@@ -5,7 +5,8 @@ export const trSatuan = (el) => {
                 <td class="text-nowrap align-content-center text-capitalize">${el.SatuanName}</td>
                 <td>
                     <div class="d-flex w-100 justify-content-center gap-2">
-                        <button class="btn btn-success text-white"
+                        <button 
+                            class="btn btn-success text-white"
                             data-bs-toggle="modal" 
                             data-bs-target="#satuanModalDetail" 
                             id="satuanDetail" 
