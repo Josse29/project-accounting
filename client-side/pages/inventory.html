@@ -93,7 +93,7 @@
                             <div class="btn-group gap-2">
                                 <!-- tambah inventory -->
                                 <button id="btnInventoryModal" class="btn btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#createinventoryModal">
+                                    data-bs-target="#inventoryCreateModal">
                                     <span class="d-flex gap-2 align-items-center" data-bs-toggle="tooltip"
                                         data-bs-html="true" data-bs-title="<span>tambah-inventory</span>"
                                         data-bs-placement="bottom">
@@ -139,7 +139,6 @@
                                 <input type="date" class="form-control" id="startDate" />
                                 <span class="text-center align-content-center p-2 bg-body-secondary">s/d</span>
                                 <input type="date" class="form-control" id="endDate" />
-                                <!-- <button class="btn btn-primary">Search</button> -->
                             </div>
 
                         </div>
@@ -158,6 +157,8 @@
                                     style="background-color: #3b82f6">Search</span>
                             </div>
                         </div>
+                        <!-- section succes after action crud inventory -->
+                        <div id="sectionSuccessActionInventory"></div>
                         <!-- table inventory  -->
                         <div style="max-height: 270px; overflow: auto">
                             <table class="table table-striped">
@@ -175,7 +176,7 @@
                                         <th class="text-center">Aksi</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="inventory-data">
                                     <tr>
                                         <td class="text-center align-content-center">1</td>
                                         <td class="align-content-center">Tuesday , 20-04-2024</td>
@@ -596,7 +597,7 @@
         <!-- Inventory-Modal -->
         <div>
             <!-- create inventory -->
-            <div class="modal fade" id="createinventoryModal" tabindex="-1">
+            <div class="modal fade" id="inventoryCreateModal" tabindex="-1">
                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                     <div class="modal-content">
                         <div class="modal-header py-2" style="background-color: #3b82f6">
@@ -613,22 +614,18 @@
                             </div>
                             <!-- Nama Product -->
                             <div class="mb-3">
-                                <label for="create-productname-ref-supplier" class="form-label fs-4">Nama
+                                <label for="inventory-refproduct-create-name" class="form-label fs-4">Nama
                                     Produk</label>
                                 <select class="form-select" aria-label="Default select example"
-                                    id="create-productname-ref-supplier">
-                                    <option selected>Open this select menu</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
+                                    id="inventory-refproduct-create-name">
                                 </select>
                             </div>
                             <!-- Nama Supplier -->
                             <div class="mb-3">
-                                <label for="create-suppliername-ref-supplier" class="form-label fs-4"
-                                    id="product-supplier">Nama Supplier</label>
+                                <label for="inventory-refsupplier-create-name" class="form-label fs-4">Nama
+                                    Supplier</label>
                                 <select class="form-select" aria-label="Default select example"
-                                    id="create-suppliername-ref-supplier">
+                                    id="inventory-refsupplier-create-name">
                                     <option selected>Open this select menu</option>
                                     <option value="1">One</option>
                                     <option value="2">Two</option>
@@ -642,8 +639,8 @@
                                     <button type="button" class="btn border border-2 fs-4">
                                         -
                                     </button>
-                                    <input type="text" class="form-control" id="qty" placeholder="input stock"
-                                        style="width: 20px" />
+                                    <input type="text" class="form-control" id="inventory-refproduct-create-qty"
+                                        placeholder="input stock" style="width: 20px" />
                                     <button type="button" class="btn border border-2 fs-4">
                                         +
                                     </button>
@@ -652,14 +649,14 @@
                             <!-- KETERANGAN -->
                             <div class="mb-3">
                                 <label for="keterangan" class="form-label fs-4">Keterangan</label>
-                                <textarea class="form-control" id="keterangan"></textarea>
+                                <textarea class="form-control" id="inventory-create-info"></textarea>
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
                                 Close
                             </button>
-                            <button type="button" class="btn btn-primary" style="background-color: #3b82f6">
+                            <button id="inventory-create-submit" type="button" class="btn text-white">
                                 Save
                             </button>
                         </div>
@@ -756,8 +753,7 @@
                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
                                 Close
                             </button>
-                            <button type="button" class="btn" style="background-color: #3c50e0; color: white"
-                                id="submit_product" data-bs-dismiss="modal">
+                            <button type="button" class="btn text-white" id="submit_product" data-bs-dismiss="modal">
                                 Save
                             </button>
                         </div>
@@ -1096,9 +1092,9 @@
                             <!-- supplierCreateImg -->
                             <div class="mb-3">
                                 <label for="supplier-create-img" class="form-label fs-4 d-block">Image :</label>
-                                <div class="position-relative d-none" id="section-image">
-                                    <i class="fa-solid fa-circle-xmark text-danger" id="cancel-image"></i>
-                                    <img src="" alt="" class="w-100 h-auto" id="create-image-product-preview">
+                                <div class="position-relative d-none" id="supplier-create-img-section">
+                                    <i class="fa-solid fa-circle-xmark text-danger" id="supplier-create-img-cancel"></i>
+                                    <img src="" alt="" class="w-100 h-auto" id="supplier-create-img-preview">
                                 </div>
                                 <input class="form-control" type="file" id="supplier-create-img" />
                             </div>
@@ -1121,56 +1117,57 @@
                 </div>
             </div>
             <!-- supplierDetail -->
-            <div class="modal fade" id="supplierDetail" tabindex="-1">
+            <div class="modal fade" id="supplierDetailModal" tabindex="-1">
                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                     <div class="modal-content">
                         <div class="modal-header py-2" style="background-color: #3b82f6">
-                            <h1 class="modal-title fs-3 text-white" id="detailSatuanModalLabel">
+                            <h1 class="modal-title fs-3 text-white" id="supplierDetailModalLabel">
                                 Satuan
                             </h1>
                         </div>
                         <div class="modal-body">
-                            <!--DetailSatuanNama -->
+                            <!--supplierDetailName -->
                             <div class="mb-3">
-                                <label id="detail-satuan-name" class="form-label fs-4">Nama
+                                <label id="supplier-detail-name" class="form-label fs-4">Nama
                                     Satuan</label>
                             </div>
                             <!-- DetailSatuanNama -->
                             <div class="mb-3">
-                                <label id="detail-satuan-keterangan" class="form-label fs-4">Keterangan</label>
+                                <label id="supplier-detail-info" class="form-label fs-4">Keterangan</label>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- supplierUpdate -->
-            <div class="modal fade" id="supplierUpdate" tabindex="-1">
+            <div class="modal fade" id="supplierUpdateModal" tabindex="-1">
                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                     <div class="modal-content">
                         <div class="modal-header py-2" style="background-color: #3b82f6">
-                            <h1 class="modal-title fs-3 text-white" id="updateSatuanModalLabel">
+                            <h1 class="modal-title fs-3 text-white" id="supplierUpdateModalLabel">
                                 Satuan
                             </h1>
                         </div>
                         <div class="modal-body">
-                            <!--UpdateSatuanNama -->
+                            <!--supplierUpdateName -->
                             <div class="mb-3">
-                                <label for="update-satuan-name" class="form-label fs-4">Nama
-                                    Satuan</label>
-                                <input type="text" id="update-satuan-name" class="form-control"
-                                    placeholder="masukkan satuan">
+                                <label for="supplier-update-name" class="form-label fs-4">Nama
+                                    Supplier</label>
+                                <input type="text" id="supplier-update-name" class="form-control"
+                                    placeholder="masukkan nama supplier">
                             </div>
-                            <!-- UpdateSatuanInfo -->
+                            <!-- supplierUpdateInfo -->
                             <div class="mb-3">
-                                <label for="update-satuan-info" class="form-label fs-4">Keterangan</label>
-                                <textarea class="form-control" id="update-satuan-info"></textarea>
+                                <label for="supplier-update-info" class="form-label fs-4">Keterangan</label>
+                                <textarea class="form-control" id="supplier-update-info"></textarea>
                             </div>
                         </div>
+                        <!-- section button submit -->
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
                                 Close
                             </button>
-                            <button id="satuan-update-submit" type="button" class="btn btn-primary"
+                            <button id="supplier-update-submit" type="button" class="btn btn-primary"
                                 data-bs-dismiss="modal">
                                 Save
                             </button>
@@ -1179,17 +1176,17 @@
                 </div>
             </div>
             <!-- supplierDelete -->
-            <div class="modal fade" id="supplierDelete" tabindex="-1">
+            <div class="modal fade" id="supplierDeleteModal" tabindex="-1">
                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                     <div class="modal-content">
                         <div class="modal-header bg-danger">
-                            <h1 class="modal-title fs-2 text-white" id="satuanDeleteModalLabel">
+                            <h1 class="modal-title fs-2 text-white" id=" ">
                                 Modal
                             </h1>
                         </div>
                         <div class="modal-body text-center">
                             <i class="fa-solid fa-triangle-exclamation text-danger" style="font-size: 120px"></i>
-                            <h4 class="my-3" id="satuan-delete-satuanname"></h4>
+                            <h4 class="my-3" id="supplier-delete-name"></h4>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary d-flex align-items-center gap-2"
@@ -1198,7 +1195,7 @@
                                 <span class="fs-5">No</span>
                             </button>
                             <button type="button" class="btn btn-danger d-flex align-items-center gap-2"
-                                id="satuan-delete-sure" data-bs-dismiss="modal">
+                                id="supplier-delete-submit" data-bs-dismiss="modal">
                                 <i class="fa-solid fa-check me-1 fs-4"></i>
                                 <span class="fs-5">Yes</span>
                             </button>
@@ -1229,6 +1226,7 @@
     <script type="module" src="./../js/models/categories/index.js"></script>
     <script type="module" src="./../js/models/satuan/index.js"></script>
     <script type="module" src="./../js/models/supplier/index.js"></script>
+    <script type="module" src="./../js/models/inventory/index.js"></script>
 </body>
 
 </html>

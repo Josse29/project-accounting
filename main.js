@@ -27,8 +27,9 @@ const createLoginPage = () => {
       nodeIntegration: true,
       contextIsolation: false,
     },
-    width: 1100,
-    height: 750,
+    frame: false,
+    width: 1200,
+    height: 800,
     autoHideMenuBar: true,
   });
   loginPage.loadFile("index.html");

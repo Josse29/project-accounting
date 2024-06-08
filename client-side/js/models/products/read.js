@@ -1,11 +1,11 @@
-import { getProducts, getTotalProduct, lastOffsetProducts } from "../../../../serverless-side/functions/product.js";
+import { getListProduct, getProducts, getTotalProduct, lastPageProduct } from "../../../../serverless-side/functions/product.js";
 import { reinitializeTooltips } from "../../utils/updateUi.js";
 import { trProductZero, trProductZeroSearch, uitrProduct } from "./ui.js";
 
 
 $(document).ready(function () {
 
-    // get total row , get all product, lastoffsetproducts
+    // get total row , get all product, lastPageProduct
     getTotalProduct($("input#search-product").val(), (status, response) => {
         if (status) {
             $("#totalAllProduct").html(response)
@@ -32,7 +32,7 @@ $(document).ready(function () {
                             $("#data-products").html(tr);
                             reinitializeTooltips()
                             $("#paginationProduct").removeClass("d-none")
-                            lastOffsetProducts(
+                            lastPageProduct(
                                 limitProduct,
                                 searchProduct,
                                 (status, response) => {
@@ -226,22 +226,21 @@ $(document).ready(function () {
                     $("#data-products").html(tr);
                     $("#product_offset").text(1);
                     reinitializeTooltips();
-                    lastOffsetProducts(
+                    lastPageProduct(
                         limitProduct,
                         searchProduct,
                         (status, response) => {
                             if (status) {
                                 $("#product_offset_last").text(response);
-                                console.log("last page : " + response);
                             }
                             if (!status) {
-                                console.log(response);
+                                console.error(response);
                             }
                         }
                     );
                 }
                 if (!status) {
-                    console.err(response);
+                    console.error(response);
                 }
             }
         );
@@ -274,22 +273,21 @@ $(document).ready(function () {
                                 });
                                 $("#data-products").html(tr);
                                 reinitializeTooltips();
-                                lastOffsetProducts(
+                                lastPageProduct(
                                     limitProduct,
                                     searchProduct,
                                     (status, response) => {
                                         if (status) {
                                             $("#product_offset_last").text(response);
-                                            console.log("last page : " + response);
                                         }
                                         if (!status) {
-                                            console.log(response);
+                                            console.error(response);
                                         }
                                     }
                                 );
                             }
                             if (!status) {
-                                console.err(response);
+                                console.error(response);
                             }
                         }
                     );
@@ -329,7 +327,7 @@ $(document).ready(function () {
                                 });
                                 $("#data-products").html(tr);
                                 reinitializeTooltips();
-                                lastOffsetProducts(
+                                lastPageProduct(
                                     limitProduct,
                                     searchProduct,
                                     (status, response) => {
@@ -337,13 +335,13 @@ $(document).ready(function () {
                                             $("#product_offset_last").text(response);
                                         }
                                         if (!status) {
-                                            console.log(response);
+                                            console.error(response);
                                         }
                                     }
                                 );
                             }
                             if (!status) {
-                                console.err(response);
+                                console.error(response);
                             }
                         }
                     );
@@ -381,6 +379,20 @@ $(document).ready(function () {
         $("#detail-category-price").text(product.productcategory)
         $("#detail-product-keterangan").text(product.productketerangan)
     });
+
+    getListProduct((status, response) => {
+        if (status) {
+            let option = ``
+            response.forEach((el) => {
+                option += `<option value="${el.ProductId}">${el.ProductName}</option>`
+            })
+            $("#inventory-refproduct-create-name").html(option)
+            console.log(response)
+        }
+        if (!status) {
+            console.error(response)
+        }
+    });
 })
 
 export const getProductsAgain = () => {
@@ -412,9 +424,9 @@ export const getProductsAgain = () => {
                             reinitializeTooltips()
                             $("#paginationProduct").removeClass("d-none")
                             $("#product_offset").text(1)
-                            lastOffsetProducts(
-                                $("#product_limit").val(),
-                                $("input#search-product").val(),
+                            lastPageProduct(
+                                limitProduct,
+                                searchProduct,
                                 (status, response) => {
                                     if (status) {
                                         $("#product_offset_last").text(response);
@@ -425,7 +437,9 @@ export const getProductsAgain = () => {
                                 }
                             );
                         }
-                        if (!status) { console.error(response) }
+                        if (!status) {
+                            console.error(response)
+                        }
                     }
                 );
             }

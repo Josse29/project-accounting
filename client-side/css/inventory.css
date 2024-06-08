@@ -113,6 +113,13 @@
     font-size: 32px;
     cursor: pointer;
   }
+  i#supplier-create-img-cancel{
+    position: absolute;
+    right: -10px;
+    top: -22px; 
+    font-size: 32px;
+    cursor: pointer;
+  }
   i#edit-product-cancel-image{
     position: absolute;
     right: -10px;
@@ -164,6 +171,18 @@
   }
   button#supplier-export-print:hover{
     background-color: rgb(212, 54, 36);
+  }
+  button#inventory-create-submit{
+    background-color: #3b82f6;
+  }
+  button#inventory-create-submit:hover{
+    background-color: #3574d9;
+  }
+  button#submit_product{
+    background-color: #3c50e0;
+  }
+  button#submit_product:hover{
+    background-color: #3445c7;
   }
   /* mckkk for tbody scrolll*/
   /* tbody {

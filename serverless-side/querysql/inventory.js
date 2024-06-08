@@ -4,6 +4,7 @@
 //     InventoryDate TEXT DEFAULT (datetime('now','localtime')),
 //     InventoryInfo TEXT,
 //     InventoryProductId INTEGER,
+//     InventoryProductQty INTEGER,
 //     InventorySupplierId INTEGER,
 //     InventoryUserId INTEGER,
 //     FOREIGN KEY (InventoryProductId) REFERENCES Product(ProductId),
@@ -31,5 +32,38 @@ const tableName = `Inventory`
 const colInventoryId = `InventoryId`
 const colInventoryDate = `InventoryDate`
 const colInventoryProductId = `InventoryProductId`
-const colInventorySupplierId = `InventorySupplierId`
+const colInventoryProductQty = `InventoryProductQty`
+const colInventoryInfo = `InventoryInfo`
+// 1.CREATE 
+export const queryInsertInventory = (inventoryProductId, inventoryProductQty, inventoryInfo) => {
+    return `INSERT 
+            INTO ${tableName} 
+            (${colInventoryProductId}, ${colInventoryProductQty},${colInventoryInfo}) 
+            VALUES 
+            ('${inventoryProductId}', '${inventoryProductQty}', '${inventoryInfo})`
+}
+// 2.READ
+export const queryGetInventory = () => {
+    return `SELECT *
+            FROM ${tableName}
+            LEFT JOIN Product ON ${tableName}.${colInventoryProductId} = Product.ProductId
+            LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
+            LEFT JOIN Supplier ON Inventory.InventorySupplierId = Supplier.SupplierId
+            ORDER BY Inventory.InventoryDate DESC`
 
+}
+// 3.UPDATE
+export const queryUpdateInventory = (inventoryId, inventoryProductId, inventoryProductQty, inventoryInfo) => {
+    return `UPDATE
+            ${tableName}
+            SET ${colInventoryProductId} = '${inventoryProductId}',
+                ${colInventoryProductQty} = '${inventoryProductQty}',
+                ${colInventoryInfo} = '${inventoryInfo}',
+            WHERE ${colInventoryId} = '${inventoryId}'`
+}
+// 4.DELETE
+export const queryDeleteInventory = (inventoryId) => {
+    return `DELETE
+            FROM ${tableName}
+            WHERE ${colInventoryId} = '${inventoryId}'`
+}

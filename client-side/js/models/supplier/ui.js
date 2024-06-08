@@ -12,18 +12,50 @@ export const trSupplier = (el) => {
                         <button 
                             class="btn btn-success text-white"
                             data-bs-toggle="modal" 
-                            data-bs-target="#supplierDetail" 
+                            data-bs-target="#supplierDetailModal" 
                             id="supplierDetail" 
                             data-supplierid="${el.SupplierId}"  
-                            data-suppliename="${el.SupplierName}"
-                            data-supplierinfo="${el.SupplierInfo}"    >
-                            <i class="fa-solid fa-eye"></i>
+                            data-suppliername="${el.SupplierName}"
+                            data-supplierinfo="${el.SupplierInfo}">
+                                <i 
+                                    class="fa-solid fa-eye"
+                                    data-bs-toggle="tooltip" 
+                                    data-bs-html="true"
+                                    data-bs-title="<span>lihat-${el.SupplierName}</span>" 
+                                    data-bs-placement="bottom">
+                                </i>
                         </button>
-                        <button class="btn btn-primary text-white">
-                            <i class="fa-solid fa-pencil"></i>
+                        <button 
+                            class="btn btn-primary text-white"
+                            data-bs-toggle="modal" 
+                            data-bs-target="#supplierUpdateModal" 
+                            id="supplierUpdate" 
+                            data-supplierid="${el.SupplierId}"  
+                            data-suppliername="${el.SupplierName}"
+                            data-supplierinfo="${el.SupplierInfo}">
+                                <i 
+                                    class="fa-solid fa-pencil"
+                                    data-bs-toggle="tooltip" 
+                                    data-bs-html="true"
+                                    data-bs-title="<span>edit-${el.SupplierName}</span>" 
+                                    data-bs-placement="bottom">
+                                </i>
                         </button>
-                        <button class="btn btn-danger text-white">
-                            <i class="fa-solid fa-trash-can"></i>
+                        <button
+                            class="btn btn-danger text-white"
+                            data-bs-toggle="modal" 
+                            data-bs-target="#supplierDeleteModal" 
+                            id="supplierDelete" 
+                            data-supplierid="${el.SupplierId}"  
+                            data-suppliername="${el.SupplierName}"
+                            data-supplierinfo="${el.SupplierInfo}">
+                                <i 
+                                    class="fa-solid fa-trash-can"
+                                    data-bs-toggle="tooltip" 
+                                    data-bs-html="true"
+                                    data-bs-title="<span>hapus-${el.SupplierName}</span>" 
+                                    data-bs-placement="bottom">
+                                </i>
                         </button>
                     </div>
                 </td>

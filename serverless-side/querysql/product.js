@@ -52,6 +52,12 @@ export const queryGetProducts = (searchProduct, limitProduct, offsetProduct) => 
                 OFFSET ${offsetProduct}`;
     }
 };
+export const queryGetListProduct = () => {
+    return `SELECT *
+            FROM ${tableName}
+            LEFT JOIN Category ON ${tableName}.${colProductCategoryId} = Category.CategoryId
+            ORDER BY ${tableName}.${colProductName} ASC`;
+}
 export const queryTotalRowProducts = (searchProduct) => {
     // without search value product
     if (searchProduct === "") {

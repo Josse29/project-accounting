@@ -4,12 +4,16 @@ $("#create-image-product").on("change", (event) => {
     if (files.length > 0) {
         const reader = new FileReader();
         reader.onload = function () {
-            const preview = document.getElementById('create-image-product-preview');
-            preview.src = reader.result;
-            preview.classList.add("mb-3")
+            $("#create-image-product-preview").attr("src", reader.result)
+            $("#create-image-product-preview").addClass("mb-3")
             $("#section-image").removeClass("d-none")
         }
         reader.readAsDataURL(event.target.files[0]);
+        // cancel-product-create-image
+        $("#cancel-image").on("click", () => {
+            $("#create-image-product").val("")
+            $("#section-image").addClass("d-none")
+        })
     }
 })
 

@@ -38,7 +38,7 @@ export const updateSupplier = (supplierId, supplierName, supplierInfo, callback)
 export const deleteSupplier = (supplierId, supplierName, callback) => {
     db.run(queryDeleteSupplier(supplierId), (err) => {
         if (!err) {
-            return callback(true, `Supplier < b class= 'text-capitalize' > ${supplierName}</ > berhasil dihapus`)
+            return callback(true, `Supplier <b class= 'text-capitalize'>${supplierName}</b> berhasil dihapus`)
         }
         if (err) {
             return callback(false, `Supplier < b class= 'text-capitalize' > ${supplierName}</ > gagal dihapus`)

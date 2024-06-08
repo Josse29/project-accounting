@@ -1,4 +1,4 @@
-import { queryDeleteProductId, queryGetProducts, queryTotalRowProducts, queryUpdateProduct, queryinsertProducts } from "../querysql/product.js";
+import { queryDeleteProductId, queryGetListProduct, queryGetProducts, queryTotalRowProducts, queryUpdateProduct, queryinsertProducts } from "../querysql/product.js";
 
 // 1.CREATE
 export const insertProducts = (name, price, keterangan, image, categoryId, callback) => {
@@ -18,8 +18,20 @@ export const getProducts = (
     offsetProduct,
     callback
 ) => {
-    let skipOffsetProduct = (offsetProduct - 1) * limitProduct;
+    let skipOffsetProduct = (offsetProduct - 1) * limitProduct
     db.all(queryGetProducts(searchProduct, limitProduct, skipOffsetProduct), (err, res) => {
+        if (!err) {
+            return callback(true, res);
+        }
+        if (err) {
+            return callback(false, err);
+        }
+    });
+};
+export const getListProduct = (
+    callback
+) => {
+    db.all(queryGetListProduct(), (err, res) => {
         if (!err) {
             return callback(true, res);
         }
@@ -29,16 +41,16 @@ export const getProducts = (
     });
 
 };
-export const lastOffsetProducts = (limitProduct, searchVal, callback) => {
+export const lastPageProduct = (limitProduct, searchVal, callback) => {
     db.each(queryTotalRowProducts(searchVal), (err, res) => {
         if (!err) {
-            let lastOffset;
+            let lastPage;
             if (res.TOTAL_ROW % limitProduct === 0) {
-                lastOffset = parseInt(res.TOTAL_ROW) / parseInt(limitProduct);
+                lastPage = parseInt(res.TOTAL_ROW) / parseInt(limitProduct);
             } else {
-                lastOffset = parseInt(res.TOTAL_ROW / parseInt(limitProduct)) + 1;
+                lastPage = parseInt(parseInt(res.TOTAL_ROW) / parseInt(limitProduct)) + 1;
             }
-            return callback(true, lastOffset);
+            return callback(true, lastPage);
         }
         if (err) {
             return callback(false, err);

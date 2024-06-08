@@ -7,7 +7,6 @@
   }
   body::-webkit-scrollbar {
     display: none;
-    -webkit-app-region: drag;
   }
   div.icon-me {
     display: flex;
@@ -23,21 +22,19 @@
   }
   .sections {
     display: flex;
+    height: 100vh;
   }
   .section-first {
     width: 60vw;
-    background-image: url("./../images/welcome.jpg");
-    height: 100vh;
-    background-position: center;
+    background-image: url("./../images/export.jpg");
+    background-position: bottom;
     background-repeat: no-repeat;
     background-size: cover;
     transition: background-position 0.5s ease-in-out;
     cursor: pointer;
   }
   .section-first:hover {
-    width: 60vw;
-    background-image: url("./../images/welcome.jpg");
-    height: 100vh;
+    background-image: url("./../images/export.jpg");
     background-position: top;
     background-repeat: no-repeat;
     background-size: cover;
@@ -106,6 +103,6 @@
     background-color: #1f41bb;
   }
   .section-second form button.custome-me:hover {
-    background-color: #516ac5;
+    background-color: #1e399e;
   }
   
