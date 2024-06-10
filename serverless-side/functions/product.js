@@ -18,8 +18,8 @@ export const getProducts = (
     offsetProduct,
     callback
 ) => {
-    let skipOffsetProduct = (offsetProduct - 1) * limitProduct
-    db.all(queryGetProducts(searchProduct, limitProduct, skipOffsetProduct), (err, res) => {
+    const startOffsetProduct = (offsetProduct - 1) * limitProduct
+    db.all(queryGetProducts(searchProduct, limitProduct, startOffsetProduct), (err, res) => {
         if (!err) {
             return callback(true, res);
         }

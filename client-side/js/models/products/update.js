@@ -36,8 +36,9 @@ $(document).ready(function () {
                     categoyEditProduct += `<option value="${el.CategoryId}"${selected}>${el.CategoryName}</option>`;
                 });
                 $("#edit-category-product").html(categoyEditProduct);
-            } else {
-                console.error(response);
+            }
+            if (!status) {
+                console.log(response)
             }
         });
         // action image kesell xxx

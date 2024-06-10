@@ -1,13 +1,23 @@
+import { formatWaktuIndo } from "../../utils/waktuIndo.js"
+
 // ui tr supplier from db
 export const trSupplier = (el) => {
+    const splitDateTime = el.SupplierDate.split(" ")
+    const dateSupplier = formatWaktuIndo(splitDateTime[0])
     return `<tr>
-                <td class="text-center align-content-center">1</td>
-                <td class="align-content-center">Tuesday , 20-04-2024</td>
-                <td class="align-content-center text-nowrap">${el.SupplierName}</td>
-                <td class="align-content-center text-nowrap">
-                    ${el.SupplierInfo}
+                <td class="text-center align-content-center">${el.SupplierId}</td>
+                <td class="align-content-center">${dateSupplier}</td>
+                <td class="align-content-center text-nowrap text-capitalize">${el.SupplierName}</td>
+                <td class="text-nowrap align-content-center">
+                    <ul >
+                        <li>An item</li>
+                        <li>A second item</li>
+                        <li>A third item</li>
+                        <li>A fourth item</li>
+                        <li>And a fifth one</li>
+                    </ul>
                 </td>
-                <td>
+                <td class="align-content-center">
                     <div class="d-flex w-100 justify-content-center gap-2">
                         <button 
                             class="btn btn-success text-white"
@@ -16,7 +26,9 @@ export const trSupplier = (el) => {
                             id="supplierDetail" 
                             data-supplierid="${el.SupplierId}"  
                             data-suppliername="${el.SupplierName}"
-                            data-supplierinfo="${el.SupplierInfo}">
+                            data-supplierinfo="${el.SupplierInfo}"
+                            data-supplierimg="${el.SupplierImg}"
+                            >
                                 <i 
                                     class="fa-solid fa-eye"
                                     data-bs-toggle="tooltip" 
@@ -32,7 +44,8 @@ export const trSupplier = (el) => {
                             id="supplierUpdate" 
                             data-supplierid="${el.SupplierId}"  
                             data-suppliername="${el.SupplierName}"
-                            data-supplierinfo="${el.SupplierInfo}">
+                            data-supplierinfo="${el.SupplierInfo}"
+                            data-supplierimg="${el.SupplierImg}">
                                 <i 
                                     class="fa-solid fa-pencil"
                                     data-bs-toggle="tooltip" 
@@ -70,4 +83,10 @@ export const successActionSupplier = (res) => {
     setTimeout(() => {
         $("#sectionSuccessActionSupply").html("")
     }, 20000);
+}
+// it doesn't exist supplier
+export const trSupplierZero = () => {
+    return `<tr>
+                <td colspan="5" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">tidak ada supplier....</td>
+            </tr>`
 }

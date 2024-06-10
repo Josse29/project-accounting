@@ -387,7 +387,6 @@ $(document).ready(function () {
                 option += `<option value="${el.ProductId}">${el.ProductName}</option>`
             })
             $("#inventory-refproduct-create-name").html(option)
-            console.log(response)
         }
         if (!status) {
             console.error(response)

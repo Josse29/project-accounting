@@ -27,7 +27,7 @@ const createLoginPage = () => {
       nodeIntegration: true,
       contextIsolation: false,
     },
-    frame: false,
+    // frame: false,
     width: 1200,
     height: 800,
     autoHideMenuBar: true,

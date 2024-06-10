@@ -4,7 +4,6 @@ $(document).ready(function () {
     getInventory((status, response) => {
         if (status) {
             let tr = ``
-            console.log(response)
             response.forEach(element => {
                 tr += trInventory(element)
             });
@@ -19,7 +18,6 @@ export const getInventoryAgain = () => {
     getInventory((status, response) => {
         if (status) {
             let tr = ``
-            console.log(response)
             response.forEach(element => {
                 tr += trInventory(element)
             });

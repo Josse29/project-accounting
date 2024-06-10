@@ -7,7 +7,7 @@ export const createSatuan = (satuanName, satuanInfo, callback) => {
             return callback(true, `Satuan <b class='text-capitalize'>${satuanName}</b> berhasil ditambahkan`)
         }
         if (err) {
-            return callback(false, `Satuan <b class='text-capitalize'>${satuanName}</b> gagal ditambahkan`)
+            return callback(false, err)
         }
     });
 }
@@ -29,7 +29,7 @@ export const updateSatuan = (satuanId, satuanName, satuanInfo, callback) => {
             return callback(true, `Satuan <b>${satuanName}</b> berhasil diperbaharui ${satuanId}`)
         }
         if (err) {
-            return callback(false, `Satuan  <b>${satuanName}</b> gagal diperbaharui`)
+            return callback(false, err)
         }
     })
 }
@@ -40,7 +40,7 @@ export const deleteSatuan = (satuanId, satuanName, callback) => {
             return callback(true, `Satuan <b class='text-capitalize'>${satuanName}</b> berhasil dihapus`)
         }
         if (err) {
-            return callback(false, `Satuan <b class='text-capitalize'>${satuanName}</b> gagal dihapus`)
+            return callback(false, err)
         }
     });
 }

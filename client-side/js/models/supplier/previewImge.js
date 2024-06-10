@@ -1,4 +1,4 @@
-// supplierCreateImg
+// supplierCreateImg 
 $("#supplier-create-img").on("change", (event) => {
     const files = event.target.files
     if (files.length > 0) {
@@ -15,5 +15,18 @@ $("#supplier-create-img").on("change", (event) => {
             $("#supplier-create-img").val("")
             $("#supplier-create-img-section").addClass("d-none")
         })
+    }
+})
+// supplierUpdateImgs keselll
+$("#supplier-update-img").on("change", (event) => {
+    const files = event.target.files
+    if (files.length > 0) {
+        $("#supplier-update-img-section").removeClass("d-none")
+        const reader = new FileReader();
+        reader.onload = function () {
+            const imgbase64 = reader.result
+            $("#supplier-update-img-preview").attr("src", imgbase64)
+        }
+        reader.readAsDataURL(event.target.files[0]);
     }
 })

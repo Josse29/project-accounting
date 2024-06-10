@@ -6,7 +6,9 @@
 //     ProductInfo TEXT,
 //     ProductPrice REAL,
 //     ProductCategoryId INTEGER, 
+//     ProductSupplierId INTEGER,
 //     FOREIGN KEY (ProductCategoryId) REFERENCES Category(CategoryId)
+//     FOREIGN KEY (ProductSupplierId) REFERENCES Supplier(SupplierId)
 //     );
 
 // init table & column
@@ -17,7 +19,7 @@ const colProductCategoryId = `ProductCategoryId`
 const colProductPrice = `ProductPrice`
 const colProductInfo = `ProductInfo`
 const colProductImg = `ProductImage`
-
+const colSupplierId = `ProductSupplierId`
 
 // 1.CREATE 
 export const queryinsertProducts = (name, price, productInfo, image, categoryId) => {
@@ -53,7 +55,8 @@ export const queryGetProducts = (searchProduct, limitProduct, offsetProduct) => 
     }
 };
 export const queryGetListProduct = () => {
-    return `SELECT *
+    return `SELECT 
+            ${tableName}.${colProductName}, ${tableName}.${colProductId}
             FROM ${tableName}
             LEFT JOIN Category ON ${tableName}.${colProductCategoryId} = Category.CategoryId
             ORDER BY ${tableName}.${colProductName} ASC`;
@@ -61,12 +64,12 @@ export const queryGetListProduct = () => {
 export const queryTotalRowProducts = (searchProduct) => {
     // without search value product
     if (searchProduct === "") {
-        return `SELECT COUNT(*) AS TOTAL_ROW
+        return `SELECT COUNT(${colProductId}) AS TOTAL_ROW
                 FROM ${tableName}`
     }
     // with search value product
     if (searchProduct !== "") {
-        return `SELECT COUNT(*) AS TOTAL_ROW
+        return `SELECT COUNT(${colProductId}) AS TOTAL_ROW
                 FROM ${tableName}
                 LEFT JOIN Category ON ${tableName}.${colProductCategoryId} = Category.CategoryId
                 WHERE ${tableName}.${colProductName} LIKE '%${searchProduct}%' ESCAPE '!' OR 

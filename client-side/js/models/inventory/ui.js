@@ -3,7 +3,7 @@ import { formatWaktuIndo } from "../../utils/waktuIndo.js"
 // ui tr inventory from db
 export const trInventory = (el) => {
     const splitDateTime = el.InventoryDate.split(" ")
-    const dateInventory = formatWaktuIndo(splitDateTime[0]).formattedDate
+    const dateInventory = formatWaktuIndo(splitDateTime[0])
     const timeInventory = splitDateTime[1]
     return `<tr>
                 <td class="text-center align-content-center">${el.InventoryId}</td>

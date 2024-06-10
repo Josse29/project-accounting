@@ -7,7 +7,7 @@ export const createCategory = (categoryName, categoryInfo, callback) => {
             return callback(true, `Kategori <b class='text-capitalize'>${categoryName}</b> berhasil ditambahkan`)
         }
         if (err) {
-            return callback(false, `Kategori <b class='text-capitalize'>${categoryName}</b> gagal ditambahkan`)
+            return callback(false, err)
         }
     });
 }
@@ -29,7 +29,7 @@ export const updateCategory = (categoryId, categoryName, categoryInfo, callback)
             return callback(true, `Kategori <b>${categoryName}</b> berhasil diperbaharui`)
         }
         if (err) {
-            return callback(false, `Kategori ${categoryName} gagal diperbaharui`)
+            return callback(false, err)
         }
     })
 }
@@ -40,7 +40,7 @@ export const deleteCategory = (categoryId, categoryName, callback) => {
             return callback(true, `Kategori <b class='text-capitalize'>${categoryName}</b> berhasil dihapus`)
         }
         if (err) {
-            return callback(false, `Kategori <b class='text-capitalize'>${categoryName}</b> gagal dihapus`)
+            return callback(false, err)
         }
     });
 }

@@ -37,7 +37,6 @@ export const formatWaktuIndo = (objectDate) => {
     const month = months[dateObject.getMonth()];
     const year = dateObject.getFullYear();
     const formattedDate = dayOfWeek + ', ' + dayOfMonth + ' ' + month + ' ' + year;
-    return {
-        formattedDate
-    }
+    return formattedDate
+
 }

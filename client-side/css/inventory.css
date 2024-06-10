@@ -184,6 +184,20 @@
   button#submit_product:hover{
     background-color: #3445c7;
   }
+  i#supplier-create-img-cancel{
+    position: absolute;
+    right: -10px;
+    top: -22px; 
+    font-size: 32px;
+    cursor: pointer;
+  }
+  i#supplier-update-img-cancel{
+    position: absolute;
+    right: -10px;
+    top: -22px; 
+    font-size: 32px;
+    cursor: pointer;
+  }
   /* mckkk for tbody scrolll*/
   /* tbody {
       display: block;
