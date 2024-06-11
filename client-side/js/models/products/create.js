@@ -3,6 +3,10 @@ import { getProductsAgain } from "./read.js";
 import { createBlankValue, successActionProduct } from "./ui.js";
 
 $(document).ready(function () {
+
+    // Hapus event listener sebelumnya jika ada MCCCCCKKKKKKKK
+    $("#submit_product").off("click");
+
     // create product
     $("#submit_product").on("click", () => {
         const productName = $("#product-name").val()

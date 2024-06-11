@@ -27,6 +27,7 @@ $(document).ready(function () {
             $("#section-edit-product-img").removeClass("d-none")
             $("img#edit-product-image").attr("src", product.productimage)
         }
+
         // mckkkk
         getCategory((status, response) => {
             if (status) {
@@ -41,6 +42,10 @@ $(document).ready(function () {
                 console.log(response)
             }
         });
+
+        // Hapus event listener sebelumnya jika ada MCCCCCKKKKKKKK
+        $("#edit-product-submit").off("click");
+
         // action image kesell xxx
         $("#edit-product-submit").on("click", () => {
 

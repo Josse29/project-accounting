@@ -4,8 +4,11 @@ import { successActionSupplier } from "./ui.js";
 
 // supplier-create-name
 $(document).ready(function () {
-
+    // Hapus event listener sebelumnya jika ada MCCCCCKKKKKKKK
+    $("#supplier-create-submit").off("click");
+    // event create product
     $("#supplier-create-submit").on("click", () => {
+        // get all value
         const supplierName = $("#supplier-create-name").val()
         const supplierInfo = $("#supplier-create-info").val()
         const supplierImg = document.getElementById("supplier-create-img").files

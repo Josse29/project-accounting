@@ -198,6 +198,20 @@
     font-size: 32px;
     cursor: pointer;
   }
+  .supplier-btn-page{
+    background-color: #fff;
+    color: black;
+    font-size: 18px;
+    border: 2px solid #e1e1e1;
+    outline:none;
+    padding: 8px 12px;
+  }
+  .supplier-active-page{
+    background-color: #3b82f6;
+    color: white;
+    border: 2px solid #3b82f6;
+    outline:none;
+  }
   /* mckkk for tbody scrolll*/
   /* tbody {
       display: block;

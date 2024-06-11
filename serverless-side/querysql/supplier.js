@@ -25,26 +25,44 @@ export const queryInsertSupplier = (supplierName, supplierInfo, supplierImg) => 
             ('${supplierName}', '${supplierInfo}', '${supplierImg}')`
 }
 // 2.READ
-export const queryGetSupplier = () => {
-    return `SELECT *
+export const queryGetSupplier = (supplierSearch, supplierLimit, supplierStartOffset) => {
+    let query = `SELECT *
+                 FROM ${tableName}
+                 ORDER BY ${colSupplierName} ASC `
+    // with feature search
+    if (supplierSearch !== "") {
+        query += `WHERE ${colSupplierName} LIKE '%${supplierSearch}%' ESCAPE '!' OR 
+                        ${colSupplierInfo} LIKE '%${supplierSearch}%' ESCAPE '!'`
+    }
+    query += `LIMIT ${supplierLimit} 
+              OFFSET ${supplierStartOffset}`
+    return query
+}
+export const queryTotalRowSupplier = (supplierSearch) => {
+    let query = `SELECT COUNT(${colSupplierId}) AS TOTAL_ROW
+                 FROM ${tableName}`
+    // with feature search
+    if (supplierSearch !== "") {
+        query += `WHERE ${colSupplierName} LIKE '%${supplierSearch}%' ESCAPE '!' OR 
+                        ${colSupplierInfo} LIKE '%${supplierSearch}%' ESCAPE '!'`
+    }
+    return query
+}
+export const queryGetListSupplier = () => {
+    return `SELECT
+            ${colSupplierId}, ${colSupplierName}
             FROM ${tableName}
             ORDER BY ${colSupplierName} ASC`
-}
-export const queryTotalRowSupplier = (searchSupplier) => {
-    // without search value product
-    if (searchSupplier === "") {
-        return `SELECT COUNT(${colSupplierId}) AS TOTAL_ROW
-                FROM ${tableName}`
-    }
 }
 // 3.UPDATE
 export const queryUpdateSupplier = (supplierId, supplierName, supplierInfo, supplierImg) => {
     let query = `UPDATE ${tableName}
                  SET ${colSupplierName} = '${supplierName}',
-                     ${colSupplierInfo} = '${supplierInfo}',`
+                 ${colSupplierInfo} = '${supplierInfo}'`
     // with image
     if (supplierImg !== "") {
-        query += `${colSupplierImg}  = '${supplierImg}'`
+        query += `,
+                  ${colSupplierImg}  = '${supplierImg}'`
     }
     query += `WHERE ${colSupplierId} = ${supplierId}`
     return query
@@ -53,5 +71,5 @@ export const queryUpdateSupplier = (supplierId, supplierName, supplierInfo, supp
 export const queryDeleteSupplier = (supplierId) => {
     return `DELETE 
             FROM ${tableName}
-            WHERE ${colSupplierId} = '${supplierId}'`
+            WHERE ${colSupplierId} = ${supplierId} `
 }

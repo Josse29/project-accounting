@@ -1,4 +1,4 @@
-import { queryDeleteSupplier, queryGetSupplier, queryInsertSupplier, queryTotalRowSupplier, queryUpdateSupplier } from "../querysql/supplier.js";
+import { queryDeleteSupplier, queryGetListSupplier, queryGetSupplier, queryInsertSupplier, queryTotalRowSupplier, queryUpdateSupplier } from "../querysql/supplier.js";
 
 
 // 1.CREATE
@@ -13,8 +13,9 @@ export const createSupplier = (supplierName, supplierInfo, supplierImg, callback
     });
 }
 // 2.READ
-export const getSupplier = (callback) => {
-    db.all(queryGetSupplier(), (err, res) => {
+export const getSupplier = (supplierSearch, supplierLimit, supplierPage, callback) => {
+    const supplierStartOffset = (supplierPage - 1) * supplierLimit
+    db.all(queryGetSupplier(supplierSearch, supplierLimit, supplierStartOffset), (err, res) => {
         if (!err) {
             return callback(true, res)
         }
@@ -23,8 +24,8 @@ export const getSupplier = (callback) => {
         }
     });
 }
-export const getTotalSupplier = (searchVal, callback) => {
-    db.each(queryTotalRowSupplier(searchVal), (err, res) => {
+export const getTotalRowSupplier = (supplierSearch, callback) => {
+    db.each(queryTotalRowSupplier(supplierSearch), (err, res) => {
         if (!err) {
             const totalProduct = parseInt(res.TOTAL_ROW);
             return callback(true, totalProduct);
@@ -33,6 +34,33 @@ export const getTotalSupplier = (searchVal, callback) => {
             return callback(false, err);
         }
     });
+}
+export const getTotalPageSupplier = (supplierLimit, supplierSearch, callback) => {
+    db.each(queryTotalRowSupplier(supplierSearch), (err, res) => {
+        if (!err) {
+            let lastPage;
+            if (res.TOTAL_ROW % supplierLimit === 0) {
+                lastPage = parseInt(res.TOTAL_ROW) / parseInt(supplierLimit);
+            }
+            if (res.TOTAL_ROW % supplierLimit !== 0) {
+                lastPage = parseInt(parseInt(res.TOTAL_ROW) / parseInt(supplierLimit)) + 1;
+            }
+            return callback(true, lastPage);
+        }
+        if (err) {
+            return callback(false, err);
+        }
+    });
+};
+export const getListSupplier = (callback) => {
+    db.all(queryGetListSupplier(), (err, res) => {
+        if (!err) {
+            return callback(true, res)
+        }
+        if (err) {
+            return callback(false, err)
+        }
+    })
 }
 // 3.UPDATE
 export const updateSupplier = (supplierId, supplierName, supplierInfo, supplierImg, callback) => {

@@ -1,7 +1,7 @@
 export const uiTrCategory = (el) => {
   return `<tr>
             <td class="text-center align-content-center">${el.CategoryId}</td>
-            <td class="text-nowrap align-content-center">
+            <td class="text-nowrap align-content-center text-capitalize">
               ${el.CategoryName}
             </td>
             <td class="text-nowrap align-content-center">

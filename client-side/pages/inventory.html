@@ -511,7 +511,7 @@
                         <div class="card-body">
                             <!-- btn group & totalrow -->
                             <div class="d-flex justify-content-between mb-3">
-                                <!-- btn group create, excel, dll -->
+                                <!-- btn group create, pdf, print, excel, dll -->
                                 <div class="btn-group gap-2">
                                     <!-- tambah supplier -->
                                     <button class="btn text-white" style="background-color: #3b82f6"
@@ -548,12 +548,24 @@
                                     <span id="totalAllSupplier">2</span>
                                 </div>
                             </div>
-                            <!-- search supplier -->
-                            <div class="input-group mb-3">
-                                <input type="text" class="form-control" placeholder="masukkan keyword supplier..."
-                                    id="supplier-search" />
-                                <span class="input-group-text text-white" style="background-color: #3b82f6"
-                                    id="supplier-btn-search">Search</span>
+                            <div class="d-flex gap-2 mb-3">
+                                <!-- limit supplier -->
+                                <select class="form-select focus-by-me w-25" aria-label="Default select example"
+                                    id="supplier-limit">
+                                    <option value="2">2</option>
+                                    <option value="5">5</option>
+                                    <option value="10">10</option>
+                                    <option value="20">20</option>
+                                    <option value="30">30</option>
+                                    <option value="40">40</option>
+                                </select>
+                                <!-- search supplier -->
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="masukkan keyword supplier..."
+                                        id="supplier-search-input" />
+                                    <span class="input-group-text text-white" style="background-color: #3b82f6"
+                                        id="supplier-search-btn">Search</span>
+                                </div>
                             </div>
                             <div id="sectionSuccessActionSupply"></div>
                             <!-- table supplier  -->
@@ -572,25 +584,20 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <!-- pagination persediaan -->
-                            <div class="w-100 d-flex justify-content-center" id="supplier-pagination">
-                                <div class="btn-group gap-2">
-                                    <button type="button" class="btn border border-2">
+                            <!-- pagination supplier -->
+                            <div class="w-100 d-flex justify-content-center my-3" id="supplier-pagination">
+                                <div class="btn-group">
+                                    <button type="button" class="btn border border-2" id="supplier-first-page">
                                         <i class="fa-solid fa-backward-fast fs-6"></i>
                                     </button>
-                                    <button type="button" class="btn border border-2">
+                                    <button type="button" class="btn border border-2" id="supplier-prev-page">
                                         <i class="fa-solid fa-backward-step fs-6"></i>
                                     </button>
-                                    <button type="button" class="btn border border-2 fs-6">
-                                        1
-                                    </button>
-                                    <button type="button" class="btn text-white" style="background-color: #3b82f6">
-                                        2
-                                    </button>
-                                    <button type="button" class="btn border border-2">
+                                    <div id="supplier-number-page"></div>
+                                    <button type="button" class="btn border border-2" id="supplier-next-page">
                                         <i class="fa-solid fa-forward-step fs-6"></i>
                                     </button>
-                                    <button type="button" class="btn border border-2">
+                                    <button type="button" class="btn border border-2" id="supplier-last-page">
                                         <i class="fa-solid fa-forward-fast fs-6"></i>
                                     </button>
                                 </div>
