@@ -87,6 +87,25 @@ export const successActionSupplier = (res) => {
 // it doesn't exist supplier
 export const trSupplierZero = () => {
     return `<tr>
-                <td colspan="5" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">tidak ada supplier....</td>
+                <td colspan="5" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">belum ada supplier</td>
             </tr>`
+}
+// it doesn't exist supplier while  event search
+export const trSupplierZeroSearch = (supplierSearch) => {
+    return `<tr>
+                <td colspan="5" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">tidak ada supplier - ${supplierSearch}</td>
+            </tr>`
+}
+// button pagination
+export const btnSupplierPage = (i) => {
+    return `<button type = "button" class="supplier-btn-page ${i === 1 ? 'supplier-active-page' : ''}" >
+                    ${i}
+            </button>`
+}
+export function updateActivePageButton(pageNumber, supplierBtnPage) {
+    let current = document.getElementsByClassName("supplier-active-page");
+    if (current.length >= 1) {
+        current[0].classList.remove("supplier-active-page");
+    }
+    supplierBtnPage[pageNumber - 1].classList.add("supplier-active-page");
 }

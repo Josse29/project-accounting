@@ -1,12 +1,12 @@
-import { getListProduct, getProducts, getTotalProduct, lastPageProduct } from "../../../../serverless-side/functions/product.js";
+import { getListProduct, getProducts, getTotalPageProduct, getTotalRowProduct } from "../../../../serverless-side/functions/product.js";
 import { reinitializeTooltips } from "../../utils/updateUi.js";
-import { trProductZero, trProductZeroSearch, uitrProduct } from "./ui.js";
+import { btnProductPage, trProductZero, trProductZeroSearch, uitrProduct } from "./ui.js";
 
 
 $(document).ready(function () {
 
     // get total row , get all product, lastPageProduct
-    getTotalProduct($("input#search-product").val(), (status, response) => {
+    getTotalRowProduct($("input#search-product").val(), (status, response) => {
         if (status) {
             $("#totalAllProduct").html(response)
             // if total row product lesser than 1 | not exist product
@@ -19,6 +19,7 @@ $(document).ready(function () {
                 const searchProduct = $("input#search-product").val()
                 const limitProduct = parseInt($("#product_limit").val())
                 const pageProduct = parseInt($("#product_offset").text().trim())
+                // get all product
                 getProducts(
                     searchProduct,
                     limitProduct,
@@ -32,20 +33,49 @@ $(document).ready(function () {
                             $("#data-products").html(tr);
                             reinitializeTooltips()
                             $("#paginationProduct").removeClass("d-none")
-                            lastPageProduct(
-                                limitProduct,
-                                searchProduct,
-                                (status, response) => {
-                                    if (status) {
-                                        $("#product_offset_last").text(response);
-                                    }
-                                    if (!status) {
-                                        console.error(response);
-                                    }
-                                }
-                            );
                         }
                         if (!status) { console.error(response) }
+                    }
+                );
+                // get only product without limit and offset
+                getListProduct((status, response) => {
+                    if (status) {
+                        let option = ``
+                        response.forEach((el) => {
+                            option += `<option value="${el.ProductId}">${el.ProductName}</option>`
+                        })
+                        $("#inventory-refproduct-create-name").html(option)
+                    }
+                    if (!status) {
+                        console.error(response)
+                    }
+                });
+                // get only page product and update pagination
+                getTotalPageProduct(
+                    limitProduct,
+                    searchProduct,
+                    (status, response) => {
+                        if (status) {
+                            $("#product_offset_last").text(response);
+                            // update ui for paginate based on total page
+                            let uiBtnPaginate = ``
+                            for (let i = 1; i <= response; i++) {
+                                uiBtnPaginate += btnProductPage(i)
+                            }
+                            $("#product-number-page").html(uiBtnPaginate)
+                            // pagination
+                            const productBtnPage = document.getElementsByClassName("product-btn-page");
+                            // based event on click mckkkk
+                            for (let i = 0; i < response; i++) {
+                                productBtnPage[i].addEventListener("click", function () {
+                                    const pageNumberActive = parseInt(this.textContent.trim());
+                                    getProductPage(searchProduct, limitProduct, pageNumberActive, productBtnPage);
+                                });
+                            }
+                        }
+                        if (!status) {
+                            console.error(response);
+                        }
                     }
                 );
             }
@@ -226,7 +256,7 @@ $(document).ready(function () {
                     $("#data-products").html(tr);
                     $("#product_offset").text(1);
                     reinitializeTooltips();
-                    lastPageProduct(
+                    getTotalPageProduct(
                         limitProduct,
                         searchProduct,
                         (status, response) => {
@@ -248,7 +278,7 @@ $(document).ready(function () {
 
     // get product based on value search product event click
     $("span#search-product").on("click", () => {
-        getTotalProduct($("input#search-product").val(), (status, response) => {
+        getTotalRowProduct($("input#search-product").val(), (status, response) => {
             if (status) {
                 // if total row product lesser than 1 | not exist product
                 if (response < 1) {
@@ -273,7 +303,7 @@ $(document).ready(function () {
                                 });
                                 $("#data-products").html(tr);
                                 reinitializeTooltips();
-                                lastPageProduct(
+                                getTotalPageProduct(
                                     limitProduct,
                                     searchProduct,
                                     (status, response) => {
@@ -305,7 +335,7 @@ $(document).ready(function () {
         const searchProduct = $("input#search-product").val()
         const limitProduct = parseInt($("#product_limit").val())
         const pageProduct = parseInt($("#product_offset").text().trim())
-        getTotalProduct(searchProduct, (status, response) => {
+        getTotalRowProduct(searchProduct, (status, response) => {
             if (status) {
                 // if total row product lesser than 1 | not exist product
                 if (response < 1) {
@@ -327,7 +357,7 @@ $(document).ready(function () {
                                 });
                                 $("#data-products").html(tr);
                                 reinitializeTooltips();
-                                lastPageProduct(
+                                getTotalPageProduct(
                                     limitProduct,
                                     searchProduct,
                                     (status, response) => {
@@ -379,19 +409,6 @@ $(document).ready(function () {
         $("#detail-category-price").text(product.productcategory)
         $("#detail-product-keterangan").text(product.productketerangan)
     });
-
-    getListProduct((status, response) => {
-        if (status) {
-            let option = ``
-            response.forEach((el) => {
-                option += `<option value="${el.ProductId}">${el.ProductName}</option>`
-            })
-            $("#inventory-refproduct-create-name").html(option)
-        }
-        if (!status) {
-            console.error(response)
-        }
-    });
 })
 
 export const getProductsAgain = () => {
@@ -399,7 +416,7 @@ export const getProductsAgain = () => {
     const searchProduct = $("input#search-product").val()
     const limitProduct = parseInt($("#product_limit").val())
     const pageProduct = 1
-    getTotalProduct(searchProduct, (status, response) => {
+    getTotalRowProduct(searchProduct, (status, response) => {
         if (status) {
             $("#totalAllProduct").html(response)
             // if total row product lesser than 1 | not exist product
@@ -448,3 +465,25 @@ export const getProductsAgain = () => {
         }
     })
 };
+export const getProductPage = (searchProduct, limitProduct, pageNumberActive, productBtnPage) => {
+    getProducts(
+        searchProduct,
+        limitProduct,
+        pageNumberActive,
+        productBtnPage,
+        (status, response) => {
+            if (status) {
+                let tr = ``;
+                response.forEach((el) => {
+                    tr += uitrProduct(el);
+                });
+                $("#data-products").html(tr);
+                reinitializeTooltips()
+                updateActivePageButton(pageNumberActive, productBtnPage)
+            }
+            if (!status) {
+                console.error(response)
+            }
+        }
+    );
+}

@@ -212,6 +212,20 @@
     border: 2px solid #3b82f6;
     outline:none;
   }
+  .product-btn-page{
+    background-color: #fff;
+    color: black;
+    font-size: 18px;
+    border: 2px solid #e1e1e1;
+    outline:none;
+    padding: 8px 12px;
+  }
+  .product-active-page{
+    background-color: #273eec;
+    color: white;
+    border: 2px solid #3b82f6;
+    outline:none;
+  }
   /* mckkk for tbody scrolll*/
   /* tbody {
       display: block;

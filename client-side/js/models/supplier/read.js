@@ -1,11 +1,12 @@
 import { getListSupplier, getSupplier, getTotalPageSupplier, getTotalRowSupplier } from "../../../../serverless-side/functions/supplier.js";
-import { trSupplier, trSupplierZero } from "./ui.js";
+import { reinitializeTooltips } from "../../utils/updateUi.js";
+import { btnSupplierPage, trSupplier, trSupplierZero, trSupplierZeroSearch, updateActivePageButton } from "./ui.js";
 
 $(document).ready(function () {
     // get all value
     const searchSupplier = $("#supplier-search-input").val()
     const limitSupplier = parseInt($("#supplier-limit").val())
-    // get total row supplier 
+    // get total row supplier, get all supplier, get total page&pagination, search supplier 
     getTotalRowSupplier(searchSupplier, (status, response) => {
         // success get total supplier
         if (status) {
@@ -36,91 +37,79 @@ $(document).ready(function () {
                             tr += trSupplier(element)
                         });
                         $("#supplier-data").html(tr)
-                        // get only last page product
-                        getTotalPageSupplier(limitSupplier, searchSupplier, (status, response) => {
-                            // if success get only last page product
-                            if (status) {
-                                // update ui for paginate based on total page
-                                let uiBtnPaginate = ``
-                                for (let i = 1; i <= response; i++) {
-                                    uiBtnPaginate += `<button type="button" class="supplier-btn-page ${i === 1 ? 'supplier-active-page' : ''}">
-                                                                                        ${i}
-                                                                                    </button>`
-                                }
-                                $("#supplier-number-page").html(uiBtnPaginate)
-                                // pagination
-                                let supplierBtnPage = document.getElementsByClassName("supplier-btn-page");
-                                // based event on click mckkkk
-                                for (let i = 0; i < supplierBtnPage.length; i++) {
-                                    supplierBtnPage[i].addEventListener("click", function () {
-                                        let current = document.getElementsByClassName("supplier-active-page");
-                                        if (current.length >= 1) {
-                                            current[0].classList.remove("supplier-active-page");
-                                        }
-                                        this.classList.add("supplier-active-page");
-                                        // get all supplier based on page
-                                        getSupplier(searchSupplier, limitSupplier, parseInt(this.textContent.trim()), (status, response) => {
-                                            if (status) {
-                                                let tr = ``
-                                                response.forEach(element => {
-                                                    tr += trSupplier(element)
-                                                });
-                                                $("#supplier-data").html(tr)
-                                            }
-                                            if (!status) {
-                                                console.error(response)
-                                            }
-                                        })
-                                    });
-                                }
-                                // next page
-                                let numberPage = parseInt($(".supplier-active-page").text().trim())
-                                let totalPage = parseInt(response)
-                                $("#supplier-next-page").on("click", () => {
-                                    let incrementPage = numberPage += 1
-                                    if (incrementPage <= totalPage) {
-                                        getSupplier(searchSupplier, limitSupplier, incrementPage, (status, response) => {
-                                            if (status) {
-                                                let tr = ``
-                                                response.forEach(element => {
-                                                    tr += trSupplier(element)
-                                                });
-                                                $("#supplier-data").html(tr)
-                                            }
-                                            if (!status) {
-                                                console.error(response)
-                                            }
-                                        })
-                                    }
-                                    if (incrementPage > totalPage) {
-                                        getSupplier(searchSupplier, limitSupplier, 1, (status, response) => {
-                                            if (status) {
-                                                let tr = ``
-                                                response.forEach(element => {
-                                                    tr += trSupplier(element)
-                                                });
-                                                $("#supplier-data").html(tr)
-                                                numberPage = incrementPage
-                                            }
-                                            if (!status) {
-                                                console.error(response)
-                                            }
-                                        })
-                                    }
-                                })
-                            }
-                            // failed get only last page product
-                            if (!status) {
-                                console.error(response)
-                            }
-                        })
+                        reinitializeTooltips()
                     }
                     // failed get supplier
                     if (!status) {
                         console.error(response)
                     }
                 })
-
+                // get only last page product and pagination
+                getTotalPageSupplier(limitSupplier, searchSupplier, (status, response) => {
+                    // if success get only last page product
+                    if (status) {
+                        // update ui for paginate based on total page
+                        let uiBtnPaginate = ``
+                        for (let i = 1; i <= response; i++) {
+                            uiBtnPaginate += btnSupplierPage(i)
+                        }
+                        $("#supplier-number-page").html(uiBtnPaginate)
+                        // pagination
+                        const supplierBtnPage = document.getElementsByClassName("supplier-btn-page");
+                        // first page
+                        $("#supplier-first-page").on("click", () => {
+                            getSupplierPage(searchSupplier, limitSupplier, 1, supplierBtnPage);
+                        })
+                        // previous page mckkk
+                        $("#supplier-prev-page").on("click", () => {
+                            let pageActive = parseInt($(".supplier-active-page").text().trim());
+                            let totalPage = parseInt(response);
+                            let decrementPage = pageActive - 1;
+                            if (decrementPage < 1) {
+                                decrementPage = totalPage;
+                            }
+                            getSupplierPage(searchSupplier, limitSupplier, decrementPage, supplierBtnPage);
+                        })
+                        // based event on click mckkkk
+                        for (let i = 0; i < response; i++) {
+                            supplierBtnPage[i].addEventListener("click", function () {
+                                const pageNumber = parseInt(this.textContent.trim());
+                                getSupplierPage(searchSupplier, limitSupplier, pageNumber, supplierBtnPage);
+                            });
+                        }
+                        // next page mckkk
+                        $("#supplier-next-page").on("click", () => {
+                            let pageNumber = parseInt($(".supplier-active-page").text().trim());
+                            let totalPage = parseInt(response);
+                            let incrementPage = pageNumber + 1;
+                            if (incrementPage > totalPage) {
+                                incrementPage = 1;
+                            }
+                            getSupplierPage(searchSupplier, limitSupplier, incrementPage, supplierBtnPage);
+                        })
+                        // last page 
+                        $("#supplier-last-page").on("click", () => {
+                            const lastPage = supplierBtnPage.length
+                            getSupplierPage(searchSupplier, limitSupplier, lastPage, supplierBtnPage)
+                        })
+                    }
+                    // failed get only last page product
+                    if (!status) {
+                        console.error(response)
+                    }
+                })
+                // get all supplier based on value search product event keyup
+                $("#supplier-search-input").on("keyup", () => {
+                    getSupplierSearch()
+                })
+                // get all supplier based on value search product event keyup
+                $("#supplier-search-btn").on("click", () => {
+                    getSupplierSearch()
+                })
+                // get all based on limit
+                $("#supplier-limit").on('change', () => {
+                    getSupplierAgain()
+                })
             }
             // if it doesn't exist supplier
             if (response < 1) {
@@ -159,14 +148,27 @@ export const getSupplierAgain = () => {
     // get all value
     const searchSupplier = $("#supplier-search-input").val()
     const limitSupplier = parseInt($("#supplier-limit").val())
-    const pageSupplier = parseInt($("#supplier-page-active").text().trim())
+    const pageSupplier = 1;
     // get total row supplier 
-    getTotalSupplier(searchSupplier, (status, response) => {
+    getTotalRowSupplier(searchSupplier, (status, response) => {
         // success get total supplier
         if (status) {
             $("#totalAllSupplier").html(response)
             // if exist supplier
             if (response >= 1) {
+                // get only list supplier
+                getListSupplier((status, response) => {
+                    if (status) {
+                        let option = ``
+                        response.forEach(element => {
+                            option += `<option value="${element.SupplierId}" class="text-capitalize">${element.SupplierName}</option>`
+                        })
+                        $("#inventory-refsupplier-create-name").html(option)
+                    }
+                    if (!status) {
+                        console.log(response)
+                    }
+                })
                 // get all supplier
                 getSupplier(searchSupplier, limitSupplier, pageSupplier, (status, response) => {
                     if (status) {
@@ -174,7 +176,130 @@ export const getSupplierAgain = () => {
                         let option = ``
                         response.forEach(element => {
                             tr += trSupplier(element)
-                            option += `<option value="${element.SupplierId}">${element.SupplierName}</option>`
+                        });
+                        $("#supplier-data").html(tr)
+                        $("#inventory-refsupplier-create-name").html(option)
+                        $("#supplier-pagination").removeClass("d-none")
+                        reinitializeTooltips()
+                    }
+                    if (!status) {
+                        console.error(response)
+                    }
+                })
+                // get only last page product and pagination
+                getTotalPageSupplier(limitSupplier, searchSupplier, (status, response) => {
+                    // if success get only last page product
+                    if (status) {
+                        // update ui for paginate based on total page
+                        let uiBtnPaginate = ``
+                        for (let i = 1; i <= response; i++) {
+                            uiBtnPaginate += btnSupplierPage(i)
+                        }
+                        $("#supplier-number-page").html(uiBtnPaginate)
+                        // pagination
+                        const supplierBtnPage = document.getElementsByClassName("supplier-btn-page");
+                        // first page
+                        $("#supplier-first-page").on("click", () => {
+                            getSupplierPage(searchSupplier, limitSupplier, 1, supplierBtnPage);
+                        })
+                        // previous page mckkk
+                        $("#supplier-prev-page").on("click", () => {
+                            let pageActive = parseInt($(".supplier-active-page").text().trim());
+                            let totalPage = parseInt(response);
+                            let decrementPage = pageActive - 1;
+                            if (decrementPage < 1) {
+                                decrementPage = totalPage;
+                            }
+                            getSupplierPage(searchSupplier, limitSupplier, decrementPage, supplierBtnPage);
+                        })
+                        // based event on click mckkkk
+                        for (let i = 0; i < response; i++) {
+                            supplierBtnPage[i].addEventListener("click", function () {
+                                let pageNumber = parseInt(this.textContent.trim());
+                                getSupplierPage(searchSupplier, limitSupplier, pageNumber, supplierBtnPage);
+                            });
+                        }
+                        // next page mckkk
+                        $("#supplier-next-page").on("click", () => {
+                            let pageNumber = parseInt($(".supplier-active-page").text().trim());
+                            let totalPage = parseInt(response);
+                            let incrementPage = pageNumber + 1;
+                            if (incrementPage > totalPage) {
+                                incrementPage = 1;
+                            }
+                            getSupplierPage(searchSupplier, limitSupplier, incrementPage, supplierBtnPage);
+                        })
+                        // last page 
+                        $("#supplier-last-page").on("click", () => {
+                            const lastPage = supplierBtnPage.length
+                            getSupplierPage(searchSupplier, limitSupplier, lastPage, supplierBtnPage)
+                        })
+                    }
+                    // failed get only last page product
+                    if (!status) {
+                        console.error(response)
+                    }
+                })
+            }
+            // if it doesn't exist supplier
+            if (response < 1) {
+                $("#supplier-data").html(trSupplierZeroSearch(searchSupplier))
+                $("#supplier-pagination").addClass("d-none")
+            }
+        }
+        // failed get total supplier
+        if (!status) {
+            console.error(response)
+        }
+    })
+}
+export function getSupplierPage(searchSupplier, limitSupplier, pageNumber, supplierBtnPage) {
+    getSupplier(searchSupplier, limitSupplier, pageNumber, (status, response) => {
+        if (status) {
+            let tr = ``;
+            response.forEach(element => {
+                tr += trSupplier(element);
+            });
+            $("#supplier-data").html(tr);
+            updateActivePageButton(pageNumber, supplierBtnPage)
+            reinitializeTooltips()
+        } else {
+            console.error(response);
+        }
+    });
+}
+export const getSupplierSearch = () => {
+    // get all value
+    const searchSupplier = $("#supplier-search-input").val()
+    const limitSupplier = parseInt($("#supplier-limit").val())
+    const pageSupplier = parseInt($(".supplier-active-page").text().trim());
+    // get total row supplier 
+    getTotalRowSupplier(searchSupplier, (status, response) => {
+        // success get total supplier
+        if (status) {
+            $("#totalAllSupplier").html(response)
+            // if exist supplier
+            if (response >= 1) {
+                // get only list supplier
+                getListSupplier((status, response) => {
+                    if (status) {
+                        let option = ``
+                        response.forEach(element => {
+                            option += `<option value="${element.SupplierId}" class="text-capitalize">${element.SupplierName}</option>`
+                        })
+                        $("#inventory-refsupplier-create-name").html(option)
+                    }
+                    if (!status) {
+                        console.log(response)
+                    }
+                })
+                // get all supplier
+                getSupplier(searchSupplier, limitSupplier, pageSupplier, (status, response) => {
+                    if (status) {
+                        let tr = ``
+                        let option = ``
+                        response.forEach(element => {
+                            tr += trSupplier(element)
                         });
                         $("#supplier-data").html(tr)
                         $("#inventory-refsupplier-create-name").html(option)
@@ -184,10 +309,64 @@ export const getSupplierAgain = () => {
                         console.error(response)
                     }
                 })
+                // get only last page product and pagination
+                getTotalPageSupplier(limitSupplier, searchSupplier, (status, response) => {
+                    // if success get only last page product
+                    if (status) {
+                        // update ui for paginate based on total page
+                        let uiBtnPaginate = ``
+                        for (let i = 1; i <= response; i++) {
+                            uiBtnPaginate += btnSupplierPage(i)
+                        }
+                        $("#supplier-number-page").html(uiBtnPaginate)
+                        // pagination
+                        const supplierBtnPage = document.getElementsByClassName("supplier-btn-page");
+                        // first page
+                        $("#supplier-first-page").on("click", () => {
+                            getSupplierPage(searchSupplier, limitSupplier, 1, supplierBtnPage);
+                        })
+                        // previous page mckkk
+                        $("#supplier-prev-page").on("click", () => {
+                            let pageActive = parseInt($(".supplier-active-page").text().trim());
+                            let totalPage = parseInt(response);
+                            let decrementPage = pageActive - 1;
+                            if (decrementPage < 1) {
+                                decrementPage = totalPage;
+                            }
+                            getSupplierPage(searchSupplier, limitSupplier, decrementPage, supplierBtnPage);
+                        })
+                        // based event on click mckkkk
+                        for (let i = 0; i < response; i++) {
+                            supplierBtnPage[i].addEventListener("click", function () {
+                                let pageNumber = parseInt(this.textContent.trim());
+                                getSupplierPage(searchSupplier, limitSupplier, pageNumber, supplierBtnPage);
+                            });
+                        }
+                        // next page mckkk
+                        $("#supplier-next-page").on("click", () => {
+                            let pageNumber = parseInt($(".supplier-active-page").text().trim());
+                            let totalPage = parseInt(response);
+                            let incrementPage = pageNumber + 1;
+                            if (incrementPage > totalPage) {
+                                incrementPage = 1;
+                            }
+                            getSupplierPage(searchSupplier, limitSupplier, incrementPage, supplierBtnPage);
+                        })
+                        // last page 
+                        $("#supplier-last-page").on("click", () => {
+                            const lastPage = supplierBtnPage.length
+                            getSupplierPage(searchSupplier, limitSupplier, lastPage, supplierBtnPage)
+                        })
+                    }
+                    // failed get only last page product
+                    if (!status) {
+                        console.error(response)
+                    }
+                })
             }
             // if it doesn't exist supplier
             if (response < 1) {
-                $("#supplier-data").html(trSupplierZero())
+                $("#supplier-data").html(trSupplierZeroSearch(searchSupplier))
                 $("#supplier-pagination").addClass("d-none")
             }
         }

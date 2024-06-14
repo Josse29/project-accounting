@@ -350,6 +350,24 @@
                                     </button>
                                 </div>
                             </div>
+                            <!-- pagination product -->
+                            <div class="w-100 d-flex justify-content-center my-3" id="product-pagination">
+                                <div class="btn-group">
+                                    <button type="button" class="btn border border-2" id="product-first-page">
+                                        <i class="fa-solid fa-backward-fast fs-6"></i>
+                                    </button>
+                                    <button type="button" class="btn border border-2" id="product-prev-page">
+                                        <i class="fa-solid fa-backward-step fs-6"></i>
+                                    </button>
+                                    <div id="product-number-page"></div>
+                                    <button type="button" class="btn border border-2" id="product-next-page">
+                                        <i class="fa-solid fa-forward-step fs-6"></i>
+                                    </button>
+                                    <button type="button" class="btn border border-2" id="product-last-page">
+                                        <i class="fa-solid fa-forward-fast fs-6"></i>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -548,6 +566,7 @@
                                     <span id="totalAllSupplier">2</span>
                                 </div>
                             </div>
+                            <!-- section limit and search -->
                             <div class="d-flex gap-2 mb-3">
                                 <!-- limit supplier -->
                                 <select class="form-select focus-by-me w-25" aria-label="Default select example"
@@ -569,7 +588,7 @@
                             </div>
                             <div id="sectionSuccessActionSupply"></div>
                             <!-- table supplier  -->
-                            <div style="max-height: 270px; overflow: auto">
+                            <div class="overflow-auto">
                                 <table class="table table-striped">
                                     <thead>
                                         <tr>

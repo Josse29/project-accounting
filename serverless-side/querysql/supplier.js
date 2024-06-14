@@ -27,20 +27,20 @@ export const queryInsertSupplier = (supplierName, supplierInfo, supplierImg) => 
 // 2.READ
 export const queryGetSupplier = (supplierSearch, supplierLimit, supplierStartOffset) => {
     let query = `SELECT *
-                 FROM ${tableName}
-                 ORDER BY ${colSupplierName} ASC `
+                 FROM ${tableName} `
     // with feature search
     if (supplierSearch !== "") {
         query += `WHERE ${colSupplierName} LIKE '%${supplierSearch}%' ESCAPE '!' OR 
                         ${colSupplierInfo} LIKE '%${supplierSearch}%' ESCAPE '!'`
     }
-    query += `LIMIT ${supplierLimit} 
+    query += `ORDER BY ${colSupplierName} ASC
+              LIMIT ${supplierLimit} 
               OFFSET ${supplierStartOffset}`
     return query
 }
 export const queryTotalRowSupplier = (supplierSearch) => {
     let query = `SELECT COUNT(${colSupplierId}) AS TOTAL_ROW
-                 FROM ${tableName}`
+                 FROM ${tableName} `
     // with feature search
     if (supplierSearch !== "") {
         query += `WHERE ${colSupplierName} LIKE '%${supplierSearch}%' ESCAPE '!' OR 

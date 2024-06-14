@@ -87,6 +87,21 @@ export const createBlankValue = () => {
   $("#create-image-product").val("")
   $("#section-image").addClass("d-none")
 }
+// button pagination
+export const btnProductPage = (i) => {
+  return `<button type = "button" class="product-btn-page ${i === 1 ? 'product-active-page' : ''}" >
+                  ${i}
+          </button>`
+}
+// update active pagination 
+export function updateActivePageButton(pageNumber, productBtnPage) {
+  let current = document.getElementsByClassName("product-active-page");
+  if (current.length >= 1) {
+    current[0].classList.remove("product-active-page");
+  }
+  productBtnPage[pageNumber - 1].classList.add("product-active-page");
+}
+
 // success create pdf
 ipcRenderer.on("success:pdf-product", (e, file_path) => {
   successActionProduct(`File PDF tersimpan di ${file_path}`)
