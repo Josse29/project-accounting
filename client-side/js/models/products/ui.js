@@ -95,9 +95,20 @@ export const btnProductPage = (i) => {
 }
 // update active pagination 
 export function updateActivePageButton(pageNumber, productBtnPage) {
-  let current = document.getElementsByClassName("product-active-page");
-  if (current.length >= 1) {
-    current[0].classList.remove("product-active-page");
+  const activePage = document.getElementsByClassName("product-active-page");
+  if (activePage.length >= 1) {
+    activePage[0].classList.remove("product-active-page");
+  }
+  productBtnPage[pageNumber - 1].classList.add("product-active-page");
+  console.log('active page ' + pageNumber)
+}
+// update active pagination 
+export function updateActivePageButtonAgain(pageNumber, productBtnPage) {
+  const activePage = document.getElementsByClassName("product-active-page");
+  console.log('active page ' + pageNumber)
+  console.log(productBtnPage)
+  if (activePage.length >= 1) {
+    activePage[0].classList.remove("product-active-page");
   }
   productBtnPage[pageNumber - 1].classList.add("product-active-page");
 }

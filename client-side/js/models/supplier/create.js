@@ -1,6 +1,6 @@
 import { createSupplier } from "../../../../serverless-side/functions/supplier.js";
 import { getSupplierAgain } from "./read.js";
-import { successActionSupplier } from "./ui.js";
+import { successActionSupplier, supplierCreateBlank } from "./ui.js";
 
 // supplier-create-name
 $(document).ready(function () {
@@ -21,6 +21,7 @@ $(document).ready(function () {
                     if (status) {
                         getSupplierAgain()
                         successActionSupplier(response)
+                        supplierCreateBlank()
                     }
                     if (!status) {
                         console.error(response)
@@ -35,6 +36,7 @@ $(document).ready(function () {
                 if (status) {
                     getSupplierAgain()
                     successActionSupplier(response)
+                    supplierCreateBlank()
                 }
                 if (!status) {
                     console.error(response)

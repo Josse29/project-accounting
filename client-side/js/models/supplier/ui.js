@@ -102,10 +102,19 @@ export const btnSupplierPage = (i) => {
                     ${i}
             </button>`
 }
+// update active pagination
 export function updateActivePageButton(pageNumber, supplierBtnPage) {
     let current = document.getElementsByClassName("supplier-active-page");
     if (current.length >= 1) {
         current[0].classList.remove("supplier-active-page");
     }
     supplierBtnPage[pageNumber - 1].classList.add("supplier-active-page");
+}
+// create blank after success event 
+export const supplierCreateBlank = () => {
+    $("#supplier-create-name").val("")
+    $("#supplier-create-img").val("")
+    $("#supplier-create-info").val("")
+    $("#supplier-create-img-section").addClass("d-none")
+
 }

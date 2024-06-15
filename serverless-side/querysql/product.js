@@ -29,30 +29,22 @@ export const queryinsertProducts = (name, price, productInfo, image, categoryId)
             VALUES 
             ('${name}', '${price}', '${productInfo}', '${image}', '${categoryId}')`;
 };
-
 // 2.READ
 export const queryGetProducts = (searchProduct, limitProduct, offsetProduct) => {
-    // without search value product
-    if (searchProduct === "") {
-        return `SELECT *
-                FROM ${tableName}
-                LEFT JOIN Category ON ${tableName}.${colProductCategoryId} = Category.CategoryId
-                ORDER BY ${tableName}.${colProductName} ASC 
-                LIMIT ${limitProduct} 
-                OFFSET ${offsetProduct}`;
-    }
+    let query = `SELECT *
+                 FROM ${tableName}
+                 LEFT JOIN Category ON ${tableName}.${colProductCategoryId} = Category.CategoryId `
     // with search value product
     if (searchProduct !== "") {
-        return `SELECT *
-                FROM ${tableName}
-                LEFT JOIN Category ON ${tableName}.${colProductCategoryId} = Category.CategoryId
-                WHERE ${tableName}.${colProductName} LIKE '%${searchProduct}%' ESCAPE '!' OR 
-                      ${tableName}.${colProductPrice} LIKE '%${searchProduct}%' ESCAPE '!' OR 
-                      ${tableName}.${colProductInfo} LIKE '%${searchProduct}%' ESCAPE '!' 
-                ORDER BY ${tableName}.${colProductName} ASC 
-                LIMIT ${limitProduct} 
-                OFFSET ${offsetProduct}`;
+        query += `WHERE ${tableName}.${colProductName} LIKE '%${searchProduct}%' ESCAPE '!' OR
+                        ${tableName}.${colProductPrice} LIKE '%${searchProduct}%' ESCAPE '!' OR
+                        ${tableName}.${colProductInfo} LIKE '%${searchProduct}%' ESCAPE '!' OR
+                        Category.CategoryName LIKE '%${searchProduct}%' ESCAPE '!' `;
     }
+    query += `ORDER BY ${tableName}.${colProductName} ASC 
+              LIMIT ${limitProduct} 
+              OFFSET ${offsetProduct}`
+    return query
 };
 export const queryGetListProduct = () => {
     return `SELECT 
@@ -77,7 +69,6 @@ export const queryTotalRowProducts = (searchProduct) => {
                       ${tableName}.${colProductInfo} LIKE '%${searchProduct}%' ESCAPE '!'`
     }
 };
-
 // 3.UPDATE
 export const queryUpdateProduct = (productId, productName, productCategoryId, productPrice, productInfo, productImg) => {
     // with image

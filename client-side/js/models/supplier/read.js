@@ -89,7 +89,7 @@ $(document).ready(function () {
                         })
                         // last page 
                         $("#supplier-last-page").on("click", () => {
-                            const lastPage = supplierBtnPage.length
+                            const lastPage = parseInt(response)
                             getSupplierPage(searchSupplier, limitSupplier, lastPage, supplierBtnPage)
                         })
                     }
@@ -132,6 +132,10 @@ $(document).ready(function () {
         $("#supplierDetailModalLabel").text(supplierName)
         $("#supplier-detail-name").text(supplierName)
         $("#supplier-detail-info").text(supplierInfo)
+        // if it no information further
+        if (supplierInfo === "") {
+            $("#supplier-detail-info").text("-")
+        }
         // if exist photo
         if (supplierImg === "null") {
             $("#no-image").removeClass("d-none")
@@ -196,44 +200,44 @@ export const getSupplierAgain = () => {
                             uiBtnPaginate += btnSupplierPage(i)
                         }
                         $("#supplier-number-page").html(uiBtnPaginate)
-                        // pagination
-                        const supplierBtnPage = document.getElementsByClassName("supplier-btn-page");
-                        // first page
-                        $("#supplier-first-page").on("click", () => {
-                            getSupplierPage(searchSupplier, limitSupplier, 1, supplierBtnPage);
-                        })
-                        // previous page mckkk
-                        $("#supplier-prev-page").on("click", () => {
-                            let pageActive = parseInt($(".supplier-active-page").text().trim());
-                            let totalPage = parseInt(response);
-                            let decrementPage = pageActive - 1;
-                            if (decrementPage < 1) {
-                                decrementPage = totalPage;
-                            }
-                            getSupplierPage(searchSupplier, limitSupplier, decrementPage, supplierBtnPage);
-                        })
-                        // based event on click mckkkk
-                        for (let i = 0; i < response; i++) {
-                            supplierBtnPage[i].addEventListener("click", function () {
-                                let pageNumber = parseInt(this.textContent.trim());
-                                getSupplierPage(searchSupplier, limitSupplier, pageNumber, supplierBtnPage);
-                            });
-                        }
-                        // next page mckkk
-                        $("#supplier-next-page").on("click", () => {
-                            let pageNumber = parseInt($(".supplier-active-page").text().trim());
-                            let totalPage = parseInt(response);
-                            let incrementPage = pageNumber + 1;
-                            if (incrementPage > totalPage) {
-                                incrementPage = 1;
-                            }
-                            getSupplierPage(searchSupplier, limitSupplier, incrementPage, supplierBtnPage);
-                        })
-                        // last page 
-                        $("#supplier-last-page").on("click", () => {
-                            const lastPage = supplierBtnPage.length
-                            getSupplierPage(searchSupplier, limitSupplier, lastPage, supplierBtnPage)
-                        })
+                        // // pagination
+                        // const supplierBtnPage = document.getElementsByClassName("supplier-btn-page");
+                        // // first page
+                        // $("#supplier-first-page").on("click", () => {
+                        //     getSupplierPage(searchSupplier, limitSupplier, 1, supplierBtnPage);
+                        // })
+                        // // previous page mckkk
+                        // $("#supplier-prev-page").on("click", () => {
+                        //     let pageActive = parseInt($(".supplier-active-page").text().trim());
+                        //     let totalPage = parseInt(response);
+                        //     let decrementPage = pageActive - 1;
+                        //     if (decrementPage < 1) {
+                        //         decrementPage = totalPage;
+                        //     }
+                        //     getSupplierPage(searchSupplier, limitSupplier, decrementPage, supplierBtnPage);
+                        // })
+                        // // based event on click mckkkk
+                        // for (let i = 0; i < response; i++) {
+                        //     supplierBtnPage[i].addEventListener("click", function () {
+                        //         let pageNumber = parseInt(this.textContent.trim());
+                        //         getSupplierPage(searchSupplier, limitSupplier, pageNumber, supplierBtnPage);
+                        //     });
+                        // }
+                        // // next page mckkk
+                        // $("#supplier-next-page").on("click", () => {
+                        //     let pageNumber = parseInt($(".supplier-active-page").text().trim());
+                        //     let totalPage = parseInt(response);
+                        //     let incrementPage = pageNumber + 1;
+                        //     if (incrementPage > totalPage) {
+                        //         incrementPage = 1;
+                        //     }
+                        //     getSupplierPage(searchSupplier, limitSupplier, incrementPage, supplierBtnPage);
+                        // })
+                        // // last page 
+                        // $("#supplier-last-page").on("click", () => {
+                        //     const lastPage = parseInt(response)
+                        //     getSupplierPage(searchSupplier, limitSupplier, lastPage, supplierBtnPage)
+                        // })
                     }
                     // failed get only last page product
                     if (!status) {
@@ -243,7 +247,7 @@ export const getSupplierAgain = () => {
             }
             // if it doesn't exist supplier
             if (response < 1) {
-                $("#supplier-data").html(trSupplierZeroSearch(searchSupplier))
+                $("#supplier-data").html(trSupplierZero())
                 $("#supplier-pagination").addClass("d-none")
             }
         }
@@ -354,7 +358,7 @@ export const getSupplierSearch = () => {
                         })
                         // last page 
                         $("#supplier-last-page").on("click", () => {
-                            const lastPage = supplierBtnPage.length
+                            const lastPage = parseInt(response)
                             getSupplierPage(searchSupplier, limitSupplier, lastPage, supplierBtnPage)
                         })
                     }

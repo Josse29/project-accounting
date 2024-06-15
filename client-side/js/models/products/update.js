@@ -18,8 +18,8 @@ $(document).ready(function () {
 
         // it doesn't exist productimage from params
         if (product.productimage === "null") {
-            $("img#edit-product-image").attr("src", "")
             $("#section-edit-product-img").addClass("d-none")
+            $("img#edit-product-image").attr("src", "")
         }
 
         // it exist productimage from params
