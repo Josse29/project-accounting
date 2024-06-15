@@ -200,44 +200,45 @@ export const getSupplierAgain = () => {
                             uiBtnPaginate += btnSupplierPage(i)
                         }
                         $("#supplier-number-page").html(uiBtnPaginate)
-                        // // pagination
-                        // const supplierBtnPage = document.getElementsByClassName("supplier-btn-page");
-                        // // first page
-                        // $("#supplier-first-page").on("click", () => {
-                        //     getSupplierPage(searchSupplier, limitSupplier, 1, supplierBtnPage);
-                        // })
-                        // // previous page mckkk
-                        // $("#supplier-prev-page").on("click", () => {
-                        //     let pageActive = parseInt($(".supplier-active-page").text().trim());
-                        //     let totalPage = parseInt(response);
-                        //     let decrementPage = pageActive - 1;
-                        //     if (decrementPage < 1) {
-                        //         decrementPage = totalPage;
-                        //     }
-                        //     getSupplierPage(searchSupplier, limitSupplier, decrementPage, supplierBtnPage);
-                        // })
-                        // // based event on click mckkkk
-                        // for (let i = 0; i < response; i++) {
-                        //     supplierBtnPage[i].addEventListener("click", function () {
-                        //         let pageNumber = parseInt(this.textContent.trim());
-                        //         getSupplierPage(searchSupplier, limitSupplier, pageNumber, supplierBtnPage);
-                        //     });
-                        // }
-                        // // next page mckkk
-                        // $("#supplier-next-page").on("click", () => {
-                        //     let pageNumber = parseInt($(".supplier-active-page").text().trim());
-                        //     let totalPage = parseInt(response);
-                        //     let incrementPage = pageNumber + 1;
-                        //     if (incrementPage > totalPage) {
-                        //         incrementPage = 1;
-                        //     }
-                        //     getSupplierPage(searchSupplier, limitSupplier, incrementPage, supplierBtnPage);
-                        // })
-                        // // last page 
-                        // $("#supplier-last-page").on("click", () => {
-                        //     const lastPage = parseInt(response)
-                        //     getSupplierPage(searchSupplier, limitSupplier, lastPage, supplierBtnPage)
-                        // })
+                        // pagination
+                        const supplierBtnPage = document.getElementsByClassName("supplier-btn-page");
+                        // first page
+                        $("#supplier-first-page").on("click", () => {
+                            getSupplierPage(searchSupplier, limitSupplier, 1, supplierBtnPage);
+                        })
+                        // previous page mckkk
+                        $("#supplier-prev-page").on("click", () => {
+                            let pageActive = parseInt($(".supplier-active-page").text().trim());
+                            let totalPage = parseInt(response);
+                            let decrementPage = pageActive - 1;
+                            if (decrementPage < 1) {
+                                decrementPage = totalPage;
+                            }
+                            getSupplierPage(searchSupplier, limitSupplier, decrementPage, supplierBtnPage);
+                        })
+                        // based event on click mckkkk
+                        for (let i = 0; i < response; i++) {
+                            supplierBtnPage[i].addEventListener("click", function () {
+                                console.log(this)
+                                let pageNumber = parseInt(this.textContent.trim());
+                                getSupplierPage(searchSupplier, limitSupplier, pageNumber, supplierBtnPage);
+                            });
+                        }
+                        // next page mckkk
+                        $("#supplier-next-page").on("click", () => {
+                            let pageNumber = parseInt($(".supplier-active-page").text().trim());
+                            let totalPage = parseInt(response);
+                            let incrementPage = pageNumber + 1;
+                            if (incrementPage > totalPage) {
+                                incrementPage = 1;
+                            }
+                            getSupplierPage(searchSupplier, limitSupplier, incrementPage, supplierBtnPage);
+                        })
+                        // last page 
+                        $("#supplier-last-page").on("click", () => {
+                            const lastPage = parseInt(response)
+                            getSupplierPage(searchSupplier, limitSupplier, lastPage, supplierBtnPage)
+                        })
                     }
                     // failed get only last page product
                     if (!status) {

@@ -53,6 +53,7 @@ $(document).ready(function () {
                     searchProduct,
                     (status, response) => {
                         if (status) {
+                            console.log('total product ' + response)
                             // update ui for paginate based on total page
                             let uiBtnPaginate = ``
                             for (let i = 1; i <= response; i++) {
@@ -108,7 +109,27 @@ $(document).ready(function () {
                 });
                 // get product based on value search product event keyup
                 $("input#search-product").on("keyup", () => {
-                    getProductSearch()
+                    // get only product 
+                    getProducts(
+                        searchProduct,
+                        limitProduct,
+                        1,
+                        (status, response) => {
+                            if (status) {
+                                let tr = ``;
+                                response.forEach((el) => {
+                                    tr += uitrProduct(el);
+                                });
+                                $("#data-products").html(tr);
+                                reinitializeTooltips()
+                                $("#paginationProduct").removeClass("d-none")
+                            }
+                            if (!status) {
+                                console.error(response)
+                            }
+                        }
+                    );
+                    // g
                 });
                 // get product based on value search product event click
                 $("span#search-product").on("click", () => {
@@ -125,6 +146,18 @@ $(document).ready(function () {
         if (!status) {
             console.error(response)
         }
+    })
+    $("input#search-product").on("keyup", () => {
+        db.all(`SELECT *
+        FROM Product
+        LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
+        WHERE Product.ProductName LIKE '%${$("input#search-product").val()}%' ESCAPE '!' OR
+              Product.ProductPrice LIKE '%${$("input#search-product").val()}%' ESCAPE '!' OR
+              Product.ProductInfo LIKE '%${$("input#search-product").val()}%' ESCAPE '!' OR
+              Category.CategoryName LIKE '%${$("input#search-product").val()}%' ESCAPE '!'`, (err, res) => {
+            if (!err) { console.log(res) }
+            if (err) { console.error(res) }
+        })
     })
     // get-detail-product 
     $(document).on("click", "#detailProduct", function () {

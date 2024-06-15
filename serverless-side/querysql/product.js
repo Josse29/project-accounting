@@ -36,10 +36,10 @@ export const queryGetProducts = (searchProduct, limitProduct, offsetProduct) => 
                  LEFT JOIN Category ON ${tableName}.${colProductCategoryId} = Category.CategoryId `
     // with search value product
     if (searchProduct !== "") {
-        query += `WHERE ${tableName}.${colProductName} LIKE '%${searchProduct}%' ESCAPE '!' OR
-                        ${tableName}.${colProductPrice} LIKE '%${searchProduct}%' ESCAPE '!' OR
-                        ${tableName}.${colProductInfo} LIKE '%${searchProduct}%' ESCAPE '!' OR
-                        Category.CategoryName LIKE '%${searchProduct}%' ESCAPE '!' `;
+        query += `WHERE ${tableName}.${colProductName} LIKE '%${searchProduct}%' OR
+                        ${tableName}.${colProductPrice} LIKE '%${searchProduct}%' OR
+                        ${tableName}.${colProductInfo} LIKE '%${searchProduct}%' OR
+                        Category.CategoryName LIKE '%${searchProduct}%' `;
     }
     query += `ORDER BY ${tableName}.${colProductName} ASC 
               LIMIT ${limitProduct} 
