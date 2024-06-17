@@ -2,8 +2,8 @@
 export const uitrProduct = (el) => {
   return `<tr>
                 <td class="text-center align-content-center">${el.ProductId}</td>
-                <td class="text-nowrap align-content-center">${el.ProductName}</td>
-                <td class="text-nowrap align-content-center">${el.CategoryName}</td>
+                <td class="text-nowrap align-content-center text-capitalize">${el.ProductName}</td>
+                <td class="text-nowrap align-content-center text-capitalize">${el.CategoryName}</td>
                 <td class="align-content-center">${el.ProductPrice}</td>
                 <td>
                   <div class="d-flex w-100 justify-content-center gap-2">
@@ -83,7 +83,6 @@ export const createBlankValue = () => {
   $("#product-name").val("")
   $("#product-price").val("")
   $("#product-keterangan").val("")
-  $("#create-categories-selection").val("")
   $("#create-image-product").val("")
   $("#section-image").addClass("d-none")
 }
@@ -93,24 +92,17 @@ export const btnProductPage = (i) => {
                   ${i}
           </button>`
 }
-// update active pagination 
-export function updateActivePageButton(pageNumber, productBtnPage) {
-  const activePage = document.getElementsByClassName("product-active-page");
-  if (activePage.length >= 1) {
-    activePage[0].classList.remove("product-active-page");
-  }
-  productBtnPage[pageNumber - 1].classList.add("product-active-page");
-  console.log('active page ' + pageNumber)
+// ui fr option inventory ref product 
+export const uiOption = (element) => {
+  return `<option value="${element.ProductId}">${element.ProductName}</option>`;
 }
-// update active pagination 
-export function updateActivePageButtonAgain(pageNumber, productBtnPage) {
-  const activePage = document.getElementsByClassName("product-active-page");
-  console.log('active page ' + pageNumber)
-  console.log(productBtnPage)
-  if (activePage.length >= 1) {
-    activePage[0].classList.remove("product-active-page");
+// Function to update active page button
+export const uiActivePageButton = (productPageNumber, productBtnPage) => {
+  const productBtnPageActive = document.getElementsByClassName("product-active-page");
+  if (productBtnPageActive.length >= 1) {
+    productBtnPageActive[0].classList.remove("product-active-page");
   }
-  productBtnPage[pageNumber - 1].classList.add("product-active-page");
+  productBtnPage[productPageNumber - 1].classList.add("product-active-page");
 }
 
 // success create pdf

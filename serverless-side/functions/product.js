@@ -21,6 +21,8 @@ export const getProducts = (
     const startOffsetProduct = (offsetProduct - 1) * limitProduct
     db.all(queryGetProducts(searchProduct, limitProduct, startOffsetProduct), (err, res) => {
         if (!err) {
+            console.log("nilai search product dengan function get product ", searchProduct)
+            console.log("Query Result:", res);
             return callback(true, res);
         }
         if (err) {
@@ -61,6 +63,7 @@ export const getTotalPageProduct = (limitProduct, searchVal, callback) => {
 export const getTotalRowProduct = (searchVal, callback) => {
     db.each(queryTotalRowProducts(searchVal), (err, res) => {
         if (!err) {
+            console.log("nilai search product dengan function get total row product ", searchVal)
             const totalProduct = parseInt(res.TOTAL_ROW);
             return callback(true, totalProduct);
         }

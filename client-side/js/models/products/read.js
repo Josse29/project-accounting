@@ -1,168 +1,184 @@
 import { getListProduct, getProducts, getTotalPageProduct, getTotalRowProduct } from "../../../../serverless-side/functions/product.js";
 import { reinitializeTooltips } from "../../utils/updateUi.js";
-import { btnProductPage, trProductZero, trProductZeroSearch, uitrProduct, updateActivePageButton } from "./ui.js";
+import { btnProductPage, trProductZero, trProductZeroSearch, uiActivePageButton, uiOption, uitrProduct } from "./ui.js";
 
 
 $(document).ready(function () {
-    // get total row , get all product, lastPageProduct
-    getTotalRowProduct($("input#search-product").val(), (status, response) => {
-        // success get total row product
-        if (status) {
-            $("#totalAllProduct").html(response)
-            // if total row product is equal greater than 1 |  exist product
-            if (response >= 1) {
-                $("#product-pagination").removeClass("d-none")
-                const searchProduct = $("input#search-product").val()
-                const limitProduct = parseInt($("#product_limit").val())
-                // get all product
-                getProducts(
-                    searchProduct,
-                    limitProduct,
-                    1,
-                    (status, response) => {
+    let productSearch = $("#product-search-input").val();
+    let productLimit = parseInt($("#product-limit").val());
+    let productCurrentPage = 1;
+    let productBtnPage;
+
+    // Function to update product based on page number
+    function getProductPage(productPageNumber) {
+        getProducts($("#product-search-input").val(), productLimit, productPageNumber, (status, response) => {
+            if (status) {
+                let tr = '';
+                response.forEach(element => {
+                    tr += uitrProduct(element);
+                });
+                $("#product-data").html(tr);
+                uiActivePageButton(productPageNumber, productBtnPage);
+                reinitializeTooltips();
+            }
+            if (!status) {
+                console.error(response)
+            }
+        });
+    }
+
+    // Function to initialize pagination
+    function reInitializePagination(response) {
+        let uiBtnPaginate = '';
+        for (let i = 1; i <= response; i++) {
+            uiBtnPaginate += btnProductPage(i);
+        }
+        $("#product-number-page").html(uiBtnPaginate);
+        // Event listeners for pagination buttons
+        productBtnPage = document.getElementsByClassName("product-btn-page");
+        const productTotalPage = response
+        // first page
+        $("#product-first-page").off('click').on("click", () => {
+            getProductPage(1)
+        });
+        // previous page
+        $("#product-prev-page").off('click').on("click", () => {
+            let pageActive = parseInt($(".product-active-page").text().trim());
+            let decrementPage = pageActive - 1;
+            if (decrementPage < 1) {
+                decrementPage = productTotalPage;
+            }
+            getProductPage(decrementPage);
+        });
+        // based on number when clicked
+        for (let i = 0; i < productTotalPage; i++) {
+            productBtnPage[i].addEventListener("click", function () {
+                const pageNumber = parseInt(this.textContent.trim());
+                getProductPage(pageNumber);
+            });
+        }
+        // next page 
+        $("#product-next-page").off('click').on("click", () => {
+            let pageActive = parseInt($(".product-active-page").text().trim());
+            let incrementPage = pageActive + 1;
+            if (incrementPage > productTotalPage) {
+                incrementPage = 1;
+            }
+            getProductPage(incrementPage);
+        });
+        // last page
+        $("#product-last-page").off('click').on("click", () => getProductPage(productTotalPage));
+
+        // Initial page load
+        getProductPage(productCurrentPage);
+    }
+
+    // Function to handle search based on supplier
+    function getProductSearch() {
+        const productSearch = $("#product-search-input").val();
+        productCurrentPage = 1; // Reset page to 1 on search
+        console.log("search Value " + productSearch)
+        // get only total row product
+        getTotalRowProduct(productSearch, (status, response) => {
+            // success get total row product
+            if (status) {
+                const productTotalRow = response
+                $("#product-total-row").html(productTotalRow);
+                // if it exist product
+                if (response >= 1) {
+                    // get only total page product
+                    getTotalPageProduct(productLimit, productSearch, (status, response) => {
                         if (status) {
-                            let tr = ``;
-                            response.forEach((el) => {
-                                tr += uitrProduct(el);
-                            });
-                            $("#data-products").html(tr);
-                            reinitializeTooltips()
-                            $("#paginationProduct").removeClass("d-none")
+                            const productTotalPage = parseInt(response)
+                            reInitializePagination(productTotalPage);
+                            $("#product-pagination").removeClass("d-none");
                         }
                         if (!status) {
                             console.error(response)
                         }
-                    }
-                );
-                // get only product without limit and offset
-                getListProduct((status, response) => {
-                    if (status) {
-                        let option = ``
-                        response.forEach((el) => {
-                            option += `<option value="${el.ProductId}">${el.ProductName}</option>`
-                        })
-                        $("#inventory-refproduct-create-name").html(option)
-                    }
-                    if (!status) {
-                        console.error(response)
-                    }
-                });
-                // get only page product and update pagination
-                getTotalPageProduct(
-                    limitProduct,
-                    searchProduct,
-                    (status, response) => {
+                    });
+                }
+                // if it doesn't exist product
+                if (response < 1) {
+                    $("#product-data").html(trProductZeroSearch(productSearch));
+                    $("#product-pagination").addClass("d-none");
+                }
+            }
+            // failed get total row product
+            if (!status) {
+                console.error(response);
+            }
+        });
+    }
+
+    // Function to handle limit change
+    $("#product-limit").on('change', () => {
+        productLimit = parseInt($("#product-limit").val());
+        productCurrentPage = 1; // Reset page to 1 on limit change
+        getProductAgain(); // Re-fetch suppliers based on new limit
+    });
+
+    // Initial fetch and setup
+    function getProductAgain() {
+        // get only total row product
+        getTotalRowProduct(productSearch, (status, response) => {
+            // success get total row product
+            if (status) {
+                const productTotalRow = response
+                $("#product-total-row").html(productTotalRow);
+                // if it exist product
+                if (response >= 1) {
+                    // get only list product
+                    getListProduct((status, response) => {
                         if (status) {
-                            console.log('total product ' + response)
-                            // update ui for paginate based on total page
-                            let uiBtnPaginate = ``
-                            for (let i = 1; i <= response; i++) {
-                                uiBtnPaginate += btnProductPage(i)
-                            }
-                            $("#product-number-page").html(uiBtnPaginate)
-                            // pagination
-                            const productBtnPage = document.getElementsByClassName("product-btn-page");
-                            // get first page product
-                            $("#product-first-page").on("click", () => {
-                                getProductPage(searchProduct, limitProduct, 1, productBtnPage);
+                            let option = '';
+                            response.forEach(element => {
+                                option += uiOption(element);
                             });
-                            // get previous page product
-                            $("#product-prev-page").on("click", () => {
-                                let activePage = parseInt($(".product-active-page").text().trim());
-                                let totalPage = response
-                                let decrementPage = activePage - 1
-                                if (decrementPage < 1) {
-                                    decrementPage = totalPage
-                                }
-                                getProductPage(searchProduct, limitProduct, decrementPage, productBtnPage);
-                            });
-                            // based event on click mckkkk
-                            for (let i = 0; i < response; i++) {
-                                productBtnPage[i].addEventListener("click", function () {
-                                    const pageNumberActive = parseInt(this.textContent.trim());
-                                    getProductPage(searchProduct, limitProduct, pageNumberActive, productBtnPage);
-                                });
-                            }
-                            // get next page product
-                            $("#product-next-page").on("click", () => {
-                                let activePage = parseInt($(".product-active-page").text().trim());
-                                let totalPage = response
-                                let incrementPage = activePage + 1
-                                if (incrementPage > totalPage) {
-                                    incrementPage = 1
-                                }
-                                getProductPage(searchProduct, limitProduct, incrementPage, productBtnPage);
-                            });
-                            // get last page product
-                            $("#product-last-page").on("click", () => {
-                                getProductPage(searchProduct, limitProduct, response, productBtnPage);
-                            });
+                            $("#inventory-refproduct-create-name").html(option);
                         }
                         if (!status) {
-                            console.error(response);
+                            console.error(response)
                         }
-                    }
-                );
-                // get product based on limit 
-                $("#product_limit").on("change", function () {
-                    getProductsAgain()
-                });
-                // get product based on value search product event keyup
-                $("input#search-product").on("keyup", () => {
-                    // get only product 
-                    getProducts(
-                        searchProduct,
-                        limitProduct,
-                        1,
-                        (status, response) => {
-                            if (status) {
-                                let tr = ``;
-                                response.forEach((el) => {
-                                    tr += uitrProduct(el);
-                                });
-                                $("#data-products").html(tr);
-                                reinitializeTooltips()
-                                $("#paginationProduct").removeClass("d-none")
-                            }
-                            if (!status) {
-                                console.error(response)
-                            }
+                    });
+                    // get only total page product
+                    getTotalPageProduct(productLimit, productSearch, (status, response) => {
+                        if (status) {
+                            const productTotalPage = parseInt(response)
+                            reInitializePagination(productTotalPage);
+                            $("#product-pagination").removeClass("d-none");
                         }
-                    );
-                    // g
-                });
-                // get product based on value search product event click
-                $("span#search-product").on("click", () => {
-                    getProductSearch()
-                });
+                        if (!status) {
+                            console.error(response)
+                        }
+                    });
+                }
+                // if it doesn't exist product
+                if (response < 1) {
+                    $("#product-data").html(trProductZero());
+                    $("#product-pagination").addClass("d-none");
+                }
             }
-            // if total row product lesser than 1 | not exist product
-            if (response < 1) {
-                $("#data-products").html(trProductZero())
-                $("#product-pagination").addClass("d-none")
+            // failed get total row product
+            if (!status) {
+                console.error(response);
             }
-        }
-        // failed get total row product
-        if (!status) {
-            console.error(response)
-        }
-    })
-    $("input#search-product").on("keyup", () => {
-        db.all(`SELECT *
-        FROM Product
-        LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
-        WHERE Product.ProductName LIKE '%${$("input#search-product").val()}%' ESCAPE '!' OR
-              Product.ProductPrice LIKE '%${$("input#search-product").val()}%' ESCAPE '!' OR
-              Product.ProductInfo LIKE '%${$("input#search-product").val()}%' ESCAPE '!' OR
-              Category.CategoryName LIKE '%${$("input#search-product").val()}%' ESCAPE '!'`, (err, res) => {
-            if (!err) { console.log(res) }
-            if (err) { console.error(res) }
-        })
-    })
+        });
+    }
+
+    // Search functionality
+    // $("#product-search-input").on("keyup", getProductSearch);
+    $("#product-search-span").on("click", function () {
+        getProductSearch()
+    });
+
+    // Initial load
+    getProductAgain();
+
     // get-detail-product 
     $(document).on("click", "#detailProduct", function () {
         const product = this.dataset;
-
+        console.log(product)
         $("#detailProductModalLabel").html(product.productname)
         $("#detail-product-name").text(product.productname)
 
@@ -186,255 +202,115 @@ $(document).ready(function () {
     });
 })
 
-export const getProductsAgain = () => {
-    // get total row , get all product, lastoffsetproducts
-    const searchProduct = $("input#search-product").val()
-    const limitProduct = parseInt($("#product_limit").val())
-    const pageProduct = 1
-    // get only total row product
-    getTotalRowProduct(searchProduct, (status, response) => {
-        // success get total row product
-        if (status) {
-            $("#totalAllProduct").html(response)
-            // if total row product is equal greater than 1 |  exist product
-            if (response >= 1) {
-                // get only product 
-                getProducts(
-                    searchProduct,
-                    limitProduct,
-                    pageProduct,
-                    (status, response) => {
-                        if (status) {
-                            let tr = ``;
-                            response.forEach((el) => {
-                                tr += uitrProduct(el);
-                            });
-                            $("#data-products").html(tr);
-                            reinitializeTooltips()
-                            $("#paginationProduct").removeClass("d-none")
-                        }
-                        if (!status) {
-                            console.error(response)
-                        }
-                    }
-                );
-                // get only product without limit and offset
-                getListProduct((status, response) => {
-                    if (status) {
-                        let option = ``
-                        response.forEach((el) => {
-                            option += `<option value="${el.ProductId}">${el.ProductName}</option>`
-                        })
-                        $("#inventory-refproduct-create-name").html(option)
-                    }
-                    if (!status) {
-                        console.error(response)
-                    }
-                });
-                // get only page product and update pagination
-                getTotalPageProduct(
-                    limitProduct,
-                    searchProduct,
-                    (status, response) => {
-                        // success get only page product and update pagination
-                        if (status) {
-                            // update ui for paginate based on total page
-                            let uiBtnPaginate = ``
-                            for (let i = 1; i <= response; i++) {
-                                uiBtnPaginate += btnProductPage(i)
-                            }
-                            $("#product-number-page").html(uiBtnPaginate)
-                            // // pagination
-                            // const productBtnPage = document.getElementsByClassName("product-btn-page");
-                            // // get first page product
-                            // $("#product-first-page").on("click", () => {
-                            //     getProductPage(searchProduct, limitProduct, 1, productBtnPage);
-                            // });
-                            // // get previous page product
-                            // $("#product-prev-page").on("click", () => {
-                            //     let activePage = parseInt($(".product-active-page").text().trim());
-                            //     let totalPage = response
-                            //     let decrementPage = activePage - 1
-                            //     if (decrementPage < 1) {
-                            //         decrementPage = totalPage
-                            //     }
-                            //     getProductPage(searchProduct, limitProduct, decrementPage, productBtnPage);
-                            // });
-                            // // based event on click mckkkk
-                            // for (let i = 0; i < response; i++) {
-                            //     productBtnPage[i].addEventListener("click", function () {
-                            //         const pageNumberActive = parseInt(this.textContent.trim());
-                            //         getProductPage(searchProduct, limitProduct, pageNumberActive, productBtnPage);
-                            //     });
-                            // }
-                            // // get next page product
-                            // $("#product-next-page").on("click", () => {
-                            //     let activePage = parseInt($(".product-active-page").text().trim());
-                            //     let totalPage = response
-                            //     let incrementPage = activePage + 1
-                            //     if (incrementPage > totalPage) {
-                            //         incrementPage = 1
-                            //     }
-                            //     getProductPage(searchProduct, limitProduct, incrementPage, productBtnPage);
-                            // });
-                            // // get last page product
-                            // $("#product-last-page").on("click", () => {
-                            //     getProductPage(searchProduct, limitProduct, response, productBtnPage);
-                            // });
-                        }
-                        // failed get only page product and update pagination
-                        if (!status) {
-                            console.error(response);
-                        }
-                    }
-                );
-            }
-            // if total row product lesser than 1 | not exist product
-            if (response < 1) {
-                $("#data-products").html(trProductZero())
-                $("#paginationProduct").addClass("d-none")
-            }
-        }
-        // failed get total row product
-        if (!status) {
-            console.error(response)
-        }
-    })
-};
-export const getProductPage = (searchProduct, limitProduct, pageNumberActive, productBtnPage) => {
-    getProducts(
-        searchProduct,
-        limitProduct,
-        pageNumberActive,
-        (status, response) => {
+// Initial fetch and setup
+export function getProductsAgain() {
+    let productSearch = $("#product-search-input").val();
+    let productLimit = parseInt($("#product-limit").val());
+    let productCurrentPage = 1; // Initial page
+    let productBtnPage;
+    // Function to update product based on page number
+    function getProductPage(productPageNumber) {
+        getProducts(productSearch, productLimit, productPageNumber, (status, response) => {
             if (status) {
-                let tr = ``;
-                response.forEach((el) => {
-                    tr += uitrProduct(el);
+                let tr = '';
+                response.forEach(element => {
+                    tr += uitrProduct(element);
                 });
-                $("#data-products").html(tr);
-                reinitializeTooltips()
-                updateActivePageButton(pageNumberActive, productBtnPage)
+                $("#product-data").html(tr);
+                uiActivePageButton(productPageNumber, productBtnPage); // Ensure active page button
+                reinitializeTooltips();
             }
             if (!status) {
                 console.error(response)
             }
+        });
+    }
+    // Function to initialize pagination
+    function reInitializePagination(response) {
+        let uiBtnPaginate = '';
+        for (let i = 1; i <= response; i++) {
+            uiBtnPaginate += btnProductPage(i);
         }
-    );
-}
-export const getProductSearch = () => {
-    // get total row , get all product, lastoffsetproducts
-    const searchProduct = $("input#search-product").val()
-    const limitProduct = parseInt($("#product_limit").val())
-    const activePageProduct = parseInt($(".product-active-page").text().trim());
+        $("#product-number-page").html(uiBtnPaginate);
+        // Event listeners for pagination buttons
+        productBtnPage = document.getElementsByClassName("product-btn-page");
+        const productTotalPage = response
+        // first page
+        $("#product-first-page").off('click').on("click", () => {
+            getProductPage(1)
+        });
+        // previous page
+        $("#product-prev-page").off('click').on("click", () => {
+            let pageActive = parseInt($(".product-active-page").text().trim());
+            let decrementPage = pageActive - 1;
+            if (decrementPage < 1) {
+                decrementPage = productTotalPage;
+            }
+            getProductPage(decrementPage);
+        });
+        // based on number when clicked
+        for (let i = 0; i < productTotalPage; i++) {
+            productBtnPage[i].addEventListener("click", function () {
+                const pageNumber = parseInt(this.textContent.trim());
+                getProductPage(pageNumber);
+            });
+        }
+        // next page 
+        $("#product-next-page").off('click').on("click", () => {
+            let pageActive = parseInt($(".product-active-page").text().trim());
+            let incrementPage = pageActive + 1;
+            if (incrementPage > productTotalPage) {
+                incrementPage = 1;
+            }
+            getProductPage(incrementPage);
+        });
+        // last page
+        $("#product-last-page").off('click').on("click", () => getProductPage(productTotalPage));
+
+        // Initial page load
+        getProductPage(productCurrentPage);
+    }
     // get only total row product
-    getTotalRowProduct(searchProduct, (status, response) => {
-        // success get total row product while search
+    getTotalRowProduct(productSearch, (status, response) => {
+        // success get total row product
         if (status) {
-            $("#totalAllProduct").html(response)
-            // if total row product is equal greater than 1 |  exist product
+            $("#product-total-row").html(response);
+            // if it exist product
             if (response >= 1) {
-                $("#product-pagination").removeClass("d-none")
-                //get only product with limit and offset while search
-                getProducts(
-                    searchProduct,
-                    limitProduct,
-                    activePageProduct,
-                    (status, response) => {
-                        if (status) {
-                            let tr = ``;
-                            response.forEach((el) => {
-                                tr += uitrProduct(el);
-                            });
-                            $("#data-products").html(tr);
-                            reinitializeTooltips()
-                            $("#paginationProduct").removeClass("d-none")
-                        }
-                        if (!status) {
-                            console.error(response)
-                        }
-                    }
-                );
-                // get only product without limit and offset
+                // get only list product
                 getListProduct((status, response) => {
                     if (status) {
-                        let option = ``
-                        response.forEach((el) => {
-                            option += `<option value="${el.ProductId}">${el.ProductName}</option>`
-                        })
-                        $("#inventory-refproduct-create-name").html(option)
+                        let option = '';
+                        response.forEach(element => {
+                            option += uiOption(element);
+                        });
+                        $("#inventory-refproduct-create-name").html(option);
                     }
                     if (!status) {
                         console.error(response)
                     }
                 });
-                // get only page product and update pagination
-                getTotalPageProduct(
-                    limitProduct,
-                    searchProduct,
-                    (status, response) => {
-                        // success get total page product
-                        if (status) {
-                            // update ui for paginate based on total page
-                            let uiBtnPaginate = ``
-                            for (let i = 1; i <= response; i++) {
-                                uiBtnPaginate += btnProductPage(i)
-                            }
-                            $("#product-number-page").html(uiBtnPaginate)
-                            // pagination
-                            const productBtnPage = document.getElementsByClassName("product-btn-page");
-                            // get first page product
-                            $("#product-first-page").on("click", () => {
-                                getProductPage(searchProduct, limitProduct, 1, productBtnPage);
-                            });
-                            // get previous page product
-                            $("#product-prev-page").on("click", () => {
-                                let activePage = parseInt($(".product-active-page").text().trim());
-                                let totalPage = response
-                                let decrementPage = activePage - 1
-                                if (decrementPage < 1) {
-                                    decrementPage = totalPage
-                                }
-                                getProductPage(searchProduct, limitProduct, decrementPage, productBtnPage);
-                            });
-                            // based event on click mckkkk
-                            for (let i = 0; i < response; i++) {
-                                productBtnPage[i].addEventListener("click", function () {
-                                    const pageNumberActive = parseInt(this.textContent.trim());
-                                    getProductPage(searchProduct, limitProduct, pageNumberActive, productBtnPage);
-                                });
-                            }
-                            // get next page product
-                            $("#product-next-page").on("click", () => {
-                                let activePage = parseInt($(".product-active-page").text().trim());
-                                let totalPage = response
-                                let incrementPage = activePage + 1
-                                if (incrementPage > totalPage) {
-                                    incrementPage = 1
-                                }
-                                getProductPage(searchProduct, limitProduct, incrementPage, productBtnPage);
-                            });
-                            // get last page product
-                            $("#product-last-page").on("click", () => {
-                                getProductPage(searchProduct, limitProduct, response, productBtnPage);
-                            });
-                        }
-                        // failed get total page product
-                        if (!status) {
-                            console.error(response);
-                        }
+                // get only total page product
+                getTotalPageProduct(productLimit, productSearch, (status, response) => {
+                    if (status) {
+                        const productTotalPage = parseInt(response)
+                        reInitializePagination(productTotalPage);
+                        $("#product-pagination").removeClass("d-none");
                     }
-                );
+                    if (!status) {
+                        console.error(response)
+                    }
+                });
             }
-            // if total row product lesser than 1 | not exist product
+            // if it doesn't exist product
             if (response < 1) {
-                $("#data-products").html(trProductZeroSearch(searchProduct))
-                $("#product-pagination").addClass("d-none")
+                $("#pproduct-data").html(trProductZero());
+                $("#supplier-pagination").addClass("d-none");
             }
         }
-        // failed get total row product while search
+        // failed get total row product
         if (!status) {
-            console.error(response)
+            console.error(response);
         }
-    })
-};
+    });
+}

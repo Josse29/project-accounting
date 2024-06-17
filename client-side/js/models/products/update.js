@@ -5,11 +5,10 @@ import { successActionProduct } from "./ui.js";
 
 $(document).ready(function () {
     // upadte | event binding
-    $(document).on("click", "#editProduct", function () {
+    $(document).off("click").on("click", "#editProduct", function () {
 
         // get value from params 
         const product = this.dataset;
-
         // all-input-product
         $("#editProductModalLabel").html(product.productname)
         $("#edit-product-name").val(product.productname)
@@ -31,12 +30,12 @@ $(document).ready(function () {
         // mckkkk
         getCategory((status, response) => {
             if (status) {
-                let categoyEditProduct = ``
+                let categoryEditProduct = ``
                 response.forEach((el) => {
                     let selected = el.CategoryId === parseInt(product.productcategory) ? ' selected' : '';
-                    categoyEditProduct += `<option value="${el.CategoryId}"${selected}>${el.CategoryName}</option>`;
+                    categoryEditProduct += `<option value="${el.CategoryId}"${selected}>${el.CategoryName}</option>`;
                 });
-                $("#edit-category-product").html(categoyEditProduct);
+                $("#edit-category-product").html(categoryEditProduct);
             }
             if (!status) {
                 console.log(response)

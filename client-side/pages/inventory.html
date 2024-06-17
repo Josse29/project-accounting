@@ -282,14 +282,14 @@
                                 </div>
                                 <div class="fs-4">
                                     <span>Total :</span>
-                                    <span id="totalAllProduct">2</span>
+                                    <span id="product-total-row">2</span>
                                 </div>
                             </div>
                             <!-- search products & total row -->
                             <div class="d-flex mb-3 gap-2">
                                 <!-- limit product -->
                                 <select class="form-select focus-by-me w-25" aria-label="Default select example"
-                                    id="product_limit">
+                                    id="product-limit">
                                     <option value="2">2</option>
                                     <option value="5">5</option>
                                     <option value="10">10</option>
@@ -300,10 +300,10 @@
                                 <!-- search product -->
                                 <div class="input-group w-75">
                                     <input type="text" class="form-control focus-by-me"
-                                        placeholder="masukkan nama product..." id="search-product" />
+                                        placeholder="masukkan nama product..." id="product-search-input" />
                                     <span class="input-group-text hover-by-me"
                                         style="background-color: #3c50e0; color: white"
-                                        id="search-product">Search</span>
+                                        id="product-search-span">Search</span>
                                 </div>
                             </div>
                             <!-- alert success -->
@@ -322,7 +322,7 @@
                                         </tr>
                                     </thead>
                                     <!-- from db -->
-                                    <tbody id="data-products"></tbody>
+                                    <tbody id="product-data"></tbody>
                                 </table>
                             </div>
                             <!-- pagination product -->
@@ -626,20 +626,8 @@
                             <div class="mb-3">
                                 <label for="inventory-refproduct-create-name" class="form-label fs-4">Nama
                                     Produk</label>
-                                <select class="form-select" aria-label="Default select example"
+                                <select class="form-select text-capitalize" aria-label="Default select example"
                                     id="inventory-refproduct-create-name">
-                                </select>
-                            </div>
-                            <!-- Nama Supplier -->
-                            <div class="mb-3">
-                                <label for="inventory-refsupplier-create-name" class="form-label fs-4">Nama
-                                    Supplier</label>
-                                <select class="form-select" aria-label="Default select example"
-                                    id="inventory-refsupplier-create-name">
-                                    <option selected>Open this select menu</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
                                 </select>
                             </div>
                             <!-- QTY -->
@@ -721,7 +709,7 @@
                             <h1 class="modal-title fs-3" id="exampleModalLabel">Menu</h1>
                         </div>
                         <div class="modal-body">
-                            <!-- nama -->
+                            <!-- nama product  -->
                             <div class="mb-3">
                                 <label for="product-name" class="form-label fs-4">Nama</label>
                                 <input type="text" class="form-control" id="product-name"
@@ -736,8 +724,15 @@
                             <!-- kategori -->
                             <div class="mb-3">
                                 <label for="create-categories-selection" class="form-label fs-4">Kategori</label>
-                                <select class="form-select" aria-label="Default select example"
-                                    id="create-categories-selection">
+                                <select class="form-select text-capitalize" id="create-categories-selection">
+                                </select>
+                            </div>
+                            <!-- Nama Supplier -->
+                            <div class="mb-3">
+                                <label for="inventory-refsupplier-create-name" class="form-label fs-4">Nama
+                                    Supplier</label>
+                                <select class="form-select text-capitalize" aria-label="Default select example"
+                                    id="inventory-refsupplier-create-name">
                                     <option selected>Open this select menu</option>
                                     <option value="1">One</option>
                                     <option value="2">Two</option>
@@ -795,12 +790,8 @@
                             <!-- category-product -->
                             <div class="mb-3">
                                 <label for="edit-category-product" class="form-label">Category :</label>
-                                <select class="form-select" aria-label="Default select example"
+                                <select class="form-select text-capitalize" aria-label="Default select example"
                                     id="edit-category-product">
-                                    <option>Open this select menu</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3" selected>Three</option>
                                 </select>
                             </div>
                             <!-- image product -->

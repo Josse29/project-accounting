@@ -31,21 +31,46 @@ export const queryinsertProducts = (name, price, productInfo, image, categoryId)
 };
 // 2.READ
 export const queryGetProducts = (searchProduct, limitProduct, offsetProduct) => {
+    console.log("generate from search value :" + searchProduct)
     let query = `SELECT *
                  FROM ${tableName}
-                 LEFT JOIN Category ON ${tableName}.${colProductCategoryId} = Category.CategoryId `
-    // with search value product
-    if (searchProduct !== "") {
-        query += `WHERE ${tableName}.${colProductName} LIKE '%${searchProduct}%' OR
-                        ${tableName}.${colProductPrice} LIKE '%${searchProduct}%' OR
-                        ${tableName}.${colProductInfo} LIKE '%${searchProduct}%' OR
-                        Category.CategoryName LIKE '%${searchProduct}%' `;
-    }
-    query += `ORDER BY ${tableName}.${colProductName} ASC 
-              LIMIT ${limitProduct} 
-              OFFSET ${offsetProduct}`
+                 LEFT JOIN Category ON ${tableName}.${colProductCategoryId} = Category.CategoryId
+                 WHERE Product.ProductName LIKE '%${searchProduct}%' 
+                        OR Product.ProductPrice LIKE '%${searchProduct}%' 
+                        OR Product.ProductInfo LIKE '%${searchProduct}%'
+                        OR Category.CategoryName LIKE '%${searchProduct}%'
+                ORDER BY ${tableName}.${colProductName} ASC 
+                LIMIT ${limitProduct} 
+                OFFSET ${offsetProduct}`
+    console.log("Generated SQL Query:", query)
     return query
 };
+// let query = `SELECT *
+//              FROM ${tableName}
+//              LEFT JOIN Category ON ${tableName}.${colProductCategoryId} = Category.CategoryId `
+// with search value product
+// if (searchProduct != "") {
+//     query += `WHERE Product.ProductName LIKE '%${searchProduct}%' 
+//                         OR Product.ProductPrice LIKE '%${searchProduct}%' 
+//                         OR Product.ProductInfo LIKE '%${searchProduct}%'
+//                         OR Category.CategoryName LIKE '%${searchProduct}%' `;
+// }
+// query += `ORDER BY ${tableName}.${colProductName} ASC 
+//               LIMIT ${limitProduct} 
+//               OFFSET ${offsetProduct}`
+
+// console.log('value search product ' + searchProduct)
+// console.log("Generated SQL Query:", query);
+// return query
+
+// SELECT *
+// FROM Product
+// LEFT JOIN Category ON  Product.ProductCategoryId = Category.CategoryId
+// WHERE Product.ProductName LIKE '%boi%' OR
+// Product.ProductPrice LIKE '%boi%' OR
+// Product.ProductInfo LIKE '%boi%' OR
+// Category.CategoryName LIKE '%boi%';
+
 export const queryGetListProduct = () => {
     return `SELECT 
             ${tableName}.${colProductName}, ${tableName}.${colProductId}
@@ -53,6 +78,8 @@ export const queryGetListProduct = () => {
             LEFT JOIN Category ON ${tableName}.${colProductCategoryId} = Category.CategoryId
             ORDER BY ${tableName}.${colProductName} ASC`;
 }
+
+
 export const queryTotalRowProducts = (searchProduct) => {
     // without search value product
     if (searchProduct === "") {
