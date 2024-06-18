@@ -3,20 +3,17 @@ import { getProductsAgain } from "./read.js";
 import { createBlankValue, successActionProduct } from "./ui.js";
 
 $(document).ready(function () {
-
     // Hapus event listener sebelumnya jika ada MCCCCCKKKKKKKK
     $("#submit_product").off("click");
-
     // create product
     $("#submit_product").on("click", () => {
         const productName = $("#product-name").val()
         const productPrice = $("#product-price").val()
         const productInfo = $("#product-keterangan").val()
         const productCategoryId = $("#create-categories-selection").val()
-        const file = document.getElementById('create-image-product').files
-
+        const productImg = document.getElementById('create-image-product').files
         // with image
-        if (file.length > 0) {
+        if (productImg.length > 0) {
             const reader = new FileReader()
             reader.onload = () => {
                 const imageBase64 = reader.result
@@ -45,7 +42,7 @@ $(document).ready(function () {
             }
         }
         // without image
-        if (file.length < 1) {
+        if (productImg.length < 1) {
             insertProducts(
                 productName,
                 productPrice,

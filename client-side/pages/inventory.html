@@ -253,7 +253,7 @@
                                     <!-- create-product -->
                                     <button type=" button" class="btn hover-by-me"
                                         style="background-color: #3c50e0; color: white" data-bs-toggle="modal"
-                                        data-bs-target="#productsModal">
+                                        data-bs-target="#productCreateModal">
                                         <span class="d-flex gap-2 align-items-center" data-bs-toggle="tooltip"
                                             data-bs-html="true" data-bs-title="<span>tambah-product</span>"
                                             data-bs-placement="bottom">
@@ -665,7 +665,7 @@
         <!-- Product-Modal -->
         <div>
             <!-- products-detail-modal -->
-            <div class="modal fade" id="productsModalDetail" tabindex="-1">
+            <div class="modal fade" id="productDetailModal" tabindex="-1">
                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                     <div class="modal-content">
                         <div class="modal-header py-2" style="background-color: #3c50e0; color: white">
@@ -674,7 +674,7 @@
                         <div class="modal-body">
                             <!-- nama -->
                             <div class="mb-3">
-                                <label for="product-name" class="form-label fs-4">Nama</label>
+                                <label for="product-name" class="form-label fs-4">Nama </label>
                                 <h4 id="detail-product-name" class="ms-2"></h4>
                             </div>
                             <!-- image -->
@@ -693,6 +693,7 @@
                                 <label for="categories" class="form-label fs-4">Kategori</label>
                                 <h4 id="detail-category-price" class="ms-2"></h4>
                             </div>
+                            <!-- info -->
                             <div class="mb-3">
                                 <label for="product-price" class="form-label fs-4">Keterangan</label>
                                 <h5 id="detail-product-keterangan" class="ms-2"></h5>
@@ -702,11 +703,11 @@
                 </div>
             </div>
             <!-- products-create-modal-->
-            <div class="modal fade" id="productsModal" tabindex="-1">
+            <div class="modal fade" id="productCreateModal" tabindex="-1">
                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                     <div class="modal-content">
                         <div class="modal-header py-2" style="background-color: #3c50e0; color: white">
-                            <h1 class="modal-title fs-3" id="exampleModalLabel">Menu</h1>
+                            <h1 class="modal-title fs-3">Tambah Product</h1>
                         </div>
                         <div class="modal-body">
                             <!-- nama product  -->
@@ -729,10 +730,10 @@
                             </div>
                             <!-- Nama Supplier -->
                             <div class="mb-3">
-                                <label for="inventory-refsupplier-create-name" class="form-label fs-4">Nama
+                                <label for="product-refsupplier-create-name" class="form-label fs-4">Nama
                                     Supplier</label>
                                 <select class="form-select text-capitalize" aria-label="Default select example"
-                                    id="inventory-refsupplier-create-name">
+                                    id="product-refsupplier-create-name">
                                     <option selected>Open this select menu</option>
                                     <option value="1">One</option>
                                     <option value="2">Two</option>
@@ -919,7 +920,7 @@
                 </div>
             </div>
             <!-- delete-category-modal -->
-            <div class=" modal fade" id="confirmDeleteCategoryModal" tabindex="-1">
+            <div class="modal fade" id="confirmDeleteCategoryModal" tabindex="-1">
                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                     <div class="modal-content">
                         <div class="modal-header bg-danger">

@@ -3,7 +3,6 @@ import { getProductsAgain } from "./read.js";
 import { successActionProduct } from "./ui.js";
 
 $(document).ready(function () {
-
     // Delete Product event binding mckkkk
     $(document).on("click", "#deleteProduct", function () {
         const product = this.dataset;
@@ -15,7 +14,6 @@ $(document).ready(function () {
 
         // Hapus event listener sebelumnya jika ada MCCCCCKKKKKKKK
         $("#sureDelete").off("click");
-
         $("#sureDelete").on("click", () => {
             deleteProductId(productid, productName, (status, response) => {
                 if (status) {

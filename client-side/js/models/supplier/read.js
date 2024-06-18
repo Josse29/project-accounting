@@ -1,6 +1,6 @@
 import { getListSupplier, getSupplier, getTotalPageSupplier, getTotalRowSupplier } from "../../../../serverless-side/functions/supplier.js";
 import { reinitializeTooltips } from "../../utils/updateUi.js";
-import { btnSupplierPage, trSupplier, trSupplierZero, trSupplierZeroSearch, updateActivePageButton } from "./ui.js";
+import { btnSupplierPage, trSupplier, trSupplierZero, trSupplierZeroSearch, uiOption, updateActivePageButton } from "./ui.js";
 
 $(document).ready(function () {
     // get all value
@@ -20,9 +20,9 @@ $(document).ready(function () {
                     if (status) {
                         let option = ``
                         response.forEach(element => {
-                            option += `<option value="${element.SupplierId}" class="text-capitalize">${element.SupplierName}</option>`
+                            option += uiOption(element)
                         })
-                        $("#inventory-refsupplier-create-name").html(option)
+                        $("#product-refsupplier-create-name").html(option)
                     }
                     if (!status) {
                         console.log(response)

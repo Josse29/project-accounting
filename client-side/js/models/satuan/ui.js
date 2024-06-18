@@ -6,10 +6,10 @@ export const trSatuan = (el) => {
                 <td>
                     <div class="d-flex w-100 justify-content-center gap-2">
                         <button 
+                            id="satuanDetail" 
                             class="btn btn-success text-white"
                             data-bs-toggle="modal" 
                             data-bs-target="#satuanModalDetail" 
-                            id="satuanDetail" 
                             data-satuanid="${el.SatuanId}"  
                             data-satuanname="${el.SatuanName}"
                             data-satuaninfo="${el.SatuanInfo}"

@@ -118,3 +118,6 @@ export const supplierCreateBlank = () => {
     $("#supplier-create-img-section").addClass("d-none")
 
 }
+export const uiOption = (element) => {
+    return `<option value="${element.SupplierId}" class="text-capitalize">${element.SupplierName}</option>`
+}

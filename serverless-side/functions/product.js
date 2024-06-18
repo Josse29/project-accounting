@@ -1,8 +1,8 @@
 import { queryDeleteProductId, queryGetListProduct, queryGetProducts, queryTotalRowProducts, queryUpdateProduct, queryinsertProducts } from "../querysql/product.js";
 
 // 1.CREATE
-export const insertProducts = (name, price, keterangan, image, categoryId, callback) => {
-    db.run(queryinsertProducts(name, price, keterangan, image, categoryId), (err) => {
+export const insertProducts = (productName, productPrice, productInfo, productImg, productCategoryId, productSupplierId, callback) => {
+    db.run(queryinsertProducts(productName, productPrice, productInfo, productImg, productCategoryId, productSupplierId), (err) => {
         if (!err) {
             return callback(true, `Product <b class='text-capitalize'>${name}</b> berhasil ditambahkan`);
         }
@@ -21,8 +21,6 @@ export const getProducts = (
     const startOffsetProduct = (offsetProduct - 1) * limitProduct
     db.all(queryGetProducts(searchProduct, limitProduct, startOffsetProduct), (err, res) => {
         if (!err) {
-            console.log("nilai search product dengan function get product ", searchProduct)
-            console.log("Query Result:", res);
             return callback(true, res);
         }
         if (err) {
@@ -63,7 +61,6 @@ export const getTotalPageProduct = (limitProduct, searchVal, callback) => {
 export const getTotalRowProduct = (searchVal, callback) => {
     db.each(queryTotalRowProducts(searchVal), (err, res) => {
         if (!err) {
-            console.log("nilai search product dengan function get total row product ", searchVal)
             const totalProduct = parseInt(res.TOTAL_ROW);
             return callback(true, totalProduct);
         }

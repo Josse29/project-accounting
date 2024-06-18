@@ -15,9 +15,10 @@ $(document).ready(function () {
             console.error(response)
         }
     })
-    // get-detail-product | get id satuan
+    // get-detail-satuan | get id satuan
     $(document).on("click", "#satuanDetail", function () {
-        const satuan = this.dataset;
+        console.log("clicked button")
+        const satuan = this.dataset
         $("#detailSatuanModalLabel").text(satuan.satuanname)
         $("#detail-satuan-name").text(satuan.satuanname)
         $("#detail-satuan-keterangan").text(satuan.satuaninfo)

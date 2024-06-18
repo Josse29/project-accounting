@@ -9,8 +9,9 @@
 //     ProductSupplierId INTEGER,
 //     FOREIGN KEY (ProductCategoryId) REFERENCES Category(CategoryId)
 //     FOREIGN KEY (ProductSupplierId) REFERENCES Supplier(SupplierId)
-//     );
-
+// );
+// ALTER TABLE table_name
+// ADD column_name datatype;
 // init table & column
 const tableName = `Product`
 const colProductId = `ProductId`
@@ -22,27 +23,25 @@ const colProductImg = `ProductImage`
 const colSupplierId = `ProductSupplierId`
 
 // 1.CREATE 
-export const queryinsertProducts = (name, price, productInfo, image, categoryId) => {
+export const queryinsertProducts = (productName, productPrice, productInfo, productImg, productCategoryId, productSupplierId) => {
     return `INSERT 
             INTO ${tableName} 
-            (${colProductName}, ${colProductPrice}, ${colProductInfo}, ${colProductImg}, ${colProductCategoryId}) 
+            (${colProductName}, ${colProductPrice}, ${colProductInfo}, ${colProductImg}, ${colProductCategoryId}, ${colSupplierId}) 
             VALUES 
-            ('${name}', '${price}', '${productInfo}', '${image}', '${categoryId}')`;
+            ('${productName}', '${productPrice}', '${productInfo}', '${productImg}', ${productCategoryId}, ${productSupplierId})`;
 };
 // 2.READ
 export const queryGetProducts = (searchProduct, limitProduct, offsetProduct) => {
-    console.log("generate from search value :" + searchProduct)
     let query = `SELECT *
                  FROM ${tableName}
                  LEFT JOIN Category ON ${tableName}.${colProductCategoryId} = Category.CategoryId
                  WHERE Product.ProductName LIKE '%${searchProduct}%' 
-                        OR Product.ProductPrice LIKE '%${searchProduct}%' 
-                        OR Product.ProductInfo LIKE '%${searchProduct}%'
-                        OR Category.CategoryName LIKE '%${searchProduct}%'
+                       OR Product.ProductPrice LIKE '%${searchProduct}%' 
+                       OR Product.ProductInfo LIKE '%${searchProduct}%'
+                       OR Category.CategoryName LIKE '%${searchProduct}%'
                 ORDER BY ${tableName}.${colProductName} ASC 
                 LIMIT ${limitProduct} 
                 OFFSET ${offsetProduct}`
-    console.log("Generated SQL Query:", query)
     return query
 };
 // let query = `SELECT *
@@ -93,7 +92,8 @@ export const queryTotalRowProducts = (searchProduct) => {
                 LEFT JOIN Category ON ${tableName}.${colProductCategoryId} = Category.CategoryId
                 WHERE ${tableName}.${colProductName} LIKE '%${searchProduct}%' ESCAPE '!' OR 
                       ${tableName}.${colProductPrice} LIKE '%${searchProduct}%' ESCAPE '!' OR 
-                      ${tableName}.${colProductInfo} LIKE '%${searchProduct}%' ESCAPE '!'`
+                      ${tableName}.${colProductInfo} LIKE '%${searchProduct}%' ESCAPE '!' OR
+                      Category.CategoryName LIKE '%${searchProduct}%'`
     }
 };
 // 3.UPDATE
