@@ -12,14 +12,41 @@ export const insertProducts = (productName, productPrice, productInfo, productIm
     });
 };
 // 2.READ
+export const getTotalRowProduct = (productSearch, callback) => {
+    db.each(queryTotalRowProducts(productSearch), (err, res) => {
+        if (!err) {
+            const totalProduct = parseInt(res.TOTAL_ROW);
+            return callback(true, totalProduct);
+        }
+        if (err) {
+            return callback(false, err);
+        }
+    });
+}
+export const getTotalPageProduct = (limitProduct, searchVal, callback) => {
+    db.each(queryTotalRowProducts(searchVal), (err, res) => {
+        if (!err) {
+            let lastPage;
+            if (res.TOTAL_ROW % limitProduct === 0) {
+                lastPage = parseInt(res.TOTAL_ROW) / parseInt(limitProduct);
+            } else {
+                lastPage = parseInt(parseInt(res.TOTAL_ROW) / parseInt(limitProduct)) + 1;
+            }
+            return callback(true, lastPage);
+        }
+        if (err) {
+            return callback(false, err);
+        }
+    });
+};
 export const getProducts = (
-    searchProduct,
-    limitProduct,
-    offsetProduct,
+    productSearch,
+    productLimit,
+    productOffset,
     callback
 ) => {
-    const startOffsetProduct = (offsetProduct - 1) * limitProduct
-    db.all(queryGetProducts(searchProduct, limitProduct, startOffsetProduct), (err, res) => {
+    const productOffsetStart = (productOffset - 1) * productLimit
+    db.all(queryGetProducts(productSearch, productLimit, productOffsetStart), (err, res) => {
         if (!err) {
             return callback(true, res);
         }
@@ -41,34 +68,6 @@ export const getListProduct = (
     });
 
 };
-export const getTotalPageProduct = (limitProduct, searchVal, callback) => {
-    db.each(queryTotalRowProducts(searchVal), (err, res) => {
-        if (!err) {
-            let lastPage;
-            if (res.TOTAL_ROW % limitProduct === 0) {
-                lastPage = parseInt(res.TOTAL_ROW) / parseInt(limitProduct);
-            } else {
-                lastPage = parseInt(parseInt(res.TOTAL_ROW) / parseInt(limitProduct)) + 1;
-            }
-            return callback(true, lastPage);
-        }
-        if (err) {
-            return callback(false, err);
-        }
-    });
-
-};
-export const getTotalRowProduct = (searchVal, callback) => {
-    db.each(queryTotalRowProducts(searchVal), (err, res) => {
-        if (!err) {
-            const totalProduct = parseInt(res.TOTAL_ROW);
-            return callback(true, totalProduct);
-        }
-        if (err) {
-            return callback(false, err);
-        }
-    });
-}
 // 3.UPDATE
 export const updateProduct = (productId, productName, productCategoryId, productPrice, productInfo, productImg, callback) => {
     db.run(queryUpdateProduct(productId, productName, productCategoryId, productPrice, productInfo, productImg), (err) => {

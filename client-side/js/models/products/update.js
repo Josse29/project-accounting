@@ -1,4 +1,3 @@
-import { getCategory } from "../../../../serverless-side/functions/categories.js";
 import { updateProduct } from "../../../../serverless-side/functions/product.js";
 import { getProductsAgain } from "./read.js";
 import { successActionProduct } from "./ui.js";
@@ -26,21 +25,6 @@ $(document).ready(function () {
             $("#section-edit-product-img").removeClass("d-none")
             $("img#edit-product-image").attr("src", product.productimage)
         }
-
-        // mckkkk
-        getCategory((status, response) => {
-            if (status) {
-                let categoryEditProduct = ``
-                response.forEach((el) => {
-                    let selected = el.CategoryId === parseInt(product.productcategory) ? ' selected' : '';
-                    categoryEditProduct += `<option value="${el.CategoryId}"${selected}>${el.CategoryName}</option>`;
-                });
-                $("#edit-category-product").html(categoryEditProduct);
-            }
-            if (!status) {
-                console.log(response)
-            }
-        });
 
         // Hapus event listener sebelumnya jika ada MCCCCCKKKKKKKK
         $("#edit-product-submit").off("click");

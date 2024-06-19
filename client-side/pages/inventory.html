@@ -248,7 +248,7 @@
                         </h3>
                         <div class="card-body">
                             <!-- tambah. export products total -->
-                            <div class="d-flex justify-content-between align-items-center gap-2 mb-4">
+                            <div class="d-flex justify-content-between align-items-center gap-2 mb-3">
                                 <div class="btn-group gap-2">
                                     <!-- create-product -->
                                     <button type=" button" class="btn hover-by-me"
@@ -354,24 +354,30 @@
                             <!-- alert success -->
                             <div id="sectionSuccessActionCategory">
                             </div>
-                            <!-- tambah category dan export pdf -->
-                            <div class="btn-group gap-2 mb-3">
-                                <button class="btn bg-primary text-white" data-bs-toggle="modal"
-                                    data-bs-target="#categoryModal">
-                                    <span class="d-flex gap-2 align-items-center" data-bs-toggle="tooltip"
-                                        data-bs-html="true" data-bs-title="<span>tambah-kategori</span>"
-                                        data-bs-placement="bottom">
-                                        <i class="fa-solid fa-folder-plus fs-4"></i>
-                                        <span class="text-nowrap">Tambah Kategori</span>
-                                    </span>
-                                </button>
-                                <button type="button" class="btn text-white" id="category-export-pdf"
-                                    data-bs-toggle="tooltip" data-bs-html="true"
-                                    data-bs-title="<span>export-category.pdf</span>" data-bs-placement="bottom">
-                                    <i class="fa-solid fa-file-pdf fs-4"></i>
-                                </button>
+                            <!-- tambah category, export pdf, total category -->
+                            <div class="d-flex justify-content-between mb-3">
+                                <div class="btn-group gap-2">
+                                    <button class="btn bg-primary text-white" data-bs-toggle="modal"
+                                        data-bs-target="#categoryModal">
+                                        <span class="d-flex gap-2 align-items-center" data-bs-toggle="tooltip"
+                                            data-bs-html="true" data-bs-title="<span>tambah-kategori</span>"
+                                            data-bs-placement="bottom">
+                                            <i class="fa-solid fa-folder-plus fs-4"></i>
+                                            <span class="text-nowrap">Tambah Kategori</span>
+                                        </span>
+                                    </button>
+                                    <button type="button" class="btn text-white" id="category-export-pdf"
+                                        data-bs-toggle="tooltip" data-bs-html="true"
+                                        data-bs-title="<span>export-category.pdf</span>" data-bs-placement="bottom">
+                                        <i class="fa-solid fa-file-pdf fs-4"></i>
+                                    </button>
+                                </div>
+                                <div class="fs-4 d-flex gap-1">
+                                    <div>Total :</div>
+                                    <div id="categories-total-row"></div>
+                                </div>
                             </div>
-                            <!-- search category -->
+                            <!-- search & limit category -->
                             <div class="d-flex mb-3 gap-3">
                                 <select class="form-select w-auto" aria-label="Default select example"
                                     id="category-limit">
@@ -384,9 +390,9 @@
                                 </select>
                                 <div class="input-group">
                                     <input type="text" class="form-control" placeholder="masukkan keyword kategori..."
-                                        id="category-search" />
+                                        id="category-search-input" />
                                     <span class="input-group-text bg-primary text-white"
-                                        id="category-search">Search</span>
+                                        id="category-search-btn">Search</span>
                                 </div>
                             </div>
                             <!-- table category -->
@@ -404,23 +410,20 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <!-- pagination -->
-                            <div class="w-100 d-flex justify-content-center">
-                                <div class="btn-group gap-2">
-                                    <button type="button" class="btn border border-2">
+                            <!-- pagination category-->
+                            <div id="category-pagination" class="w-100 d-flex justify-content-center">
+                                <div class="btn-group">
+                                    <button type="button" class="btn border border-2" id="category-first-page">
                                         <i class="fa-solid fa-backward-fast fs-6"></i>
                                     </button>
-                                    <button type="button" class="btn border border-2">
+                                    <button type="button" class="btn border border-2" id="category-prev-page">
                                         <i class="fa-solid fa-backward-step fs-6"></i>
                                     </button>
-                                    <button type="button" class="btn border border-2 fs-6">
-                                        1
-                                    </button>
-                                    <button type="button" class="btn btn-primary">2</button>
-                                    <button type="button" class="btn border border-2">
+                                    <div id="category-number-page"></div>
+                                    <button type="button" class="btn border border-2" id="category-next-page">
                                         <i class="fa-solid fa-forward-step fs-6"></i>
                                     </button>
-                                    <button type="button" class="btn border border-2">
+                                    <button type="button" class="btn border border-2" id="category-last-page">
                                         <i class="fa-solid fa-forward-fast fs-6"></i>
                                     </button>
                                 </div>
@@ -723,10 +726,12 @@
                                     placeholder="masukkan nama menu..." />
                             </div>
                             <!-- kategori -->
-                            <div class="mb-3">
-                                <label for="create-categories-selection" class="form-label fs-4">Kategori</label>
-                                <select class="form-select text-capitalize" id="create-categories-selection">
-                                </select>
+                            <div class="mb-3 position-relative">
+                                <label for="product-refcategory-create" class="form-label fs-4">Kategori</label>
+                                <input type="text" class="form-control mb-1 text-capitalize"
+                                    id="product-refcategory-create" placeholder="masukkan nama kategori..." />
+                                <div class="product-refcategory-list">
+                                </div>
                             </div>
                             <!-- Nama Supplier -->
                             <div class="mb-3">
@@ -854,6 +859,30 @@
         </div>
         <!-- Category-Modal -->
         <div>
+            <!-- category detail -->
+            <div class="modal fade" id="categoryDetailModal" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header py-2 bg-primary">
+                            <h1 class="modal-title fs-3 text-white text-capitalize" id="category-detail-label">
+                                Category
+                            </h1>
+                        </div>
+                        <div class="modal-body">
+                            <!--DetailSatuanNama -->
+                            <div class="mb-1">
+                                <label id="category-detail-name" class="form-label fs-4 text-capitalize fw-bold">Nama
+                                    Satuan</label>
+                            </div>
+                            <!-- DetailSatuanNama -->
+                            <div class="mb-3">
+                                <label id="category-detail-info"
+                                    class="form-label ms-2 fs-5 text-capitalize">Keterangan</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- create category modal-->
             <div class="modal fade" id="categoryModal" tabindex="-1">
                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -990,19 +1019,20 @@
                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                     <div class="modal-content">
                         <div class="modal-header py-2" style="background-color: #3b82f6">
-                            <h1 class="modal-title fs-3 text-white" id="detailSatuanModalLabel">
+                            <h1 class="modal-title fs-3 text-white text-capitalize" id="detailSatuanModalLabel">
                                 Satuan
                             </h1>
                         </div>
                         <div class="modal-body">
                             <!--DetailSatuanNama -->
-                            <div class="mb-3">
-                                <label id="detail-satuan-name" class="form-label fs-4">Nama
+                            <div class="mb-1">
+                                <label id="detail-satuan-name" class="form-label fs-4 text-capitalize fw-bold">Nama
                                     Satuan</label>
                             </div>
                             <!-- DetailSatuanNama -->
                             <div class="mb-3">
-                                <label id="detail-satuan-keterangan" class="form-label fs-4">Keterangan</label>
+                                <label id="detail-satuan-keterangan"
+                                    class="ms-2 form-label fs-5 text-capitalize">Keterangan</label>
                             </div>
                         </div>
                     </div>

@@ -92,15 +92,15 @@ export const createBlankValue = () => {
   $("#create-image-product").val("")
   $("#section-image").addClass("d-none")
 }
+// ui fr option inventory ref product 
+export const uiOption = (element) => {
+  return `<option value="${element.ProductId}">${element.ProductName}</option>`;
+}
 // button pagination
 export const btnProductPage = (i) => {
   return `<button type = "button" class="product-btn-page ${i === 1 ? 'product-active-page' : ''}" >
                   ${i}
           </button>`
-}
-// ui fr option inventory ref product 
-export const uiOption = (element) => {
-  return `<option value="${element.ProductId}">${element.ProductName}</option>`;
 }
 // Function to update active page button
 export const uiActivePageButton = (productPageNumber, productBtnPage) => {

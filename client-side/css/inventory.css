@@ -226,6 +226,37 @@
     border: 2px solid #3b82f6;
     outline:none;
   }
+  .product-refcategory-list{
+    border: 1px solid black;
+    position: absolute;
+    background-color: white;
+
+    margin-top: -4px;
+    width: 100%;
+  }
+  .product-refcategory-val{
+    padding: 0px 10px;
+    text-transform: capitalize;
+  }
+  .product-refcategory-val:hover{
+    cursor: pointer;
+    background-color:#007bff ;
+    color: white;
+  }
+  .category-btn-page{
+    background-color: #fff;
+    color: black;
+    font-size: 18px;
+    border: 2px solid #e1e1e1;
+    outline:none;
+    padding: 8px 12px;
+  }
+  .category-active-page{
+    background-color: #007bff;
+    color: white;
+    border: 1px solid #007bff;
+    outline:none;
+  } 
   /* mckkk for tbody scrolll*/
   /* tbody {
       display: block;
