@@ -27,15 +27,9 @@ $(document).ready(function () {
                 console.error(response)
             }
         });
-        // // get-detail-product event binding fuckkkkkkk 2 jam lebih
-        $(document).on("click", "#categoryDetailBtn", function () {
-            const category = this.dataset;
-            $("#category-detail-label").text(category.categorynama)
-            $("#category-detail-name").text(category.categorynama)
-            $("#category-detail-info").text(category.categoryketerangan)
-        });
+
     }
-    function reInitializePagination(response) {
+    function handlePagination(response) {
         let uiBtnPaginate = '';
         for (let i = 1; i <= response; i++) {
             uiBtnPaginate += uiBtnPage(i);
@@ -92,7 +86,7 @@ $(document).ready(function () {
                     getTotalPageCategory(categorySearch, categoryLimit, (status, response) => {
                         if (status) {
                             categoryTotalPage = response
-                            reInitializePagination(categoryTotalPage)
+                            handlePagination(categoryTotalPage)
                             $("#category-pagination").removeClass("d-none")
                         }
                         if (!status) {
@@ -115,12 +109,11 @@ $(document).ready(function () {
     }
     // when limit change
     function getCategoryLimit() {
-        categorySearch = $("#category-search-input").val()
         categoryLimit = $("#category-limit").val()
         getTotalPageCategory(categorySearch, categoryLimit, (status, response) => {
             if (status) {
                 categoryTotalPage = response
-                reInitializePagination(categoryTotalPage)
+                handlePagination(categoryTotalPage)
                 $("#category-pagination").removeClass("d-none")
             }
             if (!status) {
@@ -128,7 +121,65 @@ $(document).ready(function () {
             }
         })
     }
-    // 1.init & get total row
+    // function to update list product ref categories
+    function listRefProduct() {
+        $(".product-refcategory-list").hide();
+        function updateCategoryList(response) {
+            let option = '';
+            response.forEach((el) => {
+                option += `<div class='product-refcategory-val' value='${el.CategoryId}'>${el.CategoryName}</div>`;
+            });
+            $(".product-refcategory-list").html(option);
+            // Re-bind click event to new elements
+            $('.product-refcategory-val').on('click', function () {
+                $("#product-refcategory-create-val").val($(this).attr('value'))
+                $("#product-refcategory-create").val(this.textContent);
+                $(".product-refcategory-list").hide();
+            });
+        }
+        // Initial category fetch
+        let categoryListSearch = ''
+        getListCategory(categoryListSearch, (status, response) => {
+            if (status) {
+                updateCategoryList(response);
+            } else {
+                console.error(response);
+            }
+        });
+        $("#product-refcategory-create").on("focus", () => {
+            $(".product-refcategory-list").show();
+        });
+        $("#product-refcategory-create").on("blur", () => {
+            setTimeout(() => {
+                $(".product-refcategory-list").hide();
+            }, 200);
+        });
+        $("#product-refcategory-create").on("keyup", function () {
+            categoryListSearch = $(this).val();
+            getTotalRowCategory(categoryListSearch, (status, response) => {
+                if (status) {
+                    const totalCategorySearch = response
+                    if (totalCategorySearch >= 1) {
+                        getListCategory(categoryListSearch, (status, response) => {
+                            if (status) {
+                                updateCategoryList(response);
+                            } else {
+                                console.error(response);
+                            }
+                        });
+                    }
+                    if (totalCategorySearch < 1) {
+                        const optionNotFound = `<div class='product-refcategory-not-found'>kategori - <b>${categoryListSearch}</b> tidak ditemukan</div>`
+                        $(".product-refcategory-list").html(optionNotFound);
+                    }
+                }
+                if (!status) {
+                    console.log(response)
+                }
+            })
+        });
+    }
+    // init & get total row
     getTotalRowCategory(categorySearch, (status, response) => {
         // if success get total row category
         if (status) {
@@ -136,10 +187,11 @@ $(document).ready(function () {
             $("#categories-total-row").html(categoryTotalRow)
             // if it exist category
             if (categoryTotalRow >= 1) {
+                listRefProduct()
                 getTotalPageCategory(categorySearch, categoryLimit, (status, response) => {
                     if (status) {
                         categoryTotalPage = response
-                        reInitializePagination(categoryTotalPage)
+                        handlePagination(categoryTotalPage)
                         $("#category-pagination").removeClass("d-none")
                         $("#category-search-input").on("keyup", getCategorySearch)
                         $("#category-limit").on("change", getCategoryLimit)
@@ -148,46 +200,6 @@ $(document).ready(function () {
                         console.error(response)
                     }
                 })
-                $(".product-refcategory-list").hide();
-                function updateCategoryList(response) {
-                    let option = '';
-                    response.forEach((el) => {
-                        option += `<div class='product-refcategory-val' value='${el.CategoryId}'>${el.CategoryName}</div>`;
-                    });
-                    $(".product-refcategory-list").html(option);
-                    // Re-bind click event to new elements
-                    $('.product-refcategory-val').on('click', function () {
-                        $("#product-refcategory-create").val(this.textContent);
-                        $(".product-refcategory-list").hide();
-                    });
-                }
-                // Initial category fetch
-                let categoryListSearch = ''
-                getListCategory(categoryListSearch, (status, response) => {
-                    if (status) {
-                        updateCategoryList(response);
-                    } else {
-                        console.error(response);
-                    }
-                });
-                $("#product-refcategory-create").on("focus", () => {
-                    $(".product-refcategory-list").show();
-                });
-                $("#product-refcategory-create").on("blur", () => {
-                    setTimeout(() => {
-                        $(".product-refcategory-list").hide();
-                    }, 200);
-                });
-                $("#product-refcategory-create").on("keyup", function () {
-                    categoryListSearch = $(this).val();
-                    getListCategory(categoryListSearch, (status, response) => {
-                        if (status) {
-                            updateCategoryList(response);
-                        } else {
-                            console.error(response);
-                        }
-                    });
-                });
             }
             // if it doesn't exist category
             if (categoryTotalRow < 1) {
@@ -200,6 +212,13 @@ $(document).ready(function () {
             console.error(response)
         }
     })
+    // get-detail-product event binding fuckkkkkkk 2 jam lebih
+    $(document).on("click", "#categoryDetailBtn", function () {
+        const category = this.dataset;
+        $("#category-detail-label").text(category.categorynama)
+        $("#category-detail-name").text(category.categorynama)
+        $("#category-detail-info").text(category.categoryketerangan)
+    });
 })
 
 export const getCategoryAgain = () => {
@@ -235,7 +254,7 @@ export const getCategoryAgain = () => {
             $("#category-detail-info").text(category.categoryketerangan)
         });
     }
-    function reInitializePagination(response) {
+    function handlePagination(response) {
         let uiBtnPaginate = '';
         for (let i = 1; i <= response; i++) {
             uiBtnPaginate += uiBtnPage(i);
@@ -291,7 +310,7 @@ export const getCategoryAgain = () => {
                 getTotalPageCategory(categorySearch, categoryLimit, (status, response) => {
                     if (status) {
                         categoryTotalPage = response
-                        reInitializePagination(categoryTotalPage)
+                        handlePagination(categoryTotalPage)
                         $("#category-pagination").removeClass("d-none")
                     }
                     if (!status) {

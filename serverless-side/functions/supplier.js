@@ -35,7 +35,7 @@ export const getTotalRowSupplier = (supplierSearch, callback) => {
         }
     });
 }
-export const getTotalPageSupplier = (supplierLimit, supplierSearch, callback) => {
+export const getTotalPageSupplier = (supplierSearch, supplierLimit, callback) => {
     db.each(queryTotalRowSupplier(supplierSearch), (err, res) => {
         if (!err) {
             let lastPage;
@@ -52,8 +52,8 @@ export const getTotalPageSupplier = (supplierLimit, supplierSearch, callback) =>
         }
     });
 };
-export const getListSupplier = (callback) => {
-    db.all(queryGetListSupplier(), (err, res) => {
+export const getListSupplier = (supplierSearch, callback) => {
+    db.all(queryGetListSupplier(supplierSearch), (err, res) => {
         if (!err) {
             return callback(true, res)
         }

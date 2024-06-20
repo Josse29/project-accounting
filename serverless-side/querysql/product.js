@@ -1,17 +1,18 @@
 // create-table
-// CREATE TABLE Product (
-//     ProductId INTEGER PRIMARY KEY AUTOINCREMENT,
-//     ProductName VARCHAR(255),
-//     ProductImage BLOB,
-//     ProductInfo TEXT,
-//     ProductPrice REAL,
-//     ProductCategoryId INTEGER, 
-//     ProductSupplierId INTEGER,
-//     FOREIGN KEY (ProductCategoryId) REFERENCES Category(CategoryId)
-//     FOREIGN KEY (ProductSupplierId) REFERENCES Supplier(SupplierId)
-// );
-// ALTER TABLE table_name
-// ADD column_name datatype;
+export const createTable = () => {
+    return `CREATE TABLE Product (
+            ProductId INTEGER PRIMARY KEY AUTOINCREMENT,
+            ProductName VARCHAR(255),
+            ProductImage BLOB,
+            ProductInfo TEXT,
+            ProductPrice REAL,
+            ProductCategoryId INTEGER, 
+            ProductSupplierId INTEGER,
+            FOREIGN KEY (ProductCategoryId) REFERENCES Category(CategoryId)
+            FOREIGN KEY (ProductSupplierId) REFERENCES Supplier(SupplierId)
+            );`
+}
+
 // init table & column
 const tableName = `Product`
 const colProductId = `ProductId`
@@ -34,7 +35,8 @@ export const queryinsertProducts = (productName, productPrice, productInfo, prod
 export const queryGetProducts = (productSearch, productLimit, productOffset) => {
     let query = `SELECT *
                  FROM ${tableName}
-                 LEFT JOIN Category ON ${tableName}.${colProductCategoryId} = Category.CategoryId `
+                 LEFT JOIN Category ON ${tableName}.${colProductCategoryId} = Category.CategoryId
+                 LEFT JOIN Supplier ON ${tableName}.${colSupplierId} = Supplier.SupplierId `
     //  with search value
     if (productSearch !== "") {
         query += `WHERE Product.ProductName LIKE '%${productSearch}%' OR

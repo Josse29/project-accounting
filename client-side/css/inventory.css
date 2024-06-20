@@ -230,12 +230,18 @@
     border: 1px solid black;
     position: absolute;
     background-color: white;
-
     margin-top: -4px;
     width: 100%;
+    z-index: 2;
   }
   .product-refcategory-val{
     padding: 0px 10px;
+    text-transform: capitalize;
+  }
+  .product-refcategory-not-found{
+    padding: 0px 10px;
+    text-align: center;
+    font-style: italic;
     text-transform: capitalize;
   }
   .product-refcategory-val:hover{
@@ -256,6 +262,29 @@
     color: white;
     border: 1px solid #007bff;
     outline:none;
+  }
+  .product-refsupplier-list{
+    border: 1px solid black;
+    position: absolute;
+    background-color: white;
+    margin-top: -4px;
+    width: 100%;
+    z-index: 2;
+  }
+  .product-refsupplier-val{
+    padding: 0px 10px;
+    text-transform: capitalize;
+  }
+  .product-refsupplier-not-found{
+    padding: 0px 10px;
+    text-align: center;
+    font-style: italic;
+    text-transform: capitalize;
+  }
+  .product-refsupplier-val:hover{
+    cursor: pointer;
+    background-color:#007bff ;
+    color: white;
   } 
   /* mckkk for tbody scrolll*/
   /* tbody {

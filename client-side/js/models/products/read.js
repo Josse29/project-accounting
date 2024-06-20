@@ -15,6 +15,7 @@ $(document).ready(function () {
         getProducts(productSearch, productLimit, productPageNumber, (status, response) => {
             // if success 
             if (status) {
+                console.log(response)
                 let tr = '';
                 response.forEach(element => {
                     tr += uitrProduct(element);
@@ -31,7 +32,6 @@ $(document).ready(function () {
         // get-detail-product event binding fuckkkkkkk 2 jam lebih
         $(document).on("click", "#productDetailBtn", function () {
             const product = this.dataset;
-            console.log(product)
             $("#detailProductModalLabel").html(product.productname)
             $("#detail-product-name").text(product.productname)
             // if exist image
@@ -52,7 +52,7 @@ $(document).ready(function () {
         });
     }
     // Function to re=initialize pagination
-    function reInitializePagination(response) {
+    function handlePagination(response) {
         let uiBtnPaginate = '';
         for (let i = 1; i <= response; i++) {
             uiBtnPaginate += btnProductPage(i);
@@ -93,7 +93,6 @@ $(document).ready(function () {
         });
         // last page
         $("#product-last-page").off('click').on("click", () => getProductPage(productTotalPage));
-
         // Initial page load
         getProductPage(productCurrentPage);
     }
@@ -111,7 +110,7 @@ $(document).ready(function () {
                     getTotalPageProduct(productLimit, productSearch, (status, response) => {
                         if (status) {
                             productTotalPage = parseInt(response)
-                            reInitializePagination(productTotalPage);
+                            handlePagination(productTotalPage);
                             $("#product-pagination").removeClass("d-none");
                         }
                         if (!status) {
@@ -132,10 +131,11 @@ $(document).ready(function () {
         });
     }
     function getProductLimit() {
+        productLimit = parseInt($("#product-limit").val());
         getTotalPageProduct(productLimit, productSearch, (status, response) => {
             if (status) {
                 productTotalPage = parseInt(response)
-                reInitializePagination(productTotalPage);
+                handlePagination(productTotalPage);
                 $("#product-pagination").removeClass("d-none");
             }
             if (!status) {
@@ -144,7 +144,6 @@ $(document).ready(function () {
         });
     }
     // Initial fetch and setup
-    // 1. get total row product
     getTotalRowProduct(productSearch, (status, response) => {
         // success get total row product
         if (status) {
@@ -169,7 +168,7 @@ $(document).ready(function () {
                 getTotalPageProduct(productLimit, productSearch, (status, response) => {
                     if (status) {
                         productTotalPage = parseInt(response)
-                        reInitializePagination(productTotalPage);
+                        handlePagination(productTotalPage);
                         $("#product-pagination").removeClass("d-none");
                     }
                     if (!status) {
@@ -222,31 +221,9 @@ export function getProductsAgain() {
                 console.error(response)
             }
         });
-        // get-detail-product event binding fuckkkkkkk 2 jam lebih
-        $(document).on("click", "#productDetailBtn", function () {
-            const product = this.dataset;
-            console.log(product)
-            $("#detailProductModalLabel").html(product.productname)
-            $("#detail-product-name").text(product.productname)
-            // if exist image
-            if (product.productimage !== "null") {
-                $("img#detail-product-image").attr("src", product.productimage)
-                $("#detail-product-image").removeClass("d-none")
-                $("#detail-no-image").text(``)
-            }
-            // if not exist image
-            if (product.productimage === "null") {
-                $("#detail-product-image").addClass("d-none")
-                $("#detail-no-image").text(`no - image displayed`)
-                $("img#detail-product-image").attr("src", "")
-            }
-            $("#detail-product-price").text(product.productprice)
-            $("#detail-category-price").text(product.productcategory)
-            $("#detail-product-keterangan").text(product.productketerangan)
-        });
     }
     // Function to re=initialize pagination
-    function reInitializePagination(response) {
+    function handlePagination(response) {
         let uiBtnPaginate = '';
         for (let i = 1; i <= response; i++) {
             uiBtnPaginate += btnProductPage(i);
@@ -287,14 +264,12 @@ export function getProductsAgain() {
         });
         // last page
         $("#product-last-page").off('click').on("click", () => getProductPage(productTotalPage));
-
         // Initial page load
         getProductPage(productCurrentPage);
     }
     // Function to handle search based on supplier
     function getProductSearch() {
         productSearch = $("#product-search-input").val();
-        productCurrentPage = 1; // Reset page to 1 on search
         // get only total row product
         getTotalRowProduct(productSearch, (status, response) => {
             // success get total row product
@@ -303,11 +278,10 @@ export function getProductsAgain() {
                 $("#product-total-row").html(productTotalRow);
                 // if it exist product
                 if (productTotalRow >= 1) {
-                    // get only total page product
                     getTotalPageProduct(productLimit, productSearch, (status, response) => {
                         if (status) {
                             productTotalPage = parseInt(response)
-                            reInitializePagination(productTotalPage);
+                            handlePagination(productTotalPage);
                             $("#product-pagination").removeClass("d-none");
                         }
                         if (!status) {
@@ -327,7 +301,18 @@ export function getProductsAgain() {
             }
         });
     }
-
+    function getProductLimit() {
+        getTotalPageProduct(productLimit, productSearch, (status, response) => {
+            if (status) {
+                productTotalPage = parseInt(response)
+                handlePagination(productTotalPage);
+                $("#product-pagination").removeClass("d-none");
+            }
+            if (!status) {
+                console.error(response)
+            }
+        });
+    }
     // Initial fetch and setup
     // 1. get total row product
     getTotalRowProduct(productSearch, (status, response) => {
@@ -354,7 +339,7 @@ export function getProductsAgain() {
                 getTotalPageProduct(productLimit, productSearch, (status, response) => {
                     if (status) {
                         productTotalPage = parseInt(response)
-                        reInitializePagination(productTotalPage);
+                        handlePagination(productTotalPage);
                         $("#product-pagination").removeClass("d-none");
                     }
                     if (!status) {
@@ -362,18 +347,14 @@ export function getProductsAgain() {
                     }
                 });
                 // 2.Function to handle limit change
-                $("#product-limit").on('change', () => {
-                    productLimit = parseInt($("#product-limit").val());
-                    productCurrentPage = 1; // Reset page to 1 on limit change
-                    getTotalRowProduct(productSearch); // Re-fetch suppliers based on new limit
-                });
+                $("#product-limit").on('change', getProductLimit);
                 // 2.Search functionality
                 $("#product-search-input").on("keyup", getProductSearch);
                 $("#product-search-span").on("click", getProductSearch);
             }
             // if it doesn't exist product
             if (productTotalRow < 1) {
-                $("#product-data").html(trProductZero());
+                $("#product-data").html(trProductZero);
                 $("#product-pagination").addClass("d-none");
             }
         }

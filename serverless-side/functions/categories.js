@@ -2,6 +2,7 @@ import { queryDeleteCategory, queryGetCategory, queryGetListCategory, queryInser
 
 // 1.CREATE
 export const createCategory = (categoryName, categoryInfo, callback) => {
+    console.log('Callback type:', typeof callback);
     db.run(queryInsertCategory(categoryName, categoryInfo), (err) => {
         if (!err) {
             return callback(true, `Kategori <b class='text-capitalize'>${categoryName}</b> berhasil ditambahkan`)

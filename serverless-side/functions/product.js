@@ -4,7 +4,7 @@ import { queryDeleteProductId, queryGetListProduct, queryGetProducts, queryTotal
 export const insertProducts = (productName, productPrice, productInfo, productImg, productCategoryId, productSupplierId, callback) => {
     db.run(queryinsertProducts(productName, productPrice, productInfo, productImg, productCategoryId, productSupplierId), (err) => {
         if (!err) {
-            return callback(true, `Product <b class='text-capitalize'>${name}</b> berhasil ditambahkan`);
+            return callback(true, `Product <b class='text-capitalize'>${productName}</b> berhasil ditambahkan`);
         }
         if (err) {
             return callback(false, err);

@@ -3,17 +3,16 @@ import { getProductsAgain } from "./read.js";
 import { createBlankValue, successActionProduct } from "./ui.js";
 
 $(document).ready(function () {
-    // Hapus event listener sebelumnya jika ada MCCCCCKKKKKKKK
-    $("#submit_product").off("click");
     // create product
-    $("#submit_product").on("click", () => {
+    $("#submit_product").off("click").on("click", () => {
         const productName = $("#product-name").val()
         const productPrice = $("#product-price").val()
         const productInfo = $("#product-keterangan").val()
-        const productCategoryId = $("#create-categories-selection").val()
+        const productCategoryId = $("#product-refcategory-create-val").val()
+        const productSupplierId = $("#product-refsupplier-create-val").val()
         const productImg = document.getElementById('create-image-product').files
-        // with image
-        if (productImg.length > 0) {
+        // with an image
+        if (productImg.length >= 1) {
             const reader = new FileReader()
             reader.onload = () => {
                 const imageBase64 = reader.result
@@ -23,6 +22,7 @@ $(document).ready(function () {
                     productInfo,
                     imageBase64,
                     productCategoryId,
+                    productSupplierId,
                     (status, response) => {
                         if (status) {
                             console.log("create with image")
@@ -37,8 +37,8 @@ $(document).ready(function () {
                     }
                 );
             }
-            if (file[0]) {
-                reader.readAsDataURL(file[0]);
+            if (productImg[0]) {
+                reader.readAsDataURL(productImg[0]);
             }
         }
         // without image
@@ -49,6 +49,7 @@ $(document).ready(function () {
                 productInfo,
                 "null",
                 productCategoryId,
+                productSupplierId,
                 (status, response) => {
                     if (status) {
                         console.log(response);

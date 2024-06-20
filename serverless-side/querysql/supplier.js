@@ -31,11 +31,12 @@ export const queryGetSupplier = (supplierSearch, supplierLimit, supplierStartOff
     // with feature search
     if (supplierSearch !== "") {
         query += `WHERE ${colSupplierName} LIKE '%${supplierSearch}%' ESCAPE '!' OR 
-                        ${colSupplierInfo} LIKE '%${supplierSearch}%' ESCAPE '!'`
+                        ${colSupplierInfo} LIKE '%${supplierSearch}%' ESCAPE '!' `
     }
     query += `ORDER BY ${colSupplierName} ASC
               LIMIT ${supplierLimit} 
               OFFSET ${supplierStartOffset}`
+
     return query
 }
 export const queryTotalRowSupplier = (supplierSearch) => {
@@ -48,11 +49,16 @@ export const queryTotalRowSupplier = (supplierSearch) => {
     }
     return query
 }
-export const queryGetListSupplier = () => {
-    return `SELECT
-            ${colSupplierId}, ${colSupplierName}
-            FROM ${tableName}
-            ORDER BY ${colSupplierName} ASC`
+export const queryGetListSupplier = (supplierSearch) => {
+    let query = `SELECT ${colSupplierId}, ${colSupplierName} 
+                 FROM ${tableName} `
+    // with feature search
+    if (supplierSearch !== "") {
+        query += `WHERE ${colSupplierName} LIKE '%${supplierSearch}%' ESCAPE '!' OR 
+                        ${colSupplierInfo} LIKE '%${supplierSearch}%' ESCAPE '!' `
+    }
+    query += `ORDER BY ${colSupplierName} ASC`
+    return query
 }
 // 3.UPDATE
 export const queryUpdateSupplier = (supplierId, supplierName, supplierInfo, supplierImg) => {
