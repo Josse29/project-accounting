@@ -5,7 +5,7 @@ const {
   screen,
   dialog,
 } = require("electron/main");
-const db = require("./client-side/config/db");
+const db = require("./src/client-side/config/db");
 const remote = require("@electron/remote/main");
 const fs = require("fs");
 const path = require("path");
@@ -63,7 +63,7 @@ ipcMain.on("load:register-page", () => {
     height: 720,
     autoHideMenuBar: true,
   });
-  registerPage.loadFile("./client-side/pages/register.html");
+  registerPage.loadFile("./src/client-side/pages/register.html");
   remote.enable(registerPage.webContents);
 });
 // 3 dashboard page
@@ -75,7 +75,7 @@ ipcMain.on("load:dashboard-page", () => {
     },
     autoHideMenuBar: true,
   });
-  dashboardPage.loadFile("./client-side/pages/dashboard.html");
+  dashboardPage.loadFile("./src/client-side/pages/dashboard.html");
   dashboardPage.webContents.on("did-finish-load", () => {
     loginPage.hide();
   });
@@ -102,7 +102,7 @@ ipcMain.on("load:order-page", () => {
     // frame: false,
   });
   orderPage.setFullScreen(true);
-  orderPage.loadFile("./client-side/pages/order.html");
+  orderPage.loadFile("./src/client-side/pages/order.html");
   remote.enable(orderPage.webContents);
   ipcMain.on("minimize-window:order-page", () => {
     orderPage.minimize();
@@ -125,7 +125,7 @@ ipcMain.on("load:inventory-page", () => {
     // frame: true,
   });
   inventoryPage.setFullScreen(true);
-  inventoryPage.loadFile("./client-side/pages/inventory.html");
+  inventoryPage.loadFile("./src/client-side/pages/inventory.html");
   remote.enable(inventoryPage.webContents);
   ipcMain.on("minimize-window:inventory-page", () => {
     inventoryPage.minimize();
@@ -148,7 +148,7 @@ ipcMain.on("load:transaksi-page", () => {
     frame: false,
   });
   transaksiPage.setFullScreen(true);
-  transaksiPage.loadFile("./client-side/pages/transaksi.html");
+  transaksiPage.loadFile("./src/client-side/pages/transaksi.html");
   remote.enable(transaksiPage.webContents);
   ipcMain.on("minimize-window:transaksi-page", () => {
     transaksiPage.minimize();
@@ -171,7 +171,7 @@ ipcMain.on("load:users-page", () => {
     frame: false,
   });
   usersPage.setFullScreen(true);
-  usersPage.loadFile("./client-side/pages/users.html");
+  usersPage.loadFile("./src/client-side/pages/users.html");
   remote.enable(usersPage.webContents);
   ipcMain.on("minimize-window:users-page", () => {
     usersPage.minimize();
@@ -194,7 +194,7 @@ ipcMain.on("load:about-page", () => {
     // frame: false,
   });
   aboutPage.setFullScreen(true);
-  aboutPage.loadFile("./client-side/pages/about-us.html");
+  aboutPage.loadFile("./src/client-side/pages/about-us.html");
   ipcMain.on("minimize-window:about-page", () => {
     aboutPage.minimize();
   });
@@ -217,7 +217,7 @@ ipcMain.on("pdf:product", (event, thead, tbody, file_path) => {
     // frame: false,
   });
   remote.enable(productPDF.webContents);
-  productPDF.loadFile("./client-side/pdf/product.html");
+  productPDF.loadFile("./src/client-side/pdf/product.html");
   productPDF.webContents.on("dom-ready", () => {
     productPDF.webContents.send("tables:product", thead, tbody, file_path);
   });
@@ -232,8 +232,8 @@ ipcMain.on("pdf:product", (event, thead, tbody, file_path) => {
       .then((data) => {
         fs.writeFile(file_path, data, (err) => {
           if (err) throw err;
-          productPDF.close()
-          inventoryPage.webContents.send("success:pdf-product", file_path)
+          productPDF.close();
+          inventoryPage.webContents.send("success:pdf-product", file_path);
         });
       })
       .catch((error) => {
@@ -241,7 +241,7 @@ ipcMain.on("pdf:product", (event, thead, tbody, file_path) => {
       });
   });
 });
-let productPrint
+let productPrint;
 ipcMain.on("print:product", (event, thead, tbody) => {
   productPrint = new BrowserWindow({
     webPreferences: {
@@ -251,19 +251,22 @@ ipcMain.on("print:product", (event, thead, tbody) => {
     // frame: false,
   });
   remote.enable(productPrint.webContents);
-  productPrint.loadFile("./client-side/print/product.html");
+  productPrint.loadFile("./src/client-side/print/product.html");
   productPrint.webContents.on("dom-ready", () => {
     productPrint.webContents.send("tables:product", thead, tbody);
   });
   ipcMain.on("create:print-product", (event) => {
-    productPrint.webContents.print({
-      printBackground: true
-    }, () => {
-      productPrint.close()
-    })
-    productPrint.on('close', () => {
-      productPrint = null
-    })
+    productPrint.webContents.print(
+      {
+        printBackground: true,
+      },
+      () => {
+        productPrint.close();
+      }
+    );
+    productPrint.on("close", () => {
+      productPrint = null;
+    });
   });
 });
 app.whenReady().then(() => {

@@ -1,0 +1,468 @@
+import {
+  getCategory,
+  getListCategory,
+  getTotalPageCategory,
+  getTotalRowCategory,
+} from "../../../../serverless-side/functions/categories.js";
+import { reinitializeTooltips } from "../../utils/updateUi.js";
+import {
+  uiActivePageButton,
+  uiBtnPage,
+  uiTrCategory,
+  uiTrZero,
+  uiTrZeroSearch,
+} from "./ui.js";
+
+$(document).ready(function () {
+  let categoryTotalRow;
+  let categoryTotalPage;
+  let categoryBtnPage;
+  let categoryCurrentPage = 1;
+  let categorySearch = $("#category-search-input").val();
+  let categoryLimit = $("#category-limit").val();
+  function getCategoryPage(categoryPageNumber) {
+    // function to only get product based on search, limit, page
+    getCategory(
+      categorySearch,
+      categoryLimit,
+      categoryPageNumber,
+      (status, response) => {
+        // if success
+        if (status) {
+          let tr = "";
+          response.forEach((element) => {
+            tr += uiTrCategory(element);
+          });
+          $("#category-data").html(tr);
+          uiActivePageButton(categoryPageNumber, categoryBtnPage);
+          reinitializeTooltips();
+        }
+        // if failed
+        if (!status) {
+          console.error(response);
+        }
+      }
+    );
+  }
+  function handlePagination(response) {
+    let uiBtnPaginate = "";
+    for (let i = 1; i <= response; i++) {
+      uiBtnPaginate += uiBtnPage(i);
+    }
+    $("#category-number-page").html(uiBtnPaginate);
+    // Event listeners for pagination buttons
+    categoryBtnPage = document.getElementsByClassName("category-btn-page");
+    categoryTotalPage = response;
+    // first page
+    $("#category-first-page")
+      .off("click")
+      .on("click", () => {
+        getCategoryPage(1);
+      });
+    // previous page
+    $("#category-prev-page")
+      .off("click")
+      .on("click", () => {
+        let pageActive = parseInt($(".category-active-page").text().trim());
+        let decrementPage = pageActive - 1;
+        if (decrementPage < 1) {
+          decrementPage = categoryTotalPage;
+        }
+        getCategoryPage(decrementPage);
+      });
+    // based on number when clicked
+    for (let i = 0; i < categoryTotalPage; i++) {
+      categoryBtnPage[i].addEventListener("click", function () {
+        const pageNumber = parseInt(this.textContent.trim());
+        getCategoryPage(pageNumber);
+      });
+    }
+    // // next page
+    $("#category-next-page")
+      .off("click")
+      .on("click", () => {
+        let pageActive = parseInt($(".category-active-page").text().trim());
+        let incrementPage = pageActive + 1;
+        if (incrementPage > categoryTotalPage) {
+          incrementPage = 1;
+        }
+        getCategoryPage(incrementPage);
+      });
+    // last page
+    $("#category-last-page")
+      .off("click")
+      .on("click", () => getCategoryPage(categoryTotalPage));
+
+    // Initial page load
+    getCategoryPage(categoryCurrentPage);
+  }
+  function getCategorySearch() {
+    categorySearch = $("#category-search-input").val();
+    getTotalRowCategory(categorySearch, (status, response) => {
+      // if success get total row category
+      if (status) {
+        categoryTotalRow = response;
+        $("#categories-total-row").html(categoryTotalRow);
+        // if it exist category
+        if (categoryTotalRow >= 1) {
+          getTotalPageCategory(
+            categorySearch,
+            categoryLimit,
+            (status, response) => {
+              if (status) {
+                categoryTotalPage = response;
+                handlePagination(categoryTotalPage);
+                $("#category-pagination").removeClass("d-none");
+              }
+              if (!status) {
+                console.error(response);
+              }
+            }
+          );
+          $("#category-pagination").removeClass("d-none");
+        }
+        // if it doesn't exist category
+        if (categoryTotalRow < 1) {
+          $("#category-data").html(uiTrZeroSearch(categorySearch));
+          $("#category-pagination").addClass("d-none");
+        }
+      }
+      // if failed get total row category
+      if (!status) {
+        console.error(response);
+      }
+    });
+  }
+  // when limit change
+  function getCategoryLimit() {
+    categoryLimit = $("#category-limit").val();
+    getTotalPageCategory(categorySearch, categoryLimit, (status, response) => {
+      if (status) {
+        categoryTotalPage = response;
+        handlePagination(categoryTotalPage);
+        $("#category-pagination").removeClass("d-none");
+      }
+      if (!status) {
+        console.error(response);
+      }
+    });
+  }
+  // init & get total row
+  getTotalRowCategory(categorySearch, (status, response) => {
+    // if success get total row category
+    if (status) {
+      categoryTotalRow = response;
+      $("#categories-total-row").html(categoryTotalRow);
+      // if it exist category
+      if (categoryTotalRow >= 1) {
+        getTotalPageCategory(
+          categorySearch,
+          categoryLimit,
+          (status, response) => {
+            if (status) {
+              categoryTotalPage = response;
+              handlePagination(categoryTotalPage);
+              $("#category-pagination").removeClass("d-none");
+              $("#category-search-input").on("keyup", getCategorySearch);
+              $("#category-limit").on("change", getCategoryLimit);
+            }
+            if (!status) {
+              console.error(response);
+            }
+          }
+        );
+      }
+      // if it doesn't exist category
+      if (categoryTotalRow < 1) {
+        $("#category-data").html(uiTrZero);
+        $("#category-pagination").addClass("d-none");
+      }
+    }
+    // if failed get total row category
+    if (!status) {
+      console.error(response);
+    }
+  });
+  listCategoryRefProductCreate();
+  // get-detail-product event binding fuckkkkkkk 2 jam lebih
+  $(document).on("click", "#categoryDetailBtn", function () {
+    const category = this.dataset;
+    $("#category-detail-label").text(category.categorynama);
+    $("#category-detail-name").text(category.categorynama);
+    $("#category-detail-info").text(category.categoryketerangan);
+  });
+});
+export const getCategoryAgain = () => {
+  let categoryTotalRow;
+  let categoryTotalPage;
+  let categoryBtnPage;
+  let categoryCurrentPage = 1;
+  let categorySearch = $("#category-search-input").val();
+  let categoryLimit = $("#category-limit").val();
+  function getCategoryPage(categoryPageNumber) {
+    // function to only get product based on search, limit, page
+    getCategory(
+      categorySearch,
+      categoryLimit,
+      categoryPageNumber,
+      (status, response) => {
+        // if success
+        if (status) {
+          let tr = "";
+          response.forEach((element) => {
+            tr += uiTrCategory(element);
+          });
+          $("#category-data").html(tr);
+          uiActivePageButton(categoryPageNumber, categoryBtnPage);
+          reinitializeTooltips();
+        }
+        // if failed
+        if (!status) {
+          console.error(response);
+        }
+      }
+    );
+    // // get-detail-product event binding fuckkkkkkk 2 jam lebih
+    $(document).on("click", "#categoryDetailBtn", function () {
+      const category = this.dataset;
+      $("#category-detail-label").text(category.categorynama);
+      $("#category-detail-name").text(category.categorynama);
+      $("#category-detail-info").text(category.categoryketerangan);
+    });
+  }
+  function handlePagination(response) {
+    let uiBtnPaginate = "";
+    for (let i = 1; i <= response; i++) {
+      uiBtnPaginate += uiBtnPage(i);
+    }
+    $("#category-number-page").html(uiBtnPaginate);
+    // Event listeners for pagination buttons
+    categoryBtnPage = document.getElementsByClassName("category-btn-page");
+    categoryTotalPage = response;
+    // first page
+    $("#category-first-page")
+      .off("click")
+      .on("click", () => {
+        getCategoryPage(1);
+      });
+    // previous page
+    $("#category-prev-page")
+      .off("click")
+      .on("click", () => {
+        let pageActive = parseInt($(".category-active-page").text().trim());
+        let decrementPage = pageActive - 1;
+        if (decrementPage < 1) {
+          decrementPage = categoryTotalPage;
+        }
+        getCategoryPage(decrementPage);
+      });
+    // based on number when clicked
+    for (let i = 0; i < categoryTotalPage; i++) {
+      categoryBtnPage[i].addEventListener("click", function () {
+        const pageNumber = parseInt(this.textContent.trim());
+        getCategoryPage(pageNumber);
+      });
+    }
+    // // next page
+    $("#category-next-page")
+      .off("click")
+      .on("click", () => {
+        let pageActive = parseInt($(".category-active-page").text().trim());
+        let incrementPage = pageActive + 1;
+        if (incrementPage > categoryTotalPage) {
+          incrementPage = 1;
+        }
+        getCategoryPage(incrementPage);
+      });
+    // last page
+    $("#category-last-page")
+      .off("click")
+      .on("click", () => getCategoryPage(categoryTotalPage));
+
+    // Initial page load
+    getCategoryPage(categoryCurrentPage);
+  }
+  // init & get total row
+  getTotalRowCategory(categorySearch, (status, response) => {
+    // if success get total row category
+    if (status) {
+      categoryTotalRow = response;
+      $("#categories-total-row").html(categoryTotalRow);
+      // if it exist category
+      if (categoryTotalRow >= 1) {
+        getTotalPageCategory(
+          categorySearch,
+          categoryLimit,
+          (status, response) => {
+            if (status) {
+              categoryTotalPage = response;
+              handlePagination(categoryTotalPage);
+              $("#category-pagination").removeClass("d-none");
+            }
+            if (!status) {
+              console.error(response);
+            }
+          }
+        );
+      }
+      // if it doesn't exist category
+      if (categoryTotalRow < 1) {
+        $("#category-data").html(uiTrZero);
+        $("#category-pagination").addClass("d-none");
+      }
+    }
+    // if failed get total row category
+    if (!status) {
+      console.error(response);
+    }
+  });
+  listCategoryRefProductCreate();
+};
+// function to update when create list product ref categories
+export function listCategoryRefProductCreate() {
+  $(".product-refcategory-list").hide();
+  function updateCategoryList(response) {
+    let option = "";
+    response.forEach((el) => {
+      option += `<div class='product-refcategory-val fs-6' value='${el.CategoryId}'>${el.CategoryName}</div>`;
+    });
+    $(".product-refcategory-list").html(option);
+    // Re-bind click event to new elements
+    $(".product-refcategory-val").on("click", function () {
+      $("#product-refcategory-create-val").val($(this).attr("value"));
+      $("#product-refcategory-create").val(this.textContent);
+      $(".product-refcategory-list").hide();
+    });
+  }
+  // Initial category fetch
+  let categoryListSearch = "";
+  getTotalRowCategory(categoryListSearch, (status, response) => {
+    if (status) {
+      const totalCategory = response;
+      if (totalCategory >= 1) {
+        $("#product-refcategory-create").show();
+        $("#category-empty").hide();
+        getListCategory(categoryListSearch, (status, response) => {
+          if (status) {
+            updateCategoryList(response);
+          } else {
+            console.error(response);
+          }
+        });
+      }
+      if (totalCategory < 1) {
+        $("#product-refcategory-create").hide();
+        $("#category-empty").show();
+      }
+    }
+    if (!status) {
+      console.log(response);
+    }
+  });
+  $("#product-refcategory-create").on("focus", () => {
+    $(".product-refcategory-list").show();
+  });
+  $("#product-refcategory-create").on("blur", () => {
+    setTimeout(() => {
+      $(".product-refcategory-list").hide();
+    }, 200);
+  });
+  $("#product-refcategory-create").on("keyup", function () {
+    categoryListSearch = $(this).val();
+    getTotalRowCategory(categoryListSearch, (status, response) => {
+      if (status) {
+        const totalCategorySearch = response;
+        if (totalCategorySearch >= 1) {
+          getListCategory(categoryListSearch, (status, response) => {
+            if (status) {
+              updateCategoryList(response);
+            } else {
+              console.error(response);
+            }
+          });
+        }
+        if (totalCategorySearch < 1) {
+          const optionNotFound = `<div class='product-refcategory-not-found'>kategori - <b>${categoryListSearch}</b> tidak ditemukan</div>`;
+          $(".product-refcategory-list").html(optionNotFound);
+        }
+      }
+      if (!status) {
+        console.log(response);
+      }
+    });
+  });
+}
+// function to update when update list product ref categories
+export function listCategoryRefProductUpdate() {
+  $(".product-refcategory-update-list").hide();
+  function updateCategoryList(response) {
+    let option = "";
+    response.forEach((el) => {
+      option += `<div class='product-refcategory-val-update fs-6' value='${el.CategoryId}'>${el.CategoryName}</div>`;
+    });
+    $(".product-refcategory-update-list").html(option);
+    // Re-bind click event to new elements
+    $(".product-refcategory-val-update").on("click", function () {
+      $("#product-refcategory-update-val").val($(this).attr("value"));
+      $("#product-refcategory-update").val(this.textContent);
+      $(".product-refcategory-update-list").hide();
+    });
+  }
+  // Initial category fetch
+  let categoryListSearch = "";
+  getTotalRowCategory(categoryListSearch, (status, response) => {
+    if (status) {
+      const totalCategory = response;
+      if (totalCategory >= 1) {
+        $("#product-refcategory-update").show();
+        $(".category-empty-update").hide();
+        getListCategory(categoryListSearch, (status, response) => {
+          if (status) {
+            updateCategoryList(response);
+          } else {
+            console.error(response);
+          }
+        });
+      }
+      if (totalCategory < 1) {
+        $("#product-refcategory-update").hide();
+        $(".category-empty-update").show();
+      }
+    }
+    if (!status) {
+      console.log(response);
+    }
+  });
+  $("#product-refcategory-update").on("focus", () => {
+    $(".product-refcategory-update-list").show();
+  });
+  $("#product-refcategory-update").on("blur", () => {
+    setTimeout(() => {
+      $(".product-refcategory-update-list").hide();
+    }, 200);
+  });
+  $("#product-refcategory-update").on("keyup", function () {
+    categoryListSearch = $(this).val();
+    getTotalRowCategory(categoryListSearch, (status, response) => {
+      if (status) {
+        const totalCategorySearch = response;
+        if (totalCategorySearch >= 1) {
+          getListCategory(categoryListSearch, (status, response) => {
+            if (status) {
+              updateCategoryList(response);
+            } else {
+              console.error(response);
+            }
+          });
+        }
+        if (totalCategorySearch < 1) {
+          const optionNotFound = `<div class='product-refcategory-not-found-update fs-6'>kategori - <b>${categoryListSearch}</b> tidak ditemukan</div>`;
+          $(".product-refcategory-update-list").html(optionNotFound);
+        }
+      }
+      if (!status) {
+        console.log(response);
+      }
+    });
+  });
+}
