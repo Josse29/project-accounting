@@ -38,29 +38,6 @@ $(document).ready(function () {
           $("#product-data").html(tr);
           uiActivePageButton(productPageNumber, productBtnPage);
           reinitializeTooltips();
-          // get-detail-product event binding fuckkkkkkk 2 jam lebih
-          $(document).on("click", "#productDetailBtn", function () {
-            const product = this.dataset;
-            console.log(product);
-            $("#detailProductModalLabel").html(product.productname);
-            $("#detail-product-name").text(product.productname);
-            // if exist image
-            if (product.productimage !== "null") {
-              $("img#detail-product-image").attr("src", product.productimage);
-              $("#detail-product-image").removeClass("d-none");
-              $("#detail-no-image").text(``);
-            }
-            // if not exist image
-            if (product.productimage === "null") {
-              $("#detail-product-image").addClass("d-none");
-              $("#detail-no-image").text(`no - image displayed`);
-              $("img#detail-product-image").attr("src", "");
-            }
-            $("#detail-product-price").text(product.productprice);
-            $("#detail-category-price").text(product.productcategory);
-            $("#detail-product-keterangan").text(product.productketerangan);
-            $("#proudct-detail-refsupplier").text(product.productsupplier);
-          });
         }
         // if failed
         if (!status) {
@@ -68,6 +45,35 @@ $(document).ready(function () {
         }
       }
     );
+    // get-detail-product event binding fuckkkkkkk 2 jam lebih
+    $(document).on("click", "#productDetailBtn", function () {
+      const product = this.dataset;
+      $("#detailProductModalLabel").html(product.productname);
+      $("#detail-product-name").text(product.productname);
+      // if exist image
+      if (product.productimage !== "null") {
+        $("img#detail-product-image").attr("src", product.productimage);
+        $("#detail-product-image").removeClass("d-none");
+        $("#detail-no-image").text(``);
+      }
+      // if not exist image
+      if (product.productimage === "null") {
+        $("#detail-product-image").addClass("d-none");
+        $("#detail-no-image").text(`no - image displayed`);
+        $("img#detail-product-image").attr("src", "");
+      }
+      // if not exist keterangan
+      if (product.productketerangan === "") {
+        $("#detail-product-keterangan").text("-");
+      }
+      // if exist keterangan
+      if (product.productketerangan !== "") {
+        $("#detail-product-keterangan").text(product.productketerangan);
+      }
+      $("#detail-product-price").text(product.productprice);
+      $("#detail-category-price").text(product.productcategory);
+      $("#proudct-detail-refsupplier").text(product.productsupplier);
+    });
   }
   // Function to re=initialize pagination
   function handlePagination(response) {

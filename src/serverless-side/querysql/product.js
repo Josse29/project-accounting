@@ -33,10 +33,10 @@ export const queryinsertProducts = (
   productSupplierId
 ) => {
   return `INSERT 
-            INTO ${tableName} 
-            (${colProductName}, ${colProductPrice}, ${colProductInfo}, ${colProductImg}, ${colProductCategoryId}, ${colSupplierId}) 
-            VALUES 
-            ('${productName}', '${productPrice}', '${productInfo}', '${productImg}', ${productCategoryId}, ${productSupplierId})`;
+          INTO ${tableName} 
+          (${colProductName}, ${colProductPrice}, ${colProductInfo}, ${colProductImg}, ${colProductCategoryId}, ${colSupplierId}) 
+          VALUES 
+          ('${productName}', '${productPrice}', '${productInfo}', '${productImg}', ${productCategoryId}, ${productSupplierId})`;
 };
 // 2.READ
 export const queryGetProducts = (
@@ -50,24 +50,25 @@ export const queryGetProducts = (
                LEFT JOIN Supplier ON ${tableName}.${colSupplierId} = Supplier.SupplierId `;
   //  with search value
   if (productSearch !== "") {
-    query += `WHERE  ${tableName}.ProductName LIKE '%${productSearch}%' ESCAPE '!' OR
-                         ${tableName}.ProductPrice LIKE '%${productSearch}%' ESCAPE '!' OR
-                         ${tableName}.ProductInfo LIKE '%${productSearch}%' ESCAPE '!' OR
-                        Category.CategoryName LIKE '%${productSearch}%' ESCAPE '!' OR 
-                        Supplier.SupplierName LIKE '%${productSearch}%' ESCAPE '!' `;
+    query += `WHERE ${tableName}.ProductName LIKE '%${productSearch}%' ESCAPE '!' OR
+                    ${tableName}.ProductPrice LIKE '%${productSearch}%' ESCAPE '!' OR
+                    ${tableName}.ProductInfo LIKE '%${productSearch}%' ESCAPE '!' OR
+                    Category.CategoryName LIKE '%${productSearch}%' ESCAPE '!' OR 
+                    Supplier.SupplierName LIKE '%${productSearch}%' ESCAPE '!' `;
   }
   query += `ORDER BY ${tableName}.${colProductName} ASC
-              LIMIT ${productLimit} 
-              OFFSET ${productOffset}`;
+            LIMIT ${productLimit} 
+            OFFSET ${productOffset}`;
   return query;
 };
 export const queryGetListProduct = () => {
   return `SELECT 
-            ${tableName}.${colProductName}, 
-            ${tableName}.${colProductId}
-            FROM ${tableName}
-            LEFT JOIN Category ON ${tableName}.${colProductCategoryId} = Category.CategoryId
-            ORDER BY ${tableName}.${colProductName} ASC`;
+          ${tableName}.${colProductName}, 
+          ${tableName}.${colProductId}
+          FROM ${tableName}
+          LEFT JOIN Category ON ${tableName}.${colProductCategoryId} = Category.CategoryId
+          LEFT JOIN Supplier ON ${tableName}.${colSupplierId} = Supplier.SupplierId
+          ORDER BY ${tableName}.${colProductName} ASC`;
 };
 export const queryTotalRowProducts = (productSearch) => {
   let query = `SELECT COUNT(${colProductId}) AS TOTAL_ROW
@@ -77,10 +78,10 @@ export const queryTotalRowProducts = (productSearch) => {
   // with search value product
   if (productSearch !== "") {
     query += `WHERE ${tableName}.${colProductName} LIKE '%${productSearch}%' ESCAPE '!' OR 
-                        ${tableName}.${colProductPrice} LIKE '%${productSearch}%' ESCAPE '!' OR 
-                        ${tableName}.${colProductInfo} LIKE '%${productSearch}%' ESCAPE '!' OR
-                        Category.CategoryName LIKE '%${productSearch}%' ESCAPE '!' OR 
-                        Supplier.SupplierName LIKE '%${productSearch}%' ESCAPE '!' `;
+                    ${tableName}.${colProductPrice} LIKE '%${productSearch}%' ESCAPE '!' OR 
+                    ${tableName}.${colProductInfo} LIKE '%${productSearch}%' ESCAPE '!' OR
+                    Category.CategoryName LIKE '%${productSearch}%' ESCAPE '!' OR 
+                    Supplier.SupplierName LIKE '%${productSearch}%' ESCAPE '!' `;
   }
   return query;
 };

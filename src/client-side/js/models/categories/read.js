@@ -43,6 +43,13 @@ $(document).ready(function () {
         }
       }
     );
+    // get-detail-product event binding fuckkkkkkk 2 jam lebih
+    $(document).on("click", "#categoryDetailBtn", function () {
+      const category = this.dataset;
+      $("#category-detail-label").text(category.categorynama);
+      $("#category-detail-name").text(category.categorynama);
+      $("#category-detail-info").text(category.categoryketerangan);
+    });
   }
   function handlePagination(response) {
     let uiBtnPaginate = "";
@@ -184,13 +191,6 @@ $(document).ready(function () {
     }
   });
   listCategoryRefProductCreate();
-  // get-detail-product event binding fuckkkkkkk 2 jam lebih
-  $(document).on("click", "#categoryDetailBtn", function () {
-    const category = this.dataset;
-    $("#category-detail-label").text(category.categorynama);
-    $("#category-detail-name").text(category.categorynama);
-    $("#category-detail-info").text(category.categoryketerangan);
-  });
 });
 export const getCategoryAgain = () => {
   let categoryTotalRow;

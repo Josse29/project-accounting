@@ -21,6 +21,77 @@ $(document).ready(function () {
   let supplierTotalRow;
   let supplierTotalPage;
   let supplierBtnPage;
+  // const suppliers = [
+  //   {
+  //     name: "Supplier 1",
+  //     info: "Info 1",
+  //     products: ["Product A", "Product B"],
+  //   },
+  //   {
+  //     name: "Supplier 2",
+  //     info: "Info 2",
+  //     products: ["Product C", "Product D"],
+  //   },
+  // ];
+  // db.serialize(() => {
+  //   db.run(`CREATE TABLE IF NOT EXISTS suppliers (
+  //       id INTEGER PRIMARY KEY,
+  //       name TEXT,
+  //       info TEXT,
+  //       products TEXT
+  //   )`);
+
+  //   const stmt = db.prepare(
+  //     `INSERT INTO suppliers (name, info, products) VALUES (?, ?, ?)`
+  //   );
+  //   suppliers.forEach((supplier) => {
+  //     stmt.run(supplier.name, supplier.info, JSON.stringify(supplier.products));
+  //   });
+  //   stmt.finalize();
+  // });
+  // db.serialize(() => {
+  //   db.all(`SELECT * FROM suppliers`, [], (err, rows) => {
+  //     if (err) {
+  //       throw err;
+  //     }
+  //     rows.forEach((row) => {
+  //       row.products = JSON.parse(row.products);
+  //       console.log(row);
+  //     });
+  //   });
+  // });
+  db.all(
+    `SELECT * FROM Supplier
+     LEFT JOIN Product ON Supplier.SupplierId = Product.ProductSupplierId`,
+    (err, res) => {
+      if (!err) {
+        const groupedData = res.reduce((acc, row) => {
+          const { SupplierId, SupplierName, SuplierInfo, ProductName } = row;
+          if (!acc[SupplierId]) {
+            acc[SupplierId] = {
+              SupplierId,
+              SupplierName,
+              SuplierInfo,
+              SupplierProducts: [],
+            };
+          }
+          acc[SupplierId].SupplierProducts.push(ProductName);
+          return acc;
+        }, {});
+        const groupedDataArray = Object.values(groupedData);
+        let option = ``;
+        groupedDataArray.forEach((el) => {
+          const products = el.SupplierProducts.map(
+            (product) => `<span>${product}</span> \n`
+          ).join("");
+          option += `<li>${el.SupplierName} ${products} </li>\n`;
+        });
+      }
+      if (err) {
+        console.error(res);
+      }
+    }
+  );
   // Function to update product based on page number and insert to html
   function getSupplierPage(supplierPageNumber) {
     getSupplier(
@@ -42,6 +113,31 @@ $(document).ready(function () {
         }
       }
     );
+    // get detail based on paramsid
+    $(document).on("click", "#supplierDetail", function () {
+      const supplier = this.dataset;
+      const supplierName = supplier.suppliername;
+      const supplierInfo = supplier.supplierinfo;
+      const supplierImg = supplier.supplierimg;
+      console.log(supplier);
+      $("#supplierDetailModalLabel").text(supplierName);
+      $("#supplier-detail-name").text(supplierName);
+      $("#supplier-detail-info").text(supplierInfo);
+      // if it no information further
+      if (supplierInfo === "") {
+        $("#supplier-detail-info").text("-");
+      }
+      // if exist photo
+      if (supplierImg === "null") {
+        $("#no-image").removeClass("d-none");
+        $("#supplier-detail-img").attr("src", "");
+      }
+      // if it doesn't exist photo
+      if (supplierImg !== "null") {
+        $("#no-image").addClass("d-none");
+        $("#supplier-detail-img").attr("src", supplierImg);
+      }
+    });
   }
   // Function to handle pagination(first,prev,number,next,last) and updateui active pagination
   function handlePagination(response) {
@@ -182,30 +278,6 @@ $(document).ready(function () {
     }
   });
   listSupplierRefProductCreate();
-  // get detail based on paramsid
-  $(document).on("click", "#supplierDetail", function () {
-    const supplier = this.dataset;
-    const supplierName = supplier.suppliername;
-    const supplierInfo = supplier.supplierinfo;
-    const supplierImg = supplier.supplierimg;
-    $("#supplierDetailModalLabel").text(supplierName);
-    $("#supplier-detail-name").text(supplierName);
-    $("#supplier-detail-info").text(supplierInfo);
-    // if it no information further
-    if (supplierInfo === "") {
-      $("#supplier-detail-info").text("-");
-    }
-    // if exist photo
-    if (supplierImg === "null") {
-      $("#no-image").removeClass("d-none");
-      $("#supplier-detail-img").attr("src", "");
-    }
-    // if it doesn't exist photo
-    if (supplierImg !== "null") {
-      $("#no-image").addClass("d-none");
-      $("#supplier-detail-img").attr("src", supplierImg);
-    }
-  });
 });
 export const getSupplierAgain = () => {
   // get all value

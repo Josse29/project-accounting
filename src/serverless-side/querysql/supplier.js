@@ -1,13 +1,16 @@
 // create-table
 export const createTable = () => {
   return `CREATE 
-            TABLE Supplier (
+          TABLE Supplier (
             SupplierId INTEGER PRIMARY KEY AUTOINCREMENT, 
             SupplierDate TEXT DEFAULT (datetime('now','localtime')),
             SupplierName VARCHAR(255), 
             SupplierInfo TEXT,
-            SupplierImg BLOB);`;
+            SupplierImg BLOB 
+            SupplierProductId TEXT,
+          );`;
 };
+
 // SuplierProductId
 // init table & col
 const tableName = `Supplier`;
@@ -15,6 +18,7 @@ const colSupplierId = `SupplierId`;
 const colSupplierName = `SupplierName`;
 const colSupplierInfo = `SupplierInfo`;
 const colSupplierImg = `SupplierImg`;
+const colSupplierProductId = `SupplierProductId`; // as JSON.STRINGIFY || SQLITE isn't exist array
 
 // 1.CREATE
 export const queryInsertSupplier = (
@@ -35,7 +39,8 @@ export const queryGetSupplier = (
   supplierStartOffset
 ) => {
   let query = `SELECT *
-               FROM ${tableName} `;
+               FROM ${tableName}
+               LEFT JOIN Product ON Supplier.SupplierId = Product.ProductSupplierId `;
   // with feature search
   if (supplierSearch !== "") {
     query += `WHERE ${colSupplierName} LIKE '%${supplierSearch}%' ESCAPE '!' OR 
@@ -44,7 +49,6 @@ export const queryGetSupplier = (
   query += `ORDER BY ${colSupplierName} ASC
             LIMIT ${supplierLimit} 
             OFFSET ${supplierStartOffset}`;
-
   return query;
 };
 export const queryTotalRowSupplier = (supplierSearch) => {
@@ -58,7 +62,8 @@ export const queryTotalRowSupplier = (supplierSearch) => {
   return query;
 };
 export const queryGetListSupplier = (supplierSearch) => {
-  let query = `SELECT ${colSupplierId}, ${colSupplierName} 
+  let query = `SELECT 
+               ${colSupplierId}, ${colSupplierName} 
                FROM ${tableName} `;
   // with feature search
   if (supplierSearch !== "") {

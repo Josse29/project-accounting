@@ -1,15 +1,15 @@
-import { formatWaktuIndo } from "../../utils/waktuIndo.js"
+import { formatWaktuIndo } from "../../utils/waktuIndo.js";
 
 // ui tr supplier from db
 export const trSupplier = (el) => {
-    const splitDateTime = el.SupplierDate.split(" ")
-    const dateSupplier = formatWaktuIndo(splitDateTime[0])
-    return `<tr>
+  const splitDateTime = el.SupplierDate.split(" ");
+  const dateSupplier = formatWaktuIndo(splitDateTime[0]);
+  return `<tr>
                 <td class="text-center align-content-center">${el.SupplierId}</td>
                 <td class="align-content-center">${dateSupplier}</td>
                 <td class="align-content-center text-nowrap text-capitalize">${el.SupplierName}</td>
                 <td class="text-nowrap align-content-center">
-                    <ul >
+                    <ul id="supplier-refproduct-list">
                         <li>An item</li>
                         <li>A second item</li>
                         <li>A third item</li>
@@ -72,52 +72,53 @@ export const trSupplier = (el) => {
                         </button>
                     </div>
                 </td>
-            </tr>`
-}
-// make alert success after action crud 
+            </tr>`;
+};
+// make alert success after action crud
 export const successActionSupplier = (res) => {
-    const alertSuccessMe = `<div class="alert alert-success" role="alert">
+  const alertSuccessMe = `<div class="alert alert-success" role="alert">
                               ${res}
-                            </div>`
-    $("#sectionSuccessActionSupply").html(alertSuccessMe)
-    setTimeout(() => {
-        $("#sectionSuccessActionSupply").html("")
-    }, 20000);
-}
+                            </div>`;
+  $("#sectionSuccessActionSupply").html(alertSuccessMe);
+  setTimeout(() => {
+    $("#sectionSuccessActionSupply").html("");
+  }, 20000);
+};
 // it doesn't exist supplier
 export const trSupplierZero = () => {
-    return `<tr>
+  return `<tr>
                 <td colspan="5" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">belum ada supplier</td>
-            </tr>`
-}
+            </tr>`;
+};
 // it doesn't exist supplier while  event search
 export const trSupplierZeroSearch = (supplierSearch) => {
-    return `<tr>
+  return `<tr>
                 <td colspan="5" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">tidak ada supplier - ${supplierSearch}</td>
-            </tr>`
-}
+            </tr>`;
+};
 // button pagination
 export const btnSupplierPage = (i) => {
-    return `<button type = "button" class="supplier-btn-page ${i === 1 ? 'supplier-active-page' : ''}" >
+  return `<button type = "button" class="supplier-btn-page ${
+    i === 1 ? "supplier-active-page" : ""
+  }" >
                     ${i}
-            </button>`
-}
+            </button>`;
+};
 // update active pagination
 export function updateActivePageButton(pageNumber, supplierBtnPage) {
-    let current = document.getElementsByClassName("supplier-active-page");
-    if (current.length >= 1) {
-        current[0].classList.remove("supplier-active-page");
-    }
-    supplierBtnPage[pageNumber - 1].classList.add("supplier-active-page");
+  let current = document.getElementsByClassName("supplier-active-page");
+  if (current.length >= 1) {
+    current[0].classList.remove("supplier-active-page");
+  }
+  supplierBtnPage[pageNumber - 1].classList.add("supplier-active-page");
 }
-// create blank after success event 
+// create blank after success event
 export const supplierCreateBlank = () => {
-    $("#supplier-create-name").val("")
-    $("#supplier-create-img").val("")
-    $("#supplier-create-info").val("")
-    $("#supplier-create-img-section").addClass("d-none")
-
-}
+  $("#supplier-create-name").val("");
+  $("#supplier-create-img").val("");
+  $("#supplier-create-info").val("");
+  $("#supplier-create-img-section").addClass("d-none");
+};
 export const uiOption = (element) => {
-    return `<option value="${element.SupplierId}" class="text-capitalize">${element.SupplierName}</option>`
-}
+  return `<option value="${element.SupplierId}" class="text-capitalize">${element.SupplierName}</option>`;
+};
