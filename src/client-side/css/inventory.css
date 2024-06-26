@@ -355,6 +355,17 @@ i#supplier-update-img-cancel {
   background-color: #007bff;
   color: white;
 }
+.satuan-active-page {
+  background-color: #009ef7;
+}
+.satuan-btn-page {
+  background-color: #fff;
+  color: black;
+  font-size: 18px;
+  border: 2px solid #e1e1e1;
+  outline: none;
+  padding: 8px 12px;
+}
 /* mckkk for tbody scrolll*/
 /* tbody {
       display: block;

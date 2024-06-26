@@ -71,7 +71,8 @@ export const queryGetListProduct = () => {
           ORDER BY ${tableName}.${colProductName} ASC`;
 };
 export const queryTotalRowProducts = (productSearch) => {
-  let query = `SELECT COUNT(${colProductId}) AS TOTAL_ROW
+  let query = `SELECT COUNT(${colProductId}) 
+               AS TOTAL_ROW
                FROM ${tableName}
                LEFT JOIN Category ON ${tableName}.${colProductCategoryId} = Category.CategoryId
                LEFT JOIN Supplier ON ${tableName}.${colSupplierId} = Supplier.SupplierId `;
@@ -85,6 +86,7 @@ export const queryTotalRowProducts = (productSearch) => {
   }
   return query;
 };
+
 // 3.UPDATE
 export const queryUpdateProduct = (
   productId,

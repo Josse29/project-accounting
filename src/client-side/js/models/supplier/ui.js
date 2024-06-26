@@ -1,21 +1,15 @@
 import { formatWaktuIndo } from "../../utils/waktuIndo.js";
 
 // ui tr supplier from db
-export const trSupplier = (el) => {
+export const trSupplier = (el, productList) => {
   const splitDateTime = el.SupplierDate.split(" ");
   const dateSupplier = formatWaktuIndo(splitDateTime[0]);
   return `<tr>
-                <td class="text-center align-content-center">${el.SupplierId}</td>
+                <td class="text-center align-middle">${el.SupplierId}</td>
                 <td class="align-content-center">${dateSupplier}</td>
                 <td class="align-content-center text-nowrap text-capitalize">${el.SupplierName}</td>
                 <td class="text-nowrap align-content-center">
-                    <ul id="supplier-refproduct-list">
-                        <li>An item</li>
-                        <li>A second item</li>
-                        <li>A third item</li>
-                        <li>A fourth item</li>
-                        <li>And a fifth one</li>
-                    </ul>
+                  ${productList}
                 </td>
                 <td class="align-content-center">
                     <div class="d-flex w-100 justify-content-center gap-2">
@@ -100,9 +94,10 @@ export const trSupplierZeroSearch = (supplierSearch) => {
 export const btnSupplierPage = (i) => {
   return `<button type = "button" class="supplier-btn-page ${
     i === 1 ? "supplier-active-page" : ""
-  }" >
-                    ${i}
-            </button>`;
+  } 
+          " >
+            ${i}
+          </button>`;
 };
 // update active pagination
 export function updateActivePageButton(pageNumber, supplierBtnPage) {

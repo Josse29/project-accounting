@@ -6,20 +6,19 @@ export const createTable = () => {
             SupplierDate TEXT DEFAULT (datetime('now','localtime')),
             SupplierName VARCHAR(255), 
             SupplierInfo TEXT,
-            SupplierImg BLOB 
-            SupplierProductId TEXT,
+            SupplierImg BLOB ,
+            SupplierProductId TEXT
           );`;
 };
-
 // SuplierProductId
 // init table & col
 const tableName = `Supplier`;
 const colSupplierId = `SupplierId`;
+const colSuppplierDate = `SupplierDate`;
 const colSupplierName = `SupplierName`;
 const colSupplierInfo = `SupplierInfo`;
 const colSupplierImg = `SupplierImg`;
-const colSupplierProductId = `SupplierProductId`; // as JSON.STRINGIFY || SQLITE isn't exist array
-
+const colSupplierProductId = `SupplierProductId`; // as JSON.STRINGIFY || SQLITE isn't exist array || ambigu
 // 1.CREATE
 export const queryInsertSupplier = (
   supplierName,
@@ -38,21 +37,28 @@ export const queryGetSupplier = (
   supplierLimit,
   supplierStartOffset
 ) => {
-  let query = `SELECT *
-               FROM ${tableName}
-               LEFT JOIN Product ON Supplier.SupplierId = Product.ProductSupplierId `;
+  let query = `SELECT ${tableName}.${colSupplierId},
+                      ${tableName}.${colSuppplierDate},
+                      ${tableName}.${colSupplierName},
+                      ${tableName}.${colSupplierImg},
+                      ${tableName}.${colSupplierInfo},
+              (SELECT GROUP_CONCAT(Product.ProductName) FROM Product
+              WHERE Product.ProductSupplierId = ${tableName}.${colSupplierId})
+              AS ProductList 
+              FROM Supplier `;
   // with feature search
   if (supplierSearch !== "") {
-    query += `WHERE ${colSupplierName} LIKE '%${supplierSearch}%' ESCAPE '!' OR 
+    query += `WHERE ${colSupplierName} LIKE '%${supplierSearch}%' ESCAPE '!' OR
                     ${colSupplierInfo} LIKE '%${supplierSearch}%' ESCAPE '!' `;
   }
   query += `ORDER BY ${colSupplierName} ASC
-            LIMIT ${supplierLimit} 
+            LIMIT ${supplierLimit}
             OFFSET ${supplierStartOffset}`;
   return query;
 };
 export const queryTotalRowSupplier = (supplierSearch) => {
-  let query = `SELECT COUNT(${colSupplierId}) AS TOTAL_ROW
+  let query = `SELECT COUNT (${colSupplierId}) 
+               AS TOTAL_ROW
                FROM ${tableName} `;
   // with feature search
   if (supplierSearch !== "") {
@@ -82,7 +88,7 @@ export const queryUpdateSupplier = (
 ) => {
   let query = `UPDATE ${tableName}
                SET ${colSupplierName} = '${supplierName}',
-               ${colSupplierInfo} = '${supplierInfo}'`;
+                   ${colSupplierInfo} = '${supplierInfo}'`;
   // with image
   if (supplierImg !== "") {
     query += `,

@@ -131,12 +131,12 @@
         <div class="bg-white d-flex w-100 gap-4 px-4 py-3">
           <!-- inventory -->
           <div class="card w-100">
-            <h3
-              class="card-header text-white"
+            <div
+              class="card-header text-white fs-3"
               style="background-color: #3b82f6"
             >
               Inventory
-            </h3>
+            </div>
             <div class="card-body">
               <!-- section button group create export etc -->
               <div class="d-flex mb-3">
@@ -578,7 +578,6 @@
                       <tr>
                         <th class="text-center">No</th>
                         <th>Name</th>
-                        <th>Keterangan</th>
                         <th class="text-center">Aksi</th>
                       </tr>
                     </thead>
@@ -631,47 +630,72 @@
           <!-- satuan -->
           <div style="width: 35%">
             <div class="card">
-              <h3
-                class="card-header text-white"
+              <div
+                class="card-header text-white fs-3"
                 style="background-color: #009ef7"
               >
                 Satuan
-              </h3>
+              </div>
               <div class="card-body">
-                <!-- tambah satuan -->
-                <button
-                  class="btn mb-3 text-white"
-                  data-bs-toggle="modal"
-                  data-bs-target="#createSatuanModal"
-                  id="btn-create-satuan"
-                >
-                  <span
-                    class="d-flex gap-2 align-items-center"
-                    data-bs-toggle="tooltip"
-                    data-bs-html="true"
-                    data-bs-title="<span>tambah-satuan</span>"
-                    data-bs-placement="bottom"
+                <!-- tambah & total -->
+                <div class="d-flex justify-content-between gap-2 mb-3">
+                  <!-- tambah satuan -->
+                  <button
+                    class="btn mb-3 text-white"
+                    data-bs-toggle="modal"
+                    data-bs-target="#createSatuanModal"
+                    id="btn-create-satuan"
                   >
-                    <i class="fa-solid fa-folder-plus fs-4"></i>
-                    <span class="text-nowrap">Tambah Satuan</span>
-                  </span>
-                </button>
-                <!-- search satuan -->
-                <div class="input-group mb-3">
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="masukkan keyword kategori..."
-                  />
-                  <span
-                    class="input-group-text text-white"
-                    style="background-color: #009ef7"
-                    >Search</span
+                    <span
+                      class="d-flex gap-2 align-items-center"
+                      data-bs-toggle="tooltip"
+                      data-bs-html="true"
+                      data-bs-title="<span>tambah-satuan</span>"
+                      data-bs-placement="bottom"
+                    >
+                      <i class="fa-solid fa-folder-plus fs-4"></i>
+                      <span class="text-nowrap">Tambah Satuan</span>
+                    </span>
+                  </button>
+                  <!-- total satuan -->
+                  <div class="fs-4 d-flex gap-1">
+                    <div>Total :</div>
+                    <div id="satuan-total-row"></div>
+                  </div>
+                </div>
+                <!-- limit & search -->
+                <div class="d-flex gap-2 mb-3">
+                  <!-- limit satuan -->
+                  <select
+                    class="form-select w-auto"
+                    aria-label="Default select example"
+                    id="satuan-limit"
                   >
+                    <option value="2">2</option>
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="30">30</option>
+                    <option value="40">40</option>
+                  </select>
+                  <!-- search satuan -->
+                  <div class="input-group">
+                    <input
+                      type="text"
+                      id="satuan-search"
+                      class="form-control"
+                      placeholder="masukkan keyword kategori..."
+                    />
+                    <span
+                      class="input-group-text text-white"
+                      style="background-color: #009ef7"
+                      >Search</span
+                    >
+                  </div>
                 </div>
                 <div id="sectionSuccessActionSatuan"></div>
                 <!-- table satuan -->
-                <div style="max-height: 270px; overflow: auto">
+                <div style="overflow: auto">
                   <table class="table table-striped">
                     <thead>
                       <tr>
@@ -684,8 +708,11 @@
                   </table>
                 </div>
                 <!-- pagination -->
-                <div class="w-100 d-flex justify-content-center">
-                  <div class="btn-group gap-2">
+                <div
+                  class="w-100 d-flex justify-content-center"
+                  id="satuan-pagination"
+                >
+                  <div class="btn-group">
                     <button type="button" class="btn border border-2">
                       <i class="fa-solid fa-backward-fast fs-6"></i>
                     </button>
@@ -695,10 +722,10 @@
                     <button type="button" class="btn border border-2 fs-6">
                       1
                     </button>
+                    <div id="satuan-number-page"></div>
                     <button
                       type="button"
-                      class="btn text-white"
-                      style="background-color: #009ef7"
+                      class="btn text-white satuan-active-page"
                     >
                       2
                     </button>
@@ -716,12 +743,12 @@
           <!-- supplier -->
           <div style="width: 65%">
             <div class="card">
-              <h3
-                class="card-header text-white"
+              <div
+                class="card-header text-white fs-3"
                 style="background-color: #3b82f6"
               >
                 Supplier
-              </h3>
+              </div>
               <div class="card-body">
                 <!-- btn group & totalrow -->
                 <div class="d-flex justify-content-between mb-3">
@@ -827,7 +854,7 @@
                         <th class="text-center">No</th>
                         <th>Hari / Tanggal</th>
                         <th>Name Supplier</th>
-                        <th>Product</th>
+                        <th class="text-center">Product</th>
                         <th class="text-center">Aksi</th>
                       </tr>
                     </thead>
@@ -1005,7 +1032,10 @@
                     class="w-100 h-auto"
                     id="detail-product-image"
                   />
-                  <h5 class="ms-2" id="detail-no-image"></h5>
+                  <h5
+                    class="ms-2 text-muted fst-italic"
+                    id="detail-no-image"
+                  ></h5>
                 </div>
                 <!-- price -->
                 <div class="mb-3">
@@ -1534,7 +1564,7 @@
             <div class="modal-content">
               <div class="modal-header bg-danger">
                 <h1
-                  class="modal-title fs-2 text-white"
+                  class="modal-title fs-2 text-white text-capitalize"
                   id="confirmDeleteCategoryModalLabel"
                 >
                   Modal
@@ -1881,7 +1911,7 @@
                   >
                 </div>
                 <!-- supplierDetailImg -->
-                <diiv class="mb-3">
+                <diiv class="">
                   <label class="form-label fs-4">Photo</label>
                   <img
                     src=""
@@ -1889,7 +1919,10 @@
                     id="supplier-detail-img"
                     class="w-100 mb-3"
                   />
-                  <h5 id="no-image" class="ms-2 fst-italic d-none">
+                  <h5
+                    id="no-image"
+                    class="mb-4 ms-2 text-muted fst-italic d-none"
+                  >
                     Tidak ada gambar
                   </h5>
                 </diiv>

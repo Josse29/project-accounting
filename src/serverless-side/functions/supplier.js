@@ -52,8 +52,8 @@ export const getSupplier = (
 export const getTotalRowSupplier = (supplierSearch, callback) => {
   db.each(queryTotalRowSupplier(supplierSearch), (err, res) => {
     if (!err) {
-      const totalProduct = parseInt(res.TOTAL_ROW);
-      return callback(true, totalProduct);
+      const totalSupplier = parseInt(res.TOTAL_ROW);
+      return callback(true, totalSupplier);
     }
     if (err) {
       return callback(false, err);

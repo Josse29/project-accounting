@@ -4,9 +4,6 @@ export const uiTrCategory = (el) => {
             <td class="text-nowrap align-content-center text-capitalize">
               ${el.CategoryName}
             </td>
-            <td class="text-nowrap align-content-center">
-              ${el.CategoryInfo}
-            </td>
             <td>
               <div class="d-flex w-100 justify-content-center gap-2">
                 <button 

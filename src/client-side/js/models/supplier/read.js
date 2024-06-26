@@ -12,7 +12,6 @@ import {
   trSupplierZeroSearch,
   updateActivePageButton,
 } from "./ui.js";
-
 $(document).ready(function () {
   // get all value
   let supplierSearch = $("#supplier-search-input").val();
@@ -21,77 +20,6 @@ $(document).ready(function () {
   let supplierTotalRow;
   let supplierTotalPage;
   let supplierBtnPage;
-  // const suppliers = [
-  //   {
-  //     name: "Supplier 1",
-  //     info: "Info 1",
-  //     products: ["Product A", "Product B"],
-  //   },
-  //   {
-  //     name: "Supplier 2",
-  //     info: "Info 2",
-  //     products: ["Product C", "Product D"],
-  //   },
-  // ];
-  // db.serialize(() => {
-  //   db.run(`CREATE TABLE IF NOT EXISTS suppliers (
-  //       id INTEGER PRIMARY KEY,
-  //       name TEXT,
-  //       info TEXT,
-  //       products TEXT
-  //   )`);
-
-  //   const stmt = db.prepare(
-  //     `INSERT INTO suppliers (name, info, products) VALUES (?, ?, ?)`
-  //   );
-  //   suppliers.forEach((supplier) => {
-  //     stmt.run(supplier.name, supplier.info, JSON.stringify(supplier.products));
-  //   });
-  //   stmt.finalize();
-  // });
-  // db.serialize(() => {
-  //   db.all(`SELECT * FROM suppliers`, [], (err, rows) => {
-  //     if (err) {
-  //       throw err;
-  //     }
-  //     rows.forEach((row) => {
-  //       row.products = JSON.parse(row.products);
-  //       console.log(row);
-  //     });
-  //   });
-  // });
-  db.all(
-    `SELECT * FROM Supplier
-     LEFT JOIN Product ON Supplier.SupplierId = Product.ProductSupplierId`,
-    (err, res) => {
-      if (!err) {
-        const groupedData = res.reduce((acc, row) => {
-          const { SupplierId, SupplierName, SuplierInfo, ProductName } = row;
-          if (!acc[SupplierId]) {
-            acc[SupplierId] = {
-              SupplierId,
-              SupplierName,
-              SuplierInfo,
-              SupplierProducts: [],
-            };
-          }
-          acc[SupplierId].SupplierProducts.push(ProductName);
-          return acc;
-        }, {});
-        const groupedDataArray = Object.values(groupedData);
-        let option = ``;
-        groupedDataArray.forEach((el) => {
-          const products = el.SupplierProducts.map(
-            (product) => `<span>${product}</span> \n`
-          ).join("");
-          option += `<li>${el.SupplierName} ${products} </li>\n`;
-        });
-      }
-      if (err) {
-        console.error(res);
-      }
-    }
-  );
   // Function to update product based on page number and insert to html
   function getSupplierPage(supplierPageNumber) {
     getSupplier(
@@ -101,10 +29,22 @@ $(document).ready(function () {
       (status, response) => {
         if (status) {
           let tr = ``;
+          let productList;
           response.forEach((element) => {
-            tr += trSupplier(element);
+            if (element.ProductList) {
+              let productListArray = element.ProductList.split(",");
+              let productListItems = productListArray
+                .map((product) => `<li class='text-capitalize'>${product}</li>`)
+                .join("");
+              productList = `<ul class='mt-3'>${productListItems}</ul>`;
+            } else {
+              productList = `<div class='text-muted text-center'>No products available</div>`;
+            }
+            tr += trSupplier(element, productList);
           });
+          // supplier-refproduct-list
           $("#supplier-table").html(tr);
+
           updateActivePageButton(supplierPageNumber, supplierBtnPage);
           reinitializeTooltips();
         }
@@ -149,7 +89,6 @@ $(document).ready(function () {
     // Event listeners for pagination buttons
     supplierBtnPage = document.getElementsByClassName("supplier-btn-page");
     supplierTotalPage = response;
-
     // first page
     $("#supplier-first-page")
       .off("click")
@@ -296,8 +235,18 @@ export const getSupplierAgain = () => {
       (status, response) => {
         if (status) {
           let tr = ``;
+          let productList;
           response.forEach((element) => {
-            tr += trSupplier(element);
+            if (element.ProductList) {
+              let productListArray = element.ProductList.split(",");
+              let productListItems = productListArray
+                .map((product) => `<li class='text-capitalize'>${product}</li>`)
+                .join("");
+              productList = `<ul class='mt-3'>${productListItems}</ul>`;
+            } else {
+              productList = `<div class='text-muted text-center'>No products available</div>`;
+            }
+            tr += trSupplier(element, productList);
           });
           $("#supplier-table").html(tr);
           updateActivePageButton(supplierPageNumber, supplierBtnPage);
@@ -436,7 +385,7 @@ export function listSupplierRefProductCreate() {
       }
     }
     if (!status) {
-      console.error(reinitializeTooltips);
+      console.error(response);
     }
   });
   $("#product-refsupplier-create").on("focus", () => {
