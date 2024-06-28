@@ -3,7 +3,7 @@ import {
   getTotalPageSatuan,
   getTotalRowSatuan,
 } from "../../../../serverless-side/functions/satuan.js";
-import { btnSatuanPage, trSatuan, uiTrZero } from "./ui.js";
+import { btnSatuanPage, trSatuan, uiActivePageButton, uiTrZero } from "./ui.js";
 
 $(document).ready(function () {
   let satuanSearch = $("input#satuan-search").val();
@@ -11,9 +11,14 @@ $(document).ready(function () {
   let satuanTotalRow;
   let satuanTotalPage;
   let satuanBtnPage;
-  // $("input#satuan-search").on("keyup", function () {
-  //   console.log($("input#satuan-search").val());
-  // });
+  $("input#satuan-search").on("keyup", function () {
+    satuanSearch = $(this).val();
+    getInit(satuanSearch);
+  });
+  $("#satuan-limit").on("change", function () {
+    satuanLimit = parseInt($(this).val());
+    getInit();
+  });
   // 1. get first,  get total row, upadate ui (total row) as condition
   function getInit() {
     getTotalRowSatuan(satuanSearch, (status, response) => {
@@ -21,7 +26,7 @@ $(document).ready(function () {
         satuanTotalRow = response;
         $("#satuan-total-row").text(satuanTotalRow);
         if (satuanTotalRow >= 1) {
-          getPage();
+          getTotalPage();
         }
         if (satuanTotalRow < 1) {
           $("#satuan-data").html(uiTrZero);
@@ -34,84 +39,96 @@ $(document).ready(function () {
     });
   }
   // 2. get total page, update ui (total row)
-  function getPage() {
+  function getTotalPage() {
     getTotalPageSatuan(satuanSearch, satuanLimit, (status, response) => {
       if (status) {
         satuanTotalPage = response;
-        handlePagination(satuanTotalPage);
-      }
-      if (!status) {
-        console.error(response);
-      }
-    });
-    // get all satuan
-    getSatuan((status, response) => {
-      if (status) {
-        let tr = ``;
-        response.forEach((element) => {
-          tr += trSatuan(element);
-        });
-        $("#satuan-data").html(tr);
+        uiPagination(satuanTotalPage);
       }
       if (!status) {
         console.error(response);
       }
     });
   }
-  // 3. Function to handle pagination(first,prev,number,next,last) and updateui active pagination
-  function handlePagination(response) {
+  // 3. Function to insert html pagination
+  function uiPagination(totalPage) {
     let uiBtnPaginate = "";
-    for (let i = 1; i <= response; i++) {
+    satuanTotalPage = totalPage;
+    for (let i = 1; i <= satuanTotalPage; i++) {
       uiBtnPaginate += btnSatuanPage(i);
     }
     $("#satuan-number-page").html(uiBtnPaginate);
+    handlePagination(satuanTotalPage);
+  }
+  // 4. function to handle pagination(first,prev,number,next,last)
+  function handlePagination(satuanTotalPage) {
     // Event listeners for pagination buttons
     satuanBtnPage = document.getElementsByClassName("satuan-btn-page");
-    satuanTotalPage = response;
-    // // first page
-    // $("#supplier-first-page")
-    //   .off("click")
-    //   .on("click", () => {
-    //     getSupplierPage(1);
-    //   });
-    // // previous page
-    // $("#supplier-prev-page")
-    //   .off("click")
-    //   .on("click", () => {
-    //     let pageActive = parseInt($(".supplier-active-page").text().trim());
-    //     let decrementPage = pageActive - 1;
-    //     if (decrementPage < 1) {
-    //       decrementPage = supplierTotalPage;
-    //     }
-    //     getSupplierPage(decrementPage);
-    //   });
-    // // based on number when clicked
-    // for (let i = 0; i < supplierTotalPage; i++) {
-    //   supplierBtnPage[i].addEventListener("click", function () {
-    //     const pageNumber = parseInt(this.textContent.trim());
-    //     getSupplierPage(pageNumber);
-    //   });
-    // }
-    // // next page
-    // $("#supplier-next-page")
-    //   .off("click")
-    //   .on("click", () => {
-    //     let pageActive = parseInt($(".supplier-active-page").text().trim());
-    //     let incrementPage = pageActive + 1;
-    //     if (incrementPage > supplierTotalPage) {
-    //       incrementPage = 1;
-    //     }
-    //     getSupplierPage(incrementPage);
-    //   });
-    // // last page
-    // $("#supplier-last-page")
-    //   .off("click")
-    //   .on("click", () => getSupplierPage(supplierTotalPage));
-
-    // // Initial page load
-    // getSupplierPage(supplierCurrentPage);
+    // first page
+    $("#satuan-first-page")
+      .off("click")
+      .on("click", () => {
+        getSatuanPage(1);
+      });
+    // previous page
+    $("#satuan-prev-page")
+      .off("click")
+      .on("click", () => {
+        let pageActive = parseInt($(".satuan-active-page").text().trim());
+        let decrementPage = pageActive - 1;
+        if (decrementPage < 1) {
+          decrementPage = satuanTotalPage;
+        }
+        console.log(decrementPage);
+        getSatuanPage(decrementPage);
+      });
+    // based on number when clicked
+    for (let i = 0; i < satuanTotalPage; i++) {
+      satuanBtnPage[i].addEventListener("click", function () {
+        const pageNumber = parseInt(this.textContent.trim());
+        getSatuanPage(pageNumber);
+      });
+    }
+    // next page
+    $("#satuan-next-page")
+      .off("click")
+      .on("click", () => {
+        let pageActive = parseInt($(".satuan-active-page").text().trim());
+        let incrementPage = pageActive + 1;
+        if (incrementPage > satuanTotalPage) {
+          incrementPage = 1;
+        }
+        getSatuanPage(incrementPage);
+      });
+    // last page
+    $("#satuan-last-page")
+      .off("click")
+      .on("click", () => getSatuanPage(satuanTotalPage));
+    // default active page first
+    getSatuanPage(1);
   }
-
+  // 5. function to handle get satuan based on pageActive
+  function getSatuanPage(satuanPageActive) {
+    // get all satuan
+    getSatuan(
+      satuanSearch,
+      satuanLimit,
+      satuanPageActive,
+      (status, response) => {
+        if (status) {
+          let tr = ``;
+          response.forEach((element) => {
+            tr += trSatuan(element);
+          });
+          $("#satuan-data").html(tr);
+          uiActivePageButton(satuanPageActive, satuanBtnPage);
+        }
+        if (!status) {
+          console.error(response);
+        }
+      }
+    );
+  }
   getInit();
   // get-detail-satuan | get id satuan
   $(document).on("click", "#satuanDetail", function () {
@@ -124,17 +141,128 @@ $(document).ready(function () {
 });
 
 export const getSatuanAgain = () => {
-  // get all satuan
-  getSatuan((status, response) => {
-    if (status) {
-      let tr = ``;
-      response.forEach((element) => {
-        tr += trSatuan(element);
-      });
-      $("#satuan-data").html(tr);
-    }
-    if (!status) {
-      console.error(response);
-    }
+  let satuanSearch = $("input#satuan-search").val();
+  let satuanLimit = $("#satuan-limit").val();
+  let satuanTotalRow;
+  let satuanTotalPage;
+  let satuanBtnPage;
+  $("input#satuan-search").on("keyup", function () {
+    satuanSearch = $(this).val();
+    getInit(satuanSearch);
   });
+  $("#satuan-limit").on("change", function () {
+    satuanLimit = parseInt($(this).val());
+    getInit();
+  });
+  // 1. get first,  get total row, upadate ui (total row) as condition
+  function getInit() {
+    getTotalRowSatuan(satuanSearch, (status, response) => {
+      if (status) {
+        satuanTotalRow = response;
+        $("#satuan-total-row").text(satuanTotalRow);
+        if (satuanTotalRow >= 1) {
+          getTotalPage();
+        }
+        if (satuanTotalRow < 1) {
+          $("#satuan-data").html(uiTrZero);
+          $("#satuan-pagination").addClass("d-none");
+        }
+      }
+      if (!status) {
+        console.error(response);
+      }
+    });
+  }
+  // 2. get total page, update ui (total row)
+  function getTotalPage() {
+    getTotalPageSatuan(satuanSearch, satuanLimit, (status, response) => {
+      if (status) {
+        satuanTotalPage = response;
+        uiPagination(satuanTotalPage);
+      }
+      if (!status) {
+        console.error(response);
+      }
+    });
+  }
+  // 3. Function to insert html pagination
+  function uiPagination(totalPage) {
+    let uiBtnPaginate = "";
+    satuanTotalPage = totalPage;
+    for (let i = 1; i <= satuanTotalPage; i++) {
+      uiBtnPaginate += btnSatuanPage(i);
+    }
+    $("#satuan-number-page").html(uiBtnPaginate);
+    handlePagination(satuanTotalPage);
+  }
+  // 4. function to handle pagination(first,prev,number,next,last)
+  function handlePagination(satuanTotalPage) {
+    // Event listeners for pagination buttons
+    satuanBtnPage = document.getElementsByClassName("satuan-btn-page");
+    // first page
+    $("#satuan-first-page")
+      .off("click")
+      .on("click", () => {
+        getSatuanPage(1);
+      });
+    // previous page
+    $("#satuan-prev-page")
+      .off("click")
+      .on("click", () => {
+        let pageActive = parseInt($(".satuan-active-page").text().trim());
+        let decrementPage = pageActive - 1;
+        if (decrementPage < 1) {
+          decrementPage = satuanTotalPage;
+        }
+        console.log(decrementPage);
+        getSatuanPage(decrementPage);
+      });
+    // based on number when clicked
+    for (let i = 0; i < satuanTotalPage; i++) {
+      satuanBtnPage[i].addEventListener("click", function () {
+        const pageNumber = parseInt(this.textContent.trim());
+        getSatuanPage(pageNumber);
+      });
+    }
+    // next page
+    $("#satuan-next-page")
+      .off("click")
+      .on("click", () => {
+        let pageActive = parseInt($(".satuan-active-page").text().trim());
+        let incrementPage = pageActive + 1;
+        if (incrementPage > satuanTotalPage) {
+          incrementPage = 1;
+        }
+        getSatuanPage(incrementPage);
+      });
+    // last page
+    $("#satuan-last-page")
+      .off("click")
+      .on("click", () => getSatuanPage(satuanTotalPage));
+    // default active page first
+    getSatuanPage(1);
+  }
+  // 5. function to handle get satuan based on pageActive
+  function getSatuanPage(satuanPageActive) {
+    // get all satuan
+    getSatuan(
+      satuanSearch,
+      satuanLimit,
+      satuanPageActive,
+      (status, response) => {
+        if (status) {
+          let tr = ``;
+          response.forEach((element) => {
+            tr += trSatuan(element);
+          });
+          $("#satuan-data").html(tr);
+          uiActivePageButton(satuanPageActive, satuanBtnPage);
+        }
+        if (!status) {
+          console.error(response);
+        }
+      }
+    );
+  }
+  getInit();
 };

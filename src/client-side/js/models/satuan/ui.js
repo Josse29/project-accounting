@@ -88,3 +88,12 @@ export const btnSatuanPage = (i) => {
             ${i}
           </button>`;
 };
+// function active ui button
+export const uiActivePageButton = (satuanActivePage, satuanBtnPage) => {
+  const satuanBtnPageActive =
+    document.getElementsByClassName("satuan-active-page");
+  if (satuanBtnPageActive.length >= 1) {
+    satuanBtnPageActive[0].classList.remove("satuan-active-page");
+  }
+  satuanBtnPage[satuanActivePage - 1].classList.add("satuan-active-page");
+};

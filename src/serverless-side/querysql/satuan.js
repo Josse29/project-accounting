@@ -20,15 +20,25 @@ export const queryInsertSatuan = (satuanName, satuanInfo) => {
           ('${satuanName}', '${satuanInfo}')`;
 };
 // 2.READ
-export const queryGetSatuan = () => {
-  return `SELECT *
-          FROM ${tableName}
-          ORDER BY ${colSatuanName} ASC`;
+export const queryGetSatuan = (satuanSearch, satuanLimit, satuanOffset) => {
+  let query = `SELECT *
+               FROM ${tableName} `;
+  //  with search value
+  if (satuanSearch !== "") {
+    query += `WHERE ${colSatuanName} LIKE '%${satuanSearch}' ESCAPE '!' OR
+                  ${colSatuanInfo} LIKE '%${satuanSearch}' ESCAPE '!'`;
+  }
+  // with order, limit, offset
+  query += `ORDER BY ${colSatuanName} ASC
+            LIMIT ${satuanLimit}
+            OFFSET ${satuanOffset}`;
+  console.log(query);
+  return query;
 };
 export const queryTotalRowSatuan = (satuanSearch) => {
   let query = `SELECT COUNT(${colSatuanId})
                AS TOTAL_ROW
-               FROM ${tableName}`;
+               FROM ${tableName} `;
   if (satuanSearch !== "") {
     query += `WHERE ${colSatuanName} LIKE '%${satuanSearch}%' ESCAPE '!' OR
                     ${colSatuanInfo} LIKE '%${satuanSearch}%' ESCAPE '!' `;

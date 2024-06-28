@@ -21,15 +21,24 @@ export const createSatuan = (satuanName, satuanInfo, callback) => {
   });
 };
 // 2.READ
-export const getSatuan = (callback) => {
-  db.all(queryGetSatuan(), (err, res) => {
-    if (!err) {
-      return callback(true, res);
+export const getSatuan = (
+  satuanSearch,
+  satuanLimit,
+  satuanOffset,
+  callback
+) => {
+  const satuanOffsetStart = (satuanOffset - 1) * satuanLimit;
+  db.all(
+    queryGetSatuan(satuanSearch, satuanLimit, satuanOffsetStart),
+    (err, res) => {
+      if (!err) {
+        return callback(true, res);
+      }
+      if (err) {
+        return callback(false, err);
+      }
     }
-    if (err) {
-      return callback(false, err);
-    }
-  });
+  );
 };
 export const getTotalRowSatuan = (satuanSearch, callback) => {
   db.each(queryTotalRowSatuan(satuanSearch), (err, res) => {
