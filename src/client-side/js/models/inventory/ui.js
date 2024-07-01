@@ -1,11 +1,11 @@
-import { formatWaktuIndo } from "../../utils/waktuIndo.js"
+import { formatWaktuIndo } from "../../utils/waktuIndo.js";
 
 // ui tr inventory from db
-export const trInventory = (el) => {
-    const splitDateTime = el.InventoryDate.split(" ")
-    const dateInventory = formatWaktuIndo(splitDateTime[0])
-    const timeInventory = splitDateTime[1]
-    return `<tr>
+export const uiTrInventory = (el) => {
+  const splitDateTime = el.InventoryDate.split(" ");
+  const dateInventory = formatWaktuIndo(splitDateTime[0]);
+  const timeInventory = splitDateTime[1];
+  return `<tr>
                 <td class="text-center align-content-center">${el.InventoryId}</td>
                 <td class="align-content-center">${dateInventory}</td>
                 <td class="align-content-center">${timeInventory}</td>
@@ -25,8 +25,22 @@ export const trInventory = (el) => {
                 </td>
                 <td>
                     <div class="d-flex w-100 justify-content-center gap-2">
-                        <button class="btn btn-success text-white">
-                            <i class="fa-solid fa-eye"></i>
+                        <button 
+                                id="inventoryDetail"
+                                class="btn btn-success text-white"                      
+                                data-bs-toggle="modal" 
+                                data-bs-target="#inventoryDetailModal"
+                                data-inventoryid="${el.InventoryId}"
+                                data-inventoryproduct="${el.ProductName}" 
+                                data-inventorycategory="${el.CategoryName}"
+                                data-inventorydate="${dateInventory}" 
+                                data-inventorysecond="${timeInventory}" >
+                            <i class="fa-solid fa-eye"
+                               data-bs-toggle="tooltip" 
+                               data-bs-html="true"
+                               data-bs-title="<span>lihat-${el.ProductName}</span>" 
+                               data-bs-placement="bottom">
+                            </i>
                         </button>
                         <button class="btn btn-primary text-white">
                             <i class="fa-solid fa-pencil"></i>
@@ -36,15 +50,35 @@ export const trInventory = (el) => {
                         </button>
                     </div>
                 </td>
-            </tr>`
-}
-// make alert success after action crud 
+            </tr>`;
+};
+// make alert success after action crud
 export const successActionInventory = (res) => {
-    const alertSuccessMe = `<div class="alert alert-success" role="alert">
+  const alertSuccessMe = `<div class="alert alert-success" role="alert">
                               ${res}
-                            </div>`
-    $("#sectionSuccessActionInventory").html(alertSuccessMe)
-    setTimeout(() => {
-        $("#sectionSuccessActionInventory").html("")
-    }, 20000);
-}
+                            </div>`;
+  $("#sectionSuccessActionInventory").html(alertSuccessMe);
+  setTimeout(() => {
+    $("#sectionSuccessActionInventory").html("");
+  }, 20000);
+};
+// button pagination
+export const uiBtnInventoryPage = (i) => {
+  return `<button type = "button" 
+                  class="inventory-btn-page ${
+                    i === 1 ? "inventory-active-page" : ""
+                  }" >
+                    ${i}
+          </button>`;
+}; // Function to update active page button
+export const uiActivePageButton = (inventoryPageNumber, inventoryBtnPage) => {
+  const inventoryBtnPageActive = document.getElementsByClassName(
+    "inventory-active-page"
+  );
+  if (inventoryBtnPageActive.length >= 1) {
+    inventoryBtnPageActive[0].classList.remove("inventory-active-page");
+  }
+  inventoryBtnPage[inventoryPageNumber - 1].classList.add(
+    "inventory-active-page"
+  );
+};

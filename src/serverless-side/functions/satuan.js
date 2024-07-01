@@ -58,7 +58,7 @@ export const getTotalPageSatuan = (satuanSearch, satuanLimit, callback) => {
       let totalRow = parseInt(res.TOTAL_ROW);
       let satuanLimitInt = parseInt(satuanLimit);
       if (totalRow % satuanLimitInt === 0) {
-        lastPage = totalRow / satuanLimitInt;
+        lastPage = parseInt(totalRow / satuanLimitInt);
       }
       if (totalRow % satuanLimitInt !== 0) {
         lastPage = parseInt(totalRow / satuanLimitInt) + 1;

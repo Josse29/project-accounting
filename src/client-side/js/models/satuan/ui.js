@@ -67,7 +67,7 @@ export const successActionSatuan = (res) => {
 // when total satuan row 0 being seaching
 export const uiTrZeroSearch = (satuanSearch) => {
   return `<tr>
-              <td colspan="3" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">kategori ${satuanSearch} tidak ditemukan....</td>
+              <td colspan="3" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">satuan ${satuanSearch} tidak ditemukan....</td>
             </tr>`;
 };
 // when total satuan row 0 being seaching

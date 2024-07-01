@@ -25,14 +25,13 @@ export const queryGetSatuan = (satuanSearch, satuanLimit, satuanOffset) => {
                FROM ${tableName} `;
   //  with search value
   if (satuanSearch !== "") {
-    query += `WHERE ${colSatuanName} LIKE '%${satuanSearch}' ESCAPE '!' OR
-                  ${colSatuanInfo} LIKE '%${satuanSearch}' ESCAPE '!'`;
+    query += `WHERE ${colSatuanName} LIKE '%${satuanSearch}%' ESCAPE '!' OR
+                    ${colSatuanInfo} LIKE '%${satuanSearch}%' ESCAPE '!'`;
   }
   // with order, limit, offset
   query += `ORDER BY ${colSatuanName} ASC
             LIMIT ${satuanLimit}
             OFFSET ${satuanOffset}`;
-  console.log(query);
   return query;
 };
 export const queryTotalRowSatuan = (satuanSearch) => {

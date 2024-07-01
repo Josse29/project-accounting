@@ -70,11 +70,12 @@ export const getTotalPageCategory = (
   db.each(queryTotalRowCategory(categorySearch), (err, res) => {
     if (!err) {
       let lastPage;
-      if (res.TOTAL_ROW % categoryLimit === 0) {
-        lastPage = parseInt(res.TOTAL_ROW) / parseInt(categoryLimit);
+      let totalRow = parseInt(res.TOTAL_ROW);
+      let categoryLimitInt = parseInt(categoryLimit);
+      if (totalRow % categoryLimit === 0) {
+        lastPage = totalRow / categoryLimitInt;
       } else {
-        lastPage =
-          parseInt(parseInt(res.TOTAL_ROW) / parseInt(categoryLimit)) + 1;
+        lastPage = parseInt(totalRow / categoryLimitInt) + 1;
       }
       return callback(true, lastPage);
     }

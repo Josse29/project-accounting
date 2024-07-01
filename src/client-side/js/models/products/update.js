@@ -1,6 +1,6 @@
 import { updateProduct } from "../../../../serverless-side/functions/product.js";
-import { listCategoryRefProductUpdate } from "../categories/read.js";
-import { listSupplierRefProductUpdate } from "../supplier/read.js";
+import { listCategoryRefProductUpdate } from "../categories/list.js";
+import { listSupplierRefProductUpdate } from "../supplier/list.js";
 import { getProductsAgain } from "./read.js";
 import { successActionProduct } from "./ui.js";
 

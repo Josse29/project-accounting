@@ -3,14 +3,21 @@ import {
   getTotalPageSatuan,
   getTotalRowSatuan,
 } from "../../../../serverless-side/functions/satuan.js";
-import { btnSatuanPage, trSatuan, uiActivePageButton, uiTrZero } from "./ui.js";
-
+import {
+  btnSatuanPage,
+  trSatuan,
+  uiActivePageButton,
+  uiTrZero,
+  uiTrZeroSearch,
+} from "./ui.js";
+import { reinitializeTooltips } from "../../utils/updateUi.js";
 $(document).ready(function () {
   let satuanSearch = $("input#satuan-search").val();
   let satuanLimit = $("#satuan-limit").val();
   let satuanTotalRow;
   let satuanTotalPage;
   let satuanBtnPage;
+  getInit(satuanSearch);
   $("input#satuan-search").on("keyup", function () {
     satuanSearch = $(this).val();
     getInit(satuanSearch);
@@ -27,9 +34,14 @@ $(document).ready(function () {
         $("#satuan-total-row").text(satuanTotalRow);
         if (satuanTotalRow >= 1) {
           getTotalPage();
+          $("#satuan-pagination").removeClass("d-none");
         }
         if (satuanTotalRow < 1) {
-          $("#satuan-data").html(uiTrZero);
+          if (satuanSearch) {
+            $("#satuan-data").html(uiTrZeroSearch(satuanSearch));
+          } else {
+            $("#satuan-data").html(uiTrZero);
+          }
           $("#satuan-pagination").addClass("d-none");
         }
       }
@@ -79,7 +91,6 @@ $(document).ready(function () {
         if (decrementPage < 1) {
           decrementPage = satuanTotalPage;
         }
-        console.log(decrementPage);
         getSatuanPage(decrementPage);
       });
     // based on number when clicked
@@ -122,6 +133,7 @@ $(document).ready(function () {
           });
           $("#satuan-data").html(tr);
           uiActivePageButton(satuanPageActive, satuanBtnPage);
+          reinitializeTooltips();
         }
         if (!status) {
           console.error(response);
@@ -129,7 +141,6 @@ $(document).ready(function () {
       }
     );
   }
-  getInit();
   // get-detail-satuan | get id satuan
   $(document).on("click", "#satuanDetail", function () {
     console.log("clicked button");
@@ -154,6 +165,7 @@ export const getSatuanAgain = () => {
     satuanLimit = parseInt($(this).val());
     getInit();
   });
+  getInit(satuanSearch);
   // 1. get first,  get total row, upadate ui (total row) as condition
   function getInit() {
     getTotalRowSatuan(satuanSearch, (status, response) => {
@@ -164,7 +176,11 @@ export const getSatuanAgain = () => {
           getTotalPage();
         }
         if (satuanTotalRow < 1) {
-          $("#satuan-data").html(uiTrZero);
+          if (satuanSearch) {
+            $("#satuan-data").html(uiTrZeroSearch(satuanSearch));
+          } else {
+            $("#satuan-data").html(uiTrZero);
+          }
           $("#satuan-pagination").addClass("d-none");
         }
       }
@@ -264,5 +280,4 @@ export const getSatuanAgain = () => {
       }
     );
   }
-  getInit();
 };

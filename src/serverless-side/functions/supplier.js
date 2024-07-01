@@ -68,12 +68,13 @@ export const getTotalPageSupplier = (
   db.each(queryTotalRowSupplier(supplierSearch), (err, res) => {
     if (!err) {
       let lastPage;
-      if (res.TOTAL_ROW % supplierLimit === 0) {
-        lastPage = parseInt(res.TOTAL_ROW) / parseInt(supplierLimit);
+      let totalRowSupplier = parseInt(res.TOTAL_ROW);
+      let supplierLimitInt = parseInt(supplierLimit);
+      if (totalRowSupplier % supplierLimit === 0) {
+        lastPage = totalRowSupplier / supplierLimitInt;
       }
-      if (res.TOTAL_ROW % supplierLimit !== 0) {
-        lastPage =
-          parseInt(parseInt(res.TOTAL_ROW) / parseInt(supplierLimit)) + 1;
+      if (totalRowSupplier % supplierLimit !== 0) {
+        lastPage = parseInt(totalRowSupplier / supplierLimitInt) + 1;
       }
       return callback(true, lastPage);
     }

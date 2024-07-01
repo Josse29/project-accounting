@@ -1,29 +1,130 @@
 import {
-  getListProduct,
   getProducts,
   getTotalPageProduct,
   getTotalRowProduct,
 } from "../../../../serverless-side/functions/product.js";
 import { reinitializeTooltips } from "../../utils/updateUi.js";
+import { listProductRefInventoryCreate } from "./list.js";
 import {
   btnProductPage,
   trProductZero,
   trProductZeroSearch,
   uiActivePageButton,
-  uiOption,
   uitrProduct,
 } from "./ui.js";
-
 $(document).ready(function () {
   let productSearch = $("#product-search-input").val();
   let productLimit = parseInt($("#product-limit").val());
-  let productCurrentPage = 1;
   let productTotalRow;
   let productTotalPage;
   let productBtnPage;
-  // Function to update product based on page number
+  getInit(productSearch);
+  $("#product-search-input").on("keyup", function () {
+    productSearch = $(this).val();
+    getInit(productSearch);
+  });
+  $("#product-limit").on("change", function () {
+    productLimit = parseInt($(this).val());
+    getInit();
+  });
+  // 1. get first,  get total row, upadate ui (total row) as condition
+  function getInit() {
+    getTotalRowProduct(productSearch, (status, response) => {
+      // success get total row product
+      if (status) {
+        productTotalRow = parseInt(response);
+        $("#product-total-row").text(productTotalRow);
+        // if it exist product
+        if (productTotalRow >= 1) {
+          listProductRefInventoryCreate();
+          getTotalPage();
+          $("#product-pagination").removeClass("d-none");
+        }
+        // if it doesn't exist product
+        if (productTotalRow < 1) {
+          if (productSearch) {
+            $("#product-data").html(trProductZeroSearch(productSearch));
+          } else {
+            $("#product-data").html(trProductZero);
+          }
+          $("#product-pagination").addClass("d-none");
+        }
+      }
+      // failed get total row product
+      if (!status) {
+        console.error(response);
+      }
+    });
+  }
+  // 2. get total page, update ui (total row)
+  function getTotalPage() {
+    getTotalPageProduct(productLimit, productSearch, (status, response) => {
+      if (status) {
+        productTotalPage = parseInt(response);
+        uiPagination(productTotalPage);
+      }
+      if (!status) {
+        console.error(response);
+      }
+    });
+  }
+  // 3. Function to insert html pagination
+  function uiPagination(productTotalPage) {
+    let uiBtnPaginate = "";
+    for (let i = 1; i <= productTotalPage; i++) {
+      uiBtnPaginate += btnProductPage(i);
+    }
+    $("#product-number-page").html(uiBtnPaginate);
+    handlePagination(productTotalPage);
+  }
+  // 4. function to handle pagination(first,prev,number,next,last)
+  function handlePagination(productTotalPage) {
+    // Event listeners for pagination buttons
+    productBtnPage = document.getElementsByClassName("product-btn-page");
+    // first page
+    $("#product-first-page")
+      .off("click")
+      .on("click", () => {
+        getProductPage(1);
+      });
+    // previous page
+    $("#product-prev-page")
+      .off("click")
+      .on("click", () => {
+        let pageActive = parseInt($(".product-active-page").text().trim());
+        let decrementPage = pageActive - 1;
+        if (decrementPage < 1) {
+          decrementPage = productTotalPage;
+        }
+        getProductPage(decrementPage);
+      });
+    // based on number when clicked
+    for (let i = 0; i < productTotalPage; i++) {
+      productBtnPage[i].addEventListener("click", function () {
+        const pageNumber = parseInt(this.textContent.trim());
+        getProductPage(pageNumber);
+      });
+    }
+    // next page
+    $("#product-next-page")
+      .off("click")
+      .on("click", () => {
+        let pageActive = parseInt($(".product-active-page").text().trim());
+        let incrementPage = pageActive + 1;
+        if (incrementPage > productTotalPage) {
+          incrementPage = 1;
+        }
+        getProductPage(incrementPage);
+      });
+    // last page
+    $("#product-last-page")
+      .off("click")
+      .on("click", () => getProductPage(productTotalPage));
+    // Initial page load
+    getProductPage(1);
+  }
+  // 5. function to handle get satuan based on pageActive
   function getProductPage(productPageNumber) {
-    // function to only get product based on search, limit, page
     getProducts(
       productSearch,
       productLimit,
@@ -75,16 +176,77 @@ $(document).ready(function () {
       $("#proudct-detail-refsupplier").text(product.productsupplier);
     });
   }
-  // Function to re=initialize pagination
-  function handlePagination(response) {
+});
+// RE-Initial fetch and setup
+export function getProductsAgain() {
+  let productSearch = $("#product-search-input").val();
+  let productLimit = parseInt($("#product-limit").val());
+  let productTotalRow;
+  let productTotalPage;
+  let productBtnPage;
+  getInit(productSearch);
+  $("#product-search-input").on("keyup", function () {
+    productSearch = $(this).val();
+    getInit(productSearch);
+  });
+  $("#product-limit").on("change", function () {
+    productLimit = parseInt($(this).val());
+    getInit();
+  });
+  // 1. get first,  get total row, upadate ui (total row) as condition
+  function getInit() {
+    getTotalRowProduct(productSearch, (status, response) => {
+      // success get total row product
+      if (status) {
+        productTotalRow = response;
+        $("#product-total-row").text(productTotalRow);
+        // if it exist product
+        if (productTotalRow >= 1) {
+          listProductRefInventoryCreate();
+          getTotalPage();
+          $("#product-pagination").removeClass("d-none");
+        }
+        // if it doesn't exist product
+        if (productTotalRow < 1) {
+          if (productSearch) {
+            $("#product-data").html(trProductZeroSearch(productSearch));
+          } else {
+            $("#product-data").html(trProductZero);
+          }
+          $("#product-pagination").addClass("d-none");
+        }
+      }
+      // failed get total row product
+      if (!status) {
+        console.error(response);
+      }
+    });
+  }
+  // 2. get total page, update ui (total row)
+  function getTotalPage() {
+    getTotalPageProduct(productLimit, productSearch, (status, response) => {
+      if (status) {
+        productTotalPage = parseInt(response);
+        uiPagination(productTotalPage);
+      }
+      if (!status) {
+        console.error(response);
+      }
+    });
+  }
+  // 3. Function to insert html pagination
+  function uiPagination(productTotalPage) {
     let uiBtnPaginate = "";
-    for (let i = 1; i <= response; i++) {
+    for (let i = 1; i <= productTotalPage; i++) {
       uiBtnPaginate += btnProductPage(i);
     }
     $("#product-number-page").html(uiBtnPaginate);
+    handlePagination(productTotalPage);
+  }
+  // 4. function to handle pagination(first,prev,number,next,last)
+  function handlePagination(productTotalPage) {
     // Event listeners for pagination buttons
     productBtnPage = document.getElementsByClassName("product-btn-page");
-    productTotalPage = response;
     // first page
     $("#product-first-page")
       .off("click")
@@ -125,121 +287,10 @@ $(document).ready(function () {
       .off("click")
       .on("click", () => getProductPage(productTotalPage));
     // Initial page load
-    getProductPage(productCurrentPage);
+    getProductPage(1);
   }
-  // Function to handle search based on supplier
-  function getProductSearch() {
-    productSearch = $("#product-search-input").val();
-    // get only total row product
-    getTotalRowProduct(productSearch, (status, response) => {
-      // success get total row product
-      if (status) {
-        productTotalRow = response;
-        $("#product-total-row").html(productTotalRow);
-        // if it exist product
-        if (productTotalRow >= 1) {
-          getTotalPageProduct(
-            productLimit,
-            productSearch,
-            (status, response) => {
-              if (status) {
-                productTotalPage = parseInt(response);
-                handlePagination(productTotalPage);
-                $("#product-pagination").removeClass("d-none");
-              }
-              if (!status) {
-                console.error(response);
-              }
-            }
-          );
-        }
-        // if it doesn't exist product
-        if (productTotalRow < 1) {
-          $("#product-data").html(trProductZeroSearch(productSearch));
-          $("#product-pagination").addClass("d-none");
-        }
-      }
-      // failed get total row product
-      if (!status) {
-        console.error(response);
-      }
-    });
-  }
-  function getProductLimit() {
-    productLimit = parseInt($("#product-limit").val());
-    getTotalPageProduct(productLimit, productSearch, (status, response) => {
-      if (status) {
-        productTotalPage = parseInt(response);
-        handlePagination(productTotalPage);
-        $("#product-pagination").removeClass("d-none");
-      }
-      if (!status) {
-        console.error(response);
-      }
-    });
-  }
-  // Initial fetch and setup
-  getTotalRowProduct(productSearch, (status, response) => {
-    // success get total row product
-    if (status) {
-      productTotalRow = response;
-      $("#product-total-row").html(productTotalRow);
-      // if it exist product
-      if (productTotalRow >= 1) {
-        // 2.get only list product
-        getListProduct((status, response) => {
-          if (status) {
-            let option = "";
-            response.forEach((element) => {
-              option += uiOption(element);
-            });
-            $("#inventory-refproduct-create-name").html(option);
-          }
-          if (!status) {
-            console.error(response);
-          }
-        });
-        // 2.get only total page product
-        getTotalPageProduct(productLimit, productSearch, (status, response) => {
-          if (status) {
-            productTotalPage = parseInt(response);
-            handlePagination(productTotalPage);
-            $("#product-pagination").removeClass("d-none");
-          }
-          if (!status) {
-            console.error(response);
-          }
-        });
-        // 2.Function to handle limit change
-        $("#product-limit").on("change", getProductLimit);
-        // 2.Search functionality
-        $("#product-search-input").on("keyup", getProductSearch);
-        $("#product-search-span").on("click", getProductSearch);
-      }
-      // if it doesn't exist product
-      if (productTotalRow < 1) {
-        $("#product-data").html(trProductZero);
-        $("#product-pagination").addClass("d-none");
-      }
-    }
-    // failed get total row product
-    if (!status) {
-      console.error(response);
-    }
-  });
-});
-
-// Initial fetch and setup
-export function getProductsAgain() {
-  let productSearch = $("#product-search-input").val();
-  let productLimit = parseInt($("#product-limit").val());
-  let productCurrentPage = 1;
-  let productTotalRow;
-  let productTotalPage;
-  let productBtnPage;
-  // Function to update product based on page number
+  // 5. function to handle get satuan based on pageActive
   function getProductPage(productPageNumber) {
-    // function to only get product based on search, limit, page
     getProducts(
       productSearch,
       productLimit,
@@ -261,157 +312,34 @@ export function getProductsAgain() {
         }
       }
     );
-  }
-  // Function to re=initialize pagination
-  function handlePagination(response) {
-    let uiBtnPaginate = "";
-    for (let i = 1; i <= response; i++) {
-      uiBtnPaginate += btnProductPage(i);
-    }
-    $("#product-number-page").html(uiBtnPaginate);
-    // Event listeners for pagination buttons
-    productBtnPage = document.getElementsByClassName("product-btn-page");
-    productTotalPage = response;
-    // first page
-    $("#product-first-page")
-      .off("click")
-      .on("click", () => {
-        getProductPage(1);
-      });
-    // previous page
-    $("#product-prev-page")
-      .off("click")
-      .on("click", () => {
-        let pageActive = parseInt($(".product-active-page").text().trim());
-        let decrementPage = pageActive - 1;
-        if (decrementPage < 1) {
-          decrementPage = productTotalPage;
-        }
-        getProductPage(decrementPage);
-      });
-    // based on number when clicked
-    for (let i = 0; i < productTotalPage; i++) {
-      productBtnPage[i].addEventListener("click", function () {
-        const pageNumber = parseInt(this.textContent.trim());
-        getProductPage(pageNumber);
-      });
-    }
-    // next page
-    $("#product-next-page")
-      .off("click")
-      .on("click", () => {
-        let pageActive = parseInt($(".product-active-page").text().trim());
-        let incrementPage = pageActive + 1;
-        if (incrementPage > productTotalPage) {
-          incrementPage = 1;
-        }
-        getProductPage(incrementPage);
-      });
-    // last page
-    $("#product-last-page")
-      .off("click")
-      .on("click", () => getProductPage(productTotalPage));
-    // Initial page load
-    getProductPage(productCurrentPage);
-  }
-  //   // Function to handle search based on supplier
-  //   function getProductSearch() {
-  //     productSearch = $("#product-search-input").val();
-  //     // get only total row product
-  //     getTotalRowProduct(productSearch, (status, response) => {
-  //       // success get total row product
-  //       if (status) {
-  //         productTotalRow = response;
-  //         $("#product-total-row").html(productTotalRow);
-  //         // if it exist product
-  //         if (productTotalRow >= 1) {
-  //           getTotalPageProduct(
-  //             productLimit,
-  //             productSearch,
-  //             (status, response) => {
-  //               if (status) {
-  //                 productTotalPage = parseInt(response);
-  //                 handlePagination(productTotalPage);
-  //                 $("#product-pagination").removeClass("d-none");
-  //               }
-  //               if (!status) {
-  //                 console.error(response);
-  //               }
-  //             }
-  //           );
-  //         }
-  //         // if it doesn't exist product
-  //         if (productTotalRow < 1) {
-  //           $("#product-data").html(trProductZeroSearch(productSearch));
-  //           $("#product-pagination").addClass("d-none");
-  //         }
-  //       }
-  //       // failed get total row product
-  //       if (!status) {
-  //         console.error(response);
-  //       }
-  //     });
-  //   }
-  //   function getProductLimit() {
-  //     getTotalPageProduct(productLimit, productSearch, (status, response) => {
-  //       if (status) {
-  //         productTotalPage = parseInt(response);
-  //         handlePagination(productTotalPage);
-  //         $("#product-pagination").removeClass("d-none");
-  //       }
-  //       if (!status) {
-  //         console.error(response);
-  //       }
-  //     });
-  //   }
-  // Initial fetch and setup
-  // 1. get total row product
-  getTotalRowProduct(productSearch, (status, response) => {
-    // success get total row product
-    if (status) {
-      productTotalRow = response;
-      $("#product-total-row").html(productTotalRow);
-      // if it exist product
-      if (productTotalRow >= 1) {
-        // 2.get only list product
-        getListProduct((status, response) => {
-          if (status) {
-            let option = "";
-            response.forEach((element) => {
-              option += uiOption(element);
-            });
-            $("#inventory-refproduct-create-name").html(option);
-          }
-          if (!status) {
-            console.error(response);
-          }
-        });
-        // 2.get only total page product
-        getTotalPageProduct(productLimit, productSearch, (status, response) => {
-          if (status) {
-            productTotalPage = parseInt(response);
-            handlePagination(productTotalPage);
-            $("#product-pagination").removeClass("d-none");
-          }
-          if (!status) {
-            console.error(response);
-          }
-        });
-        // 2.Function to handle limit change
-        // $("#product-limit").on("change", getProductLimit);
-        // 2.Search functionality
-        // $("#product-search-input").on("keyup", getProductSearch);
-        // $("#product-search-span").on("click", getProductSearch);
+    // get-detail-product event binding fuckkkkkkk 2 jam lebih
+    $(document).on("click", "#productDetailBtn", function () {
+      const product = this.dataset;
+      $("#detailProductModalLabel").html(product.productname);
+      $("#detail-product-name").text(product.productname);
+      // if exist image
+      if (product.productimage !== "null") {
+        $("img#detail-product-image").attr("src", product.productimage);
+        $("#detail-product-image").removeClass("d-none");
+        $("#detail-no-image").text(``);
       }
-      // if it doesn't exist product
-      if (productTotalRow < 1) {
-        $("#product-data").html(trProductZero);
-        $("#product-pagination").addClass("d-none");
+      // if not exist image
+      if (product.productimage === "null") {
+        $("#detail-product-image").addClass("d-none");
+        $("#detail-no-image").text(`no - image displayed`);
+        $("img#detail-product-image").attr("src", "");
       }
-    }
-    // failed get total row product
-    if (!status) {
-      console.error(response);
-    }
-  });
+      // if not exist keterangan
+      if (product.productketerangan === "") {
+        $("#detail-product-keterangan").text("-");
+      }
+      // if exist keterangan
+      if (product.productketerangan !== "") {
+        $("#detail-product-keterangan").text(product.productketerangan);
+      }
+      $("#detail-product-price").text(product.productprice);
+      $("#detail-category-price").text(product.productcategory);
+      $("#proudct-detail-refsupplier").text(product.productsupplier);
+    });
+  }
 }

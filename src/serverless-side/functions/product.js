@@ -55,11 +55,12 @@ export const getTotalPageProduct = (limitProduct, searchVal, callback) => {
   db.each(queryTotalRowProducts(searchVal), (err, res) => {
     if (!err) {
       let lastPage;
-      if (res.TOTAL_ROW % limitProduct === 0) {
-        lastPage = parseInt(res.TOTAL_ROW) / parseInt(limitProduct);
+      let totalRow = parseInt(res.TOTAL_ROW);
+      let limitProductInt = parseInt(limitProduct);
+      if (totalRow % limitProductInt === 0) {
+        lastPage = parseInt(totalRow / limitProductInt);
       } else {
-        lastPage =
-          parseInt(parseInt(res.TOTAL_ROW) / parseInt(limitProduct)) + 1;
+        lastPage = parseInt(totalRow / limitProductInt) + 1;
       }
       return callback(true, lastPage);
     }
@@ -87,8 +88,8 @@ export const getProducts = (
     }
   );
 };
-export const getListProduct = (callback) => {
-  db.all(queryGetListProduct(), (err, res) => {
+export const getListProduct = (productSearch, callback) => {
+  db.all(queryGetListProduct(productSearch), (err, res) => {
     if (!err) {
       return callback(true, res);
     }
