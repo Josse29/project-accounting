@@ -1,4 +1,5 @@
 import { createInventory } from "../../../../serverless-side/functions/inventory.js";
+import { getInventoryAgain } from "./read.js";
 import { successActionInventory } from "./ui.js";
 
 $(document).ready(function () {
@@ -13,6 +14,7 @@ $(document).ready(function () {
       (status, response) => {
         if (status) {
           successActionInventory(response);
+          getInventoryAgain();
         }
         if (!status) {
           console.error(response);

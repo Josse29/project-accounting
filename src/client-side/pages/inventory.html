@@ -942,17 +942,14 @@
                 <div class="mb-3 d-flex align-items-center">
                   <label for="qty" class="form-label fs-4 w-50">Qty</label>
                   <div class="input-group w-50">
-                    <button type="button" class="btn border border-2 fs-4">
-                      -
-                    </button>
+                    <button type="button" class="btn btn-danger fs-4">-</button>
                     <input
                       type="text"
-                      class="form-control"
+                      class="form-control w-auto"
                       id="inventory-refproduct-create-qty"
                       placeholder="input stock"
-                      style="width: 20px"
                     />
-                    <button type="button" class="btn border border-2 fs-4">
+                    <button type="button" class="btn btn-success fs-4">
                       +
                     </button>
                   </div>
@@ -1114,27 +1111,27 @@
                   <label for="product-price" class="form-label fs-4"
                     >Price</label
                   >
-                  <h4 id="detail-product-price" class="ms-2"></h4>
+                  <h5 id="detail-product-price" class="ms-2"></h5>
                 </div>
                 <!-- kategori -->
                 <div class="mb-3">
                   <label for="categories" class="form-label fs-4"
                     >Kategori</label
                   >
-                  <h4
+                  <h5
                     id="detail-category-price"
                     class="ms-2 text-capitalize"
-                  ></h4>
+                  ></h5>
                 </div>
                 <!-- kategori -->
                 <div class="mb-3">
                   <label for="categories" class="form-label fs-4"
                     >Supplier</label
                   >
-                  <h4
+                  <h5
                     id="proudct-detail-refsupplier"
                     class="ms-2 text-capitalize"
-                  ></h4>
+                  ></h5>
                 </div>
                 <!-- info -->
                 <div class="mb-3">
@@ -1441,7 +1438,7 @@
               <div class="modal-header bg-danger">
                 <h1
                   class="modal-title fs-2 text-white text-capitalize"
-                  id="confirmDeleteProductModalLabel"
+                  id="product-delete-label"
                 >
                   Modal
                 </h1>
@@ -1451,7 +1448,7 @@
                   class="fa-solid fa-triangle-exclamation text-danger"
                   style="font-size: 120px"
                 ></i>
-                <h4 class="my-3" id="confirm-text"></h4>
+                <h4 class="my-3 lh-base" id="product-confirm-text"></h4>
               </div>
               <div class="modal-footer">
                 <button
