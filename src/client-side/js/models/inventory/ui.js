@@ -6,9 +6,9 @@ export const uiTrInventory = (el) => {
   const dateInventory = formatWaktuIndo(splitDateTime[0]);
   const timeInventory = splitDateTime[1];
   return `<tr>
-                <td class="text-center align-content-center">${el.InventoryId}</td>
-                <td class="align-content-center">${dateInventory}</td>
-                <td class="align-content-center">${timeInventory}</td>
+                <td class="align-content-center text-center">${el.InventoryId}</td>
+                <td class="align-content-center text-center">${dateInventory}</td>
+                <td class="align-content-center text-center">${timeInventory}</td>
                 <td class="align-content-center text-nowrap text-capitalize">${el.ProductName}</td>
                 <td class="align-content-center text-nowrap text-capitalize">${el.CategoryName}</td>
                 <td class="align-content-center text-nowrap text-capitalize">
@@ -17,16 +17,12 @@ export const uiTrInventory = (el) => {
                 <td class="text-nowrap align-content-center">
                     Mr.JK
                 </td>
-                <td class="text-nowrap align-content-center">
-                    ${el.InventoryInfo}
-                </td>
                 <td class="text-nowrap align-content-center text-center">
                     1
                 </td>
                 <td>
                     <div class="d-flex w-100 justify-content-center gap-2">
-                        <button 
-                                id="inventoryDetail"
+                        <button id="inventoryDetail"
                                 class="btn btn-success text-white"                      
                                 data-bs-toggle="modal" 
                                 data-bs-target="#inventoryDetailModal"
@@ -42,11 +38,30 @@ export const uiTrInventory = (el) => {
                                data-bs-placement="bottom">
                             </i>
                         </button>
-                        <button class="btn btn-primary text-white">
-                            <i class="fa-solid fa-pencil"></i>
+                        <button 
+                                class="btn btn-primary text-white" 
+                                >
+                            <i class="fa-solid fa-pencil"
+                               data-bs-toggle="tooltip" 
+                               data-bs-html="true"
+                               data-bs-title="<span>edit-${el.ProductName}</span>" 
+                               data-bs-placement="bottom">
+                            </i>
                         </button>
-                        <button class="btn btn-danger text-white">
-                            <i class="fa-solid fa-trash-can"></i>
+                        <button id="inventory-delete-btn"
+                                class="btn btn-danger text-white"
+                                data-bs-toggle="modal"
+                                data-bs-target="#inventoryDeleteModal"
+                                data-inventoryid="${el.InventoryId}"
+                                data-inventoryproduct="${el.ProductName}" 
+                                data-inventorycategory="${el.CategoryName}"
+                                data-inventorydate="${dateInventory}" 
+                                data-inventorysecond="${timeInventory}">
+                            <i class="fa-solid fa-trash-can"
+                               data-bs-toggle="tooltip" 
+                               data-bs-html="true"
+                               data-bs-title="<span>hapus-${el.ProductName}</span>" 
+                               data-bs-placement="bottom"></i>
                         </button>
                     </div>
                 </td>
@@ -81,4 +96,16 @@ export const uiActivePageButton = (inventoryPageNumber, inventoryBtnPage) => {
   inventoryBtnPage[inventoryPageNumber - 1].classList.add(
     "inventory-active-page"
   );
+};
+// when total row 0 being seaching
+export const uiTrZeroSearch = (searchVal) => {
+  return `<tr>
+              <td colspan="9" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">Persediaan ${searchVal} tidak ditemukan....</td>
+            </tr>`;
+};
+// when total row 0 being seaching
+export const uiTrZero = () => {
+  return `<tr>
+              <td colspan="9" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">tidak ada persediaan....</td>
+            </tr>`;
 };

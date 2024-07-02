@@ -1,4 +1,5 @@
 import {
+  queryDeleteInventory,
   queryGetInventory,
   queryInsertInventory,
   queryListInventory,
@@ -95,13 +96,23 @@ export const getInventoryList = (inventoryProductSearch, callback) => {
 //     })
 // }
 // 4.DELETE
-// export const deleteCategory = (categoryId, categoryName, callback) => {
-//     db.run(queryDeleteCategory(categoryId), (err) => {
-//         if (!err) {
-//             return callback(true, `Kategori <b class='text-capitalize'>${categoryName}</b> berhasil dihapus`)
-//         }
-//         if (err) {
-//             return callback(false, `Kategori <b class='text-capitalize'>${categoryName}</b> gagal dihapus`)
-//         }
-//     });
-// }
+export const deleteInventory = (
+  inventoryProductId,
+  inventoryProductName,
+  callback
+) => {
+  db.run(queryDeleteInventory(inventoryProductId), (err) => {
+    if (!err) {
+      return callback(
+        true,
+        `Persediaan <b class='text-capitalize'>${inventoryProductName}</b> berhasil dihapus`
+      );
+    }
+    if (err) {
+      return callback(
+        false,
+        `Persediaan <b class='text-capitalize'>${inventoryProductName}</b> gagal dihapus`
+      );
+    }
+  });
+};

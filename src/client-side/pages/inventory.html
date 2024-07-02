@@ -264,47 +264,17 @@
                   <thead>
                     <tr>
                       <th class="text-center">No</th>
-                      <th>Hari / Tanggal</th>
-                      <th>Jam</th>
+                      <th class="text-center">Tanggal</th>
+                      <th class="text-center">Jam</th>
                       <th>Nama Produk</th>
                       <th>Nama Kategori</th>
                       <th>Nama Supplier</th>
                       <th>Nama Petugas</th>
-                      <th>Keterangan</th>
                       <th class="text-center">Qty</th>
                       <th class="text-center">Aksi</th>
                     </tr>
                   </thead>
-                  <tbody id="inventory-data">
-                    <tr>
-                      <td class="text-center align-content-center">1</td>
-                      <td class="align-content-center">Tuesday , 20-04-2024</td>
-                      <td class="align-content-center">13:12:11</td>
-                      <td class="align-content-center text-nowrap">Ikan</td>
-                      <td class="align-content-center text-nowrap">Kategori</td>
-                      <td class="align-content-center text-nowrap">
-                        PT.indah, tbk
-                      </td>
-                      <td class="text-nowrap align-content-center">Mr.JK</td>
-                      <td class="text-nowrap align-content-center">wokeii</td>
-                      <td class="text-nowrap align-content-center text-center">
-                        1
-                      </td>
-                      <td>
-                        <div class="d-flex w-100 justify-content-center gap-2">
-                          <button class="btn btn-success text-white">
-                            <i class="fa-solid fa-eye"></i>
-                          </button>
-                          <button class="btn btn-primary text-white">
-                            <i class="fa-solid fa-pencil"></i>
-                          </button>
-                          <button class="btn btn-danger text-white">
-                            <i class="fa-solid fa-trash-can"></i>
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
+                  <tbody id="inventory-data"></tbody>
                 </table>
               </div>
               <!-- pagination inventory -->
@@ -1045,6 +1015,49 @@
                     Nama Produk
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- delete-inventory -->
+        <div class="modal fade" id="inventoryDeleteModal" tabindex="-1">
+          <div
+            class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+          >
+            <div class="modal-content">
+              <div class="modal-header bg-danger">
+                <h1
+                  class="modal-title fs-2 text-white text-capitalize"
+                  id="inventory-delete-label"
+                >
+                  Modal
+                </h1>
+              </div>
+              <div class="modal-body text-center">
+                <i
+                  class="fa-solid fa-triangle-exclamation text-danger"
+                  style="font-size: 120px"
+                ></i>
+                <h5 class="my-3 lh-base" id="confirm-text"></h5>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary d-flex align-items-center gap-2"
+                  data-bs-dismiss="modal"
+                >
+                  <i class="fa-solid fa-times me-1 fs-4"></i>
+                  <span class="fs-5">No</span>
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-danger d-flex align-items-center gap-2"
+                  id="inventory-delete-yes"
+                  data-bs-dismiss="modal"
+                >
+                  <i class="fa-solid fa-check me-1 fs-4"></i>
+                  <span class="fs-5">Yes</span>
+                </button>
               </div>
             </div>
           </div>

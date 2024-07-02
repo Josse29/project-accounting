@@ -105,5 +105,5 @@ export const queryUpdateInventory = (
 export const queryDeleteInventory = (inventoryId) => {
   return `DELETE
           FROM ${tableName}
-          WHERE ${colInventoryId} = '${inventoryId}'`;
+          WHERE ${colInventoryId} = ${inventoryId}`;
 };
