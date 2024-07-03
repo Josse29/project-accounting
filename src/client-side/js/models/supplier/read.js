@@ -44,7 +44,6 @@ $(document).ready(function () {
           });
           // supplier-refproduct-list
           $("#supplier-table").html(tr);
-
           updateActivePageButton(supplierPageNumber, supplierBtnPage);
           reinitializeTooltips();
         }

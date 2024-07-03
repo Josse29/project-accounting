@@ -132,6 +132,7 @@ $(document).ready(function () {
             tr += uiTrInventory(element);
           });
           $("#inventory-data").html(tr);
+          console.log(response);
           uiActivePageButton(inventoryActivePage, inventoryBtnPage);
           reinitializeTooltips();
         }
@@ -147,6 +148,17 @@ $(document).ready(function () {
     $("#inventory-detail-productname").text(inventory.inventoryproduct);
     $("#inventory-detail-date").text(inventory.inventorydate);
     $("#inventory-detail-second").text(inventory.inventorysecond);
+    if (inventory.inventoryqty < 0) {
+      $("div#inventory-detail-qty").addClass("bg-danger");
+      $("div#inventory-detail-qty").removeClass("bg-success");
+      $("span#inventory-detail-qty").text(inventory.inventoryqty);
+    }
+    if (inventory.inventoryqty >= 1) {
+      $("div#inventory-detail-qty").addClass("bg-success");
+      $("div#inventory-detail-qty").removeClass("bg-danger");
+      $("span#inventory-detail-qty").text(`+ ${inventory.inventoryqty}`);
+    }
+    $("#inventory-detail-info").text(inventory.inventoryinfo);
   });
 });
 

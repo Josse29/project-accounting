@@ -26,12 +26,16 @@ const colInventoryProductId = `InventoryProductId`;
 const colInventoryProductQty = `InventoryProductQty`;
 const colInventoryInfo = `InventoryInfo`;
 // 1.CREATE
-export const queryInsertInventory = (inventoryProductId, inventoryInfo) => {
+export const queryInsertInventory = (
+  inventoryProductId,
+  inventoryInfo,
+  inventoryQty
+) => {
   return `INSERT 
           INTO ${tableName} 
-          (${colInventoryProductId},${colInventoryInfo}) 
+          (${colInventoryProductId},${colInventoryInfo},${colInventoryProductQty}) 
           VALUES 
-          (${inventoryProductId}, '${inventoryInfo}')`;
+          (${inventoryProductId}, '${inventoryInfo}',${inventoryQty})`;
 };
 // 2.READ
 export const queryGetInventory = (
@@ -94,12 +98,18 @@ export const queryUpdateInventory = (
   inventoryProductQty,
   inventoryInfo
 ) => {
+  console.log(`UPDATE
+          ${tableName}
+          SET ${colInventoryProductId} = ${inventoryProductId},
+              ${colInventoryProductQty} = ${inventoryProductQty},
+              ${colInventoryInfo} = '${inventoryInfo}'
+          WHERE ${colInventoryId} = ${inventoryId}`);
   return `UPDATE
           ${tableName}
-          SET ${colInventoryProductId} = '${inventoryProductId}',
-              ${colInventoryProductQty} = '${inventoryProductQty}',
-              ${colInventoryInfo} = '${inventoryInfo}',
-          WHERE ${colInventoryId} = '${inventoryId}'`;
+          SET ${colInventoryProductId} = ${inventoryProductId},
+              ${colInventoryProductQty} = ${inventoryProductQty},
+              ${colInventoryInfo} = '${inventoryInfo}'
+          WHERE ${colInventoryId} = ${inventoryId}`;
 };
 // 4.DELETE
 export const queryDeleteInventory = (inventoryId) => {

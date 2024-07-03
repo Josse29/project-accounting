@@ -92,14 +92,14 @@ export const trProductZero = () => {
 // blank value after submit action
 export const createBlankValue = () => {
   $("#product-name").val("");
+  $("#product-refcategory-create").val("");
+  $("#product-refcategory-create-val").val("");
+  $("#product-refsupplier-create").val("");
+  $("#product-refsupplier-create-val").val("");
   $("#product-price").val("");
   $("#product-keterangan").val("");
   $("#create-image-product").val("");
   $("#section-image").addClass("d-none");
-};
-// ui fr option inventory ref product
-export const uiOption = (element) => {
-  return `<option value="${element.ProductId}">${element.ProductName}</option>`;
 };
 // button pagination
 export const btnProductPage = (i) => {

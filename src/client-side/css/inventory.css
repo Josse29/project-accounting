@@ -410,6 +410,42 @@ i#supplier-update-img-cancel {
   outline: none;
   padding: 8px 12px;
 }
+input#inventory-refproduct-create-qty:focus {
+  outline: none;
+}
+input#inventory-refproduct-create-qty::placeholder {
+  color: black;
+  opacity: 1; /* Firefox */
+}
+#inventory-refproduct-update-list {
+  border: 1px solid black;
+  position: absolute;
+  background-color: white;
+  margin-top: -1px;
+  width: 100%;
+  z-index: 3;
+}
+.inventory-refproduct-update-val {
+  padding: 0px 10px;
+  text-transform: capitalize;
+}
+.inventory-refproduct-update-val:hover {
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+}
+.inventory-refproduct-update-not-found {
+  padding: 0px 10px;
+  text-align: center;
+  font-style: italic;
+  text-transform: capitalize;
+}
+#inventory-update-submit {
+  background-color: #3b82f6;
+}
+#inventory-update-submit:hover {
+  background-color: #2a77f4;
+}
 /* mckkk for tbody scrolll*/
 /* tbody {
       display: block;

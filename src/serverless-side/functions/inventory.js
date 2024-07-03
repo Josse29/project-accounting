@@ -4,21 +4,37 @@ import {
   queryInsertInventory,
   queryListInventory,
   queryTotalRowInventory,
+  queryUpdateInventory,
 } from "../querysql/inventory.js";
 
 // 1.CREATE
-export const createInventory = (inventoryName, inventoryInfo, callback) => {
-  db.run(queryInsertInventory(inventoryName, inventoryInfo), (err) => {
-    if (!err) {
-      return callback(
-        true,
-        `Inventory <b class='text-capitalize'>${inventoryName}</b> berhasil ditambahkan`
-      );
-    }
-    if (err) {
-      return callback(false, err);
-    }
-  });
+export const createInventory = (
+  inventoryProductName,
+  inventorProductId,
+  inventoryInfo,
+  inventoryQty,
+  callback
+) => {
+  const isNumeric = /^-?([1-9]\d*|0?\.\d+)$/.test(inventoryQty);
+  if (isNumeric) {
+    db.run(
+      queryInsertInventory(inventorProductId, inventoryInfo, inventoryQty),
+      (err) => {
+        if (!err) {
+          return callback(
+            true,
+            `Inventory <b class='text-capitalize'>${inventoryProductName}</b> berhasil ditambahkan`
+          );
+        }
+        if (err) {
+          return callback(false, err);
+        }
+      }
+    );
+  }
+  if (!isNumeric) {
+    return callback(false, "mohon masukkan angka");
+  }
 };
 // 2.READ
 export const getInventory = (
@@ -85,16 +101,34 @@ export const getInventoryList = (inventoryProductSearch, callback) => {
   });
 };
 // 3.UPDATE
-// export const updateCategory = (categoryId, categoryName, categoryInfo, callback) => {
-//     db.run(queryUpdateCategory(categoryId, categoryName, categoryInfo), (err) => {
-//         if (!err) {
-//             return callback(true, `Kategori <b>${categoryName}</b> berhasil diperbaharui`)
-//         }
-//         if (err) {
-//             return callback(false, `Kategori ${categoryName} gagal diperbaharui`)
-//         }
-//     })
-// }
+export const updateInventory = (
+  inventoryId,
+  inventoryProductId,
+  inventoryProductName,
+  inventoryProductQty,
+  inventoryInfo,
+  callback
+) => {
+  db.run(
+    queryUpdateInventory(
+      inventoryId,
+      inventoryProductId,
+      inventoryProductQty,
+      inventoryInfo
+    ),
+    (err) => {
+      if (!err) {
+        return callback(
+          true,
+          `Inventory <b class='text-capitalize'>${inventoryProductName}</b> berhasil diperbaharui`
+        );
+      }
+      if (err) {
+        return callback(false, err);
+      }
+    }
+  );
+};
 // 4.DELETE
 export const deleteInventory = (
   inventoryProductId,

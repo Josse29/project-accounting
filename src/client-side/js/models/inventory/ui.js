@@ -5,6 +5,13 @@ export const uiTrInventory = (el) => {
   const splitDateTime = el.InventoryDate.split(" ");
   const dateInventory = formatWaktuIndo(splitDateTime[0]);
   const timeInventory = splitDateTime[1];
+  let inventoryQty = ``;
+  if (el.InventoryProductQty >= 1) {
+    inventoryQty = `<span class="badge text-bg-success fs-6"> + ${el.InventoryProductQty}</span>`;
+  }
+  if (el.InventoryProductQty < 1) {
+    inventoryQty = `<span class="badge text-bg-danger fs-6">${el.InventoryProductQty}</span>`;
+  }
   return `<tr>
                 <td class="align-content-center text-center">${el.InventoryId}</td>
                 <td class="align-content-center text-center">${dateInventory}</td>
@@ -18,7 +25,7 @@ export const uiTrInventory = (el) => {
                     Mr.JK
                 </td>
                 <td class="text-nowrap align-content-center text-center">
-                    1
+                    ${inventoryQty}
                 </td>
                 <td>
                     <div class="d-flex w-100 justify-content-center gap-2">
@@ -28,9 +35,10 @@ export const uiTrInventory = (el) => {
                                 data-bs-target="#inventoryDetailModal"
                                 data-inventoryid="${el.InventoryId}"
                                 data-inventoryproduct="${el.ProductName}" 
-                                data-inventorycategory="${el.CategoryName}"
                                 data-inventorydate="${dateInventory}" 
-                                data-inventorysecond="${timeInventory}" >
+                                data-inventorysecond="${timeInventory}"
+                                data-inventoryqty="${el.InventoryProductQty}" 
+                                data-inventoryinfo="${el.InventoryInfo}">
                             <i class="fa-solid fa-eye"
                                data-bs-toggle="tooltip" 
                                data-bs-html="true"
@@ -38,9 +46,17 @@ export const uiTrInventory = (el) => {
                                data-bs-placement="bottom">
                             </i>
                         </button>
-                        <button 
-                                class="btn btn-primary text-white" 
-                                >
+                        <button id="inventory-update-btn"
+                                class="btn btn-primary text-white"
+                                data-bs-toggle="modal"
+                                data-bs-target="#inventoryUpdateModal"
+                                data-inventoryid=${el.InventoryId}
+                                data-inventoryinfo="${el.InventoryInfo}"
+                                data-inventorydate="${dateInventory}" 
+                                data-inventorysecond="${timeInventory}"
+                                data-inventoryproductid=${el.ProductId}
+                                data-inventoryproductname="${el.ProductName}"
+                                data-inventoryqty=${el.InventoryProductQty}">
                             <i class="fa-solid fa-pencil"
                                data-bs-toggle="tooltip" 
                                data-bs-html="true"
@@ -54,9 +70,9 @@ export const uiTrInventory = (el) => {
                                 data-bs-target="#inventoryDeleteModal"
                                 data-inventoryid="${el.InventoryId}"
                                 data-inventoryproduct="${el.ProductName}" 
-                                data-inventorycategory="${el.CategoryName}"
                                 data-inventorydate="${dateInventory}" 
-                                data-inventorysecond="${timeInventory}">
+                                data-inventorysecond="${timeInventory}"
+                                data-inventoryqty="${el.InventoryProductQty}">
                             <i class="fa-solid fa-trash-can"
                                data-bs-toggle="tooltip" 
                                data-bs-html="true"
@@ -108,4 +124,11 @@ export const uiTrZero = () => {
   return `<tr>
               <td colspan="9" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">tidak ada persediaan....</td>
             </tr>`;
+};
+// blank value after submit action
+export const createBlankValue = () => {
+  $("input#inventory-refproduct-create-id").val("");
+  $("input#inventory-refproduct-create-name").val("");
+  $("input#inventory-refproduct-create-qty").val(0);
+  $("textarea#inventory-create-info").val("");
 };
