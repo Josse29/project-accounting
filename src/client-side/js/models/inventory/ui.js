@@ -1,3 +1,4 @@
+import { addSpace } from "../../utils/addSpace.js";
 import { formatWaktuIndo } from "../../utils/waktuIndo.js";
 
 // ui tr inventory from db
@@ -6,13 +7,6 @@ export const uiTrInventory = (el) => {
   const dateInventory = formatWaktuIndo(splitDateTime[0]);
   const timeInventory = splitDateTime[1];
   let inventoryQty = ``;
-  function addSpace(value) {
-    value = value.toString(); // Pastikan value adalah string
-    if (value.startsWith("-") && !value.startsWith("- ")) {
-      return value.replace("-", "- ");
-    }
-    return value;
-  }
   const formattedQty = addSpace(el.InventoryProductQty);
   if (el.InventoryProductQty >= 1) {
     inventoryQty = `<span class="badge text-bg-success fs-6"> + ${el.InventoryProductQty}</span>`;
@@ -41,10 +35,11 @@ export const uiTrInventory = (el) => {
                                 data-bs-toggle="modal" 
                                 data-bs-target="#inventoryDetailModal"
                                 data-inventoryid="${el.InventoryId}"
-                                data-inventoryproduct="${el.ProductName}" 
+                                data-productname="${el.ProductName}" 
+                                data-productprice=${el.ProductPrice} 
                                 data-inventorydate="${dateInventory}" 
                                 data-inventorysecond="${timeInventory}"
-                                data-inventoryqty="${el.InventoryProductQty}" 
+                                data-inventoryqty=${el.InventoryProductQty}
                                 data-inventoryinfo="${el.InventoryInfo}">
                             <i class="fa-solid fa-eye"
                                data-bs-toggle="tooltip" 

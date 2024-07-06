@@ -65,7 +65,8 @@ export const queryGetProducts = (
 export const queryGetListProduct = (productSearch) => {
   let query = `SELECT 
                ${tableName}.${colProductId},
-               ${tableName}.${colProductName}
+               ${tableName}.${colProductName},
+               ${tableName}.${colProductPrice}
                FROM ${tableName}
                LEFT JOIN Category ON ${tableName}.${colProductCategoryId} = Category.CategoryId
                LEFT JOIN Supplier ON ${tableName}.${colSupplierId} = Supplier.SupplierId `;

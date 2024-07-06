@@ -11,6 +11,8 @@ import {
   uiTrZeroSearch,
 } from "./ui.js";
 import { reinitializeTooltips } from "../../utils/updateUi.js";
+import { addSpace } from "../../utils/addSpace.js";
+import { formatRupiah2 } from "../../utils/formatRupiah.js";
 $(document).ready(function () {
   let inventorySearch = $("input#inventory-search").val();
   let inventoryLimit = parseInt($("#inventory-limit").val());
@@ -127,6 +129,7 @@ $(document).ready(function () {
       inventoryActivePage,
       (status, response) => {
         if (status) {
+          console.log(response);
           let tr = "";
           response.forEach((element) => {
             tr += uiTrInventory(element);
@@ -143,21 +146,26 @@ $(document).ready(function () {
   }
   $(document).on("click", "#inventoryDetail", function () {
     const inventory = this.dataset;
-    $("#inventoryDetailTitle").text(inventory.inventoryproduct);
-    $("#inventory-detail-productname").text(inventory.inventoryproduct);
     $("#inventory-detail-date").text(inventory.inventorydate);
     $("#inventory-detail-second").text(inventory.inventorysecond);
+    $("#inventory-detail-info").text(inventory.inventoryinfo);
+    $("#inventoryDetailTitle").text(inventory.productname);
+    let divProductNameQty = ``;
+    let tdProductQty = ``;
+    const addSpaceText = addSpace(inventory.inventoryqty);
+    const productPriceRupiah = formatRupiah2(inventory.productprice);
     if (inventory.inventoryqty < 0) {
-      $("div#inventory-detail-qty").addClass("bg-danger");
-      $("div#inventory-detail-qty").removeClass("bg-success");
-      $("span#inventory-detail-qty").text(inventory.inventoryqty);
+      divProductNameQty = `<h3>${inventory.productname}</h3>`;
+      tdProductQty = `<span class="badge text-bg-danger">${addSpaceText}</span>`;
     }
     if (inventory.inventoryqty >= 1) {
-      $("div#inventory-detail-qty").addClass("bg-success");
-      $("div#inventory-detail-qty").removeClass("bg-danger");
-      $("span#inventory-detail-qty").text(`+ ${inventory.inventoryqty}`);
+      divProductNameQty = `<h3>${inventory.productname}</h3>`;
+      tdProductQty = `<span class="badge text-bg-success">+ ${inventory.inventoryqty}</span>`;
     }
-    $("#inventory-detail-info").text(inventory.inventoryinfo);
+    $("#inventory-detail-productname").html(divProductNameQty);
+    $("td#inventory-detail-productname").text(inventory.productname);
+    $("td#inventory-detail-productprice").text(productPriceRupiah);
+    $("td#inventory-detail-productqty").html(tdProductQty);
   });
 });
 

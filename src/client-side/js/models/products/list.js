@@ -7,6 +7,7 @@ import {
 export function listProductRefInventoryCreate() {
   $("#inventory-refproduct-create-list").hide();
   function updateProductList(response) {
+    console.log(response);
     let option = "";
     response.forEach((el) => {
       option += `<div class='inventory-refproduct-create-val fs-6' value='${el.ProductId}'>${el.ProductName}</div>`;

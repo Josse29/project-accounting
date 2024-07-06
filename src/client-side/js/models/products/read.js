@@ -3,6 +3,7 @@ import {
   getTotalPageProduct,
   getTotalRowProduct,
 } from "../../../../serverless-side/functions/product.js";
+import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import { reinitializeTooltips } from "../../utils/updateUi.js";
 import {
   btnProductPage,
@@ -149,10 +150,8 @@ $(document).ready(function () {
   // get-detail-product event binding fuckkkkkkk 2 jam lebih
   function getDetail() {
     $(document).on("click", "#productDetailBtn", function () {
-      console.log("clicked button");
       const product = this.dataset;
-      console.log("tersdt");
-      console.log(product);
+      const productPriceRupiah = formatRupiah2(product.productprice);
       $("#detailProductModalLabel").html(product.productname);
       $("#detail-product-name").text(product.productname);
       // if exist image
@@ -175,7 +174,7 @@ $(document).ready(function () {
       if (product.productketerangan !== "") {
         $("#detail-product-keterangan").text(product.productketerangan);
       }
-      $("#detail-product-price").text(product.productprice);
+      $("#detail-product-price").text(productPriceRupiah);
       $("#detail-category-price").text(product.productcategory);
       $("#proudct-detail-refsupplier").text(product.productsupplier);
     });
