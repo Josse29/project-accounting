@@ -4,13 +4,12 @@ import {
   getTotalRowProduct,
 } from "../../../../serverless-side/functions/product.js";
 import { reinitializeTooltips } from "../../utils/updateUi.js";
-import { listProductRefInventoryCreate } from "./list.js";
 import {
   btnProductPage,
   trProductZero,
   trProductZeroSearch,
   uiActivePageButton,
-  uitrProduct,
+  uiTrProduct,
 } from "./ui.js";
 $(document).ready(function () {
   let productSearch = $("#product-search-input").val();
@@ -36,7 +35,6 @@ $(document).ready(function () {
         $("#product-total-row").text(productTotalRow);
         // if it exist product
         if (productTotalRow >= 1) {
-          listProductRefInventoryCreate();
           getTotalPage();
           $("#product-pagination").removeClass("d-none");
         }
@@ -134,7 +132,7 @@ $(document).ready(function () {
         if (status) {
           let tr = "";
           response.forEach((element) => {
-            tr += uitrProduct(element);
+            tr += uiTrProduct(element);
           });
           $("#product-data").html(tr);
           uiActivePageButton(productPageNumber, productBtnPage);
@@ -146,9 +144,15 @@ $(document).ready(function () {
         }
       }
     );
-    // get-detail-product event binding fuckkkkkkk 2 jam lebih
+    getDetail();
+  }
+  // get-detail-product event binding fuckkkkkkk 2 jam lebih
+  function getDetail() {
     $(document).on("click", "#productDetailBtn", function () {
+      console.log("clicked button");
       const product = this.dataset;
+      console.log("tersdt");
+      console.log(product);
       $("#detailProductModalLabel").html(product.productname);
       $("#detail-product-name").text(product.productname);
       // if exist image
@@ -202,7 +206,6 @@ export function getProductsAgain() {
         $("#product-total-row").text(productTotalRow);
         // if it exist product
         if (productTotalRow >= 1) {
-          listProductRefInventoryCreate();
           getTotalPage();
           $("#product-pagination").removeClass("d-none");
         }
@@ -300,7 +303,7 @@ export function getProductsAgain() {
         if (status) {
           let tr = "";
           response.forEach((element) => {
-            tr += uitrProduct(element);
+            tr += uiTrProduct(element);
           });
           $("#product-data").html(tr);
           uiActivePageButton(productPageNumber, productBtnPage);
@@ -312,34 +315,5 @@ export function getProductsAgain() {
         }
       }
     );
-    // get-detail-product event binding fuckkkkkkk 2 jam lebih
-    $(document).on("click", "#productDetailBtn", function () {
-      const product = this.dataset;
-      $("#detailProductModalLabel").html(product.productname);
-      $("#detail-product-name").text(product.productname);
-      // if exist image
-      if (product.productimage !== "null") {
-        $("img#detail-product-image").attr("src", product.productimage);
-        $("#detail-product-image").removeClass("d-none");
-        $("#detail-no-image").text(``);
-      }
-      // if not exist image
-      if (product.productimage === "null") {
-        $("#detail-product-image").addClass("d-none");
-        $("#detail-no-image").text(`no - image displayed`);
-        $("img#detail-product-image").attr("src", "");
-      }
-      // if not exist keterangan
-      if (product.productketerangan === "") {
-        $("#detail-product-keterangan").text("-");
-      }
-      // if exist keterangan
-      if (product.productketerangan !== "") {
-        $("#detail-product-keterangan").text(product.productketerangan);
-      }
-      $("#detail-product-price").text(product.productprice);
-      $("#detail-category-price").text(product.productcategory);
-      $("#proudct-detail-refsupplier").text(product.productsupplier);
-    });
   }
 }

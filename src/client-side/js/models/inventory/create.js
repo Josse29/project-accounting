@@ -1,8 +1,9 @@
 import { createInventory } from "../../../../serverless-side/functions/inventory.js";
 import { getInventoryAgain } from "./read.js";
 import { createBlankValue, successActionInventory } from "./ui.js";
-
+import { listProductRefInventoryCreate } from "./../products/list.js";
 $(document).ready(function () {
+  listProductRefInventoryCreate();
   // function create increse or decrease qty
   let inventoryCreateQty = $("input#inventory-refproduct-create-qty").val();
   $("input#inventory-refproduct-create-qty").on("keyup", function () {

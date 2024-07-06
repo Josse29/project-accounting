@@ -1,11 +1,14 @@
+import { formatRupiah2 } from "../../utils/formatRupiah.js";
+
 // UI tr Product from dbsqlite
-export const uitrProduct = (el) => {
+export const uiTrProduct = (el) => {
+  const productPriceRupiah = formatRupiah2(el.ProductPrice);
   return `<tr>
                 <td class="text-center align-content-center">${el.ProductId}</td>
                 <td class="text-nowrap align-content-center text-capitalize">${el.ProductName}</td>
                 <td class="text-nowrap align-content-center text-capitalize">${el.CategoryName}</td>
                 <td class="align-content-center text-capitalize">${el.SupplierName}</td>
-                <td class="align-content-center">${el.ProductPrice}</td>
+                <td class="align-content-center">${productPriceRupiah}</td>
                 <td>
                   <div class="d-flex w-100 justify-content-center gap-2">
                     <button

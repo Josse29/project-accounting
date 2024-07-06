@@ -17,7 +17,7 @@ $(document).ready(function () {
   let inventoryTotalRow;
   let inventoryTotalPage;
   let inventoryBtnPage;
-  getInit(inventorySearch);
+  getInit();
   $("input#inventory-search").on("keyup", function () {
     inventorySearch = $(this).val();
     getInit(inventorySearch);
@@ -132,7 +132,6 @@ $(document).ready(function () {
             tr += uiTrInventory(element);
           });
           $("#inventory-data").html(tr);
-          console.log(response);
           uiActivePageButton(inventoryActivePage, inventoryBtnPage);
           reinitializeTooltips();
         }

@@ -103,3 +103,18 @@ export const queryDeleteSupplier = (supplierId) => {
           FROM ${tableName}
           WHERE ${colSupplierId} = ${supplierId} `;
 };
+// SELECT
+//     Inventory.InventoryProductId,
+//     Product.ProductName,
+//     Category.CategoryName,
+//     Supplier.SupplierName,
+//     SUM(Inventory.InventoryProductQty) AS TotalQuantity,
+//     MAX(Inventory.InventoryDate) AS LatestInventoryDate
+// FROM Inventory
+// LEFT JOIN Product ON Inventory.InventoryProductId = Product.ProductId
+// LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
+// LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId
+// GROUP BY Inventory.InventoryProductId, Product.ProductName, Category.CategoryName, Supplier.SupplierName
+// ORDER BY LatestInventoryDate DESC
+// LIMIT 2
+// OFFSET 0;

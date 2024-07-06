@@ -6,11 +6,18 @@ export const uiTrInventory = (el) => {
   const dateInventory = formatWaktuIndo(splitDateTime[0]);
   const timeInventory = splitDateTime[1];
   let inventoryQty = ``;
+  function addSpace(value) {
+    value = value.toString(); // Pastikan value adalah string
+    if (value.startsWith("-") && !value.startsWith("- ")) {
+      return value.replace("-", "- ");
+    }
+    return value;
+  }
+  const formattedQty = addSpace(el.InventoryProductQty);
   if (el.InventoryProductQty >= 1) {
     inventoryQty = `<span class="badge text-bg-success fs-6"> + ${el.InventoryProductQty}</span>`;
-  }
-  if (el.InventoryProductQty < 1) {
-    inventoryQty = `<span class="badge text-bg-danger fs-6">${el.InventoryProductQty}</span>`;
+  } else {
+    inventoryQty = `<span class="badge text-bg-danger fs-6">${formattedQty}</span>`;
   }
   return `<tr>
                 <td class="align-content-center text-center">${el.InventoryId}</td>
