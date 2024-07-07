@@ -3,21 +3,23 @@ import {
   getTotalRowProduct,
 } from "../../../../serverless-side/functions/product.js";
 
-// function to update when create list product ref inventory
-export function listProductRefInventoryCreate() {
-  $("#inventory-refproduct-create-list").hide();
+// function to update when create list product ref persediaan
+export function listProductRefPersediaanCreate() {
+  $("#persediaan-refproduct-create-list").hide();
   function updateProductList(response) {
-    console.log(response);
     let option = "";
     response.forEach((el) => {
-      option += `<div class='inventory-refproduct-create-val fs-6' value='${el.ProductId}'>${el.ProductName}</div>`;
+      option += `<div class='persediaan-refproduct-create-val fs-6' valueid=${el.ProductId} valueprice=${el.ProductPrice}>${el.ProductName}</div>`;
     });
-    $("#inventory-refproduct-create-list").html(option);
+    $("#persediaan-refproduct-create-list").html(option);
     // Re-bind click event to new elements
-    $(".inventory-refproduct-create-val").on("click", function () {
-      $("input#inventory-refproduct-create-id").val($(this).attr("value"));
-      $("input#inventory-refproduct-create-name").val(this.textContent);
-      $("#inventory-refproduct-create-list").hide();
+    $(".persediaan-refproduct-create-val").on("click", function () {
+      $("input#persediaan-refproduct-create-id").val($(this).attr("valueid"));
+      $("input#persediaan-refproduct-create-rp").val(
+        $(this).attr("valueprice")
+      );
+      $("input#persediaan-refproduct-create-name").val(this.textContent);
+      $("#persediaan-refproduct-create-list").hide();
     });
   }
   // Initial product fetch
@@ -25,7 +27,7 @@ export function listProductRefInventoryCreate() {
     if (status) {
       const totalProductList = response;
       if (totalProductList >= 1) {
-        $(".inventory-refproduct-create-list").show();
+        $(".persediaan-refproduct-create-list").show();
         $("#productList-empty").hide();
         getListProduct("", (status, response) => {
           if (status) {
@@ -36,7 +38,7 @@ export function listProductRefInventoryCreate() {
         });
       }
       if (totalProductList < 1) {
-        $(".inventory-refproduct-create-list").hide();
+        $(".persediaan-refproduct-create-list").hide();
         $("#productList-empty").show();
       }
     }
@@ -44,15 +46,15 @@ export function listProductRefInventoryCreate() {
       console.log(response);
     }
   });
-  $("input#inventory-refproduct-create-name").on("focus", () => {
-    $("#inventory-refproduct-create-list").show();
+  $("input#persediaan-refproduct-create-name").on("focus", () => {
+    $("#persediaan-refproduct-create-list").show();
   });
-  $("input#inventory-refproduct-create-name").on("blur", () => {
+  $("input#persediaan-refproduct-create-name").on("blur", () => {
     setTimeout(() => {
-      $("#inventory-refproduct-create-list").hide();
+      $("#persediaan-refproduct-create-list").hide();
     }, 200);
   });
-  $("input#inventory-refproduct-create-name").on("keyup", function () {
+  $("input#persediaan-refproduct-create-name").on("keyup", function () {
     const productSearch = $(this).val();
     getTotalRowProduct(productSearch, (status, response) => {
       if (status) {
@@ -68,8 +70,8 @@ export function listProductRefInventoryCreate() {
         }
         if (totalProductListSearch < 1) {
           console.log(totalProductListSearch);
-          const optionNotFound = `<div class='inventory-refproduct-not-found'>product - <b>${productSearch}</b> tidak ditemukan</div>`;
-          $("#inventory-refproduct-create-list").html(optionNotFound);
+          const optionNotFound = `<div class='persediaan-refproduct-not-found'>product - <b>${productSearch}</b> tidak ditemukan</div>`;
+          $("#persediaan-refproduct-create-list").html(optionNotFound);
         }
       }
       if (!status) {
@@ -78,20 +80,20 @@ export function listProductRefInventoryCreate() {
     });
   });
 }
-// function to update when update list product ref inventory
-export function listProductRefInventoryUpdate() {
-  $("#inventory-refproduct-update-list").hide();
+// function to update when update list product ref persediaan
+export function listProductRefpersediaanUpdate() {
+  $("#persediaan-refproduct-update-list").hide();
   function updateProductList(response) {
     let option = "";
     response.forEach((el) => {
-      option += `<div class='inventory-refproduct-update-val fs-6' value='${el.ProductId}'>${el.ProductName}</div>`;
+      option += `<div class='persediaan-refproduct-update-val fs-6' value='${el.ProductId}'>${el.ProductName}</div>`;
     });
-    $("#inventory-refproduct-update-list").html(option);
+    $("#persediaan-refproduct-update-list").html(option);
     // Re-bind click event to new elements
-    $(".inventory-refproduct-update-val").on("click", function () {
-      $("input#inventory-refproduct-update-id").val($(this).attr("value"));
-      $("input#inventory-refproduct-update-name").val(this.textContent);
-      $("#inventory-refproduct-update-list").hide();
+    $(".persediaan-refproduct-update-val").on("click", function () {
+      $("input#persediaan-refproduct-update-id").val($(this).attr("value"));
+      $("input#persediaan-refproduct-update-name").val(this.textContent);
+      $("#persediaan-refproduct-update-list").hide();
     });
   }
   // Initial product fetch
@@ -99,8 +101,8 @@ export function listProductRefInventoryUpdate() {
     if (status) {
       const totalProductList = response;
       if (totalProductList >= 1) {
-        $(".inventory-refproduct-update-list").show();
-        $("#inventory-update-productList-empty").hide();
+        $(".persediaan-refproduct-update-list").show();
+        $("#persediaan-update-productList-empty").hide();
         getListProduct("", (status, response) => {
           if (status) {
             updateProductList(response);
@@ -110,23 +112,23 @@ export function listProductRefInventoryUpdate() {
         });
       }
       if (totalProductList < 1) {
-        $(".inventory-refproduct-update-list").hide();
-        $("#inventory-update-productList-empty").show();
+        $(".persediaan-refproduct-update-list").hide();
+        $("#persediaan-update-productList-empty").show();
       }
     }
     if (!status) {
       console.log(response);
     }
   });
-  $("input#inventory-refproduct-update-name").on("focus", () => {
-    $("#inventory-refproduct-update-list").show();
+  $("input#persediaan-refproduct-update-name").on("focus", () => {
+    $("#persediaan-refproduct-update-list").show();
   });
-  $("input#inventory-refproduct-update-name").on("blur", () => {
+  $("input#persediaan-refproduct-update-name").on("blur", () => {
     setTimeout(() => {
-      $("#inventory-refproduct-update-list").hide();
+      $("#persediaan-refproduct-update-list").hide();
     }, 200);
   });
-  $("input#inventory-refproduct-update-name").on("keyup", function () {
+  $("input#persediaan-refproduct-update-name").on("keyup", function () {
     const productSearch = $(this).val();
     getTotalRowProduct(productSearch, (status, response) => {
       if (status) {
@@ -141,8 +143,8 @@ export function listProductRefInventoryUpdate() {
           });
         }
         if (totalProductListSearch < 1) {
-          const optionNotFound = `<div class='inventory-refproduct-update-not-found'>product - <b>${productSearch}</b> tidak ditemukan</div>`;
-          $("#inventory-refproduct-update-list").html(optionNotFound);
+          const optionNotFound = `<div class='persediaan-refproduct-update-not-found'>product - <b>${productSearch}</b> tidak ditemukan</div>`;
+          $("#persediaan-refproduct-update-list").html(optionNotFound);
         }
       }
       if (!status) {

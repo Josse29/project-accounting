@@ -1,11 +1,13 @@
-import { timeIndonesian } from "./waktuIndo.js";
+import { timeIndonesian } from "./formatWaktu.js";
 
 $(document).ready(function () {
   const updateTimeHTML = () => {
-    $(".hari-tanggal-tahun").html(`${timeIndonesian().indonesiaDayMonthYear}`);
-    $(".jam").html(`${timeIndonesian().indonesiaHour} : `);
-    $(".menit").html(`${timeIndonesian().indonesiaMinute} : `);
-    $(".detik").html(`${timeIndonesian().indonesiaSecond}`);
+    const { indonesiaDDMY, indonesiaHour, indonesiaMinute, indonesiaSecond } =
+      timeIndonesian();
+    $(".hari-tanggal-tahun").html(`${indonesiaDDMY}`);
+    $(".jam").html(`${indonesiaHour} : `);
+    $(".menit").html(`${indonesiaMinute} : `);
+    $(".detik").html(`${indonesiaSecond}`);
   };
   updateTimeHTML();
   setInterval(() => {
