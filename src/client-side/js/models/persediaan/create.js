@@ -1,7 +1,8 @@
-import { listProductRefPersediaanCreate } from "./../products/list.js";
 import { getTimeNow } from "../../utils/formatWaktu.js";
 import { createPersediaan } from "../../../../serverless-side/functions/persediaan.js";
-import { uiSuccessActionPersediaan } from "./ui.js";
+import { uiBlankValue, uiSuccessActionPersediaan } from "./ui.js";
+import { listProductRefPersediaanCreate } from "../products/list.js";
+import { getPersediaanAgain } from "./read.js";
 
 $(document).ready(function () {
   listProductRefPersediaanCreate();
@@ -32,22 +33,24 @@ $(document).ready(function () {
       const valPersediaanRp = $("input#persediaan-refproduct-create-rp").val();
       const valPersediaanQty = $("input#persediaan-create-qty").val();
       const valPersediaanInfo = $("#persediaan-create-info").val();
-      // createPersediaan(
-      //   valProductName,
-      //   valPersediaanDDMY,
-      //   valPersediaanHMS,
-      //   valPersediaanProductId,
-      //   valPersediaanQty,
-      //   valPersediaanRp,
-      //   valPersediaanInfo,
-      //   (status, response) => {
-      //     if (status) {
-      //       uiSuccessActionPersediaan(response);
-      //     }
-      //     if (!status) {
-      //       console.error(response);
-      //     }
-      //   }
-      // );
+      createPersediaan(
+        valProductName,
+        valPersediaanDDMY,
+        valPersediaanHMS,
+        valPersediaanProductId,
+        valPersediaanQty,
+        valPersediaanRp,
+        valPersediaanInfo,
+        (status, response) => {
+          if (status) {
+            uiSuccessActionPersediaan(response);
+            getPersediaanAgain();
+            uiBlankValue();
+          }
+          if (!status) {
+            console.error(response);
+          }
+        }
+      );
     });
 });

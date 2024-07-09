@@ -1,5 +1,4 @@
-import { formatWaktuIndo } from "../../utils/waktuIndo.js";
-
+import { formatWaktuIndo } from "../../utils/formatWaktu.js";
 // ui tr supplier from db
 export const trSupplier = (el, productList) => {
   const splitDateTime = el.SupplierDate.split(" ");

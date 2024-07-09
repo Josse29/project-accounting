@@ -54,9 +54,10 @@ export const queryGetPersediaan = (
                     Supplier.SupplierName LIKE '%${valPersediaanSearch}%' ESCAPE '!' `;
   }
   // with order limit offset
-  query += `ORDER BY ${tableName}.${colPersediaanDDMY} DESC
+  query += `ORDER BY ${tableName}.${colPersediaanId} DESC
             LIMIT ${valPersediaanLimit} 
             OFFSET ${valPersediaanOffset}`;
+
   return query;
 };
 export const queryTotalRowPersediaan = (valPersediaanSearch) => {
@@ -116,3 +117,16 @@ export const queryDeletePersediaan = (valPersediaanId) => {
           FROM ${tableName}
           WHERE ${colPersediaanId} = ${valPersediaanId}`;
 };
+// SELECT
+//     Persediaan.PersediaanProductId,
+//     Product.ProductName,
+//     Category.CategoryName,
+//     Supplier.SupplierName,
+//     SUM(Persediaan.PersediaanQty) AS TotalQty,
+//     SUM(Persediaan.PersediaanRp) AS TotalRp
+// FROM Persediaan
+// LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
+// LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
+// LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId
+// GROUP BY Persediaan.PersediaanProductId, Product.ProductName, Category.CategoryName, Supplier.SupplierName
+// ORDER BY Persediaan.PersediaanId DESC;

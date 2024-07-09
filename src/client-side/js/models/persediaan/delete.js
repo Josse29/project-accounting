@@ -1,27 +1,41 @@
-import { getInventoryAgain } from "./read.js";
+import { deletePersediaan } from "../../../../serverless-side/functions/persediaan.js";
+import { addSpace } from "../../utils/formatSpace.js";
+import { formatWaktuIndo } from "../../utils/formatWaktu.js";
+import { getPersediaanAgain } from "./read.js";
+import { uiSuccessActionPersediaan } from "./ui.js";
 
 $(document).ready(function () {
-  $(document).on("click", "#inventory-delete-btn", function () {
-    const inventory = this.dataset;
-    const inventoryqty = parseInt(inventory.inventoryqty);
-    $("#inventory-delete-label-name").text(inventory.inventoryproduct);
-    if (inventoryqty >= 1) {
-      $("#inventory-delete-label-qty").text(`+ ${inventoryqty}`);
+  $(document).on("click", "#persediaan-delete-btn", function () {
+    const persediaan = this.dataset;
+    const persediaanqty = parseInt(persediaan.persediaanqty);
+    $("#persediaan-delete-name").text(persediaan.productname);
+    let txtPersediaanQty = ``;
+    if (persediaanqty >= 1) {
+      txtPersediaanQty = `<span class="badge text-bg-success">+ ${persediaanqty}</span>`;
     }
-    if (inventoryqty < 0) {
-      $("#inventory-delete-label-qty").text(inventoryqty);
+    if (persediaanqty < 0) {
+      txtPersediaanQty = `<span class="badge text-bg-danger">${addSpace(
+        persediaanqty
+      )}</span>`;
     }
-    const konfirmasiDelete = `Apakah anda yakin menghapus - stock ${inventory.inventoryproduct} pada <span class="fw-bold">Tanggal : ${inventory.inventorydate} Waktu ${inventory.inventorysecond} </span> ?`;
+    const konfirmasiDelete = `Apakah anda yakin menghapus ${txtPersediaanQty} ${
+      persediaan.productname
+    } pada <span class="fw-bold">Tanggal : ${formatWaktuIndo(
+      persediaan.persediaanddmy
+    )} Waktu ${persediaan.persediaanhms} </span> ?`;
     $("#confirm-text").html(konfirmasiDelete);
-    $("#inventory-delete-yes")
+    // action to delete
+    $("#persediaan-delete-yes")
       .off("click")
       .on("click", function () {
-        deleteInventory(
-          parseInt(inventory.inventoryid),
-          inventory.inventoryproduct,
+        deletePersediaan(
+          parseInt(persediaan.persediaanid),
+          persediaan.productname,
+          persediaanqty,
           (status, response) => {
             if (status) {
-              getInventoryAgain();
+              uiSuccessActionPersediaan(response);
+              getPersediaanAgain();
             }
             if (!status) {
               console.error(response);

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Inventory-page</title>
+    <title>persediaan-page</title>
     <!-- Framework css bootstrap -->
     <link rel="stylesheet" href="./../third-party/bootstrap.min.css" />
     <!-- Fontawesome -->
@@ -25,14 +25,14 @@
         <div class="d-flex gap-2">
           <i
             class="fa-regular fa-window-restore custome-me"
-            id="minimize-window-inventory"
+            id="minimize-window-persediaan"
             data-bs-toggle="tooltip"
             data-bs-html="true"
             data-bs-title="<span class='fs-5 px-2 py-1'>Minimize</span>"
           ></i>
           <i
             class="fa-solid fa-right-from-bracket custome-me"
-            id="close-window-inventory"
+            id="close-window-persediaan"
             data-bs-toggle="tooltip"
             data-bs-html="true"
             data-bs-title="<span class='fs-5 px-2 py-1'>Quit</span>"
@@ -53,7 +53,7 @@
           data-bs-placement="right"
           data-bs-html="true"
           data-bs-title="<span class='fs-4 px-2 py-1'>Home</span>"
-          id="dashboardWindowInventory"
+          id="dashboardWindowpersediaan"
         >
           <i class="fa-solid fa-house fs-3"></i>
         </div>
@@ -64,17 +64,17 @@
           data-bs-placement="right"
           data-bs-html="true"
           data-bs-title="<span class='fs-4 px-2 py-1'>Order</span>"
-          id="orderWindowInventory"
+          id="orderWindowpersediaan"
         >
           <i class="fa-solid fa-utensils fs-3"></i>
         </div>
-        <!-- inventory -->
+        <!-- persediaan -->
         <div
           class="text-center mb-5 custome-me"
           data-bs-toggle="tooltip"
           data-bs-placement="right"
           data-bs-html="true"
-          data-bs-title="<span class='fs-4 px-2 py-1'>Inventory</span>"
+          data-bs-title="<span class='fs-4 px-2 py-1'>persediaan</span>"
         >
           <i class="fa-solid fa-file-circle-plus fs-3 custome-me-active"></i>
         </div>
@@ -85,7 +85,7 @@
           data-bs-placement="right"
           data-bs-html="true"
           data-bs-title="<span class='fs-4 px-2 py-1'>Transaksi</span>"
-          id="transaksiWindowInventory"
+          id="transaksiWindowpersediaan"
         >
           <i class="fa-solid fa-chart-simple fs-3"></i>
         </div>
@@ -96,7 +96,7 @@
           data-bs-placement="right"
           data-bs-html="true"
           data-bs-title="<span class='fs-4 px-2 py-1'>Users</span>"
-          id="usersWindowInventory"
+          id="usersWindowpersediaan"
         >
           <i class="fa-solid fa-users fs-3"></i>
         </div>
@@ -107,7 +107,7 @@
           data-bs-placement="left"
           data-bs-html="true"
           data-bs-title="<span class='fs-4 px-2 py-1'>About-us</span>"
-          id="aboutWindowInventory"
+          id="aboutWindowpersediaan"
         >
           <i class="fa-solid fa-city fs-3"></i>
         </div>
@@ -120,7 +120,7 @@
       >
         <div class="d-flex gap-3 align-items-center">
           <i class="fa-solid fa-file-circle-plus fs-2"></i>
-          <h2>Inventory & Product</h2>
+          <h2>persediaan & Product</h2>
         </div>
         <h4 class="hari-tanggal-tahun"></h4>
       </div>
@@ -143,7 +143,7 @@
                 <div class="btn-group gap-2">
                   <!-- tambah persediaan -->
                   <button
-                    id="btnInventoryModal"
+                    id="btnpersediaanModal"
                     class="btn btn-primary"
                     data-bs-toggle="modal"
                     data-bs-target="#persediaanCreateModal"
@@ -214,7 +214,7 @@
                   />
                 </div>
               </div>
-              <!-- search & limit inventory -->
+              <!-- search & limit persediaan -->
               <div class="d-flex gap-2 mb-3">
                 <div class="w-50 d-flex gap-2">
                   <!-- for limit -->
@@ -271,8 +271,8 @@
                   <thead>
                     <tr>
                       <th class="text-center">No</th>
-                      <th class="text-center">Tanggal</th>
-                      <th class="text-center">Jam</th>
+                      <th>Hari / Tanggal</th>
+                      <th>Jam</th>
                       <th>Nama Produk</th>
                       <th>Nama Kategori</th>
                       <th>Nama Supplier</th>
@@ -281,7 +281,7 @@
                       <th class="text-center">Aksi</th>
                     </tr>
                   </thead>
-                  <tbody id="persediaan-tr"></tbody>
+                  <tbody id="persediaan-table"></tbody>
                 </table>
               </div>
               <!-- pagination persediaan -->
@@ -971,7 +971,7 @@
                       class="border-0 fs-3 mx-2 p-1 text-center"
                       id="persediaan-create-qty"
                       value="0"
-                      style="width: 55px"
+                      style="width: 80px"
                     />
                     <!-- increase -->
                     <button
@@ -1015,6 +1015,7 @@
                   id="persediaan-create-submit"
                   type="button"
                   class="btn text-white"
+                  data-bs-dismiss="modal"
                 >
                   Save
                 </button>
@@ -1022,8 +1023,76 @@
             </div>
           </div>
         </div>
-        <!-- update inventory -->
-        <div class="modal fade" id="inventoryUpdateModal" tabindex="-1">
+        <!-- detail persediaan -->
+        <div class="modal fade" id="persediaanDetailModal" tabindex="-1">
+          <div
+            class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+          >
+            <div class="modal-content">
+              <div class="modal-header py-2" style="background-color: #3b82f6">
+                <h3
+                  class="modal-title text-white text-capitalize"
+                  id="persediaanDetailTitle"
+                >
+                  persediaan
+                </h3>
+              </div>
+              <div class="modal-body">
+                <!-- date & time product -->
+                <div class="mb-3 text-end">
+                  <div id="persediaan-detail-date" class="fs-4"></div>
+                  <div id="persediaan-detail-second" class="fs-5 ms-3"></div>
+                </div>
+                <!-- nama product -->
+                <div class="mb-3">
+                  <p class="fs-4 mb-1">Nama Produk</p>
+                  <p
+                    id="persediaan-detail-productname"
+                    class="fs-4 ms-3 text-capitalize mb-0"
+                  ></p>
+                </div>
+                <!-- info product -->
+                <div class="mb-3">
+                  <p class="fs-4 mb-1">Keterangan</p>
+                  <p
+                    id="persediaan-detail-info"
+                    class="fs-4 ms-3 text-capitalize mb-0"
+                  ></p>
+                </div>
+                <!-- table total price & qty -->
+                <div>
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th scope="col" class="fs-5">#</th>
+                        <th scope="col" class="fs-5">Qty</th>
+                        <th scope="col" class="fs-5">Harga</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row" class="fs-5">1</th>
+                        <td id="persediaan-detail-productqty" class="fs-5"></td>
+                        <td
+                          id="persediaan-detail-productprice"
+                          class="fs-5"
+                        ></td>
+                      </tr>
+                      <tr>
+                        <td class="fs-5 fw-bold text-center" colspan="2">
+                          Total
+                        </td>
+                        <td id="persediaan-detail-rp" class="fs-5">120000</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- update persediaan -->
+        <div class="modal fade" id="persediaanUpdateModal" tabindex="-1">
           <div
             class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
           >
@@ -1031,31 +1100,36 @@
               <div class="modal-header py-2" style="background-color: #3b82f6">
                 <h1
                   class="modal-title fs-3 text-white text-capitalize"
-                  id="inventory-update-label"
-                >
-                  Inventory
-                </h1>
+                  id="persediaan-update-label"
+                ></h1>
               </div>
               <div class="modal-body">
                 <!-- date -->
                 <div class="text-end">
-                  <div id="inventory-update-date" class="fs-4"></div>
-                  <span id="inventory-update-second"></span>
+                  <div class="hari-tanggal-tahun fs-4"></div>
+                  <span class="jam"></span>
+                  <span class="menit"></span>
+                  <span class="detik"></span>
                 </div>
                 <!-- product -->
                 <div class="mb-3 position-relative">
                   <label
-                    for="inventory-refproduct-update-name"
+                    for="persediaan-refproduct-update-name"
                     class="form-label fs-4"
                     >Nama Produk</label
                   >
+                  <!-- trigerred search product -->
                   <input
                     type="text"
                     class="form-control text-capitalize"
-                    id="inventory-refproduct-update-name"
+                    id="persediaan-refproduct-update-name"
                     placeholder="masukkan nama product"
                   />
-                  <div id="inventory-update-productList-empty" class="mb-3">
+                  <!-- send to request persediaa refproduct id,rp  -->
+                  <input type="hidden" id="persediaan-refproduct-update-id" />
+                  <input type="hidden" id="persediaan-refproduct-update-rp" />
+                  <!-- empty  -->
+                  <div id="productList-empty-update" class="mb-3">
                     <input
                       type="text"
                       class="form-control text-center"
@@ -1063,22 +1137,22 @@
                       disabled
                     />
                   </div>
-                  <input type="hidden" id="inventory-refproduct-update-id" />
-                  <div id="inventory-refproduct-update-list"></div>
+                  <!-- list product -->
+                  <div id="persediaan-refproduct-update-list"></div>
                 </div>
                 <!-- QTY -->
                 <div
                   class="mb-3 d-flex justify-content-between align-items-center w-100"
                 >
                   <label
-                    for="inventory-refproduct-update-qty"
+                    for="persediaan-refproduct-update-qty"
                     class="form-label fs-4"
                     >Qty</label
                   >
                   <div class="d-flex align-items-center">
                     <button
                       type="button"
-                      id="inventoryqty-update-decrease"
+                      id="persediaan-update-qty-decrease"
                       class="btn btn-danger fs-4"
                     >
                       -
@@ -1086,12 +1160,12 @@
                     <input
                       type="text"
                       class="border-0 fs-3 mx-2 p-1 text-center"
-                      id="inventory-refproduct-update-qty"
-                      style="width: 55px"
+                      id="persediaan-update-qty"
+                      style="width: 80px"
                     />
                     <button
                       type="button"
-                      id="inventoryqty-update-increase"
+                      id="persediaan-update-qty-increase"
                       class="btn btn-success fs-4"
                     >
                       +
@@ -1105,7 +1179,7 @@
                   >
                   <textarea
                     class="form-control"
-                    id="inventory-update-info"
+                    id="persediaan-update-info"
                   ></textarea>
                 </div>
               </div>
@@ -1118,9 +1192,10 @@
                   Close
                 </button>
                 <button
-                  id="inventory-update-submit"
+                  id="persediaan-update-submit"
                   type="button"
                   class="btn text-white"
+                  data-bs-dismiss="modal"
                 >
                   Save
                 </button>
@@ -1128,81 +1203,8 @@
             </div>
           </div>
         </div>
-        <!-- detail inventory -->
-        <div class="modal fade" id="inventoryDetailModal" tabindex="-1">
-          <div
-            class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
-          >
-            <div class="modal-content">
-              <div class="modal-header py-2" style="background-color: #3b82f6">
-                <h3
-                  class="modal-title text-white text-capitalize"
-                  id="inventoryDetailTitle"
-                >
-                  Inventory
-                </h3>
-              </div>
-              <div class="modal-body">
-                <!-- date & time product -->
-                <div class="mb-3 text-end">
-                  <div id="inventory-detail-date" class="fs-4"></div>
-                  <div id="inventory-detail-second" class="fs-5 ms-3"></div>
-                </div>
-                <!-- nama product -->
-                <div class="mb-3">
-                  <p class="fs-4 mb-1">Nama Produk</p>
-                  <p
-                    id="inventory-detail-productname"
-                    class="fs-4 ms-3 text-capitalize mb-0"
-                  ></p>
-                </div>
-                <!-- info product -->
-                <div class="mb-3">
-                  <p class="fs-4 mb-1">Keterangan</p>
-                  <p
-                    id="inventory-detail-info"
-                    class="fs-4 ms-3 text-capitalize mb-0"
-                  ></p>
-                </div>
-                <!-- table total price & qty -->
-                <div>
-                  <table class="table table-striped">
-                    <thead>
-                      <tr>
-                        <th scope="col" class="fs-5">#</th>
-                        <th scope="col" class="fs-5">Produk</th>
-                        <th scope="col" class="fs-5">Qty</th>
-                        <th scope="col" class="fs-5">Harga</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <th scope="row" class="fs-5">1</th>
-                        <td
-                          id="inventory-detail-productname"
-                          class="text-capitalize fs-5"
-                        ></td>
-                        <td id="inventory-detail-productqty" class="fs-5"></td>
-                        <td
-                          id="inventory-detail-productprice"
-                          class="fs-5"
-                        ></td>
-                      </tr>
-                      <tr>
-                        <td class="fs-5 fw-bold text-center" colspan="3">
-                          Total
-                        </td>
-                        <td class="fs-5">120000</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- delete-inventory -->
-        <div class="modal fade" id="inventoryDeleteModal" tabindex="-1">
+        <!-- delete-persediaan -->
+        <div class="modal fade" id="persediaanDeleteModal" tabindex="-1">
           <div
             class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
           >
@@ -1211,8 +1213,7 @@
                 <div
                   class="modal-title fs-2 text-white text-capitalize d-flex justify-content-between w-100"
                 >
-                  <div id="inventory-delete-label-name">Modal</div>
-                  <div id="inventory-delete-label-qty" class="me-4">+1</div>
+                  <div id="persediaan-delete-name">Modal</div>
                 </div>
               </div>
               <div class="modal-body text-center">
@@ -1234,7 +1235,7 @@
                 <button
                   type="button"
                   class="btn btn-danger d-flex align-items-center gap-2"
-                  id="inventory-delete-yes"
+                  id="persediaan-delete-yes"
                   data-bs-dismiss="modal"
                 >
                   <i class="fa-solid fa-check me-1 fs-4"></i>

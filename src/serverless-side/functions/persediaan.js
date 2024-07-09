@@ -1,9 +1,11 @@
+import { formatQty1 } from "../../client-side/js/utils/formatQty.js";
 import {
   queryDeletePersediaan,
   queryGetPersediaan,
   queryInsertPersediaan,
   queryListPersediaan,
   queryTotalRowPersediaan,
+  queryUpdatePersediaan,
 } from "../querysql/persediaan.js";
 
 // 1.CREATE
@@ -33,7 +35,9 @@ export const createPersediaan = (
         if (!err) {
           return callback(
             true,
-            `Persediaan <b class='text-capitalize'>${valProductName}</b> berhasil ditambahkan`
+            `Persediaan <b class='text-capitalize'>${valProductName} ${formatQty1(
+              valPersediaanQty
+            )}</b> berhasil ditambahkan`
           );
         }
         if (err) {
@@ -127,21 +131,24 @@ export const updatePersediaan = (
   valProductName,
   callback
 ) => {
+  const valPersediaanTotalRp = valPersediaanQty * valPersediaanRp;
   db.run(
-    queryUpdateInventory(
+    queryUpdatePersediaan(
       valPersediaanId,
       valPersediaanDDMY,
       valPersediaanHMS,
       valPersediaanProductId,
       valPersediaanQty,
-      valPersediaanRp,
+      valPersediaanTotalRp,
       valPersediaanInfo
     ),
     (err) => {
       if (!err) {
         return callback(
           true,
-          `Inventory <b class='text-capitalize'>${valProductName}</b> berhasil diperbaharui`
+          `Persediaan <b class='text-capitalize'>${valProductName} ${formatQty1(
+            valPersediaanQty
+          )}</b> berhasil diperbaharui`
         );
       }
       if (err) {
@@ -151,12 +158,19 @@ export const updatePersediaan = (
   );
 };
 // 4.DELETE
-export const deleteInventory = (valPersediaanId, valProductName, callback) => {
+export const deletePersediaan = (
+  valPersediaanId,
+  valProductName,
+  valPersediaanQty,
+  callback
+) => {
   db.run(queryDeletePersediaan(valPersediaanId), (err) => {
     if (!err) {
       return callback(
         true,
-        `Persediaan <b class='text-capitalize'>${valProductName}</b> berhasil dihapus`
+        `Persediaan <b class='text-capitalize'>${valProductName} ${formatQty1(
+          valPersediaanQty
+        )}</b> berhasil dihapus`
       );
     }
     if (err) {

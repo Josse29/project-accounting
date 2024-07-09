@@ -122,6 +122,34 @@ export const uiActivePageButton = (productPageNumber, productBtnPage) => {
   }
   productBtnPage[productPageNumber - 1].classList.add("product-active-page");
 };
+export const uiProductListCreatePersediaan = (productList) => {
+  let option = "";
+  productList.forEach((el) => {
+    option += `<div class='persediaan-refproduct-create-val fs-6' valueid=${el.ProductId} valueprice=${el.ProductPrice}>${el.ProductName}</div>`;
+  });
+  $("#persediaan-refproduct-create-list").html(option);
+  // Re-bind click event to new elements
+  $(".persediaan-refproduct-create-val").on("click", function () {
+    $("input#persediaan-refproduct-create-id").val($(this).attr("valueid"));
+    $("input#persediaan-refproduct-create-rp").val($(this).attr("valueprice"));
+    $("input#persediaan-refproduct-create-name").val(this.textContent);
+    $("#persediaan-refproduct-create-list").hide();
+  });
+};
+export const uiProductListupdatePersediaan = (productList) => {
+  let option = "";
+  productList.forEach((el) => {
+    option += `<div class='persediaan-refproduct-update-val fs-6' valueid=${el.ProductId} valueprice=${el.ProductPrice}>${el.ProductName}</div>`;
+  });
+  $("#persediaan-refproduct-update-list").html(option);
+  // Re-bind click event to new elements
+  $(".persediaan-refproduct-update-val").on("click", function () {
+    $("input#persediaan-refproduct-update-id").val($(this).attr("valueid"));
+    $("input#persediaan-refproduct-update-rp").val($(this).attr("valueprice"));
+    $("input#persediaan-refproduct-update-name").val(this.textContent);
+    $("#persediaan-refproduct-update-list").hide();
+  });
+};
 // success create pdf
 ipcRenderer.on("success:pdf-product", (e, file_path) => {
   successActionProduct(`File PDF tersimpan di ${file_path}`);
