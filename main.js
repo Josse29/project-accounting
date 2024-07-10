@@ -124,7 +124,7 @@ ipcMain.on("load:inventory-page", () => {
     },
     // frame: true,
   });
-  inventoryPage.setFullScreen(true);
+  // inventoryPage.setFullScreen(true);
   inventoryPage.loadFile("./src/client-side/pages/inventory.html");
   remote.enable(inventoryPage.webContents);
   ipcMain.on("minimize-window:inventory-page", () => {

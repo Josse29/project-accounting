@@ -172,6 +172,9 @@ button#supplier-export-print {
 button#supplier-export-print:hover {
   background-color: rgb(212, 54, 36);
 }
+input#persediaan-create-qty {
+  outline: none;
+}
 button#persediaan-create-submit {
   background-color: #3b82f6;
 }

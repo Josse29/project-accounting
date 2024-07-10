@@ -105,9 +105,18 @@ export const uiSuccessActionPersediaan = (res) => {
                               ${res}
                             </div>`;
   $("#sectionSuccessActionPersediaan").html(alertSuccessMe);
+  $("#sectionFailedActionPersediaan").html("");
   setTimeout(() => {
     $("#sectionSuccessActionPersediaan").html("");
   }, 20000);
+};
+// make alert failed after action crud
+export const uiFailedActionPersediaan = (res) => {
+  const alertFailedMe = `<div class="alert alert-danger" role="alert">
+                            <i class="fa-solid fa-triangle-exclamation me-1"></i>
+                            ${res}
+                          </div>`;
+  $("#sectionFailedActionPersediaan").html(alertFailedMe);
 };
 // button pagination
 export const uiBtnPersediaanPage = (i) => {
@@ -117,7 +126,8 @@ export const uiBtnPersediaanPage = (i) => {
                   }" >
                     ${i}
           </button>`;
-}; // Function to update active page button
+};
+// Function to update active page button
 export const uiActivePageButton = (
   persediaanNoActivePage,
   persediaanBtnPage

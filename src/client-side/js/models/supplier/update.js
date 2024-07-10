@@ -1,6 +1,7 @@
 import { updateSupplier } from "../../../../serverless-side/functions/supplier.js";
 import { getSupplierAgain } from "./read.js";
 import { successActionSupplier } from "./ui.js";
+import { capitalizeWord } from "../../utils/formatCapitalize.js";
 $(document).ready(function () {
   $(document).on("click", "#supplierUpdate", function () {
     // get from params
@@ -24,7 +25,7 @@ $(document).ready(function () {
     // event submit delete
     $("#supplier-update-submit").on("click", () => {
       const supplierId = parseInt(supplier.supplierid);
-      const supplierName = $("#supplier-update-name").val();
+      const supplierName = capitalizeWord($("#supplier-update-name").val());
       const supplierInfo = $("#supplier-update-info").val();
       const supplierImg = document.getElementById("supplier-update-img").files;
       // with img

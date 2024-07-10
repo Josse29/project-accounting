@@ -3,7 +3,8 @@ import { listCategoryRefProductUpdate } from "../categories/list.js";
 import { listSupplierRefProductUpdate } from "../supplier/list.js";
 import { getProductsAgain } from "./read.js";
 import { successActionProduct } from "./ui.js";
-
+import { capitalizeWord } from "../../utils/formatCapitalize.js";
+import { disFormatRupiah1, formatRupiah1 } from "../../utils/formatRupiah.js";
 $(document).ready(function () {
   // upadte | event binding
   $(document)
@@ -20,7 +21,12 @@ $(document).ready(function () {
       $("#product-refsupplier-update-val").val(product.productsupplierid);
       $("#editProductModalLabel").html(product.productname);
       $("#edit-product-name").val(product.productname);
-      $("#edit-product-price").val(product.productprice);
+      $("input#edit-product-price").val(formatRupiah1(product.productprice));
+      // Format as Rupiah
+      $("input#edit-product-price").on("input", function () {
+        let formattedValue = formatRupiah1($(this).val());
+        $(this).val(formattedValue);
+      });
       $("#edit-product-keterangan").val(product.productketerangan);
       // it doesn't exist productimage from params
       if (product.productimage === "null") {
@@ -38,8 +44,8 @@ $(document).ready(function () {
       $("#edit-product-submit").on("click", () => {
         // all - input
         const productId = parseInt(product.productid);
-        const productName = $("#edit-product-name").val();
-        const productPrice = $("#edit-product-price").val();
+        const productName = capitalizeWord($("#edit-product-name").val());
+        const productPrice = disFormatRupiah1($("#edit-product-price").val());
         const productInfo = $("#edit-product-keterangan").val();
         const productCategoryId = parseInt(
           $("#product-refcategory-update-val").val()
@@ -50,6 +56,7 @@ $(document).ready(function () {
         const productImg = document.getElementById(
           "edit-product-image-file"
         ).files;
+        // with image
         if (productImg.length >= 1) {
           const reader = new FileReader();
           reader.onload = function () {
@@ -79,7 +86,7 @@ $(document).ready(function () {
             reader.readAsDataURL(productImg[0]);
           }
         }
-        // // without image
+        // without image
         if (productImg.length < 1) {
           updateProduct(
             productId,

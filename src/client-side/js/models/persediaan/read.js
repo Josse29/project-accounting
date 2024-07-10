@@ -10,8 +10,9 @@ import { addSpace } from "../../utils/formatSpace.js";
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import {
   getPersediaan,
-  getTotalPagePersediaan,
-  getTotalRowPersediaan,
+  getPersediaanRpSum,
+  getPersediaanTotalPage,
+  getPersediaanTotalRow,
 } from "../../../../serverless-side/functions/persediaan.js";
 import { formatWaktuIndo } from "../../utils/formatWaktu.js";
 $(document).ready(function () {
@@ -21,6 +22,16 @@ $(document).ready(function () {
   let persediaanTotalPage;
   let persediaanBtnPage;
   getInit(persediaanSearch);
+  getPersediaanRpSum((status, response) => {
+    if (status) {
+      console.log(response <= 0);
+      const totalRupiah = formatRupiah2(response);
+      $("#persediaan-detail-totalrp").text(totalRupiah);
+    }
+    if (!status) {
+      console.error(response);
+    }
+  });
   $("input#persediaan-search").on("keyup", function () {
     persediaanSearch = $(this).val();
     getInit(persediaanSearch);
@@ -31,7 +42,7 @@ $(document).ready(function () {
   });
   // 1. get first,  get total row, upadate ui (total row) as condition
   function getInit() {
-    getTotalRowPersediaan(persediaanSearch, (status, response) => {
+    getPersediaanTotalRow(persediaanSearch, (status, response) => {
       if (status) {
         persediaanTotalRow = parseInt(response);
         if (persediaanTotalRow >= 1) {
@@ -54,13 +65,12 @@ $(document).ready(function () {
   }
   // 2. get total page, update ui (total row)
   function getTotalPage() {
-    getTotalPagePersediaan(
+    getPersediaanTotalPage(
       persediaanSearch,
       persediaanLimit,
       (status, response) => {
         if (status) {
           persediaanTotalPage = parseInt(response);
-          console.log(persediaanTotalPage);
           uiPagination(persediaanTotalPage);
         }
         if (!status) {
@@ -191,9 +201,18 @@ export const getPersediaanAgain = () => {
   let persediaanTotalPage;
   let persediaanBtnPage;
   getInit(persediaanSearch);
+  getPersediaanRpSum((status, response) => {
+    if (status) {
+      const totalRupiah = formatRupiah2(response);
+      $("#persediaan-detail-totalrp").text(totalRupiah);
+    }
+    if (!status) {
+      console.error(response);
+    }
+  });
   // 1. get first,  get total row, upadate ui (total row) as condition
   function getInit() {
-    getTotalRowPersediaan(persediaanSearch, (status, response) => {
+    getPersediaanTotalRow(persediaanSearch, (status, response) => {
       if (status) {
         persediaanTotalRow = parseInt(response);
         if (persediaanTotalRow >= 1) {
@@ -216,7 +235,7 @@ export const getPersediaanAgain = () => {
   }
   // 2. get total page, update ui (total row)
   function getTotalPage() {
-    getTotalPagePersediaan(
+    getPersediaanTotalPage(
       persediaanSearch,
       persediaanLimit,
       (status, response) => {

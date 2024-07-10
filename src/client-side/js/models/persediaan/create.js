@@ -1,6 +1,13 @@
 import { getTimeNow } from "../../utils/formatWaktu.js";
-import { createPersediaan } from "../../../../serverless-side/functions/persediaan.js";
-import { uiBlankValue, uiSuccessActionPersediaan } from "./ui.js";
+import {
+  createPersediaan,
+  getPersediaanQty,
+} from "../../../../serverless-side/functions/persediaan.js";
+import {
+  uiBlankValue,
+  uiFailedActionPersediaan,
+  uiSuccessActionPersediaan,
+} from "./ui.js";
 import { listProductRefPersediaanCreate } from "../products/list.js";
 import { getPersediaanAgain } from "./read.js";
 
@@ -27,11 +34,13 @@ $(document).ready(function () {
       const valProductName = $("#persediaan-refproduct-create-name").val();
       const valPersediaanDDMY = formattedDDMY;
       const valPersediaanHMS = formattedHMS;
-      const valPersediaanProductId = $(
-        "input#persediaan-refproduct-create-id"
-      ).val();
+      const valPersediaanProductId = parseInt(
+        $("input#persediaan-refproduct-create-id").val()
+      );
       const valPersediaanRp = $("input#persediaan-refproduct-create-rp").val();
-      const valPersediaanQty = $("input#persediaan-create-qty").val();
+      const valPersediaanQty = parseFloat(
+        $("input#persediaan-create-qty").val()
+      );
       const valPersediaanInfo = $("#persediaan-create-info").val();
       createPersediaan(
         valProductName,
@@ -46,8 +55,10 @@ $(document).ready(function () {
             uiSuccessActionPersediaan(response);
             getPersediaanAgain();
             uiBlankValue();
+            $("#persediaanCreateModal").modal("hide");
           }
           if (!status) {
+            uiFailedActionPersediaan(response);
             console.error(response);
           }
         }

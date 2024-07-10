@@ -2,9 +2,10 @@ import { formatQty1 } from "../../client-side/js/utils/formatQty.js";
 import {
   queryDeletePersediaan,
   queryGetPersediaan,
+  queryGetPersediaanQty,
+  queryGetPersediaanRpSum,
+  queryGetPersediaanTotalRow,
   queryInsertPersediaan,
-  queryListPersediaan,
-  queryTotalRowPersediaan,
   queryUpdatePersediaan,
 } from "../querysql/persediaan.js";
 
@@ -20,34 +21,48 @@ export const createPersediaan = (
   callback
 ) => {
   const isNumeric = /^-?([1-9]\d*|0?\.\d+)$/.test(valPersediaanQty);
-  const valPersediaanTotalRp = valPersediaanQty * valPersediaanRp;
   if (isNumeric) {
-    db.run(
-      queryInsertPersediaan(
-        valPersediaanDDMY,
-        valPersediaanHMS,
-        valPersediaanProductId,
-        valPersediaanQty,
-        valPersediaanTotalRp,
-        valPersediaanInfo
-      ),
-      (err) => {
-        if (!err) {
-          return callback(
-            true,
-            `Persediaan <b class='text-capitalize'>${valProductName} ${formatQty1(
-              valPersediaanQty
-            )}</b> berhasil ditambahkan`
+    // validate qty product
+    getPersediaanQty(
+      valProductName,
+      valPersediaanProductId,
+      valPersediaanQty,
+      (status, response) => {
+        if (status) {
+          const valPersediaanTotalRp = valPersediaanQty * valPersediaanRp;
+          // execute action create product
+          db.run(
+            queryInsertPersediaan(
+              valPersediaanDDMY,
+              valPersediaanHMS,
+              valPersediaanProductId,
+              valPersediaanQty,
+              valPersediaanTotalRp,
+              valPersediaanInfo
+            ),
+            (err) => {
+              if (!err) {
+                return callback(
+                  true,
+                  `Persediaan <b class='text-capitalize'>${valProductName} ${formatQty1(
+                    valPersediaanQty
+                  )}</b> berhasil ditambahkan`
+                );
+              }
+              if (err) {
+                return callback(false, err);
+              }
+            }
           );
         }
-        if (err) {
-          return callback(false, err);
+        if (!status) {
+          return callback(false, response);
         }
       }
     );
   }
   if (!isNumeric) {
-    return callback(false, "mohon masukkan angka");
+    return callback(false, "Mohon Masukkan Angka di Input Qty");
   }
 };
 // 2.READ
@@ -75,12 +90,12 @@ export const getPersediaan = (
     }
   );
 };
-export const getTotalPagePersediaan = (
+export const getPersediaanTotalPage = (
   valPersediaanSearch,
   valPersediaanLimit,
   callback
 ) => {
-  db.each(queryTotalRowPersediaan(valPersediaanSearch), (err, res) => {
+  db.each(queryGetPersediaanTotalRow(valPersediaanSearch), (err, res) => {
     if (!err) {
       let persediaanTotalPage;
       let persediaanTotalRow = parseInt(res.TOTAL_ROW);
@@ -98,10 +113,10 @@ export const getTotalPagePersediaan = (
     }
   });
 };
-export const getTotalRowPersediaan = (valPersediaanSearch, callback) => {
-  db.each(queryTotalRowPersediaan(valPersediaanSearch), (err, res) => {
+export const getPersediaanTotalRow = (valPersediaanSearch, callback) => {
+  db.each(queryGetPersediaanTotalRow(valPersediaanSearch), (err, res) => {
     if (!err) {
-      let persediaanTotalRow = parseInt(res.TOTAL_ROW);
+      const persediaanTotalRow = parseInt(res.TOTAL_ROW);
       return callback(true, persediaanTotalRow);
     }
     if (err) {
@@ -109,13 +124,83 @@ export const getTotalRowPersediaan = (valPersediaanSearch, callback) => {
     }
   });
 };
-export const getInventoryPersediaan = (valPersediaanSearch, callback) => {
-  db.all(queryListPersediaan(valPersediaanSearch), (err, res) => {
+export const getPersediaanQty = (
+  valProductName,
+  valPersediaanProductId,
+  valPersediaanQty,
+  callback
+) => {
+  db.all(queryGetPersediaanQty(valPersediaanProductId), (err, rows) => {
     if (!err) {
-      return callback(true, res);
+      const res = rows[0];
+      const existItem = rows.length >= 1;
+      // Produk sudah terdaftar ke tablePersediaan
+      if (existItem) {
+        // barang masuk
+        const persediaanQty = parseFloat(res.TotalQty);
+        if (valPersediaanQty >= 1) {
+          return callback(true, valPersediaanQty);
+        }
+        // barang keluar
+        if (valPersediaanQty < 0) {
+          // barang keluar tapi persediaan masih ada
+          if (persediaanQty >= 1) {
+            const qtyOutAbs = Math.abs(parseFloat(valPersediaanQty));
+            // barang keluar tapi qtyOut <= jlh persediaan
+            if (qtyOutAbs <= persediaanQty) {
+              return callback(true, valPersediaanQty);
+            }
+            // barang keluar tapi jlhQtyOut > jlh persediaan
+            if (qtyOutAbs > persediaanQty) {
+              return callback(
+                false,
+                `Mohon Maaf Produk ${res.ProductName} hanya tersedia : ${persediaanQty}`
+              );
+            }
+          }
+          // barang keluar tapi persediaan masih kosong
+          if (persediaanQty < 1) {
+            return callback(false, `Produk ${res.ProductName} masih kosong`);
+          }
+        }
+      }
+      // Produk belum terdaftar ke tablePersediaan
+      if (!existItem) {
+        // barang masuk
+        if (valPersediaanQty >= 1) {
+          return callback(
+            true,
+            `Produk ${valProductName} tambah product ${valPersediaanQty}`
+          );
+        }
+        // barang keluar
+        if (valPersediaanQty < 1) {
+          return callback(
+            false,
+            `Mohon maaf Produk Barang ${valProductName} belum terdaftar silakan tambah`
+          );
+        }
+      }
     }
     if (err) {
       return callback(false, err);
+    }
+  });
+};
+export const getPersediaanRpSum = (callback) => {
+  db.each(queryGetPersediaanRpSum(), (err, res) => {
+    if (!err) {
+      let totalRp = ``;
+      if (res.TotalRp !== null) {
+        totalRp = parseFloat(res.TotalRp);
+      }
+      if (res.TotalRp === null) {
+        totalRp = 0;
+      }
+      return callback(true, totalRp);
+    }
+    if (err) {
+      return callback(true, res);
     }
   });
 };

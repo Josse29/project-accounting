@@ -12,15 +12,14 @@ export const createTable = () => {
             FOREIGN KEY (ProductSupplierId) REFERENCES Supplier(SupplierId)
             );`;
 };
-
 // init table & column
 const tableName = `Product`;
 const colProductId = `ProductId`;
 const colProductName = `ProductName`;
-const colProductCategoryId = `ProductCategoryId`;
-const colProductPrice = `ProductPrice`;
-const colProductInfo = `ProductInfo`;
 const colProductImg = `ProductImage`;
+const colProductInfo = `ProductInfo`;
+const colProductPrice = `ProductPrice`;
+const colProductCategoryId = `ProductCategoryId`;
 const colSupplierId = `ProductSupplierId`;
 
 // 1.CREATE

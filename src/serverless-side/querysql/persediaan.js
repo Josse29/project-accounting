@@ -60,7 +60,7 @@ export const queryGetPersediaan = (
 
   return query;
 };
-export const queryTotalRowPersediaan = (valPersediaanSearch) => {
+export const queryGetPersediaanTotalRow = (valPersediaanSearch) => {
   let query = `SELECT COUNT(${colPersediaanId})
                AS TOTAL_ROW
                FROM ${tableName}
@@ -91,6 +91,21 @@ export const queryListPersediaan = (valPersediaanSearch) => {
   }
   return query;
 };
+export const queryGetPersediaanQty = (valPersediaanProductId) => {
+  return `SELECT
+          Persediaan.PersediaanProductId,
+          Product.ProductName,
+          SUM(Persediaan.PersediaanQty) AS TotalQty
+          FROM Persediaan
+          LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
+          WHERE Persediaan.PersediaanProductId = ${valPersediaanProductId}
+          GROUP BY Persediaan.PersediaanProductId, Product.ProductName `;
+};
+export const queryGetPersediaanRpSum = () => {
+  return `SELECT
+          SUM(Persediaan.PersediaanRp) AS TotalRp
+          FROM Persediaan`;
+};
 // 3.UPDATE
 export const queryUpdatePersediaan = (
   valPersediaanId,
@@ -117,16 +132,3 @@ export const queryDeletePersediaan = (valPersediaanId) => {
           FROM ${tableName}
           WHERE ${colPersediaanId} = ${valPersediaanId}`;
 };
-// SELECT
-//     Persediaan.PersediaanProductId,
-//     Product.ProductName,
-//     Category.CategoryName,
-//     Supplier.SupplierName,
-//     SUM(Persediaan.PersediaanQty) AS TotalQty,
-//     SUM(Persediaan.PersediaanRp) AS TotalRp
-// FROM Persediaan
-// LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
-// LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
-// LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId
-// GROUP BY Persediaan.PersediaanProductId, Product.ProductName, Category.CategoryName, Supplier.SupplierName
-// ORDER BY Persediaan.PersediaanId DESC;

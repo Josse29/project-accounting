@@ -25,14 +25,14 @@
         <div class="d-flex gap-2">
           <i
             class="fa-regular fa-window-restore custome-me"
-            id="minimize-window-persediaan"
+            id="minimize-window-inventory"
             data-bs-toggle="tooltip"
             data-bs-html="true"
             data-bs-title="<span class='fs-5 px-2 py-1'>Minimize</span>"
           ></i>
           <i
             class="fa-solid fa-right-from-bracket custome-me"
-            id="close-window-persediaan"
+            id="close-window-inventory"
             data-bs-toggle="tooltip"
             data-bs-html="true"
             data-bs-title="<span class='fs-5 px-2 py-1'>Quit</span>"
@@ -53,7 +53,7 @@
           data-bs-placement="right"
           data-bs-html="true"
           data-bs-title="<span class='fs-4 px-2 py-1'>Home</span>"
-          id="dashboardWindowpersediaan"
+          id="dashboardWindowInventory"
         >
           <i class="fa-solid fa-house fs-3"></i>
         </div>
@@ -64,7 +64,7 @@
           data-bs-placement="right"
           data-bs-html="true"
           data-bs-title="<span class='fs-4 px-2 py-1'>Order</span>"
-          id="orderWindowpersediaan"
+          id="orderWindowInventory"
         >
           <i class="fa-solid fa-utensils fs-3"></i>
         </div>
@@ -74,7 +74,7 @@
           data-bs-toggle="tooltip"
           data-bs-placement="right"
           data-bs-html="true"
-          data-bs-title="<span class='fs-4 px-2 py-1'>persediaan</span>"
+          data-bs-title="<span class='fs-4 px-2 py-1'>Inventory</span>"
         >
           <i class="fa-solid fa-file-circle-plus fs-3 custome-me-active"></i>
         </div>
@@ -85,7 +85,7 @@
           data-bs-placement="right"
           data-bs-html="true"
           data-bs-title="<span class='fs-4 px-2 py-1'>Transaksi</span>"
-          id="transaksiWindowpersediaan"
+          id="transaksiWindowInventory"
         >
           <i class="fa-solid fa-chart-simple fs-3"></i>
         </div>
@@ -96,7 +96,7 @@
           data-bs-placement="right"
           data-bs-html="true"
           data-bs-title="<span class='fs-4 px-2 py-1'>Users</span>"
-          id="usersWindowpersediaan"
+          id="usersWindowInventory"
         >
           <i class="fa-solid fa-users fs-3"></i>
         </div>
@@ -107,7 +107,7 @@
           data-bs-placement="left"
           data-bs-html="true"
           data-bs-title="<span class='fs-4 px-2 py-1'>About-us</span>"
-          id="aboutWindowpersediaan"
+          id="aboutWindowInventory"
         >
           <i class="fa-solid fa-city fs-3"></i>
         </div>
@@ -120,7 +120,7 @@
       >
         <div class="d-flex gap-3 align-items-center">
           <i class="fa-solid fa-file-circle-plus fs-2"></i>
-          <h2>persediaan & Product</h2>
+          <h2>Inventory</h2>
         </div>
         <h4 class="hari-tanggal-tahun"></h4>
       </div>
@@ -131,10 +131,11 @@
           <!-- persediaan -->
           <div class="card w-100">
             <div
-              class="card-header text-white fs-3"
+              class="card-header text-white fs-3 d-flex justify-content-between"
               style="background-color: #3b82f6"
             >
-              Persediaan
+              <div>Persediaan</div>
+              <div id="persediaan-detail-totalrp" class="me-4">0</div>
             </div>
             <div class="card-body">
               <!-- section button group create export etc -->
@@ -920,12 +921,14 @@
               </div>
               <div class="modal-body">
                 <!-- date -->
-                <div class="text-end">
+                <div class="text-end mb-3">
                   <div class="hari-tanggal-tahun fs-4"></div>
                   <span class="jam"></span>
                   <span class="menit"></span>
                   <span class="detik"></span>
                 </div>
+                <!-- alert failed -->
+                <div id="sectionFailedActionPersediaan"></div>
                 <!-- product -->
                 <div class="mb-3 position-relative">
                   <label
@@ -939,6 +942,8 @@
                     id="persediaan-refproduct-create-name"
                     placeholder="masukkan nama product"
                   />
+                  <!-- input product id send to request -->
+                  <input type="hidden" id="persediaan-refproduct-create-id" />
                   <div id="productList-empty" class="mb-3">
                     <input
                       type="text"
@@ -947,7 +952,6 @@
                       disabled
                     />
                   </div>
-                  <input type="hidden" id="persediaan-refproduct-create-id" />
                   <div id="persediaan-refproduct-create-list"></div>
                 </div>
                 <!-- QTY -->
@@ -994,7 +998,7 @@
                 </div>
                 <!-- KETERANGAN -->
                 <div class="mb-3">
-                  <label for="keterangan" class="form-label fs-4"
+                  <label for="persediaan-create-info" class="form-label fs-4"
                     >Keterangan</label
                   >
                   <textarea
@@ -1015,7 +1019,6 @@
                   id="persediaan-create-submit"
                   type="button"
                   class="btn text-white"
-                  data-bs-dismiss="modal"
                 >
                   Save
                 </button>
@@ -1363,7 +1366,7 @@
                   <label for="product-name" class="form-label fs-4">Nama</label>
                   <input
                     type="text"
-                    class="form-control"
+                    class="form-control text-capitalize"
                     id="product-name"
                     placeholder="masukkan nama menu..."
                   />
@@ -1516,7 +1519,7 @@
                   >
                   <input
                     type="text"
-                    class="form-control"
+                    class="form-control text-capitalize"
                     id="edit-product-name"
                     placeholder="ex:product-1"
                   />
