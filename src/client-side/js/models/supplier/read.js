@@ -4,6 +4,7 @@ import {
   getTotalRowSupplier,
 } from "../../../../serverless-side/functions/supplier.js";
 import { reinitializeTooltips } from "../../utils/updateUi.js";
+import { listSupplierRefProductCreate } from "./list.js";
 import {
   btnSupplierPage,
   trSupplier,
@@ -11,6 +12,8 @@ import {
   trSupplierZeroSearch,
   updateActivePageButton,
 } from "./ui.js";
+import { getProductsAgain } from "./../products/read.js";
+import { getPersediaanAgain } from "../persediaan/read.js";
 $(document).ready(function () {
   // get all value
   let supplierSearch = $("#supplier-search-input").val();
@@ -190,14 +193,6 @@ export const getSupplierAgain = () => {
   let supplierTotalPage;
   let supplierBtnPage;
   getInit();
-  $("#supplier-search-input").on("keyup", function () {
-    supplierSearch = $(this).val();
-    getInit(supplierSearch);
-  });
-  $("#supplier-limit").on("change", function () {
-    supplierLimit = parseInt($(this).val());
-    getInit();
-  });
   // 1. get first,  get total row, upadate ui (total row) as condition
   function getInit() {
     getTotalRowSupplier(supplierSearch, (status, response) => {
@@ -325,4 +320,9 @@ export const getSupplierAgain = () => {
       }
     );
   }
+};
+export const getSupplierRef = () => {
+  listSupplierRefProductCreate();
+  getProductsAgain();
+  getPersediaanAgain();
 };

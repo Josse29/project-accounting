@@ -1,5 +1,5 @@
 import { updateSupplier } from "../../../../serverless-side/functions/supplier.js";
-import { getSupplierAgain } from "./read.js";
+import { getSupplierAgain, getSupplierRef } from "./read.js";
 import { successActionSupplier } from "./ui.js";
 import { capitalizeWord } from "../../utils/formatCapitalize.js";
 $(document).ready(function () {
@@ -40,8 +40,9 @@ $(document).ready(function () {
             supplierImgBase64,
             (status, response) => {
               if (status) {
-                successActionSupplier(response);
                 getSupplierAgain();
+                getSupplierRef();
+                successActionSupplier(response);
               }
               if (!status) {
                 console.error(response);
@@ -62,8 +63,9 @@ $(document).ready(function () {
           "",
           (status, response) => {
             if (status) {
-              successActionSupplier(response);
               getSupplierAgain();
+              getSupplierRef();
+              successActionSupplier(response);
             }
             if (!status) {
               console.error(response);

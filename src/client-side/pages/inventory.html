@@ -932,27 +932,32 @@
                 <!-- product -->
                 <div class="mb-3 position-relative">
                   <label
-                    for="persediaan-refproduct-create-name"
+                    for="persediaan-refproduct-search-name"
                     class="form-label fs-4"
                     >Nama Produk</label
                   >
                   <input
                     type="text"
                     class="form-control text-capitalize"
-                    id="persediaan-refproduct-create-name"
+                    id="persediaan-refproduct-search-name"
                     placeholder="masukkan nama product"
                   />
-                  <!-- input product id send to request -->
-                  <input type="hidden" id="persediaan-refproduct-create-id" />
+                  <div id="persediaan-refproduct-create-list"></div>
                   <div id="productList-empty" class="mb-3">
                     <input
                       type="text"
-                      class="form-control text-center"
-                      placeholder="produk kosong...."
+                      class="form-control text-center fst-italic"
+                      placeholder="Produk Kosong...."
                       disabled
                     />
                   </div>
-                  <div id="persediaan-refproduct-create-list"></div>
+                  <!-- input product id, and name send to request -->
+                  <input
+                    type="hidden"
+                    class="form-control text-capitalize"
+                    id="persediaan-refproduct-create-name"
+                  />
+                  <input type="hidden" id="persediaan-refproduct-create-id" />
                 </div>
                 <!-- QTY -->
                 <div
@@ -1390,6 +1395,21 @@
                     class="form-label fs-4 d-block"
                     >Kategori</label
                   >
+                  <input
+                    type="text"
+                    class="form-control mb-1 text-capitalize"
+                    id="product-refcategory-create"
+                    placeholder="masukkan nama kategori..."
+                  />
+                  <div class="product-refcategory-list"></div>
+                  <!-- send to request -->
+                  <input
+                    type="hidden"
+                    class="form-control mb-1 text-capitalize"
+                    id="product-refcategory-create-val"
+                    placeholder="masukkan nama kategori..."
+                  />
+                  <!-- none category -->
                   <div id="category-empty">
                     <input
                       type="text"
@@ -1398,19 +1418,6 @@
                       disabled
                     />
                   </div>
-                  <input
-                    type="text"
-                    class="form-control mb-1 text-capitalize"
-                    id="product-refcategory-create"
-                    placeholder="masukkan nama kategori..."
-                  />
-                  <input
-                    type="hidden"
-                    class="form-control mb-1 text-capitalize"
-                    id="product-refcategory-create-val"
-                    placeholder="masukkan nama kategori..."
-                  />
-                  <div class="product-refcategory-list"></div>
                 </div>
                 <!-- Nama Supplier -->
                 <div class="mb-3 position-relative">
@@ -1732,12 +1739,14 @@
               <div class="modal-body">
                 <!-- CategoryName -->
                 <div class="mb-3">
-                  <label for="category-nama" class="form-label fs-4"
+                  <label
+                    for="category-nama"
+                    class="form-label fs-4 text-capitalize"
                     >Nama</label
                   >
                   <input
                     type="text"
-                    class="form-control"
+                    class="form-control text-capitalize"
                     id="category-nama"
                     placeholder="masukkan kata kategori"
                   />
@@ -1795,7 +1804,7 @@
                   >
                   <input
                     type="text"
-                    class="form-control"
+                    class="form-control text-capitalize"
                     id="edit-category-nama"
                     placeholder="masukkan kata kategori"
                   />

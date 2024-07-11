@@ -116,3 +116,17 @@ export const supplierCreateBlank = () => {
 export const uiOption = (element) => {
   return `<option value="${element.SupplierId}" class="text-capitalize">${element.SupplierName}</option>`;
 };
+export const uiSupplierListCreateProduct = (supplierList) => {
+  // get only list supplier
+  let option = "";
+  supplierList.forEach((el) => {
+    option += `<div class='product-refsupplier-val fs-6' value='${el.SupplierId}'>${el.SupplierName}</div>`;
+  });
+  $(".product-refsupplier-list").html(option);
+  // Re-bind click event to new elements
+  $(".product-refsupplier-val").on("click", function () {
+    $("#product-refsupplier-create-val").val($(this).attr("value"));
+    $("#product-refsupplier-create").val(this.textContent);
+    $(".product-refsupplier-list").hide();
+  });
+};

@@ -5,6 +5,7 @@ import { listCategoryRefProductCreate } from "./../categories/list.js";
 import { listSupplierRefProductCreate } from "../supplier/list.js";
 import { disFormatRupiah1, formatRupiah1 } from "../../utils/formatRupiah.js";
 import { capitalizeWord } from "../../utils/formatCapitalize.js";
+import { listProductRefPersediaanCreate } from "./list.js";
 
 $(document).ready(function () {
   // function to list category & supplier
@@ -39,8 +40,6 @@ $(document).ready(function () {
             productSupplierId,
             (status, response) => {
               if (status) {
-                console.log("create with image");
-                console.log(response);
                 getProductsAgain();
                 successActionProduct(response);
                 createBlankValue();
@@ -66,11 +65,10 @@ $(document).ready(function () {
           productSupplierId,
           (status, response) => {
             if (status) {
-              console.log(response);
-              console.log("upload imageless + form");
               getProductsAgain();
               createBlankValue();
               successActionProduct(response);
+              listProductRefPersediaanCreate();
             }
             if (!status) {
               console.error(response);

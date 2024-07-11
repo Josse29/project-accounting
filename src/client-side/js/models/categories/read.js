@@ -11,6 +11,10 @@ import {
   uiTrZero,
   uiTrZeroSearch,
 } from "./ui.js";
+import { listCategoryRefProductCreate } from "./list.js";
+import { getProductsAgain } from "./../products/read.js";
+import { getPersediaanAgain } from "../persediaan/read.js";
+
 $(document).ready(function () {
   let categoryTotalRow;
   let categoryTotalPage;
@@ -291,12 +295,9 @@ export const getCategoryAgain = () => {
       }
     );
   }
-  // get-detail-product event binding fuckkkkkkk 2 jam lebih
-  $(document).on("click", "#categoryDetailBtn", function () {
-    const category = this.dataset;
-    $("#category-detail-label").text(category.categorynama);
-    $("#category-detail-name").text(category.categorynama);
-    $("#category-detail-info").text(category.categoryketerangan);
-  });
+};
+export const getCategoryRef = () => {
   listCategoryRefProductCreate();
+  getProductsAgain();
+  getPersediaanAgain();
 };

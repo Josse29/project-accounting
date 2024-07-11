@@ -1,5 +1,5 @@
 import { deleteSupplier } from "../../../../serverless-side/functions/supplier.js";
-import { getSupplierAgain } from "./read.js";
+import { getSupplierAgain, getSupplierRef } from "./read.js";
 import { successActionSupplier } from "./ui.js";
 
 $(document).ready(function () {
@@ -19,8 +19,9 @@ $(document).ready(function () {
       deleteSupplier(supplierId, supplierName, (status, response) => {
         // if succcess delete
         if (status) {
-          successActionSupplier(response);
           getSupplierAgain();
+          getSupplierRef();
+          successActionSupplier(response);
         }
         // if fail delete
         if (!status) {

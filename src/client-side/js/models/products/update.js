@@ -1,7 +1,7 @@
 import { updateProduct } from "../../../../serverless-side/functions/product.js";
 import { listCategoryRefProductUpdate } from "../categories/list.js";
 import { listSupplierRefProductUpdate } from "../supplier/list.js";
-import { getProductsAgain } from "./read.js";
+import { getProductRef, getProductsAgain } from "./read.js";
 import { successActionProduct } from "./ui.js";
 import { capitalizeWord } from "../../utils/formatCapitalize.js";
 import { disFormatRupiah1, formatRupiah1 } from "../../utils/formatRupiah.js";
@@ -38,9 +38,9 @@ $(document).ready(function () {
         $("#section-edit-product-img").removeClass("d-none");
         $("img#edit-product-image").attr("src", product.productimage);
       }
+      // action image kesell xxx
       // Hapus event listener sebelumnya jika ada MCCCCCKKKKKKKK
       $("#edit-product-submit").off("click");
-      // action image kesell xxx
       $("#edit-product-submit").on("click", () => {
         // all - input
         const productId = parseInt(product.productid);
@@ -71,8 +71,8 @@ $(document).ready(function () {
               productSupplierId,
               (status, response) => {
                 if (status) {
-                  console.log(response);
                   getProductsAgain();
+                  getProductRef();
                   successActionProduct(response);
                   $("#edit-product-image-file").val("");
                 }
@@ -98,8 +98,8 @@ $(document).ready(function () {
             productSupplierId,
             (status, response) => {
               if (status) {
-                console.log(response);
                 getProductsAgain();
+                getProductRef();
                 successActionProduct(response);
               }
               if (!status) {

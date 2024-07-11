@@ -24,7 +24,6 @@ $(document).ready(function () {
   getInit(persediaanSearch);
   getPersediaanRpSum((status, response) => {
     if (status) {
-      console.log(response <= 0);
       const totalRupiah = formatRupiah2(response);
       $("#persediaan-detail-totalrp").text(totalRupiah);
     }
@@ -143,6 +142,7 @@ $(document).ready(function () {
       (status, response) => {
         if (status) {
           let tr = "";
+          console.log(response);
           response.forEach((element) => {
             tr += uiTrPersediaan(element);
           });
@@ -155,43 +155,47 @@ $(document).ready(function () {
         }
       }
     );
+    getDetail();
   }
-  $(document).on("click", "#persediaanDetail", function () {
-    const persediaan = this.dataset;
-    $("#persediaan-detail-productname").text(persediaan.productname);
-    $("#persediaan-detail-date").text(
-      formatWaktuIndo(persediaan.persediaanddmy)
-    );
-    $("#persediaan-detail-second").text(persediaan.persediaanhms);
-    $("#persediaan-detail-info").text(persediaan.persediaaninfo);
-    $("#persediaanDetailTitle").text(persediaan.productname);
-    let tdProductQty = ``;
-    if (persediaan.persediaanqty < 1) {
-      tdProductQty = `<span class="badge text-bg-danger">${addSpace(
-        persediaan.persediaanqty
-      )}</span>`;
-    }
-    if (persediaan.persediaanqty >= 1) {
-      tdProductQty = `<span class="badge text-bg-success">+ ${persediaan.persediaanqty}</span>`;
-    }
-    $("td#persediaan-detail-productprice").text(
-      formatRupiah2(persediaan.productprice)
-    );
-    $("td#persediaan-detail-productqty").html(tdProductQty);
-    const persediaaanRp = persediaan.persediaanprice;
-    let txtPersediaanRp = ``;
-    if (persediaaanRp < 1) {
-      txtPersediaanRp =
-        persediaaanRp.substr(0, 1) +
-        " " +
-        formatRupiah2(persediaaanRp.substr(1));
-    }
-    if (persediaaanRp >= 1) {
-      txtPersediaanRp = formatRupiah2(persediaaanRp);
-    }
-    console.log();
-    $("td#persediaan-detail-rp").text(txtPersediaanRp);
-  });
+  function getDetail() {
+    $(document).on("click", "#persediaanDetail", function () {
+      const persediaan = this.dataset;
+      console.log(persediaan);
+      $("#persediaan-detail-productname").text(persediaan.productname);
+      $("#persediaan-detail-date").text(
+        formatWaktuIndo(persediaan.persediaanddmy)
+      );
+      $("#persediaan-detail-second").text(persediaan.persediaanhms);
+      $("#persediaan-detail-info").text(persediaan.persediaaninfo);
+      $("#persediaanDetailTitle").text(persediaan.productname);
+      let tdProductQty = ``;
+      if (persediaan.persediaanqty < 1) {
+        tdProductQty = `<span class="badge text-bg-danger">${addSpace(
+          persediaan.persediaanqty
+        )}</span>`;
+      }
+      if (persediaan.persediaanqty >= 1) {
+        tdProductQty = `<span class="badge text-bg-success">+ ${persediaan.persediaanqty}</span>`;
+      }
+      $("td#persediaan-detail-productprice").text(
+        formatRupiah2(persediaan.productprice)
+      );
+      $("td#persediaan-detail-productqty").html(tdProductQty);
+      const persediaaanRp = persediaan.persediaanprice;
+      let txtPersediaanRp = ``;
+      if (persediaaanRp < 1) {
+        txtPersediaanRp =
+          persediaaanRp.substr(0, 1) +
+          " " +
+          formatRupiah2(persediaaanRp.substr(1));
+      }
+      if (persediaaanRp >= 1) {
+        txtPersediaanRp = formatRupiah2(persediaaanRp);
+      }
+      console.log();
+      $("td#persediaan-detail-rp").text(txtPersediaanRp);
+    });
+  }
 });
 
 export const getPersediaanAgain = () => {

@@ -1,5 +1,5 @@
 import { deleteProductId } from "../../../../serverless-side/functions/product.js";
-import { getProductsAgain } from "./read.js";
+import { getProductRef, getProductsAgain } from "./read.js";
 import { successActionProduct } from "./ui.js";
 
 $(document).ready(function () {
@@ -18,8 +18,8 @@ $(document).ready(function () {
     $("#sureDelete").on("click", () => {
       deleteProductId(productid, productName, (status, response) => {
         if (status) {
-          console.log(response);
           getProductsAgain();
+          getProductRef();
           successActionProduct(response);
         }
         if (!status) {

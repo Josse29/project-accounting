@@ -93,14 +93,38 @@ export const queryListPersediaan = (valPersediaanSearch) => {
 };
 export const queryGetPersediaanQty = (valPersediaanProductId) => {
   return `SELECT
-          Persediaan.PersediaanProductId,
           Product.ProductName,
+          Persediaan.PersediaanProductId,
           SUM(Persediaan.PersediaanQty) AS TotalQty
           FROM Persediaan
           LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
           WHERE Persediaan.PersediaanProductId = ${valPersediaanProductId}
-          GROUP BY Persediaan.PersediaanProductId, Product.ProductName `;
+          GROUP BY Persediaan.PersediaanProductId `;
 };
+// export const queryGetPersediaanProductList = (valProductName) => {
+//   return `SELECT
+//           Persediaan.PersediaanProductId,
+//           Product.ProductName,
+//           Product.ProductPrice,
+//           SUM(Persediaan.PersediaanQty) AS TotalQty
+//           FROM Persediaan
+//           LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
+//           WHERE Product.ProductName LIKE '%${valProductName}%' ESCAPE '!'
+//           GROUP BY Persediaan.PersediaanProductId `;
+// };
+// export const queryGetPersediaanProductListRow = (valProductName) => {
+//   return `SELECT COUNT(*) AS TotalRow
+//           FROM (SELECT
+//                   Persediaan.PersediaanProductId,
+//                   Product.ProductName,
+//                   Product.ProductPrice,
+//                 SUM(Persediaan.PersediaanQty) AS TotalQty
+//                 FROM Persediaan
+//                 LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
+//                 WHERE Product.ProductName LIKE '%${valProductName}%' ESCAPE '!'
+//                 GROUP BY Persediaan.PersediaanProductId )
+//           AS GroupedData`;
+// };
 export const queryGetPersediaanRpSum = () => {
   return `SELECT
           SUM(Persediaan.PersediaanRp) AS TotalRp

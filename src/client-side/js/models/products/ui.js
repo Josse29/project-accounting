@@ -1,3 +1,4 @@
+import { getPersediaanQty } from "../../../../serverless-side/functions/persediaan.js";
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 
 // UI tr Product from dbsqlite
@@ -125,14 +126,31 @@ export const uiActivePageButton = (productPageNumber, productBtnPage) => {
 export const uiProductListCreatePersediaan = (productList) => {
   let option = "";
   productList.forEach((el) => {
-    option += `<div class='persediaan-refproduct-create-val fs-6' valueid=${el.ProductId} valueprice=${el.ProductPrice}>${el.ProductName}</div>`;
+    option += `<div class='persediaan-refproduct-create-val fs-6' valueid=${el.ProductId} valueprice=${el.ProductPrice}>${el.ProductName} </div>`;
   });
   $("#persediaan-refproduct-create-list").html(option);
   // Re-bind click event to new elements
   $(".persediaan-refproduct-create-val").on("click", function () {
+    getPersediaanQty($(this).attr("valueid"), (status, response) => {
+      if (status) {
+        const existProduct = response.length >= 1;
+        if (existProduct) {
+          const totalQty = response[0].TotalQty;
+          $("input#persediaan-refproduct-search-name").val(
+            `${this.textContent} - Totat Qty : ${totalQty}`
+          );
+        }
+        if (!existProduct) {
+          $("input#persediaan-refproduct-search-name").val(this.textContent);
+        }
+      }
+      if (!status) {
+        console.error(response);
+      }
+    });
+    $("input#persediaan-refproduct-create-name").val(this.textContent);
     $("input#persediaan-refproduct-create-id").val($(this).attr("valueid"));
     $("input#persediaan-refproduct-create-rp").val($(this).attr("valueprice"));
-    $("input#persediaan-refproduct-create-name").val(this.textContent);
     $("#persediaan-refproduct-create-list").hide();
   });
 };

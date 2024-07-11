@@ -58,9 +58,6 @@ export const uiTrCategory = (el) => {
             </td>
           </tr> `;
 };
-export const uiListCategory = (el) => {
-  return `<option value=${el.CategoryId}>${el.CategoryName}</option>`;
-};
 export const successActionCategory = (res) => {
   const alertSuccessMe = `<div class="alert alert-success" role="alert">
                             ${res}
@@ -77,21 +74,23 @@ export const createBlankValue = () => {
 // when total category row 0 being seaching
 export const uiTrZeroSearch = (categorySearch) => {
   return `<tr>
-              <td colspan="4" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">kategori ${categorySearch} tidak ditemukan....</td>
-            </tr>`;
+              <td colspan="4" 
+              class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">kategori ${categorySearch} tidak ditemukan....</td>
+          </tr>`;
 };
 // when total category row 0 being seaching
 export const uiTrZero = () => {
   return `<tr>
-              <td colspan="5" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">tidak ada category....</td>
-            </tr>`;
+              <td colspan="5" 
+              class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">tidak ada category....</td>
+          </tr>`;
 };
 // button pagination
 export const uiBtnPage = (i) => {
-  return `<button type = "button" class="category-btn-page ${
-    i === 1 ? "category-active-page" : ""
-  }" >
-                  ${i}
+  return `<button 
+            type="button" 
+            class="category-btn-page ${i === 1 ? "category-active-page" : ""}">
+              ${i}
           </button>`;
 };
 // Function to update active page button
@@ -103,4 +102,30 @@ export const uiActivePageButton = (categoryPageNumber, categoryBtnPage) => {
     categoryBtnPageActive[0].classList.remove("category-active-page");
   }
   categoryBtnPage[categoryPageNumber - 1].classList.add("category-active-page");
+};
+export const uiCategoryListProductCreate = (categoryList) => {
+  let option = "";
+  categoryList.forEach((el) => {
+    option += `<div class='product-refcategory-val fs-6' value='${el.CategoryId}'>${el.CategoryName}</div>`;
+  });
+  $(".product-refcategory-list").html(option);
+  // Re-bind click event to new elements
+  $(".product-refcategory-val").on("click", function () {
+    $("#product-refcategory-create-val").val($(this).attr("value"));
+    $("#product-refcategory-create").val(this.textContent);
+    $(".product-refcategory-list").hide();
+  });
+};
+export const uiCategoryListProductUpdate = (categoryList) => {
+  let option = "";
+  categoryList.forEach((el) => {
+    option += `<div class='product-refcategory-val-update fs-6' value='${el.CategoryId}'>${el.CategoryName}</div>`;
+  });
+  $(".product-refcategory-update-list").html(option);
+  // Re-bind click event to new elements
+  $(".product-refcategory-val-update").on("click", function () {
+    $("#product-refcategory-update-val").val($(this).attr("value"));
+    $("#product-refcategory-update").val(this.textContent);
+    $(".product-refcategory-update-list").hide();
+  });
 };

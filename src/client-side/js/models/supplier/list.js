@@ -2,49 +2,14 @@ import {
   getListSupplier,
   getTotalRowSupplier,
 } from "../../../../serverless-side/functions/supplier.js";
+import { uiSupplierListCreateProduct } from "./ui.js";
 
 // function to update list supplier ref product create action
 export function listSupplierRefProductCreate() {
   $(".product-refsupplier-list").hide();
-  // get only list supplier
-  function updateSupplierList(response) {
-    let option = "";
-    response.forEach((el) => {
-      option += `<div class='product-refsupplier-val fs-6' value='${el.SupplierId}'>${el.SupplierName}</div>`;
-    });
-    $(".product-refsupplier-list").html(option);
-    // Re-bind click event to new elements
-    $(".product-refsupplier-val").on("click", function () {
-      $("#product-refsupplier-create-val").val($(this).attr("value"));
-      $("#product-refsupplier-create").val(this.textContent);
-      $(".product-refsupplier-list").hide();
-    });
-  }
   // Initial category fetch
   let supplierListSearch = "";
-  getTotalRowSupplier(supplierListSearch, (status, response) => {
-    if (status) {
-      const totalSupplier = response;
-      if (totalSupplier >= 1) {
-        $("#product-refsupplier-create").show();
-        $("#supplier-empty").hide();
-        getListSupplier(supplierListSearch, (status, response) => {
-          if (status) {
-            updateSupplierList(response);
-          } else {
-            console.error(response);
-          }
-        });
-      }
-      if (totalSupplier < 1) {
-        $("#product-refsupplier-create").hide();
-        $("#supplier-empty").show();
-      }
-    }
-    if (!status) {
-      console.error(response);
-    }
-  });
+  getInit(supplierListSearch);
   $("#product-refsupplier-create").on("focus", () => {
     $(".product-refsupplier-list").show();
   });
@@ -55,28 +20,38 @@ export function listSupplierRefProductCreate() {
   });
   $("#product-refsupplier-create").on("keyup", function () {
     supplierListSearch = $(this).val();
+    getInit(supplierListSearch);
+  });
+  function getInit(supplierListSearch) {
     getTotalRowSupplier(supplierListSearch, (status, response) => {
       if (status) {
-        const totalSupplierSearch = response;
-        if (totalSupplierSearch >= 1) {
+        const totalSupplier = response;
+        if (totalSupplier >= 1) {
+          $("#product-refsupplier-create").show();
+          $("#supplier-empty").hide();
           getListSupplier(supplierListSearch, (status, response) => {
             if (status) {
-              updateSupplierList(response);
+              uiSupplierListCreateProduct(response);
             } else {
               console.error(response);
             }
           });
         }
-        if (totalSupplierSearch < 1) {
-          const optionNotFound = `<div class='product-refsupplier-not-found'>supplier - <b>${supplierListSearch}</b> tidak ditemukan</div>`;
-          $(".product-refsupplier-list").html(optionNotFound);
+        if (totalSupplier < 1) {
+          if (supplierListSearch) {
+            const optionNotFound = `<div class='product-refsupplier-not-found'>supplier - <b>${supplierListSearch}</b> tidak ditemukan</div>`;
+            $(".product-refsupplier-list").html(optionNotFound);
+          } else {
+            $("#supplier-empty").show();
+          }
+          $("#product-refsupplier-create").hide();
         }
       }
       if (!status) {
         console.error(response);
       }
     });
-  });
+  }
 }
 // function to update when create list product ref categories
 export function listSupplierRefProductUpdate() {

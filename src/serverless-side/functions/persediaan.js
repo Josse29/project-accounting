@@ -23,7 +23,7 @@ export const createPersediaan = (
   const isNumeric = /^-?([1-9]\d*|0?\.\d+)$/.test(valPersediaanQty);
   if (isNumeric) {
     // validate qty product
-    getPersediaanQty(
+    getPersediaanQtyValidate(
       valProductName,
       valPersediaanProductId,
       valPersediaanQty,
@@ -124,7 +124,7 @@ export const getPersediaanTotalRow = (valPersediaanSearch, callback) => {
     }
   });
 };
-export const getPersediaanQty = (
+export const getPersediaanQtyValidate = (
   valProductName,
   valPersediaanProductId,
   valPersediaanQty,
@@ -184,6 +184,16 @@ export const getPersediaanQty = (
     }
     if (err) {
       return callback(false, err);
+    }
+  });
+};
+export const getPersediaanQty = (valPersediaanProductId, callback) => {
+  db.all(queryGetPersediaanQty(valPersediaanProductId), (err, res) => {
+    if (!err) {
+      return callback(true, res);
+    }
+    if (err) {
+      return callback(false, res);
     }
   });
 };

@@ -1,5 +1,5 @@
 import { updateCategory } from "../../../../serverless-side/functions/categories.js";
-import { getCategoryAgain } from "./read.js";
+import { getCategoryAgain, getCategoryRef } from "./read.js";
 import { successActionCategory } from "./ui.js";
 import { capitalizeWord } from "../../utils/formatCapitalize.js";
 $(document).ready(function () {
@@ -16,9 +16,9 @@ $(document).ready(function () {
       const valueInfo = $("#edit-category-keterangan").val();
       updateCategory(valueId, valueName, valueInfo, (status, response) => {
         if (status) {
-          console.log(response);
-          successActionCategory(response);
           getCategoryAgain();
+          getCategoryRef();
+          successActionCategory(response);
         }
         if (!status) {
           console.error(response);

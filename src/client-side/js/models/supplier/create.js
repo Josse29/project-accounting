@@ -1,5 +1,5 @@
 import { createSupplier } from "../../../../serverless-side/functions/supplier.js";
-import { getSupplierAgain } from "./read.js";
+import { getSupplierAgain, getSupplierRef } from "./read.js";
 import { successActionSupplier, supplierCreateBlank } from "./ui.js";
 import { capitalizeWord } from "../../utils/formatCapitalize.js";
 // supplier-create-name
@@ -25,6 +25,7 @@ $(document).ready(function () {
             (status, response) => {
               if (status) {
                 getSupplierAgain();
+                getSupplierRef();
                 successActionSupplier(response);
                 supplierCreateBlank();
               }
@@ -45,6 +46,7 @@ $(document).ready(function () {
           (status, response) => {
             if (status) {
               getSupplierAgain();
+              getSupplierRef();
               successActionSupplier(response);
               supplierCreateBlank();
             }

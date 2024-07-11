@@ -12,6 +12,9 @@ import {
   uiActivePageButton,
   uiTrProduct,
 } from "./ui.js";
+import { listProductRefPersediaanCreate } from "../products/list.js";
+import { getSupplierAgain } from "./../supplier/read.js";
+import { getPersediaanAgain } from "../persediaan/read.js";
 $(document).ready(function () {
   let productSearch = $("#product-search-input").val();
   let productLimit = parseInt($("#product-limit").val());
@@ -188,14 +191,6 @@ export function getProductsAgain() {
   let productTotalPage;
   let productBtnPage;
   getInit(productSearch);
-  $("#product-search-input").on("keyup", function () {
-    productSearch = $(this).val();
-    getInit(productSearch);
-  });
-  $("#product-limit").on("change", function () {
-    productLimit = parseInt($(this).val());
-    getInit();
-  });
   // 1. get first,  get total row, upadate ui (total row) as condition
   function getInit() {
     getTotalRowProduct(productSearch, (status, response) => {
@@ -316,3 +311,8 @@ export function getProductsAgain() {
     );
   }
 }
+export const getProductRef = () => {
+  listProductRefPersediaanCreate();
+  getSupplierAgain();
+  getPersediaanAgain();
+};

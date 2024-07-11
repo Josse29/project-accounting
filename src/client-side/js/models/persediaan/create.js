@@ -52,8 +52,8 @@ $(document).ready(function () {
         valPersediaanInfo,
         (status, response) => {
           if (status) {
-            uiSuccessActionPersediaan(response);
             getPersediaanAgain();
+            uiSuccessActionPersediaan(response);
             uiBlankValue();
             $("#persediaanCreateModal").modal("hide");
           }
