@@ -22,45 +22,71 @@ $(document).ready(function () {
       $("#editProductModalLabel").html(product.productname);
       $("#edit-product-name").val(product.productname);
       $("input#edit-product-price").val(formatRupiah1(product.productprice));
+      $("#edit-product-keterangan").val(product.productketerangan);
       // Format as Rupiah
       $("input#edit-product-price").on("input", function () {
         let formattedValue = formatRupiah1($(this).val());
         $(this).val(formattedValue);
       });
-      $("#edit-product-keterangan").val(product.productketerangan);
       // it doesn't exist productimage from params
       if (product.productimage === "null") {
-        $("#section-edit-product-img").addClass("d-none");
+        $("#section-edit-product-img").hide();
         $("img#edit-product-image").attr("src", "");
       }
       // it exist productimage from params
       if (product.productimage !== "null") {
-        $("#section-edit-product-img").removeClass("d-none");
+        $("#section-edit-product-img").show();
         $("img#edit-product-image").attr("src", product.productimage);
       }
-      // action image kesell xxx
-      // Hapus event listener sebelumnya jika ada MCCCCCKKKKKKKK
-      $("#edit-product-submit").off("click");
-      $("#edit-product-submit").on("click", () => {
-        // all - input
-        const productId = parseInt(product.productid);
-        const productName = capitalizeWord($("#edit-product-name").val());
-        const productPrice = disFormatRupiah1($("#edit-product-price").val());
-        const productInfo = $("#edit-product-keterangan").val();
-        const productCategoryId = parseInt(
-          $("#product-refcategory-update-val").val()
-        );
-        const productSupplierId = parseInt(
-          $("#product-refsupplier-update-val").val()
-        );
-        const productImg = document.getElementById(
-          "edit-product-image-file"
-        ).files;
-        // with image
-        if (productImg.length >= 1) {
-          const reader = new FileReader();
-          reader.onload = function () {
-            const imgbase64 = reader.result;
+      // cancel image
+      let cancelImg = false;
+      // remove-image
+      $("#edit-product-cancel-image")
+        .off("click")
+        .on("click", function () {
+          $("#edit-product-image-file").val("");
+          $("#section-edit-product-img").hide();
+          cancelImg = true;
+        });
+      // function to updateProduct Hapus event listener sebelumnya jika ada MCCCCCKKKKKKKK
+      $("#edit-product-submit")
+        .off("click")
+        .on("click", () => {
+          // all - input
+          const productId = parseInt(product.productid);
+          const productName = capitalizeWord($("#edit-product-name").val());
+          const productPrice = disFormatRupiah1($("#edit-product-price").val());
+          const productInfo = $("#edit-product-keterangan").val();
+          const productCategoryId = parseInt(
+            $("#product-refcategory-update-val").val()
+          );
+          const productSupplierId = parseInt(
+            $("#product-refsupplier-update-val").val()
+          );
+          const productImg = document.getElementById(
+            "edit-product-image-file"
+          ).files;
+          // with image
+          if (productImg.length >= 1) {
+            const reader = new FileReader();
+            reader.onload = function () {
+              const imgbase64 = reader.result;
+              callUpdateProduct(imgbase64);
+            };
+            if (productImg[0]) {
+              reader.readAsDataURL(productImg[0]);
+            }
+          }
+          // without image
+          if (productImg.length < 1) {
+            if (cancelImg) {
+              callUpdateProduct("null");
+            }
+            if (!cancelImg) {
+              callUpdateProduct(product.productimage);
+            }
+          }
+          function callUpdateProduct(imgbase64) {
             updateProduct(
               productId,
               productName,
@@ -81,54 +107,7 @@ $(document).ready(function () {
                 }
               }
             );
-          };
-          if (productImg[0]) {
-            reader.readAsDataURL(productImg[0]);
           }
-        }
-        // without image
-        if (productImg.length < 1) {
-          updateProduct(
-            productId,
-            productName,
-            productPrice,
-            productInfo,
-            "",
-            productCategoryId,
-            productSupplierId,
-            (status, response) => {
-              if (status) {
-                getProductsAgain();
-                getProductRef();
-                successActionProduct(response);
-              }
-              if (!status) {
-                console.error(response);
-              }
-            }
-          );
-        }
-      });
-      // remove-image
-      $("#edit-product-cancel-image"),
-        off("click").on("click", () => {
-          db.run(
-            `UPDATE products
-           SET image = 'null'
-           WHERE id = '${product.productid}'`,
-            (err) => {
-              if (!err) {
-                console.log("berhasil-hapus gambar ");
-                $("#edit-product-image-file").val("");
-                $("#section-edit-product-img").addClass("d-none");
-                getProductsAgain();
-              }
-              if (err) {
-                console.log(err);
-                console.log("gagal-hapus-gambar");
-              }
-            }
-          );
         });
     });
 });

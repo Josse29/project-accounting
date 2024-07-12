@@ -11,7 +11,6 @@ import {
   uiTrZero,
   uiTrZeroSearch,
 } from "./ui.js";
-import { listCategoryRefProductCreate } from "./list.js";
 import { getProductsAgain } from "./../products/read.js";
 import { getPersediaanAgain } from "../persediaan/read.js";
 
@@ -297,7 +296,6 @@ export const getCategoryAgain = () => {
   }
 };
 export const getCategoryRef = () => {
-  listCategoryRefProductCreate();
   getProductsAgain();
   getPersediaanAgain();
 };

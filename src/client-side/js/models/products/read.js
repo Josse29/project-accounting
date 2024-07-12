@@ -12,7 +12,6 @@ import {
   uiActivePageButton,
   uiTrProduct,
 } from "./ui.js";
-import { listProductRefPersediaanCreate } from "../products/list.js";
 import { getSupplierAgain } from "./../supplier/read.js";
 import { getPersediaanAgain } from "../persediaan/read.js";
 $(document).ready(function () {
@@ -125,7 +124,7 @@ $(document).ready(function () {
     // Initial page load
     getProductPage(1);
   }
-  // 5. function to handle get satuan based on pageActive
+  // 5. function to handle get based on pageActive
   function getProductPage(productPageNumber) {
     getProducts(
       productSearch,
@@ -312,7 +311,6 @@ export function getProductsAgain() {
   }
 }
 export const getProductRef = () => {
-  listProductRefPersediaanCreate();
   getSupplierAgain();
   getPersediaanAgain();
 };

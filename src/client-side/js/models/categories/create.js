@@ -1,8 +1,7 @@
 import { createCategory } from "../../../../serverless-side/functions/categories.js";
-import { getCategoryAgain } from "./read.js";
+import { getCategoryAgain, getCategoryRef } from "./read.js";
 import { createBlankValue, successActionCategory } from "./ui.js";
 import { capitalizeWord } from "../../utils/formatCapitalize.js";
-import { listCategoryRefProductCreate } from "./list.js";
 
 $(document).ready(function () {
   // Hapus event listener sebelumnya jika ada MCCCCCKKKKKKKK
@@ -13,9 +12,9 @@ $(document).ready(function () {
     createCategory(categoryName, categoryInfo, (status, response) => {
       if (status) {
         getCategoryAgain();
+        getCategoryRef();
         successActionCategory(response);
         createBlankValue();
-        listCategoryRefProductCreate();
       }
       if (!status) {
         console.error(response);

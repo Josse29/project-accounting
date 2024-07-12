@@ -1,8 +1,17 @@
 import { formatWaktuIndo } from "../../utils/formatWaktu.js";
 // ui tr supplier from db
-export const trSupplier = (el, productList) => {
+export const uiTr = (el, productList) => {
   const splitDateTime = el.SupplierDate.split(" ");
   const dateSupplier = formatWaktuIndo(splitDateTime[0]);
+  if (el.ProductList) {
+    let productListArray = el.ProductList.split(",");
+    let productListItems = productListArray
+      .map((product) => `<li class='text-capitalize'>${product}</li>`)
+      .join("");
+    productList = `<ul class='mt-3'>${productListItems}</ul>`;
+  } else {
+    productList = `<div class='text-muted text-center'>No products available</div>`;
+  }
   return `<tr>
                 <td class="text-center align-middle">${el.SupplierId}</td>
                 <td class="align-content-center">${dateSupplier}</td>
@@ -91,11 +100,10 @@ export const trSupplierZeroSearch = (supplierSearch) => {
 };
 // button pagination
 export const btnSupplierPage = (i) => {
-  return `<button type = "button" class="supplier-btn-page ${
-    i === 1 ? "supplier-active-page" : ""
-  } 
-          " >
-            ${i}
+  return `<button 
+            type="button" 
+            class="supplier-btn-page ${i === 1 ? "supplier-active-page" : ""} ">
+              ${i}
           </button>`;
 };
 // update active pagination
@@ -116,17 +124,18 @@ export const supplierCreateBlank = () => {
 export const uiOption = (element) => {
   return `<option value="${element.SupplierId}" class="text-capitalize">${element.SupplierName}</option>`;
 };
-export const uiSupplierListCreateProduct = (supplierList) => {
+export const uiListProductCreate = (supplierList) => {
   // get only list supplier
   let option = "";
   supplierList.forEach((el) => {
     option += `<div class='product-refsupplier-val fs-6' value='${el.SupplierId}'>${el.SupplierName}</div>`;
   });
   $(".product-refsupplier-list").html(option);
-  // Re-bind click event to new elements
-  $(".product-refsupplier-val").on("click", function () {
-    $("#product-refsupplier-create-val").val($(this).attr("value"));
-    $("#product-refsupplier-create").val(this.textContent);
-    $(".product-refsupplier-list").hide();
+};
+export const uiListProductUpdate = (supplierList) => {
+  let option = "";
+  supplierList.forEach((el) => {
+    option += `<div class='product-refsupplier-val-update fs-6' value='${el.SupplierId}'>${el.SupplierName}</div>`;
   });
+  $(".product-refsupplier-update-list").html(option);
 };

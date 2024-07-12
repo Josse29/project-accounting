@@ -103,29 +103,17 @@ export const uiActivePageButton = (categoryPageNumber, categoryBtnPage) => {
   }
   categoryBtnPage[categoryPageNumber - 1].classList.add("category-active-page");
 };
-export const uiCategoryListProductCreate = (categoryList) => {
+export const uiListRefProductCreate = (categoryList) => {
   let option = "";
   categoryList.forEach((el) => {
     option += `<div class='product-refcategory-val fs-6' value='${el.CategoryId}'>${el.CategoryName}</div>`;
   });
   $(".product-refcategory-list").html(option);
-  // Re-bind click event to new elements
-  $(".product-refcategory-val").on("click", function () {
-    $("#product-refcategory-create-val").val($(this).attr("value"));
-    $("#product-refcategory-create").val(this.textContent);
-    $(".product-refcategory-list").hide();
-  });
 };
-export const uiCategoryListProductUpdate = (categoryList) => {
+export const uiListRefProductUpdate = (categoryList) => {
   let option = "";
   categoryList.forEach((el) => {
     option += `<div class='product-refcategory-val-update fs-6' value='${el.CategoryId}'>${el.CategoryName}</div>`;
   });
   $(".product-refcategory-update-list").html(option);
-  // Re-bind click event to new elements
-  $(".product-refcategory-val-update").on("click", function () {
-    $("#product-refcategory-update-val").val($(this).attr("value"));
-    $("#product-refcategory-update").val(this.textContent);
-    $(".product-refcategory-update-list").hide();
-  });
 };

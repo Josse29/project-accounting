@@ -1,8 +1,5 @@
 import { getTimeNow } from "../../utils/formatWaktu.js";
-import {
-  createPersediaan,
-  getPersediaanQty,
-} from "../../../../serverless-side/functions/persediaan.js";
+import { createPersediaan } from "../../../../serverless-side/functions/persediaan.js";
 import {
   uiBlankValue,
   uiFailedActionPersediaan,
@@ -12,7 +9,9 @@ import { listProductRefPersediaanCreate } from "../products/list.js";
 import { getPersediaanAgain } from "./read.js";
 
 $(document).ready(function () {
-  listProductRefPersediaanCreate();
+  $("button#btnpersediaanModal").on("click", function () {
+    listProductRefPersediaanCreate();
+  });
   // function create increse or decrease qty
   let persediaanCreateQty = $("input#persediaan-create-qty").val();
   $("button#persediaan-create-decrease").on("click", function () {

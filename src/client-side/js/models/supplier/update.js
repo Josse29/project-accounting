@@ -12,32 +12,58 @@ $(document).ready(function () {
     $("#supplier-update-info").val(supplier.supplierinfo);
     // with image
     if (supplier.supplierimg !== "null") {
-      $("#supplier-update-img-section").removeClass("d-none");
+      $("#supplier-update-img-section").show();
       $("#supplier-update-img-preview").attr("src", supplier.supplierimg);
     }
     // without img
     if (supplier.supplierimg === "null") {
-      $("#supplier-update-img-section").addClass("d-none");
+      $("#supplier-update-img-section").hide();
       $("#supplier-update-img-preview").attr("src", "");
     }
-    // Hapus event listener sebelumnya jika ada MCCCCCKKKKKKKK
-    $("#supplier-update-submit").off("click");
-    // event submit delete
-    $("#supplier-update-submit").on("click", () => {
-      const supplierId = parseInt(supplier.supplierid);
-      const supplierName = capitalizeWord($("#supplier-update-name").val());
-      const supplierInfo = $("#supplier-update-info").val();
-      const supplierImg = document.getElementById("supplier-update-img").files;
-      // with img
-      if (supplierImg.length >= 1) {
-        const reader = new FileReader();
-        reader.onload = function () {
-          const supplierImgBase64 = reader.result;
+    // cancel image
+    let cancelImg = false;
+    $("label#supplier-update-img-cancel")
+      .off("click")
+      .on("click", function () {
+        $("input#supplier-update-img").val("");
+        $("#supplier-update-img-section").hide();
+        cancelImg = true;
+      });
+    // event submit update
+    $("#supplier-update-submit")
+      .off("click")
+      .on("click", () => {
+        const supplierId = parseInt(supplier.supplierid);
+        const supplierName = capitalizeWord($("#supplier-update-name").val());
+        const supplierInfo = $("#supplier-update-info").val();
+        const supplierImg = document.getElementById(
+          "supplier-update-img"
+        ).files;
+        // with new image
+        if (supplierImg.length >= 1) {
+          const reader = new FileReader();
+          reader.onload = function () {
+            const imgbase64 = reader.result;
+            callUpdateSupplier(imgbase64);
+          };
+          reader.readAsDataURL(supplierImg[0]);
+        }
+        // without image
+        if (supplierImg.length < 1) {
+          if (cancelImg) {
+            callUpdateSupplier("null");
+          }
+          if (!cancelImg) {
+            callUpdateSupplier(supplier.supplierimg);
+          }
+        }
+        // action createSupplier
+        function callUpdateSupplier(imgbase64) {
           updateSupplier(
             supplierId,
             supplierName,
             supplierInfo,
-            supplierImgBase64,
+            imgbase64,
             (status, response) => {
               if (status) {
                 getSupplierAgain();
@@ -49,49 +75,7 @@ $(document).ready(function () {
               }
             }
           );
-        };
-        if (supplierImg[0]) {
-          reader.readAsDataURL(supplierImg[0]);
         }
-      }
-      // without img
-      if (supplierImg.length < 1) {
-        updateSupplier(
-          supplierId,
-          supplierName,
-          supplierInfo,
-          "",
-          (status, response) => {
-            if (status) {
-              getSupplierAgain();
-              getSupplierRef();
-              successActionSupplier(response);
-            }
-            if (!status) {
-              console.error(response);
-            }
-          }
-        );
-      }
-    });
-    // canceling image
-    $("#supplier-update-img-cancel").on("click", () => {
-      db.run(
-        `UPDATE Supplier 
-                           SET SupplierImg = 'null'
-                           WHERE SupplierId = ${parseInt(supplier.supplierid)}`,
-        (err) => {
-          if (!err) {
-            console.log("berhasil hapus gambar");
-            $("#supplier-update-img").val("");
-            $("#supplier-update-img-section").addClass("d-none");
-            getSupplierAgain();
-          }
-          if (err) {
-            console.error(err);
-          }
-        }
-      );
-    });
+      });
   });
 });

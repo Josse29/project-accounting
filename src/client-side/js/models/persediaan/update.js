@@ -1,4 +1,7 @@
-import { updatePersediaan } from "../../../../serverless-side/functions/persediaan.js";
+import {
+  getPersediaanQty,
+  updatePersediaan,
+} from "../../../../serverless-side/functions/persediaan.js";
 import { getTimeNow } from "../../utils/formatWaktu.js";
 import { listProductRefPersediaanUpdate } from "../products/list.js";
 import { getPersediaanAgain } from "./read.js";
@@ -8,11 +11,11 @@ $(document).ready(function () {
   $(document).on("click", "#persediaan-update-btn", function () {
     listProductRefPersediaanUpdate();
     const persediaan = this.dataset;
+    // get all params
     $("#persediaan-update-label").text(persediaan.productname);
     $("#persediaan-update-date").text(persediaan.persediaandate);
     $("#persediaan-update-second").text(persediaan.persediaansecond);
     $("#persediaan-refproduct-update-id").val(persediaan.productid);
-    $("input#persediaan-refproduct-update-name").val(persediaan.productname);
     $("input#persediaan-refproduct-update-rp").val(
       parseFloat(persediaan.productprice)
     );
@@ -24,6 +27,17 @@ $(document).ready(function () {
     $("input#persediaan-refproduct-update-qty").val(
       parseInt(persediaan.persediaanqty)
     );
+    getPersediaanQty(parseInt(persediaan.productid), (status, response) => {
+      if (status) {
+        const persediaan = response[0];
+        $("input#persediaan-refproduct-update-search").val(
+          `${persediaan.ProductName} - TotalQty : ${persediaan.TotalQty}`
+        );
+      }
+      if (!status) {
+        console.error(response);
+      }
+    });
     // function update increse or decrease qty
     let persediaanUpdateQty = parseFloat(
       $("input#persediaan-update-qty").val()

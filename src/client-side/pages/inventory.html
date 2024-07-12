@@ -345,8 +345,8 @@
                     <!-- create-product -->
                     <button
                       type=" button"
-                      class="btn hover-by-me"
-                      style="background-color: #3c50e0; color: white"
+                      id="product-create"
+                      class="btn"
                       data-bs-toggle="modal"
                       data-bs-target="#productCreateModal"
                     >
@@ -1122,7 +1122,7 @@
                 <!-- product -->
                 <div class="mb-3 position-relative">
                   <label
-                    for="persediaan-refproduct-update-name"
+                    for="persediaan-refproduct-update-search"
                     class="form-label fs-4"
                     >Nama Produk</label
                   >
@@ -1130,12 +1130,13 @@
                   <input
                     type="text"
                     class="form-control text-capitalize"
-                    id="persediaan-refproduct-update-name"
+                    id="persediaan-refproduct-update-search"
                     placeholder="masukkan nama product"
                   />
                   <!-- send to request persediaa refproduct id,rp  -->
                   <input type="hidden" id="persediaan-refproduct-update-id" />
                   <input type="hidden" id="persediaan-refproduct-update-rp" />
+                  <input type="hidden" id="persediaan-refproduct-update-name" />
                   <!-- empty  -->
                   <div id="productList-empty-update" class="mb-3">
                     <input
@@ -1584,10 +1585,12 @@
                     id="product-refsupplier-update-val"
                     placeholder="ex:product-1"
                   />
-                  <div
-                    class="supplier-empty-update form-label fs-5 text-center fst-italic"
-                  >
-                    supplier kosong
+                  <div class="supplier-empty-update">
+                    <input
+                      type="text"
+                      class="form-control fs-5 text-center fst-italic"
+                      placeholder="supplier kosong...."
+                    />
                   </div>
                   <div class="product-refsupplier-update-list"></div>
                 </div>
@@ -1596,16 +1599,22 @@
                   <label for="edit-product-image-file" class="form-label"
                     >Image</label
                   >
-                  <div
-                    class="position-relative d-block mb-3"
-                    id="section-edit-product-img"
-                  >
+                  <!-- preview image -->
+                  <div class="position-relative" id="section-edit-product-img">
+                    <!-- cancel img -->
                     <i
                       class="fa-solid fa-circle-xmark text-danger"
                       id="edit-product-cancel-image"
                     ></i>
-                    <img src="" alt="" id="edit-product-image" class="w-100" />
+                    <!-- img -->
+                    <img
+                      src=""
+                      alt=""
+                      id="edit-product-image"
+                      class="w-100 mb-3"
+                    />
                   </div>
+                  <!-- input img -->
                   <input
                     class="form-control"
                     type="file"
@@ -2268,14 +2277,17 @@
                     class="form-label fs-4 d-block"
                     >Image :</label
                   >
+                  <!-- preview image -->
                   <div
-                    class="position-relative d-none"
+                    class="position-relative"
                     id="supplier-update-img-section"
                   >
-                    <i
-                      class="fa-solid fa-circle-xmark text-danger"
+                    <!-- cancle image -->
+                    <label
                       id="supplier-update-img-cancel"
-                    ></i>
+                      class="fa-solid fa-circle-xmark text-danger"
+                    ></label>
+                    <!-- img -->
                     <img
                       src=""
                       alt=""
@@ -2283,6 +2295,7 @@
                       id="supplier-update-img-preview"
                     />
                   </div>
+                  <!-- input image -->
                   <input
                     class="form-control"
                     type="file"

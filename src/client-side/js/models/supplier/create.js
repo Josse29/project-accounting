@@ -18,39 +18,27 @@ $(document).ready(function () {
         const reader = new FileReader();
         reader.onload = function () {
           const imgbase64 = reader.result;
-          createSupplier(
-            supplierName,
-            supplierInfo,
-            imgbase64,
-            (status, response) => {
-              if (status) {
-                getSupplierAgain();
-                getSupplierRef();
-                successActionSupplier(response);
-                supplierCreateBlank();
-              }
-              if (!status) {
-                console.error(response);
-              }
-            }
-          );
+          callCreateSupplier(imgbase64);
         };
         reader.readAsDataURL(supplierImg[0]);
       }
       // without image
       if (supplierImg.length < 1) {
+        callCreateSupplier("null");
+      }
+      // action createSupplier
+      function callCreateSupplier(imgbase64) {
         createSupplier(
           supplierName,
           supplierInfo,
-          "null",
+          imgbase64,
           (status, response) => {
             if (status) {
               getSupplierAgain();
               getSupplierRef();
               successActionSupplier(response);
               supplierCreateBlank();
-            }
-            if (!status) {
+            } else {
               console.error(response);
             }
           }

@@ -1,5 +1,5 @@
 import { insertProducts } from "../../../../serverless-side/functions/product.js";
-import { getProductsAgain } from "./read.js";
+import { getProductRef, getProductsAgain } from "./read.js";
 import { createBlankValue, successActionProduct } from "./ui.js";
 import { listCategoryRefProductCreate } from "./../categories/list.js";
 import { listSupplierRefProductCreate } from "../supplier/list.js";
@@ -8,9 +8,10 @@ import { capitalizeWord } from "../../utils/formatCapitalize.js";
 import { listProductRefPersediaanCreate } from "./list.js";
 
 $(document).ready(function () {
-  // function to list category & supplier
-  listCategoryRefProductCreate();
-  listSupplierRefProductCreate();
+  $("button#product-create").on("click", function () {
+    listCategoryRefProductCreate();
+    listSupplierRefProductCreate();
+  });
   // Format as Rupiah when input
   $("input#product-price").on("input", function () {
     let formattedValue = formatRupiah1($(this).val());
@@ -31,41 +32,29 @@ $(document).ready(function () {
         const reader = new FileReader();
         reader.onload = () => {
           const imageBase64 = reader.result;
-          insertProducts(
-            productName,
-            productPrice,
-            productInfo,
-            imageBase64,
-            productCategoryId,
-            productSupplierId,
-            (status, response) => {
-              if (status) {
-                getProductsAgain();
-                successActionProduct(response);
-                createBlankValue();
-              }
-              if (!status) {
-                console.error(response);
-              }
-            }
-          );
+          callInsertProuduct(imageBase64);
         };
         if (productImg[0]) {
           reader.readAsDataURL(productImg[0]);
         }
       }
-      // without image
+      // without an image
       if (productImg.length < 1) {
+        callInsertProuduct("null");
+      }
+      // function to submit product
+      function callInsertProuduct(imageBase64) {
         insertProducts(
           productName,
           productPrice,
           productInfo,
-          "null",
+          imageBase64,
           productCategoryId,
           productSupplierId,
           (status, response) => {
             if (status) {
               getProductsAgain();
+              getProductRef();
               createBlankValue();
               successActionProduct(response);
               listProductRefPersediaanCreate();

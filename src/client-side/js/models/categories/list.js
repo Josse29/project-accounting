@@ -2,10 +2,7 @@ import {
   getListCategory,
   getTotalRowCategory,
 } from "../../../../serverless-side/functions/categories.js";
-import {
-  uiCategoryListProductCreate,
-  uiCategoryListProductUpdate,
-} from "./ui.js";
+import { uiListRefProductCreate, uiListRefProductUpdate } from "./ui.js";
 
 // function to update when create list product ref categories
 export function listCategoryRefProductCreate() {
@@ -29,25 +26,38 @@ export function listCategoryRefProductCreate() {
     getTotalRowCategory(categoryListSearch, (status, response) => {
       if (status) {
         const totalCategory = response;
+        // exist category
         if (totalCategory >= 1) {
           $("#product-refcategory-create").show();
           $("#category-empty").hide();
+          // function get list category
           getListCategory(categoryListSearch, (status, response) => {
             if (status) {
-              uiCategoryListProductCreate(response);
-            } else {
+              uiListRefProductCreate(response);
+              // Re-bind click event to new elements
+              $(".product-refcategory-val").on("click", function () {
+                $("#product-refcategory-create-val").val($(this).attr("value"));
+                $("#product-refcategory-create").val(this.textContent);
+                $(".product-refcategory-list").hide();
+              });
+            }
+            if (!status) {
               console.error(response);
             }
           });
         }
+        // non-existence category
         if (totalCategory < 1) {
+          // with search
           if (categoryListSearch) {
             const optionNotFound = `<div class='product-refcategory-not-found'>kategori - <b>${categoryListSearch}</b> tidak ditemukan</div>`;
             $(".product-refcategory-list").html(optionNotFound);
-          } else {
+          }
+          // without search
+          if (!categoryListSearch) {
+            $("#category-empty").show();
             $("#product-refcategory-create").hide();
           }
-          $("#category-empty").show();
         }
       }
       if (!status) {
@@ -78,25 +88,36 @@ export function listCategoryRefProductUpdate() {
     getTotalRowCategory(categoryListSearch, (status, response) => {
       if (status) {
         const totalCategory = response;
+        // existence category
         if (totalCategory >= 1) {
           $("#product-refcategory-update").show();
           $(".category-empty-update").hide();
           getListCategory(categoryListSearch, (status, response) => {
             if (status) {
-              uiCategoryListProductUpdate(response);
+              uiListRefProductUpdate(response);
+              // Re-bind click event to new elements
+              $(".product-refcategory-val-update").on("click", function () {
+                $("#product-refcategory-update-val").val($(this).attr("value"));
+                $("#product-refcategory-update").val(this.textContent);
+                $(".product-refcategory-update-list").hide();
+              });
             } else {
               console.error(response);
             }
           });
         }
+        // non-existence category
         if (totalCategory < 1) {
+          // with search
           if (categoryListSearch) {
             const optionNotFound = `<div class='product-refcategory-not-found-update fs-6'>kategori - <b>${categoryListSearch}</b> tidak ditemukan</div>`;
             $(".product-refcategory-update-list").html(optionNotFound);
-          } else {
-            $(".category-empty-update").show();
           }
-          $("#product-refcategory-update").hide();
+          // without search
+          if (!categoryListSearch) {
+            $(".category-empty-update").show();
+            $("#product-refcategory-update").hide();
+          }
         }
       }
       if (!status) {

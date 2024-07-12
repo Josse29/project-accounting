@@ -4,12 +4,11 @@ import {
   getTotalRowSupplier,
 } from "../../../../serverless-side/functions/supplier.js";
 import { reinitializeTooltips } from "../../utils/updateUi.js";
-import { listSupplierRefProductCreate } from "./list.js";
 import {
   btnSupplierPage,
-  trSupplier,
   trSupplierZero,
   trSupplierZeroSearch,
+  uiTr,
   updateActivePageButton,
 } from "./ui.js";
 import { getProductsAgain } from "./../products/read.js";
@@ -134,20 +133,9 @@ $(document).ready(function () {
       (status, response) => {
         if (status) {
           let tr = ``;
-          let productList;
           response.forEach((element) => {
-            if (element.ProductList) {
-              let productListArray = element.ProductList.split(",");
-              let productListItems = productListArray
-                .map((product) => `<li class='text-capitalize'>${product}</li>`)
-                .join("");
-              productList = `<ul class='mt-3'>${productListItems}</ul>`;
-            } else {
-              productList = `<div class='text-muted text-center'>No products available</div>`;
-            }
-            tr += trSupplier(element, productList);
+            tr += uiTr(element);
           });
-          // supplier-refproduct-list
           $("#supplier-table").html(tr);
           updateActivePageButton(supplierPageNumber, supplierBtnPage);
           reinitializeTooltips();
@@ -157,32 +145,34 @@ $(document).ready(function () {
         }
       }
     );
+    getDetail();
   }
-  // get detail based on paramsid
-  $(document).on("click", "#supplierDetail", function () {
-    const supplier = this.dataset;
-    const supplierName = supplier.suppliername;
-    const supplierInfo = supplier.supplierinfo;
-    const supplierImg = supplier.supplierimg;
-    console.log(supplier);
-    $("#supplierDetailModalLabel").text(supplierName);
-    $("#supplier-detail-name").text(supplierName);
-    $("#supplier-detail-info").text(supplierInfo);
-    // if it no information further
-    if (supplierInfo === "") {
-      $("#supplier-detail-info").text("-");
-    }
-    // if exist photo
-    if (supplierImg === "null") {
-      $("#no-image").removeClass("d-none");
-      $("#supplier-detail-img").attr("src", "");
-    }
-    // if it doesn't exist photo
-    if (supplierImg !== "null") {
-      $("#no-image").addClass("d-none");
-      $("#supplier-detail-img").attr("src", supplierImg);
-    }
-  });
+  function getDetail() {
+    // get detail based on paramsid
+    $(document).on("click", "#supplierDetail", function () {
+      const supplier = this.dataset;
+      const supplierName = supplier.suppliername;
+      const supplierInfo = supplier.supplierinfo;
+      const supplierImg = supplier.supplierimg;
+      $("#supplierDetailModalLabel").text(supplierName);
+      $("#supplier-detail-name").text(supplierName);
+      $("#supplier-detail-info").text(supplierInfo);
+      // if it no information further
+      if (supplierInfo === "") {
+        $("#supplier-detail-info").text("-");
+      }
+      // if exist photo
+      if (supplierImg === "null") {
+        $("#no-image").removeClass("d-none");
+        $("#supplier-detail-img").attr("src", "");
+      }
+      // if it doesn't exist photo
+      if (supplierImg !== "null") {
+        $("#no-image").addClass("d-none");
+        $("#supplier-detail-img").attr("src", supplierImg);
+      }
+    });
+  }
 });
 export const getSupplierAgain = () => {
   // get all value
@@ -296,20 +286,9 @@ export const getSupplierAgain = () => {
       (status, response) => {
         if (status) {
           let tr = ``;
-          let productList;
           response.forEach((element) => {
-            if (element.ProductList) {
-              let productListArray = element.ProductList.split(",");
-              let productListItems = productListArray
-                .map((product) => `<li class='text-capitalize'>${product}</li>`)
-                .join("");
-              productList = `<ul class='mt-3'>${productListItems}</ul>`;
-            } else {
-              productList = `<div class='text-muted text-center'>No products available</div>`;
-            }
-            tr += trSupplier(element, productList);
+            tr += uiTr(element);
           });
-          // supplier-refproduct-list
           $("#supplier-table").html(tr);
           updateActivePageButton(supplierPageNumber, supplierBtnPage);
           reinitializeTooltips();
@@ -322,7 +301,6 @@ export const getSupplierAgain = () => {
   }
 };
 export const getSupplierRef = () => {
-  listSupplierRefProductCreate();
   getProductsAgain();
   getPersediaanAgain();
 };

@@ -156,6 +156,7 @@ export const uiTrZero = () => {
 };
 // blank value after submit action
 export const uiBlankValue = () => {
+  $("input#persediaan-refproduct-search-name").val("");
   $("input#persediaan-refproduct-create-id").val("");
   $("input#persediaan-refproduct-create-name").val("");
   $("input#persediaan-create-qty").val(0);

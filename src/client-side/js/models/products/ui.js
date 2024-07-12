@@ -1,4 +1,3 @@
-import { getPersediaanQty } from "../../../../serverless-side/functions/persediaan.js";
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 
 // UI tr Product from dbsqlite
@@ -107,10 +106,10 @@ export const createBlankValue = () => {
 };
 // button pagination
 export const btnProductPage = (i) => {
-  return `<button type = "button" class="product-btn-page ${
-    i === 1 ? "product-active-page" : ""
-  }" >
-                  ${i}
+  return `<button 
+            type="button" 
+            class="product-btn-page ${i === 1 ? "product-active-page" : ""}" >
+              ${i}
           </button>`;
 };
 // Function to update active page button
@@ -123,50 +122,19 @@ export const uiActivePageButton = (productPageNumber, productBtnPage) => {
   }
   productBtnPage[productPageNumber - 1].classList.add("product-active-page");
 };
-export const uiProductListCreatePersediaan = (productList) => {
+export const uiListRefPersediaanCreate = (productList) => {
   let option = "";
   productList.forEach((el) => {
     option += `<div class='persediaan-refproduct-create-val fs-6' valueid=${el.ProductId} valueprice=${el.ProductPrice}>${el.ProductName} </div>`;
   });
   $("#persediaan-refproduct-create-list").html(option);
-  // Re-bind click event to new elements
-  $(".persediaan-refproduct-create-val").on("click", function () {
-    getPersediaanQty($(this).attr("valueid"), (status, response) => {
-      if (status) {
-        const existProduct = response.length >= 1;
-        if (existProduct) {
-          const totalQty = response[0].TotalQty;
-          $("input#persediaan-refproduct-search-name").val(
-            `${this.textContent} - Totat Qty : ${totalQty}`
-          );
-        }
-        if (!existProduct) {
-          $("input#persediaan-refproduct-search-name").val(this.textContent);
-        }
-      }
-      if (!status) {
-        console.error(response);
-      }
-    });
-    $("input#persediaan-refproduct-create-name").val(this.textContent);
-    $("input#persediaan-refproduct-create-id").val($(this).attr("valueid"));
-    $("input#persediaan-refproduct-create-rp").val($(this).attr("valueprice"));
-    $("#persediaan-refproduct-create-list").hide();
-  });
 };
-export const uiProductListupdatePersediaan = (productList) => {
+export const uiListRefPersediaanUpdate = (productList) => {
   let option = "";
   productList.forEach((el) => {
     option += `<div class='persediaan-refproduct-update-val fs-6' valueid=${el.ProductId} valueprice=${el.ProductPrice}>${el.ProductName}</div>`;
   });
   $("#persediaan-refproduct-update-list").html(option);
-  // Re-bind click event to new elements
-  $(".persediaan-refproduct-update-val").on("click", function () {
-    $("input#persediaan-refproduct-update-id").val($(this).attr("valueid"));
-    $("input#persediaan-refproduct-update-rp").val($(this).attr("valueprice"));
-    $("input#persediaan-refproduct-update-name").val(this.textContent);
-    $("#persediaan-refproduct-update-list").hide();
-  });
 };
 // success create pdf
 ipcRenderer.on("success:pdf-product", (e, file_path) => {

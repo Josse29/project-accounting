@@ -21,7 +21,7 @@ $("#supplier-create-img").on("change", (event) => {
 $("#supplier-update-img").on("change", (event) => {
   const files = event.target.files;
   if (files.length > 0) {
-    $("#supplier-update-img-section").removeClass("d-none");
+    $("#supplier-update-img-section").show();
     const reader = new FileReader();
     reader.onload = function () {
       const imgbase64 = reader.result;

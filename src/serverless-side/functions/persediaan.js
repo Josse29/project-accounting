@@ -177,7 +177,7 @@ export const getPersediaanQtyValidate = (
         if (valPersediaanQty < 1) {
           return callback(
             false,
-            `Mohon maaf Produk Barang ${valProductName} belum terdaftar silakan tambah`
+            `Mohon maaf Produk ${valProductName} belum terdaftar silakan tambah`
           );
         }
       }
@@ -226,28 +226,40 @@ export const updatePersediaan = (
   valProductName,
   callback
 ) => {
-  const valPersediaanTotalRp = valPersediaanQty * valPersediaanRp;
-  db.run(
-    queryUpdatePersediaan(
-      valPersediaanId,
-      valPersediaanDDMY,
-      valPersediaanHMS,
-      valPersediaanProductId,
-      valPersediaanQty,
-      valPersediaanTotalRp,
-      valPersediaanInfo
-    ),
-    (err) => {
-      if (!err) {
-        return callback(
-          true,
-          `Persediaan <b class='text-capitalize'>${valProductName} ${formatQty1(
-            valPersediaanQty
-          )}</b> berhasil diperbaharui`
+  getPersediaanQtyValidate(
+    valProductName,
+    valPersediaanProductId,
+    valPersediaanQty,
+    (status, response) => {
+      if (status) {
+        const valPersediaanTotalRp = valPersediaanQty * valPersediaanRp;
+        db.run(
+          queryUpdatePersediaan(
+            valPersediaanId,
+            valPersediaanDDMY,
+            valPersediaanHMS,
+            valPersediaanProductId,
+            valPersediaanQty,
+            valPersediaanTotalRp,
+            valPersediaanInfo
+          ),
+          (err) => {
+            if (!err) {
+              return callback(
+                true,
+                `Persediaan <b class='text-capitalize'>${valProductName} ${formatQty1(
+                  valPersediaanQty
+                )}</b> berhasil diperbaharui`
+              );
+            }
+            if (err) {
+              return callback(false, err);
+            }
+          }
         );
       }
-      if (err) {
-        return callback(false, err);
+      if (!status) {
+        return callback(false, response);
       }
     }
   );

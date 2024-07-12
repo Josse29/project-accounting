@@ -142,7 +142,6 @@ $(document).ready(function () {
       (status, response) => {
         if (status) {
           let tr = "";
-          console.log(response);
           response.forEach((element) => {
             tr += uiTrPersediaan(element);
           });
@@ -245,7 +244,6 @@ export const getPersediaanAgain = () => {
       (status, response) => {
         if (status) {
           persediaanTotalPage = parseInt(response);
-          console.log(persediaanTotalPage);
           uiPagination(persediaanTotalPage);
         }
         if (!status) {
