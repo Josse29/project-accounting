@@ -25,7 +25,7 @@ $(document).ready(function () {
     persediaanCreateQty++;
     $("input#persediaan-create-qty").val(persediaanCreateQty);
   });
-  // action to create persediaan
+  // function action to create persediaan
   $("#persediaan-create-submit")
     .off("click")
     .on("click", () => {

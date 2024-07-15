@@ -135,7 +135,7 @@
               style="background-color: #3b82f6"
             >
               <div>Persediaan</div>
-              <div id="persediaan-detail-totalrp" class="me-4">0</div>
+              <div id="persediaan-detail-totalrp" class="me-4"></div>
             </div>
             <div class="card-body">
               <!-- section button group create export etc -->
@@ -230,24 +230,16 @@
                   </select>
                   <!-- for product -->
                   <select
+                    id="persediaan-refproduct-search"
                     class="form-select"
                     aria-label="Default select example"
-                  >
-                    <option selected>Produk</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </select>
+                  ></select>
                   <!-- for category -->
                   <select
+                    id="persediaan-refcategory-search"
                     class="form-select"
                     aria-label="Default select example"
-                  >
-                    <option selected>Kategori</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </select>
+                  ></select>
                 </div>
                 <!-- search -->
                 <div class="input-group">
@@ -1119,6 +1111,8 @@
                   <span class="menit"></span>
                   <span class="detik"></span>
                 </div>
+                <!-- section failed -->
+                <div id="persediaan-update-failed"></div>
                 <!-- product -->
                 <div class="mb-3 position-relative">
                   <label
@@ -1128,9 +1122,9 @@
                   >
                   <!-- trigerred search product -->
                   <input
+                    id="persediaan-refproduct-update-search"
                     type="text"
                     class="form-control text-capitalize"
-                    id="persediaan-refproduct-update-search"
                     placeholder="masukkan nama product"
                   />
                   <!-- send to request persediaa refproduct id,rp  -->
@@ -1169,7 +1163,7 @@
                     <input
                       type="text"
                       class="border-0 fs-3 mx-2 p-1 text-center"
-                      id="persediaan-update-qty"
+                      id="persediaan-refproduct-update-qty"
                       style="width: 80px"
                     />
                     <button
@@ -1183,7 +1177,7 @@
                 </div>
                 <!-- KETERANGAN -->
                 <div class="mb-3">
-                  <label for="keterangan" class="form-label fs-4"
+                  <label for="persediaan-update-info" class="form-label fs-4"
                     >Keterangan</label
                   >
                   <textarea
@@ -1204,7 +1198,6 @@
                   id="persediaan-update-submit"
                   type="button"
                   class="btn text-white"
-                  data-bs-dismiss="modal"
                 >
                   Save
                 </button>
@@ -1302,6 +1295,38 @@
                   <p class="mb-1 fs-4">Price</p>
                   <p id="detail-product-price" class="ms-2 fs-4 mb-0"></p>
                 </div>
+                <!-- Persediaan -->
+                <div class="mb-3">
+                  <p class="form-label fs-4 mb-1">Persediaan</p>
+                </div>
+
+                <!-- table persediaan -->
+                <div>
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th scope="col" class="fs-6">Date</th>
+                        <th scope="col" class="fs-6">Time</th>
+                        <th scope="col" class="fs-6">Qty</th>
+                        <th scope="col" class="fs-6">Harga</th>
+                      </tr>
+                    </thead>
+                    <tbody id="product-refpersediaan"></tbody>
+                    <tfoot>
+                      <tr>
+                        <td class="fs-6 fw-bold text-center" colspan="2">
+                          Total
+                        </td>
+                        <td class="fs-6" id="product-refpersediaan-detail-qty">
+                          11
+                        </td>
+                        <td class="fs-6" id="persediaan-detail-productid">
+                          120000
+                        </td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
                 <!-- kategori -->
                 <div class="mb-3">
                   <p class="fs-4 mb-1">Kategori</p>
@@ -1310,7 +1335,7 @@
                     class="ms-2 text-capitalize fs-4 mb-0"
                   ></p>
                 </div>
-                <!-- kategori -->
+                <!-- Supplier -->
                 <div class="mb-3">
                   <p class="form-label fs-4 mb-1">Supplier</p>
                   <p
@@ -1322,33 +1347,6 @@
                 <div class="mb-3">
                   <p class="fs-4 mb-1">Keterangan</p>
                   <p id="detail-product-keterangan" class="ms-2 fs-4 mb-0"></p>
-                </div>
-                <!-- table persediaan -->
-                <div>
-                  <table class="table table-striped">
-                    <thead>
-                      <tr>
-                        <th scope="col" class="fs-5">#</th>
-                        <th scope="col" class="fs-5">Date</th>
-                        <th scope="col" class="fs-5">Qty</th>
-                        <th scope="col" class="fs-5">Harga</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <th scope="row" class="fs-5">1</th>
-                        <td class="text-capitalize fs-5">12-04-22</td>
-                        <td class="fs-5">+1</td>
-                        <td class="fs-5">5000</td>
-                      </tr>
-                      <tr>
-                        <td class="fs-5 fw-bold text-center" colspan="3">
-                          Total
-                        </td>
-                        <td class="fs-5">120000</td>
-                      </tr>
-                    </tbody>
-                  </table>
                 </div>
               </div>
             </div>

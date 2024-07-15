@@ -15,6 +15,7 @@ import {
   getPersediaanTotalRow,
 } from "../../../../serverless-side/functions/persediaan.js";
 import { formatWaktuIndo } from "../../utils/formatWaktu.js";
+import { getListProduct } from "../../../../serverless-side/functions/product.js";
 $(document).ready(function () {
   let persediaanSearch = $("input#persediaan-search").val();
   let persediaanLimit = parseInt($("#persediaan-limit").val());
@@ -22,15 +23,24 @@ $(document).ready(function () {
   let persediaanTotalPage;
   let persediaanBtnPage;
   getInit(persediaanSearch);
-  getPersediaanRpSum((status, response) => {
+  getListProduct("", (status, response) => {
     if (status) {
-      const totalRupiah = formatRupiah2(response);
-      $("#persediaan-detail-totalrp").text(totalRupiah);
+      let option = ``;
+      response.forEach((row) => {
+        option += `<option value=${row.ProductName}>${row.ProductName}</option>`;
+      });
+      $("select#persediaan-refproduct-search").html(option);
     }
     if (!status) {
       console.error(response);
     }
   });
+  $("select#persediaan-refproduct-search").on("change", function () {
+    persediaanSearch = $(this).val();
+    getInit(persediaanSearch);
+  });
+  $("select#persediaan-refcategory-search").on("change", function () {});
+  $("#persediaan-refcategory-search");
   $("input#persediaan-search").on("keyup", function () {
     persediaanSearch = $(this).val();
     getInit(persediaanSearch);
@@ -44,17 +54,31 @@ $(document).ready(function () {
     getPersediaanTotalRow(persediaanSearch, (status, response) => {
       if (status) {
         persediaanTotalRow = parseInt(response);
+        // existed product
         if (persediaanTotalRow >= 1) {
+          getPersediaanRpSum("", (status, response) => {
+            if (status) {
+              const totalRupiah = formatRupiah2(response);
+              $("#persediaan-detail-totalrp").text(totalRupiah);
+            }
+            if (!status) {
+              console.error(response);
+            }
+          });
           getTotalPage();
-          $("#persediaan-pagination").removeClass("d-none");
+          $("#persediaan-pagination").show();
         }
+        // non-existed product
         if (persediaanTotalRow < 1) {
-          if (persediaanSearch) {
+          // with search
+          if (persediaanSearch !== "") {
             $("#persediaan-table").html(uiTrZeroSearch(persediaanSearch));
-          } else {
+          }
+          // without search
+          if (persediaanSearch === "") {
             $("#persediaan-table").html(uiTrZero);
           }
-          $("#persediaan-pagination").addClass("d-none");
+          $("#persediaan-pagination").hide();
         }
       }
       if (!status) {
@@ -159,7 +183,6 @@ $(document).ready(function () {
   function getDetail() {
     $(document).on("click", "#persediaanDetail", function () {
       const persediaan = this.dataset;
-      console.log(persediaan);
       $("#persediaan-detail-productname").text(persediaan.productname);
       $("#persediaan-detail-date").text(
         formatWaktuIndo(persediaan.persediaanddmy)
@@ -191,7 +214,6 @@ $(document).ready(function () {
       if (persediaaanRp >= 1) {
         txtPersediaanRp = formatRupiah2(persediaaanRp);
       }
-      console.log();
       $("td#persediaan-detail-rp").text(txtPersediaanRp);
     });
   }

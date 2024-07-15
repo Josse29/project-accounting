@@ -80,7 +80,6 @@ export const queryGetListProduct = (productSearch) => {
   query += `ORDER BY ${tableName}.${colProductName} ASC `;
   return query;
 };
-
 export const queryTotalRowProducts = (productSearch) => {
   let query = `SELECT COUNT(${colProductId}) 
                AS TOTAL_ROW
@@ -97,7 +96,6 @@ export const queryTotalRowProducts = (productSearch) => {
   }
   return query;
 };
-
 // 3.UPDATE
 export const queryUpdateProduct = (
   productId,

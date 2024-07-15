@@ -7,35 +7,36 @@ import { getPersediaanQty } from "../../../../serverless-side/functions/persedia
 // function to update when create list product ref persediaan
 export function listProductRefPersediaanCreate() {
   $(document).ready(function () {
+    let $productSearch = $("input#persediaan-refproduct-search-name");
     const $productList = $("#persediaan-refproduct-create-list");
-    let productListSearch = $("input#persediaan-refproduct-search-name");
     $productList.hide();
-    getInit(productListSearch.val());
-    productListSearch.on("focus", () => {
+    getInit($productSearch.val());
+    $productSearch.on("focus", () => {
       $("#persediaan-refproduct-create-list").show();
     });
-    productListSearch.on("blur", () => {
+    $productSearch.on("blur", () => {
       setTimeout(() => {
         $("#persediaan-refproduct-create-list").hide();
       }, 200);
     });
-    productListSearch.on("keyup", function () {
-      getInit(productListSearch.val());
+    $productSearch.on("keyup", function () {
+      getInit($productSearch.val());
     });
     // 1.Initial Product (getTotalRow, and getListProduct)
-    function getInit(productListSearch) {
-      getTotalRowProduct(productListSearch, (status, response) => {
+    function getInit(productSearch) {
+      getTotalRowProduct(productSearch, (status, response) => {
         // success total row product
         if (status) {
           const totalProductList = parseInt(response);
           // exist product
           if (totalProductList >= 1) {
             $("#productList-empty").hide();
-            getListProduct(productListSearch, (status, response) => {
+            getListProduct(productSearch, (status, response) => {
               if (status) {
                 uiListRefPersediaanCreate(response);
                 getValue();
-              } else {
+              }
+              if (!status) {
                 console.error(response);
               }
             });
@@ -43,21 +44,21 @@ export function listProductRefPersediaanCreate() {
           // nonexistence product
           if (totalProductList < 1) {
             // with search feature
-            if (productListSearch) {
-              const optionNotFound = `<div class='persediaan-refproduct-not-found'>product - <b>${productListSearch}</b> tidak ditemukan</div>`;
+            if (productSearch !== "") {
+              const optionNotFound = `<div class='persediaan-refproduct-not-found'>product - <b>${productSearch}</b> tidak ditemukan</div>`;
               $("#persediaan-refproduct-create-list").html(optionNotFound);
             }
             // without search feature
-            if (!productListSearch) {
+            if (productSearch === "") {
+              $productSearch.hide();
               $(".persediaan-refproduct-create-list").hide();
-              $("input#persediaan-refproduct-create-name").hide();
               $("#productList-empty").show();
             }
           }
         }
         // failed total row product
         if (!status) {
-          console.log(response);
+          console.error(response);
         }
       });
     }
@@ -71,12 +72,12 @@ export function listProductRefPersediaanCreate() {
             const existProduct = response.length >= 1;
             if (existProduct) {
               const totalQty = response[0].TotalQty;
-              productListSearch.val(
+              $productSearch.val(
                 `${this.textContent} - Totat Qty : ${totalQty}`
               );
             }
             if (!existProduct) {
-              productListSearch.val(this.textContent);
+              $productSearch.val(this.textContent);
             }
           }
           if (!status) {
@@ -131,11 +132,13 @@ export function listProductRefPersediaanUpdate() {
           }
           // non-existed product
           if (totalProductList < 1) {
+            // with searching
             if (productSearch !== "") {
               const optionNotFound = `<div class='persediaan-refproduct-not-found'>product - <b>${productSearch}</b> tidak ditemukan</div>`;
               $productList.html(optionNotFound);
-            } else {
-              $productList.hide();
+            }
+            if (productSearch === "") {
+              $productSearch.hide();
               $("#productList-empty-update").show();
             }
           }

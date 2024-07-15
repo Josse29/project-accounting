@@ -2,6 +2,7 @@ import { formatQty1 } from "../../client-side/js/utils/formatQty.js";
 import {
   queryDeletePersediaan,
   queryGetPersediaan,
+  queryGetPersediaanProductId,
   queryGetPersediaanQty,
   queryGetPersediaanRpSum,
   queryGetPersediaanTotalRow,
@@ -21,48 +22,55 @@ export const createPersediaan = (
   callback
 ) => {
   const isNumeric = /^-?([1-9]\d*|0?\.\d+)$/.test(valPersediaanQty);
-  if (isNumeric) {
-    // validate qty product
-    getPersediaanQtyValidate(
-      valProductName,
-      valPersediaanProductId,
-      valPersediaanQty,
-      (status, response) => {
-        if (status) {
-          const valPersediaanTotalRp = valPersediaanQty * valPersediaanRp;
-          // execute action create product
-          db.run(
-            queryInsertPersediaan(
-              valPersediaanDDMY,
-              valPersediaanHMS,
-              valPersediaanProductId,
-              valPersediaanQty,
-              valPersediaanTotalRp,
-              valPersediaanInfo
-            ),
-            (err) => {
-              if (!err) {
-                return callback(
-                  true,
-                  `Persediaan <b class='text-capitalize'>${valProductName} ${formatQty1(
-                    valPersediaanQty
-                  )}</b> berhasil ditambahkan`
-                );
-              }
-              if (err) {
-                return callback(false, err);
-              }
-            }
+  const isNaN = Number.isNaN(valPersediaanProductId);
+  // 1.validate product exist
+  if (isNaN) {
+    return callback(false, "Mohon tambah Product terlebih dahulu");
+  }
+  // 2.validate numeric on valPersediaanQty
+  if (!isNumeric) {
+    return callback(false, "Mohon Masukkan Angka di Input Qty");
+  }
+  // 3.validate qty product
+  getPersediaanQtyValidate(
+    valProductName,
+    valPersediaanProductId,
+    valPersediaanQty,
+    (status, response) => {
+      if (status) {
+        executeInsert();
+      }
+      if (!status) {
+        return callback(false, response);
+      }
+    }
+  );
+  // execute insert
+  function executeInsert() {
+    const valPersediaanTotalRp = valPersediaanQty * valPersediaanRp;
+    db.run(
+      queryInsertPersediaan(
+        valPersediaanDDMY,
+        valPersediaanHMS,
+        valPersediaanProductId,
+        valPersediaanQty,
+        valPersediaanTotalRp,
+        valPersediaanInfo
+      ),
+      (err) => {
+        if (!err) {
+          return callback(
+            true,
+            `Persediaan <b class='text-capitalize'>${valProductName} ${formatQty1(
+              valPersediaanQty
+            )}</b> berhasil ditambahkan`
           );
         }
-        if (!status) {
-          return callback(false, response);
+        if (err) {
+          return callback(false, err);
         }
       }
     );
-  }
-  if (!isNumeric) {
-    return callback(false, "Mohon Masukkan Angka di Input Qty");
   }
 };
 // 2.READ
@@ -154,13 +162,13 @@ export const getPersediaanQtyValidate = (
             if (qtyOutAbs > persediaanQty) {
               return callback(
                 false,
-                `Mohon Maaf Produk ${res.ProductName} hanya tersedia : ${persediaanQty}`
+                `Mohon Maaf Produk ${valProductName} hanya tersedia : ${persediaanQty}`
               );
             }
           }
           // barang keluar tapi persediaan masih kosong
           if (persediaanQty < 1) {
-            return callback(false, `Produk ${res.ProductName} masih kosong`);
+            return callback(false, `Produk ${valProductName} masih kosong`);
           }
         }
       }
@@ -170,7 +178,7 @@ export const getPersediaanQtyValidate = (
         if (valPersediaanQty >= 1) {
           return callback(
             true,
-            `Produk ${valProductName} tambah product ${valPersediaanQty}`
+            `Produk ${valProductName} sudah ditambahkan dengan jumlah : ${valPersediaanQty}`
           );
         }
         // barang keluar
@@ -197,8 +205,8 @@ export const getPersediaanQty = (valPersediaanProductId, callback) => {
     }
   });
 };
-export const getPersediaanRpSum = (callback) => {
-  db.each(queryGetPersediaanRpSum(), (err, res) => {
+export const getPersediaanRpSum = (valPersediaanProductId, callback) => {
+  db.each(queryGetPersediaanRpSum(valPersediaanProductId), (err, res) => {
     if (!err) {
       let totalRp = ``;
       if (res.TotalRp !== null) {
@@ -214,6 +222,16 @@ export const getPersediaanRpSum = (callback) => {
     }
   });
 };
+export const getPersediaanProductId = (valPersediaanProductId, callback) => {
+  db.all(queryGetPersediaanProductId(valPersediaanProductId), (err, res) => {
+    if (!err) {
+      return callback(true, res);
+    }
+    if (err) {
+      return callback(true, err);
+    }
+  });
+};
 // 3.UPDATE
 export const updatePersediaan = (
   valPersediaanId,
@@ -226,43 +244,54 @@ export const updatePersediaan = (
   valProductName,
   callback
 ) => {
+  const isNumeric = /^-?([1-9]\d*|0?\.\d+)$/.test(valPersediaanQty);
+  // 1.validate numeric on valPersediaanQty
+  if (!isNumeric) {
+    return callback(false, "Mohon Masukkan Angka di Input Qty");
+  }
+  // 2. validate available qty
   getPersediaanQtyValidate(
     valProductName,
     valPersediaanProductId,
     valPersediaanQty,
     (status, response) => {
       if (status) {
-        const valPersediaanTotalRp = valPersediaanQty * valPersediaanRp;
-        db.run(
-          queryUpdatePersediaan(
-            valPersediaanId,
-            valPersediaanDDMY,
-            valPersediaanHMS,
-            valPersediaanProductId,
-            valPersediaanQty,
-            valPersediaanTotalRp,
-            valPersediaanInfo
-          ),
-          (err) => {
-            if (!err) {
-              return callback(
-                true,
-                `Persediaan <b class='text-capitalize'>${valProductName} ${formatQty1(
-                  valPersediaanQty
-                )}</b> berhasil diperbaharui`
-              );
-            }
-            if (err) {
-              return callback(false, err);
-            }
-          }
-        );
+        executeUpdate();
       }
       if (!status) {
+        console.log(response);
         return callback(false, response);
       }
     }
   );
+  // execute update
+  function executeUpdate() {
+    const valPersediaanTotalRp = valPersediaanQty * valPersediaanRp;
+    db.run(
+      queryUpdatePersediaan(
+        valPersediaanId,
+        valPersediaanDDMY,
+        valPersediaanHMS,
+        valPersediaanProductId,
+        valPersediaanQty,
+        valPersediaanTotalRp,
+        valPersediaanInfo
+      ),
+      (err) => {
+        if (!err) {
+          return callback(
+            true,
+            `Persediaan <b class='text-capitalize'>${valProductName} ${formatQty1(
+              valPersediaanQty
+            )}</b> berhasil diperbaharui`
+          );
+        }
+        if (err) {
+          return callback(false, err);
+        }
+      }
+    );
+  }
 };
 // 4.DELETE
 export const deletePersediaan = (

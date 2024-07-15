@@ -7,19 +7,10 @@ export const timeIndonesian = () => {
     month: "long",
     day: "numeric",
   };
-  const optionsH = {
-    hour: "numeric",
-  };
-  const optionsM = {
-    minute: "numeric",
-  };
-  const optionsS = {
-    second: "numeric",
-  };
   const indonesiaDDMY = now.toLocaleString("id-ID", optionsDDMY);
-  const indonesiaHour = now.toLocaleString("id-ID", optionsH);
-  const indonesiaMinute = now.toLocaleString("id-ID", optionsM);
-  const indonesiaSecond = now.toLocaleString("id-ID", optionsS);
+  const indonesiaHour = ("0" + now.getHours()).slice(-2);
+  const indonesiaMinute = ("0" + now.getMinutes()).slice(-2);
+  const indonesiaSecond = ("0" + now.getSeconds()).slice(-2);
   return {
     indonesiaDDMY,
     indonesiaHour,

@@ -5,33 +5,33 @@ import {
 import { getTimeNow } from "../../utils/formatWaktu.js";
 import { listProductRefPersediaanUpdate } from "../products/list.js";
 import { getPersediaanAgain } from "./read.js";
-import { uiSuccessActionPersediaan } from "./ui.js";
+import { uiFailedUpdate, uiSucceedUpdate } from "./ui.js";
 
 $(document).ready(function () {
   $(document).on("click", "#persediaan-update-btn", function () {
     listProductRefPersediaanUpdate();
     const persediaan = this.dataset;
-    // get all params
+    const persediaanId = parseInt(persediaan.persediaanid);
+    const persediaanProductId = parseInt(persediaan.productid);
+    const persediaanRp = parseFloat(persediaan.productprice);
+    const persediaanQty = parseFloat(persediaan.persediaanqty);
+    const persediaanName = persediaan.productname;
+    // get all params and value
     $("#persediaan-update-label").text(persediaan.productname);
+    $("#persediaan-refproduct-update-search").val(persediaan.productname);
+    $("#persediaan-refproduct-update-name").val(persediaan.productname);
     $("#persediaan-update-date").text(persediaan.persediaandate);
     $("#persediaan-update-second").text(persediaan.persediaansecond);
-    $("#persediaan-refproduct-update-id").val(persediaan.productid);
-    $("input#persediaan-refproduct-update-rp").val(
-      parseFloat(persediaan.productprice)
-    );
-    $("input#persediaan-update-qty").val(persediaan.persediaanqty);
+    $("input#persediaan-refproduct-update-rp").val(persediaanRp);
     $("textarea#persediaan-update-info").val(persediaan.persediaaninfo);
-    $("input#persediaan-refproduct-update-id").val(
-      parseInt(persediaan.productid)
-    );
-    $("input#persediaan-refproduct-update-qty").val(
-      parseInt(persediaan.persediaanqty)
-    );
-    getPersediaanQty(parseInt(persediaan.productid), (status, response) => {
+    $("input#persediaan-refproduct-update-id").val(persediaanProductId);
+    $("input#persediaan-refproduct-update-qty").val(persediaanQty);
+    // get qty
+    getPersediaanQty(persediaanProductId, (status, response) => {
       if (status) {
-        const persediaan = response[0];
+        const totalQty = response[0].TotalQty;
         $("input#persediaan-refproduct-update-search").val(
-          `${persediaan.ProductName} - TotalQty : ${persediaan.TotalQty}`
+          `${persediaanName} - TotalQty : ${totalQty}`
         );
       }
       if (!status) {
@@ -39,39 +39,39 @@ $(document).ready(function () {
       }
     });
     // function update increse or decrease qty
-    let persediaanUpdateQty = parseFloat(
-      $("input#persediaan-update-qty").val()
-    );
-    $("input#persediaan-update-qty").on("keyup", function () {
+    let persediaanUpdateQty = $("input#persediaan-refproduct-update-qty").val();
+    $("input#persediaan-refproduct-update-qty").on("keyup", function () {
       persediaanUpdateQty = $(this).val();
     });
     $("button#persediaan-update-qty-decrease").on("click", function () {
       persediaanUpdateQty--;
-      $("input#persediaan-update-qty").val(persediaanUpdateQty);
+      $("input#persediaan-refproduct-update-qty").val(persediaanUpdateQty);
     });
     $("button#persediaan-update-qty-increase").on("click", function () {
       persediaanUpdateQty++;
-      $("input#persediaan-update-qty").val(persediaanUpdateQty);
+      $("input#persediaan-refproduct-update-qty").val(persediaanUpdateQty);
     });
-    // action submit
+    // function action to update persediaan
     $("button#persediaan-update-submit")
       .off("click")
       .on("click", function () {
+        // get value
         const { formattedDDMY, formattedHMS } = getTimeNow();
-        const valPersediaanId = parseInt(persediaan.persediaanid);
+        const valPersediaanId = persediaanId;
         const valPersediaanDDMY = formattedDDMY;
         const valPersediaanHMS = formattedHMS;
         const valPersediaanProductId = parseInt(
           $("#persediaan-refproduct-update-id").val()
         );
-        const valPersediaanQty = parseFloat(
-          $("input#persediaan-update-qty").val()
-        );
+        const valPersediaanQty = $(
+          "input#persediaan-refproduct-update-qty"
+        ).val();
         const valPersediaanRp = parseFloat(
           $("input#persediaan-refproduct-update-rp").val()
         );
         const valPersediaanInfo = $("#persediaan-update-info").val();
         const valProductName = $("#persediaan-refproduct-update-name").val();
+        // action
         updatePersediaan(
           valPersediaanId,
           valPersediaanDDMY,
@@ -83,10 +83,12 @@ $(document).ready(function () {
           valProductName,
           (status, response) => {
             if (status) {
-              uiSuccessActionPersediaan(response);
+              uiSucceedUpdate(response);
               getPersediaanAgain();
+              $("#persediaanUpdateModal").modal("hide");
             }
             if (!status) {
+              uiFailedUpdate(response);
               console.error(response);
             }
           }

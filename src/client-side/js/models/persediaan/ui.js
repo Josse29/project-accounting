@@ -118,6 +118,24 @@ export const uiFailedActionPersediaan = (res) => {
                           </div>`;
   $("#sectionFailedActionPersediaan").html(alertFailedMe);
 };
+// make alert failed after update
+export const uiFailedUpdate = (res) => {
+  const divFailed = `<div class="alert alert-danger" role="alert">
+                      <i class="fa-solid fa-triangle-exclamation me-1"></i>
+                      ${res}
+                    </div>`;
+  $("#persediaan-update-failed").html(divFailed);
+};
+export const uiSucceedUpdate = (res) => {
+  const alertSuccessMe = `<div class="alert alert-success" role="alert">
+                            ${res}
+                        </div>`;
+  $("#sectionSuccessActionPersediaan").html(alertSuccessMe);
+  $("#persediaan-update-failed").html("");
+  setTimeout(() => {
+    $("#sectionSuccessActionPersediaan").html("");
+  }, 20000);
+};
 // button pagination
 export const uiBtnPersediaanPage = (i) => {
   return `<button type = "button" 

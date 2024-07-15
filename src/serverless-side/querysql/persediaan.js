@@ -51,13 +51,14 @@ export const queryGetPersediaan = (
   if (valPersediaanSearch !== "") {
     query += `WHERE Product.ProductName LIKE '%${valPersediaanSearch}%' ESCAPE '!' OR
                     Category.CategoryName LIKE '%${valPersediaanSearch}%' ESCAPE '!' OR
-                    Supplier.SupplierName LIKE '%${valPersediaanSearch}%' ESCAPE '!' `;
+                    Supplier.SupplierName LIKE '%${valPersediaanSearch}%' ESCAPE '!'
+ `;
   }
   // with order limit offset
   query += `ORDER BY ${tableName}.${colPersediaanId} DESC
             LIMIT ${valPersediaanLimit} 
             OFFSET ${valPersediaanOffset}`;
-
+  console.log(query);
   return query;
 };
 export const queryGetPersediaanTotalRow = (valPersediaanSearch) => {
@@ -71,7 +72,8 @@ export const queryGetPersediaanTotalRow = (valPersediaanSearch) => {
   if (valPersediaanSearch !== "") {
     query += `WHERE Product.ProductName LIKE '%${valPersediaanSearch}%' ESCAPE '!' OR
                     Category.CategoryName LIKE '%${valPersediaanSearch}%' ESCAPE '!' OR
-                    Supplier.SupplierName LIKE '%${valPersediaanSearch}%' ESCAPE '!' `;
+                    Supplier.SupplierName LIKE '%${valPersediaanSearch}%' ESCAPE '!'
+ `;
   }
   return query;
 };
@@ -91,15 +93,30 @@ export const queryListPersediaan = (valPersediaanSearch) => {
   }
   return query;
 };
+export const queryGetPersediaanProductId = (valPersediaanProductId) => {
+  return `SELECT
+          ${tableName}.${colPersediaanDDMY},
+          ${tableName}.${colPersediaanHMS},
+          ${tableName}.${colPersediaanRp},
+          ${tableName}.${colPersediaanQty}
+          FROM Persediaan
+          WHERE Persediaan.PersediaanProductId = ${valPersediaanProductId}
+          ORDER BY ${tableName}.${colPersediaanDDMY} DESC, ${tableName}.${colPersediaanHMS} DESC `;
+};
 export const queryGetPersediaanQty = (valPersediaanProductId) => {
   return `SELECT
-          Product.ProductName,
-          Persediaan.PersediaanProductId,
           SUM(Persediaan.PersediaanQty) AS TotalQty
           FROM Persediaan
-          LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
-          WHERE Persediaan.PersediaanProductId = ${valPersediaanProductId}
-          GROUP BY Persediaan.PersediaanProductId `;
+          WHERE Persediaan.PersediaanProductId = ${valPersediaanProductId} `;
+};
+export const queryGetPersediaanRpSum = (valPersediaanProductId) => {
+  let query = `SELECT
+               SUM(Persediaan.PersediaanRp) AS TotalRp
+               FROM Persediaan `;
+  if (valPersediaanProductId !== "") {
+    query += `WHERE Persediaan.PersediaanProductId = ${valPersediaanProductId} `;
+  }
+  return query;
 };
 // export const queryGetPersediaanProductList = (valProductName) => {
 //   return `SELECT
@@ -125,11 +142,6 @@ export const queryGetPersediaanQty = (valPersediaanProductId) => {
 //                 GROUP BY Persediaan.PersediaanProductId )
 //           AS GroupedData`;
 // };
-export const queryGetPersediaanRpSum = () => {
-  return `SELECT
-          SUM(Persediaan.PersediaanRp) AS TotalRp
-          FROM Persediaan`;
-};
 // 3.UPDATE
 export const queryUpdatePersediaan = (
   valPersediaanId,
@@ -140,6 +152,15 @@ export const queryUpdatePersediaan = (
   valPersediaanRp,
   valPersediaanInfo
 ) => {
+  console.log(`UPDATE
+    ${tableName}
+    SET ${colPersediaanDDMY} = '${valPersediaanDDMY}',
+        ${colPersediaanHMS} = '${valPersediaanHMS}',
+        ${colPersediaanProductId} = ${valPersediaanProductId},
+        ${colPersediaanQty} = ${valPersediaanQty},
+        ${colPersediaanRp} = ${valPersediaanRp},
+        ${colPersediaanInfo} = '${valPersediaanInfo}'
+    WHERE ${colPersediaanId} = ${valPersediaanId}`);
   return `UPDATE
           ${tableName}
           SET ${colPersediaanDDMY} = '${valPersediaanDDMY}',

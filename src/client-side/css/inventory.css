@@ -405,6 +405,7 @@ div.product-refsupplier-list::-webkit-scrollbar-thumb:hover {
   width: 100%;
   z-index: 3;
 }
+
 .persediaan-refproduct-create-val {
   padding: 0px 10px;
   text-transform: capitalize;
@@ -437,6 +438,9 @@ div.product-refsupplier-list::-webkit-scrollbar-thumb:hover {
   padding: 8px 12px;
 }
 input#persediaan-refproduct-create-qty:focus {
+  outline: none;
+}
+input#persediaan-refproduct-update-qty:focus {
   outline: none;
 }
 input#persediaan-refproduct-create-qty::placeholder {

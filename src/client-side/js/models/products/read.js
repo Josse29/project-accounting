@@ -14,6 +14,12 @@ import {
 } from "./ui.js";
 import { getSupplierAgain } from "./../supplier/read.js";
 import { getPersediaanAgain } from "../persediaan/read.js";
+import {
+  getPersediaanProductId,
+  getPersediaanQty,
+  getPersediaanRpSum,
+} from "../../../../serverless-side/functions/persediaan.js";
+import { formatWaktuIndo } from "../../utils/formatWaktu.js";
 $(document).ready(function () {
   let productSearch = $("#product-search-input").val();
   let productLimit = parseInt($("#product-limit").val());
@@ -153,6 +159,60 @@ $(document).ready(function () {
   function getDetail() {
     $(document).on("click", "#productDetailBtn", function () {
       const product = this.dataset;
+      const productId = parseInt(product.productid);
+      getPersediaanQty(productId, (status, response) => {
+        if (status) {
+          const totalQty = response[0].TotalQty;
+          $("#product-refpersediaan-detail-qty").text(totalQty);
+        }
+        if (!status) {
+          console.error(response);
+        }
+      });
+      getPersediaanProductId(productId, (status, response) => {
+        if (status) {
+          let tr = ``;
+          response.forEach((row) => {
+            let txtPrice = ``;
+            let txtQty = ``;
+            const persediaanRp = row.PersediaanRp.toString();
+            if (persediaanRp < 1) {
+              txtPrice =
+                persediaanRp.slice(0, 1) +
+                " " +
+                formatRupiah2(persediaanRp.slice(1));
+            }
+            if (persediaanRp >= 1) {
+              txtPrice = "+ " + formatRupiah2(persediaanRp);
+            }
+            const persediaanQty = row.PersediaanQty.toString();
+            if (persediaanQty < 1) {
+              txtQty = persediaanQty.slice(0, 1) + " " + persediaanQty.slice(1);
+            }
+            if (persediaanQty >= 1) {
+              txtQty = "+ " + persediaanQty;
+            }
+            tr += `<tr>
+                    <td class="fs-6">${formatWaktuIndo(row.PersediaanDDMY)}</td>
+                    <td class="fs-6">${row.PersediaanHMS}</td>
+                    <td class="fs-6">${txtQty}</td>
+                    <td class="fs-6" id="product-detail-price">${txtPrice}</td>
+                  </tr>`;
+          });
+          $("tbody#product-refpersediaan").html(tr);
+        }
+        if (!status) {
+          console.error(response);
+        }
+      });
+      getPersediaanRpSum(productId, (status, response) => {
+        if (status) {
+          $("#persediaan-detail-productid").text(formatRupiah2(response));
+        }
+        if (!status) {
+          console.error(response);
+        }
+      });
       const productPriceRupiah = formatRupiah2(product.productprice);
       $("#detailProductModalLabel").html(product.productname);
       $("#detail-product-name").text(product.productname);

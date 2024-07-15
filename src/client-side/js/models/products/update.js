@@ -48,7 +48,7 @@ $(document).ready(function () {
           $("#section-edit-product-img").hide();
           cancelImg = true;
         });
-      // function to updateProduct Hapus event listener sebelumnya jika ada MCCCCCKKKKKKKK
+      // function action to update product
       $("#edit-product-submit")
         .off("click")
         .on("click", () => {
