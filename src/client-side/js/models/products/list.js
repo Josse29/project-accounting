@@ -7,8 +7,8 @@ import { getPersediaanQty } from "../../../../serverless-side/functions/persedia
 // function to update when create list product ref persediaan
 export function listProductRefPersediaanCreate() {
   $(document).ready(function () {
-    let $productSearch = $("input#persediaan-refproduct-search-name");
     const $productList = $("#persediaan-refproduct-create-list");
+    let $productSearch = $("input#persediaan-refproduct-search-name");
     $productList.hide();
     getInit($productSearch.val());
     $productSearch.on("focus", () => {
@@ -24,6 +24,7 @@ export function listProductRefPersediaanCreate() {
     });
     // 1.Initial Product (getTotalRow, and getListProduct)
     function getInit(productSearch) {
+      // total row product
       getTotalRowProduct(productSearch, (status, response) => {
         // success total row product
         if (status) {
@@ -33,8 +34,10 @@ export function listProductRefPersediaanCreate() {
             $("#productList-empty").hide();
             getListProduct(productSearch, (status, response) => {
               if (status) {
-                uiListRefPersediaanCreate(response);
+                const productList = response;
+                uiListRefPersediaanCreate(productList);
                 getValue();
+                getValue2();
               }
               if (!status) {
                 console.error(response);
@@ -92,8 +95,32 @@ export function listProductRefPersediaanCreate() {
         $("#persediaan-refproduct-create-list").hide();
       });
     }
+    // 3 function to get value event keydown
+    let index = -1;
+    let isArrowDownPressed = false;
+    function getValue2() {
+      const items = $(".persediaan-refproduct-create-val");
+      $productSearch.on("keydown", function (e) {
+        if (e.key === "ArrowDown" && !isArrowDownPressed) {
+          e.preventDefault();
+          index++;
+          if (index >= items.length) {
+            index = 0; // Wrap around if index exceeds the number of items
+          }
+          items.removeClass("active-list");
+          $(items[index]).addClass("active-list");
+          isArrowDownPressed = true;
+        }
+      });
+      $productSearch.on("keyup", function (e) {
+        if (e.key === "ArrowDown") {
+          isArrowDownPressed = false;
+        }
+      });
+    }
   });
 }
+
 // function to update when update list product ref persediaan hufft
 export function listProductRefPersediaanUpdate() {
   $(document).ready(function () {

@@ -404,14 +404,28 @@ div.product-refsupplier-list::-webkit-scrollbar-thumb:hover {
   margin-top: -1px;
   width: 100%;
   z-index: 3;
+  max-height: 122px;
+  overflow-y: auto;
 }
-
+#persediaan-refproduct-create-list::-webkit-scrollbar {
+  width: 7px;
+}
+#persediaan-refproduct-create-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+#persediaan-refproduct-create-list::-webkit-scrollbar-thumb {
+  background: #adadad;
+}
 .persediaan-refproduct-create-val {
   padding: 0px 10px;
   text-transform: capitalize;
 }
 .persediaan-refproduct-create-val:hover {
   cursor: pointer;
+  background-color: #007bff;
+  color: white;
+}
+.persediaan-refproduct-create-val.active-list {
   background-color: #007bff;
   color: white;
 }

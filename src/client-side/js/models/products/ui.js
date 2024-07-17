@@ -125,10 +125,11 @@ export const uiActivePageButton = (productPageNumber, productBtnPage) => {
 export const uiListRefPersediaanCreate = (productList) => {
   let option = "";
   productList.forEach((el) => {
-    option += `<div class='persediaan-refproduct-create-val fs-6' valueid=${el.ProductId} valueprice=${el.ProductPrice}>${el.ProductName} </div>`;
+    option += `<div class='persediaan-refproduct-create-val fs-6' valueid=${el.ProductId} valueprice=${el.ProductPrice}>${el.ProductName}</div>`;
   });
   $("#persediaan-refproduct-create-list").html(option);
 };
+
 export const uiListRefPersediaanUpdate = (productList) => {
   let option = "";
   productList.forEach((el) => {

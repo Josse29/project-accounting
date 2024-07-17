@@ -226,7 +226,7 @@ export const getPersediaanAgain = () => {
   let persediaanTotalPage;
   let persediaanBtnPage;
   getInit(persediaanSearch);
-  getPersediaanRpSum((status, response) => {
+  getPersediaanRpSum("", (status, response) => {
     if (status) {
       const totalRupiah = formatRupiah2(response);
       $("#persediaan-detail-totalrp").text(totalRupiah);

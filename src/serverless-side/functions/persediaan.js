@@ -201,7 +201,7 @@ export const getPersediaanQty = (valPersediaanProductId, callback) => {
       return callback(true, res);
     }
     if (err) {
-      return callback(false, res);
+      return callback(false, err);
     }
   });
 };
@@ -218,7 +218,7 @@ export const getPersediaanRpSum = (valPersediaanProductId, callback) => {
       return callback(true, totalRp);
     }
     if (err) {
-      return callback(true, res);
+      return callback(false, err);
     }
   });
 };
