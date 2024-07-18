@@ -41,6 +41,7 @@ $(document).ready(function () {
         $("input#persediaan-create-qty").val()
       );
       const valPersediaanInfo = $("#persediaan-create-info").val();
+      console.log(valPersediaanProductId);
       createPersediaan(
         valProductName,
         valPersediaanDDMY,

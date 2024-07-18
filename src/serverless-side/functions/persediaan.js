@@ -162,13 +162,13 @@ export const getPersediaanQtyValidate = (
             if (qtyOutAbs > persediaanQty) {
               return callback(
                 false,
-                `Mohon Maaf Produk ${valProductName} hanya tersedia : ${persediaanQty}`
+                `Mohon Maaf ${valProductName} hanya tersedia : ${persediaanQty}`
               );
             }
           }
           // barang keluar tapi persediaan masih kosong
           if (persediaanQty < 1) {
-            return callback(false, `Produk ${valProductName} masih kosong`);
+            return callback(false, `${valProductName} masih kosong`);
           }
         }
       }
@@ -178,14 +178,14 @@ export const getPersediaanQtyValidate = (
         if (valPersediaanQty >= 1) {
           return callback(
             true,
-            `Produk ${valProductName} sudah ditambahkan dengan jumlah : ${valPersediaanQty}`
+            `${valProductName} sudah ditambahkan dengan jumlah : ${valPersediaanQty}`
           );
         }
         // barang keluar
         if (valPersediaanQty < 1) {
           return callback(
             false,
-            `Mohon maaf Produk ${valProductName} belum terdaftar silakan tambah`
+            `Mohon maaf ${valProductName} belum terdaftar silakan tambah`
           );
         }
       }

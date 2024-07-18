@@ -20,11 +20,14 @@ export function listProductRefPersediaanCreate() {
       }, 200);
     });
     $productSearch.on("keyup", function (event) {
-      // Cek jika tombol yang ditekan adalah arrow up (38), arrow down (40), atau Enter (13)
       if (
-        event.keyCode === 38 ||
-        event.keyCode === 40 ||
-        event.keyCode === 13
+        event.keyCode === 38 || // Arrow Up
+        event.keyCode === 40 || // Arrow Down
+        event.keyCode === 13 || // Enter
+        event.keyCode === 37 || // Arrow Left
+        event.keyCode === 39 || // Arrow Right
+        event.keyCode === 46 || // Delete
+        event.keyCode === 8 // Backspace
       ) {
         return false;
       }
@@ -116,6 +119,7 @@ export function listProductRefPersediaanCreate() {
       $($productSearch)
         .off("keydown")
         .on("keydown", function (e) {
+          $productList.show();
           if (e.key === "ArrowDown") {
             e.preventDefault();
             index++;
