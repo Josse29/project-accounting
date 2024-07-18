@@ -38,7 +38,8 @@ export const createPersediaan = (
     valPersediaanQty,
     (status, response) => {
       if (status) {
-        executeInsert();
+        console.log("test");
+        // executeInsert();
       }
       if (!status) {
         return callback(false, response);
@@ -46,32 +47,32 @@ export const createPersediaan = (
     }
   );
   // execute insert
-  function executeInsert() {
-    const valPersediaanTotalRp = valPersediaanQty * valPersediaanRp;
-    db.run(
-      queryInsertPersediaan(
-        valPersediaanDDMY,
-        valPersediaanHMS,
-        valPersediaanProductId,
-        valPersediaanQty,
-        valPersediaanTotalRp,
-        valPersediaanInfo
-      ),
-      (err) => {
-        if (!err) {
-          return callback(
-            true,
-            `Persediaan <b class='text-capitalize'>${valProductName} ${formatQty1(
-              valPersediaanQty
-            )}</b> berhasil ditambahkan`
-          );
-        }
-        if (err) {
-          return callback(false, err);
-        }
-      }
-    );
-  }
+  // function executeInsert() {
+  //   const valPersediaanTotalRp = valPersediaanQty * valPersediaanRp;
+  //   db.run(
+  //     queryInsertPersediaan(
+  //       valPersediaanDDMY,
+  //       valPersediaanHMS,
+  //       valPersediaanProductId,
+  //       valPersediaanQty,
+  //       valPersediaanTotalRp,
+  //       valPersediaanInfo
+  //     ),
+  //     (err) => {
+  //       if (!err) {
+  //         return callback(
+  //           true,
+  //           `Persediaan <b class='text-capitalize'>${valProductName} ${formatQty1(
+  //             valPersediaanQty
+  //           )}</b> berhasil ditambahkan`
+  //         );
+  //       }
+  //       if (err) {
+  //         return callback(false, err);
+  //       }
+  //     }
+  //   );
+  // }
 };
 // 2.READ
 export const getPersediaan = (
@@ -141,7 +142,7 @@ export const getPersediaanQtyValidate = (
   db.all(queryGetPersediaanQty(valPersediaanProductId), (err, rows) => {
     if (!err) {
       const res = rows[0];
-      const existItem = rows.length >= 1;
+      const existItem = res.TotalQty >= 1;
       // Produk sudah terdaftar ke tablePersediaan
       if (existItem) {
         // barang masuk

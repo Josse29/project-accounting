@@ -25,18 +25,14 @@ export function listProductRefPersediaanCreate() {
         event.keyCode === 40 || // Arrow Down
         event.keyCode === 13 || // Enter
         event.keyCode === 37 || // Arrow Left
-        event.keyCode === 39 || // Arrow Right
-        event.keyCode === 46 || // Delete
-        event.keyCode === 8 // Backspace
+        event.keyCode === 39 // Arrow Right
       ) {
         return false;
       }
       getInit($productSearch.val());
-      if (event.key === "Delete" || event.key === "Backspace") {
-        console.log("test");
-        $productList.show();
-      }
     });
+    // event.keyCode === 46 || // Delete
+    //   event.keyCode === 8; // Backspace
     // 1.Initial Product (getTotalRow, and getListProduct)
     function getInit(productSearch) {
       // total row product
@@ -96,7 +92,7 @@ export function listProductRefPersediaanCreate() {
               totalQtyTxt = 0;
             }
             $productSearch.val(
-              `${this.textContent} - Totat Qty : ${totalQtyTxt}`
+              `${this.textContent} - Total Qty : ${totalQtyTxt}`
             );
           }
           if (!status) {
@@ -111,7 +107,7 @@ export function listProductRefPersediaanCreate() {
         $productList.hide();
       });
     }
-    // 3 function to get value event keydown
+    // 3 function to get value event keydown and class active hufft
     let index = -1;
     function getValue2() {
       const items = $(".persediaan-refproduct-create-val");
@@ -145,6 +141,15 @@ export function listProductRefPersediaanCreate() {
             }
           }
         });
+      $productList.on(
+        "mouseenter",
+        ".persediaan-refproduct-create-val",
+        function () {
+          items.removeClass("active-list");
+          $(this).addClass("active-list");
+          index = items.index(this);
+        }
+      );
     }
   });
 }
