@@ -21,7 +21,7 @@ $(document).ready(function () {
   $("#submit_product")
     .off("click")
     .on("click", () => {
-      const productName = capitalizeWord($("#product-name").val());
+      const productName = capitalizeWord($("#product-name").val().trim());
       const productInfo = $("#product-keterangan").val();
       const productCategoryId = $("#product-refcategory-create-val").val();
       const productSupplierId = $("#product-refsupplier-create-val").val();

@@ -58,7 +58,6 @@ export const queryGetPersediaan = (
   query += `ORDER BY ${tableName}.${colPersediaanId} DESC
             LIMIT ${valPersediaanLimit} 
             OFFSET ${valPersediaanOffset}`;
-  console.log(query);
   return query;
 };
 export const queryGetPersediaanTotalRow = (valPersediaanSearch) => {

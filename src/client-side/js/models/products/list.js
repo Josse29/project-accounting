@@ -12,15 +12,27 @@ export function listProductRefPersediaanCreate() {
     $productList.hide();
     getInit($productSearch.val());
     $productSearch.on("focus", () => {
-      $("#persediaan-refproduct-create-list").show();
+      $productList.show();
     });
     $productSearch.on("blur", () => {
       setTimeout(() => {
-        $("#persediaan-refproduct-create-list").hide();
+        $productList.hide();
       }, 200);
     });
-    $productSearch.on("keyup", function () {
+    $productSearch.on("keyup", function (event) {
+      // Cek jika tombol yang ditekan adalah arrow up (38), arrow down (40), atau Enter (13)
+      if (
+        event.keyCode === 38 ||
+        event.keyCode === 40 ||
+        event.keyCode === 13
+      ) {
+        return false;
+      }
       getInit($productSearch.val());
+      if (event.key === "Delete" || event.key === "Backspace") {
+        console.log("test");
+        $productList.show();
+      }
     });
     // 1.Initial Product (getTotalRow, and getListProduct)
     function getInit(productSearch) {
@@ -37,7 +49,7 @@ export function listProductRefPersediaanCreate() {
                 const productList = response;
                 uiListRefPersediaanCreate(productList);
                 getValue();
-                getValue2();
+                getValue2(productList);
               }
               if (!status) {
                 console.error(response);
@@ -72,16 +84,17 @@ export function listProductRefPersediaanCreate() {
         // function to get total qty
         getPersediaanQty($(this).attr("valueid"), (status, response) => {
           if (status) {
-            const existProduct = response.length >= 1;
-            if (existProduct) {
-              const totalQty = response[0].TotalQty;
-              $productSearch.val(
-                `${this.textContent} - Totat Qty : ${totalQty}`
-              );
+            let totalQtyTxt = ``;
+            let totalQty = response[0].TotalQty >= 1;
+            if (totalQty) {
+              totalQtyTxt = response[0].TotalQty;
             }
-            if (!existProduct) {
-              $productSearch.val(this.textContent);
+            if (!totalQty) {
+              totalQtyTxt = 0;
             }
+            $productSearch.val(
+              `${this.textContent} - Totat Qty : ${totalQtyTxt}`
+            );
           }
           if (!status) {
             console.error(response);
@@ -92,31 +105,42 @@ export function listProductRefPersediaanCreate() {
         $("input#persediaan-refproduct-create-rp").val(
           $(this).attr("valueprice")
         );
-        $("#persediaan-refproduct-create-list").hide();
+        $productList.hide();
       });
     }
     // 3 function to get value event keydown
     let index = -1;
-    let isArrowDownPressed = false;
     function getValue2() {
       const items = $(".persediaan-refproduct-create-val");
-      $productSearch.on("keydown", function (e) {
-        if (e.key === "ArrowDown" && !isArrowDownPressed) {
-          e.preventDefault();
-          index++;
-          if (index >= items.length) {
-            index = 0; // Wrap around if index exceeds the number of items
+      // akhhhhhhhhhhhhhhhhhh event off huyfftt
+      $($productSearch)
+        .off("keydown")
+        .on("keydown", function (e) {
+          if (e.key === "ArrowDown") {
+            e.preventDefault();
+            index++;
+            if (index >= items.length) {
+              index = 0;
+            }
+            items.removeClass("active-list");
+            $(items).eq(index).addClass("active-list");
           }
-          items.removeClass("active-list");
-          $(items[index]).addClass("active-list");
-          isArrowDownPressed = true;
-        }
-      });
-      $productSearch.on("keyup", function (e) {
-        if (e.key === "ArrowDown") {
-          isArrowDownPressed = false;
-        }
-      });
+          if (e.key === "ArrowUp") {
+            e.preventDefault();
+            index--;
+            if (index < 0) {
+              index = items.length - 1;
+            }
+            items.removeClass("active-list");
+            $(items).eq(index).addClass("active-list");
+          }
+          if (e.key === "Enter") {
+            e.preventDefault();
+            if (index >= 0 && index < items.length) {
+              $(items).eq(index).click();
+            }
+          }
+        });
     }
   });
 }

@@ -9,13 +9,6 @@ import { listProductRefPersediaanCreate } from "../products/list.js";
 import { getPersediaanAgain } from "./read.js";
 
 $(document).ready(function () {
-  $("#test").on("click", function () {
-    console.log("test");
-    const items = $(".persediaan-refproduct-create-val");
-    console.log(items[0]);
-    // $(items[0]).addClass("active-list");
-    // console.log($(items[0]).html());
-  });
   $("button#btnpersediaanModal").on("click", function () {
     listProductRefPersediaanCreate();
   });
