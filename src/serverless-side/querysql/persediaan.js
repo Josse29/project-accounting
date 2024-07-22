@@ -103,10 +103,13 @@ export const queryGetPersediaanProductId = (valPersediaanProductId) => {
           ORDER BY ${tableName}.${colPersediaanDDMY} DESC, ${tableName}.${colPersediaanHMS} DESC `;
 };
 export const queryGetPersediaanQty = (valPersediaanProductId) => {
-  return `SELECT
-          SUM(Persediaan.PersediaanQty) AS TotalQty
-          FROM Persediaan
-          WHERE Persediaan.PersediaanProductId = ${valPersediaanProductId} `;
+  let query = `SELECT
+               SUM(Persediaan.PersediaanQty) AS TotalQty
+               FROM Persediaan `;
+  if (valPersediaanProductId !== "") {
+    query += `WHERE Persediaan.PersediaanProductId = ${valPersediaanProductId} `;
+  }
+  return query;
 };
 export const queryGetPersediaanRpSum = (valPersediaanProductId) => {
   let query = `SELECT

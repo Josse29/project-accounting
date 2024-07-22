@@ -31,8 +31,6 @@ export function listProductRefPersediaanCreate() {
       }
       getInit($productSearch.val());
     });
-    // event.keyCode === 46 || // Delete
-    //   event.keyCode === 8; // Backspace
     // 1.Initial Product (getTotalRow, and getListProduct)
     function getInit(productSearch) {
       // total row product
@@ -40,7 +38,7 @@ export function listProductRefPersediaanCreate() {
         // success total row product
         if (status) {
           const totalProductList = parseInt(response);
-          // exist product
+          // existed product
           if (totalProductList >= 1) {
             $("#productList-empty").hide();
             getListProduct(productSearch, (status, response) => {
@@ -138,6 +136,7 @@ export function listProductRefPersediaanCreate() {
             e.preventDefault();
             if (index >= 0 && index < items.length) {
               $(items).eq(index).click();
+              index = -1;
             }
           }
         });
@@ -169,7 +168,16 @@ export function listProductRefPersediaanUpdate() {
         $productList.hide();
       }, 200);
     });
-    $productSearch.on("keyup", function () {
+    $productSearch.on("keyup", function (event) {
+      if (
+        event.keyCode === 38 || // Arrow Up
+        event.keyCode === 40 || // Arrow Down
+        event.keyCode === 13 || // Enter
+        event.keyCode === 37 || // Arrow Left
+        event.keyCode === 39 // Arrow Right
+      ) {
+        return false;
+      }
       getInit($productSearch.val());
     });
     // 1.Initial Product (getTotalRow, and getListProduct)
@@ -183,8 +191,10 @@ export function listProductRefPersediaanUpdate() {
             $("div#productList-empty-update").hide();
             getListProduct(productSearch, (status, response) => {
               if (status) {
-                uiListRefPersediaanUpdate(response);
+                const productList = response;
+                uiListRefPersediaanUpdate(productList);
                 getValue();
+                getValue2(productList);
               } else {
                 console.error(response);
               }
@@ -215,16 +225,17 @@ export function listProductRefPersediaanUpdate() {
       $(".persediaan-refproduct-update-val").on("click", function () {
         getPersediaanQty($(this).attr("valueid"), (status, response) => {
           if (status) {
-            const existedProduct = response.length >= 1;
-            if (existedProduct) {
-              const totalQty = response[0].TotalQty;
-              $productSearch.val(
-                `${this.textContent} - Totat Qty : ${totalQty}`
-              );
+            let totalQtyTxt = ``;
+            let totalQty = response[0].TotalQty >= 1;
+            if (totalQty) {
+              totalQtyTxt = response[0].TotalQty;
             }
-            if (!existedProduct) {
-              $productSearch.val(this.textContent);
+            if (!totalQty) {
+              totalQtyTxt = 0;
             }
+            $productSearch.val(
+              `${this.textContent} - Total Qty : ${totalQtyTxt}`
+            );
           }
           if (!status) {
             console.error(response);
@@ -237,6 +248,51 @@ export function listProductRefPersediaanUpdate() {
         $("input#persediaan-refproduct-update-name").val(this.textContent);
         $productList.hide();
       });
+    }
+    // 3 function to get value event keydown and class active hufft
+    let index = -1;
+    function getValue2() {
+      const items = $(".persediaan-refproduct-update-val");
+      // akhhhhhhhhhhhhhhhhhh event off huyfftt
+      $($productSearch)
+        .off("keydown")
+        .on("keydown", function (e) {
+          $productList.show();
+          if (e.key === "ArrowDown") {
+            e.preventDefault();
+            index++;
+            if (index >= items.length) {
+              index = 0;
+            }
+            items.removeClass("active-list");
+            $(items).eq(index).addClass("active-list");
+          }
+          if (e.key === "ArrowUp") {
+            e.preventDefault();
+            index--;
+            if (index < 0) {
+              index = items.length - 1;
+            }
+            items.removeClass("active-list");
+            $(items).eq(index).addClass("active-list");
+          }
+          if (e.key === "Enter") {
+            e.preventDefault();
+            if (index >= 0 && index < items.length) {
+              $(items).eq(index).click();
+              index = -1;
+            }
+          }
+        });
+      $productList.on(
+        "mouseenter",
+        ".persediaan-refproduct-update-val",
+        function () {
+          items.removeClass("active-list");
+          $(this).addClass("active-list");
+          index = items.index(this);
+        }
+      );
     }
   });
 }

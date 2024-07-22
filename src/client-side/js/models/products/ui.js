@@ -1,3 +1,4 @@
+import { getPersediaanQty } from "../../../../serverless-side/functions/persediaan.js";
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 
 // UI tr Product from dbsqlite

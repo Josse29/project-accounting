@@ -38,8 +38,7 @@ export const createPersediaan = (
     valPersediaanQty,
     (status, response) => {
       if (status) {
-        console.log("test");
-        // executeInsert();
+        executeInsert();
       }
       if (!status) {
         return callback(false, response);
@@ -47,32 +46,32 @@ export const createPersediaan = (
     }
   );
   // execute insert
-  // function executeInsert() {
-  //   const valPersediaanTotalRp = valPersediaanQty * valPersediaanRp;
-  //   db.run(
-  //     queryInsertPersediaan(
-  //       valPersediaanDDMY,
-  //       valPersediaanHMS,
-  //       valPersediaanProductId,
-  //       valPersediaanQty,
-  //       valPersediaanTotalRp,
-  //       valPersediaanInfo
-  //     ),
-  //     (err) => {
-  //       if (!err) {
-  //         return callback(
-  //           true,
-  //           `Persediaan <b class='text-capitalize'>${valProductName} ${formatQty1(
-  //             valPersediaanQty
-  //           )}</b> berhasil ditambahkan`
-  //         );
-  //       }
-  //       if (err) {
-  //         return callback(false, err);
-  //       }
-  //     }
-  //   );
-  // }
+  function executeInsert() {
+    const valPersediaanTotalRp = valPersediaanQty * valPersediaanRp;
+    db.run(
+      queryInsertPersediaan(
+        valPersediaanDDMY,
+        valPersediaanHMS,
+        valPersediaanProductId,
+        valPersediaanQty,
+        valPersediaanTotalRp,
+        valPersediaanInfo
+      ),
+      (err) => {
+        if (!err) {
+          return callback(
+            true,
+            `Persediaan <b class='text-capitalize'>${valProductName} ${formatQty1(
+              valPersediaanQty
+            )}</b> berhasil ditambahkan`
+          );
+        }
+        if (err) {
+          return callback(false, err);
+        }
+      }
+    );
+  }
 };
 // 2.READ
 export const getPersediaan = (

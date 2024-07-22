@@ -4,3 +4,4 @@ import "./update.js";
 import "./delete.js";
 
 import "./ui.js";
+import "./export-pdf.js";

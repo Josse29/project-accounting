@@ -422,8 +422,6 @@ div.product-refsupplier-list::-webkit-scrollbar-thumb:hover {
 }
 .persediaan-refproduct-create-val:hover {
   cursor: pointer;
-  background-color: #007bff;
-  color: white;
 }
 .persediaan-refproduct-create-val.active-list {
   background-color: #007bff;
@@ -475,6 +473,8 @@ input#persediaan-refproduct-create-qty::placeholder {
 }
 .persediaan-refproduct-update-val:hover {
   cursor: pointer;
+}
+.persediaan-refproduct-update-val.active-list {
   background-color: #007bff;
   color: white;
 }
