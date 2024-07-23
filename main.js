@@ -242,39 +242,60 @@ ipcMain.on("pdf:product", (event, thead, tbody, file_path) => {
       });
   });
 });
-ipcMain.on("pdf:persediaan", (event, tbody, file_path) => {
-  persediaanPdf = new BrowserWindow({
-    webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
-    },
-    // frame: false,
-  });
-  remote.enable(persediaanPdf.webContents);
-  persediaanPdf.loadFile("./src/client-side/pdf/persediaan.html");
-  persediaanPdf.webContents.on("dom-ready", () => {
-    persediaanPdf.webContents.send("tables:persediaan", tbody, file_path);
-  });
-  ipcMain.on("create:pdf-persediaan", (event, file_path) => {
-    persediaanPdf.webContents
-      .printToPDF({
-        marginsType: 0,
-        printBackground: true,
-        printSelectionOnly: false,
-        landscape: true,
-      })
-      .then((data) => {
-        fs.writeFile(file_path, data, (err) => {
-          if (err) throw err;
-          persediaanPdf.close();
-          inventoryPage.webContents.send("success:pdf-persediaan", file_path);
+ipcMain.on(
+  "pdf:persediaan",
+  (
+    event,
+    tbodyProduct,
+    tbodyProductGroup,
+    tbodySupplier,
+    tbodySupplierGroup,
+    txtPersediaanQtySum,
+    txtPersediaanRpSum,
+    file_path
+  ) => {
+    persediaanPdf = new BrowserWindow({
+      webPreferences: {
+        nodeIntegration: true,
+        contextIsolation: false,
+      },
+      // frame: false,
+    });
+    remote.enable(persediaanPdf.webContents);
+    persediaanPdf.loadFile("./src/client-side/pdf/persediaan.html");
+    persediaanPdf.webContents.on("dom-ready", () => {
+      persediaanPdf.webContents.send(
+        "tables:persediaan",
+        tbodyProduct,
+        tbodyProductGroup,
+        tbodySupplier,
+        tbodySupplierGroup,
+        txtPersediaanQtySum,
+        txtPersediaanRpSum,
+        file_path
+      );
+    });
+    ipcMain.on("create:pdf-persediaan", (event, file_path) => {
+      persediaanPdf.webContents
+        .printToPDF({
+          marginsType: 0,
+          printBackground: true,
+          printSelectionOnly: false,
+          landscape: true,
+        })
+        .then((data) => {
+          fs.writeFile(file_path, data, (err) => {
+            if (err) throw err;
+            // persediaanPdf.close();
+            inventoryPage.webContents.send("success:pdf-persediaan", file_path);
+          });
+        })
+        .catch((error) => {
+          console.log(error);
         });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  });
-});
+    });
+  }
+);
 let productPrint;
 ipcMain.on("print:product", (event, thead, tbody) => {
   productPrint = new BrowserWindow({

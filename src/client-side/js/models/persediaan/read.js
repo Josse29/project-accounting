@@ -15,7 +15,6 @@ import {
   getPersediaanTotalRow,
 } from "../../../../serverless-side/functions/persediaan.js";
 import { formatWaktuIndo } from "../../utils/formatWaktu.js";
-import { getListProduct } from "../../../../serverless-side/functions/product.js";
 $(document).ready(function () {
   let persediaanSearch = $("input#persediaan-search").val();
   let persediaanLimit = parseInt($("#persediaan-limit").val());
@@ -23,18 +22,6 @@ $(document).ready(function () {
   let persediaanTotalPage;
   let persediaanBtnPage;
   getInit(persediaanSearch);
-  getListProduct("", (status, response) => {
-    if (status) {
-      let option = ``;
-      response.forEach((row) => {
-        option += `<option value=${row.ProductName}>${row.ProductName}</option>`;
-      });
-      $("select#persediaan-refproduct-search").html(option);
-    }
-    if (!status) {
-      console.error(response);
-    }
-  });
   $("select#persediaan-refproduct-search").on("change", function () {
     persediaanSearch = $(this).val();
     getInit(persediaanSearch);

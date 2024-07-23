@@ -2,9 +2,14 @@ import { formatQty1 } from "../../client-side/js/utils/formatQty.js";
 import {
   queryDeletePersediaan,
   queryGetPersediaan,
+  queryGetPersediaanProductGroup,
   queryGetPersediaanProductId,
+  queryGetPersediaanProductReport,
   queryGetPersediaanQty,
+  queryGetPersediaanReport,
   queryGetPersediaanRpSum,
+  queryGetPersediaanSupplierGroup,
+  queryGetPersediaanSupplierReport,
   queryGetPersediaanTotalRow,
   queryInsertPersediaan,
   queryUpdatePersediaan,
@@ -224,6 +229,56 @@ export const getPersediaanRpSum = (valPersediaanProductId, callback) => {
 };
 export const getPersediaanProductId = (valPersediaanProductId, callback) => {
   db.all(queryGetPersediaanProductId(valPersediaanProductId), (err, res) => {
+    if (!err) {
+      return callback(true, res);
+    }
+    if (err) {
+      return callback(true, err);
+    }
+  });
+};
+export const getPersediaanProductReport = (callback) => {
+  db.all(queryGetPersediaanProductReport(), (err, result) => {
+    if (!err) {
+      return callback(true, result);
+    }
+    if (err) {
+      return callback(false, err);
+    }
+  });
+};
+export const getPersediaanProductGroup = (callback) => {
+  db.all(queryGetPersediaanProductGroup(), (err, res) => {
+    if (!err) {
+      return callback(true, res);
+    }
+    if (err) {
+      return callback(true, err);
+    }
+  });
+};
+export const getPersediaanSupplierReport = (callback) => {
+  db.all(queryGetPersediaanSupplierReport(), (err, res) => {
+    if (!err) {
+      return callback(true, res);
+    }
+    if (err) {
+      return callback(false, err);
+    }
+  });
+};
+export const getPersediaanSupplierGroup = (callback) => {
+  db.all(queryGetPersediaanSupplierGroup(), (err, res) => {
+    if (!err) {
+      return callback(true, res);
+    }
+    if (err) {
+      return callback(false, err);
+    }
+  });
+};
+export const getPersediaanReport = (callback) => {
+  db.all(queryGetPersediaanReport(), (err, res) => {
     if (!err) {
       return callback(true, res);
     }

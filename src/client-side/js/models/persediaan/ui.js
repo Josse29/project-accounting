@@ -1,6 +1,6 @@
 import { addSpace } from "../../utils/formatSpace.js";
+import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import { formatWaktuIndo } from "../../utils/formatWaktu.js";
-
 // ui tr inventory from db
 export const uiTrPersediaan = (el) => {
   let PersediaanQty = ``;
@@ -11,52 +11,49 @@ export const uiTrPersediaan = (el) => {
     PersediaanQty = `<span class="badge text-bg-danger fs-6">${formattedQty}</span>`;
   }
   return `<tr>
-                <td class="align-content-center text-center">${
-                  el.PersediaanId
-                }</td>
-                <td class="align-content-center">${formatWaktuIndo(
-                  el.PersediaanDDMY
-                )}</td>
-                <td class="align-content-center">${el.PersediaanHMS}</td>
-                <td class="align-content-center text-nowrap text-capitalize">${
-                  el.ProductName
-                }</td>
-                <td class="align-content-center text-nowrap text-capitalize">${
-                  el.CategoryName
-                }</td>
-                <td class="align-content-center text-nowrap text-capitalize">
-                    ${el.SupplierName}
-                </td>
-                <td class="text-nowrap align-content-center">
-                    Mr.JK
-                </td>
-                <td class="text-nowrap align-content-center text-center">
-                    ${PersediaanQty}
-                </td>
-                <td>
-                    <div class="d-flex w-100 justify-content-center gap-2">
-                        <button id="persediaanDetail"
-                                class="btn btn-success text-white"                      
-                                data-bs-toggle="modal" 
-                                data-bs-target="#persediaanDetailModal"
-                                data-persediaanid=${el.PersediaanId}
-                                data-persediaanprice=${el.PersediaanRp} 
-                                data-productname="${el.ProductName}"
-                                data-productprice=${el.ProductPrice} 
-                                data-persediaanddmy="${el.PersediaanDDMY}" 
-                                data-persediaanHMS="${el.PersediaanHMS}"
-                                data-persediaanqty=${el.PersediaanQty}
-                                data-persediaaninfo="${el.PersediaanInfo}">
-                            <i class="fa-solid fa-eye"
-                               data-bs-toggle="tooltip" 
-                               data-bs-html="true"
-                               data-bs-title="<span>lihat-${
-                                 el.ProductName
-                               }</span>" 
-                               data-bs-placement="bottom">
-                            </i>
-                        </button>
-                        <button id="persediaan-update-btn"
+            <td class="align-content-center text-center">${el.PersediaanId}</td>
+            <td class="align-content-center">${formatWaktuIndo(
+              el.PersediaanDDMY
+            )}</td>
+            <td class="align-content-center">${el.PersediaanHMS}</td>
+            <td class="align-content-center text-nowrap text-capitalize">${
+              el.ProductName
+            }</td>
+            <td class="align-content-center text-nowrap text-capitalize">${
+              el.CategoryName
+            }</td>
+            <td class="align-content-center text-nowrap text-capitalize">
+              ${el.SupplierName}
+            </td>
+            <td class="text-nowrap align-content-center">
+              Mr.JK
+            </td>
+            <td class="text-nowrap align-content-center text-center">
+              ${PersediaanQty}
+            </td>
+            <td>
+              <div class="d-flex w-100 justify-content-center gap-2">
+                <button id="persediaanDetail"
+                        class="btn btn-success text-white"                      
+                        data-bs-toggle="modal" 
+                        data-bs-target="#persediaanDetailModal"
+                        data-persediaanprice=${el.PersediaanRp} 
+                        data-productname="${el.ProductName}"
+                        data-productprice=${el.ProductPrice} 
+                        data-persediaanddmy="${el.PersediaanDDMY}" 
+                        data-persediaanHMS="${el.PersediaanHMS}"
+                        data-persediaanqty=${el.PersediaanQty}
+                        data-persediaaninfo="${el.PersediaanInfo}">
+                          <i class="fa-solid fa-eye"
+                             data-bs-toggle="tooltip" 
+                             data-bs-html="true"
+                             data-bs-title="<span>lihat-${
+                               el.ProductName
+                             }</span>" 
+                             data-bs-placement="bottom">
+                          </i>
+                </button>
+                <button id="persediaan-update-btn"
                                 class="btn btn-primary text-white"
                                 data-bs-toggle="modal"
                                 data-bs-target="#persediaanUpdateModal"
@@ -77,8 +74,8 @@ export const uiTrPersediaan = (el) => {
                                }</span>" 
                                data-bs-placement="bottom">
                             </i>
-                        </button>
-                        <button id="persediaan-delete-btn"
+                </button>
+                <button id="persediaan-delete-btn"
                                 class="btn btn-danger text-white"
                                 data-bs-toggle="modal"
                                 data-bs-target="#persediaanDeleteModal"
@@ -94,10 +91,10 @@ export const uiTrPersediaan = (el) => {
                                  el.ProductName
                                }</span>" 
                                data-bs-placement="bottom"></i>
-                        </button>
-                    </div>
-                </td>
-            </tr>`;
+                </button>
+              </div>
+            </td>
+          </tr>`;
 };
 // make alert success after action crud
 export const uiSuccessActionPersediaan = (res) => {
@@ -179,6 +176,90 @@ export const uiBlankValue = () => {
   $("input#persediaan-refproduct-create-name").val("");
   $("input#persediaan-create-qty").val(0);
   $("textarea#persediaan-create-info").val("");
+};
+export const uiTrPDF = (rows, no) => {
+  const totalQty = rows.PersediaanQty;
+  const totalRp = rows.PersediaanRp;
+  let totalQtyTxt = totalQty >= 1 ? `+ ${totalQty}` : `- ${Math.abs(totalQty)}`;
+  let totalRpTxt =
+    totalRp >= 1
+      ? `+ ${formatRupiah2(totalRp)}`
+      : `- ${formatRupiah2(Math.abs(totalRp))}`;
+  return `<tr>
+            <td class="text-center text-nowrap align-content-center">${no}</td>
+            <td class="text-nowrap align-content-center">${formatWaktuIndo(
+              rows.PersediaanDDMY
+            )}</td>
+            <td class="text-nowrap align-content-center">${
+              rows.PersediaanHMS
+            }</td>
+            <td class="text-nowrap align-content-center">${
+              rows.ProductName
+            }</td>
+            <td class="text-nowrap align-content-center">${formatRupiah2(
+              rows.ProductPrice
+            )}</td>
+            <td class="text-nowrap align-content-center">${totalQtyTxt}</td>
+            <td class="text-nowrap align-content-center">${totalRpTxt}</td>
+          </tr>`;
+};
+export const uiTrProductSum = (rows, no) => {
+  const totalQty = rows.TotalQty;
+  const totalRp = rows.TotalRp;
+  let totalQtyTxt = totalQty >= 1 ? `+ ${totalQty}` : `- ${Math.abs(totalQty)}`;
+  let totalRpTxt =
+    totalRp >= 1
+      ? `+ ${formatRupiah2(totalRp)}`
+      : `- ${formatRupiah2(Math.abs(totalRp))}`;
+  return `<tr>
+            <td class="text-center text-nowrap align-content-center">${no}</td>
+            <td class="text-nowrap align-content-center">${
+              rows.ProductName
+            }</td>
+            <td class="text-nowrap align-content-center">${formatRupiah2(
+              rows.ProductPrice
+            )}</td>
+            <td class="text-nowrap align-content-center">${totalQtyTxt}</td>
+            <td class="text-nowrap align-content-center">${totalRpTxt}</td>
+          </tr>`;
+};
+export const uiTrSupplier = (rows, no) => {
+  const totalQty = rows.PersediaanQty;
+  const totalRp = rows.PersediaanRp;
+  let totalQtyTxt = totalQty >= 1 ? `+ ${totalQty}` : `- ${Math.abs(totalQty)}`;
+  let totalRpTxt =
+    totalRp >= 1
+      ? `+ ${formatRupiah2(totalRp)}`
+      : `- ${formatRupiah2(Math.abs(totalRp))}`;
+  return `<tr>
+            <td class="text-center text-nowrap align-content-center">${no}</td>
+            <td class="text-nowrap align-content-center">${
+              rows.SupplierName
+            }</td>
+            <td class="text-nowrap align-content-center">${
+              rows.ProductName
+            }</td>
+            <td class="text-nowrap align-content-center">${formatRupiah2(
+              rows.ProductPrice
+            )}</td>
+            <td class="text-nowrap align-content-center">${totalQtyTxt}</td>
+            <td class="text-nowrap align-content-center">${totalRpTxt}</td>
+          </tr>`;
+};
+export const uiTrSupplierSum = (rows, no) => {
+  const totalQty = rows.TotalQty;
+  const totalRp = rows.TotalRp;
+  let totalQtyTxt = totalQty >= 1 ? `+ ${totalQty}` : `- ${Math.abs(totalQty)}`;
+  let totalRpTxt =
+    totalRp >= 1
+      ? `+ ${formatRupiah2(totalRp)}`
+      : `- ${formatRupiah2(Math.abs(totalRp))}`;
+  return `<tr>
+            <td class="text-center text-nowrap align-content-center">${no}</td>
+            <td class="text-nowrap align-content-center">${rows.SupplierName}</td>
+            <td class="text-nowrap align-content-center">${totalQtyTxt}</td>
+            <td class="text-nowrap align-content-center">${totalRpTxt}</td>
+          </tr>`;
 };
 ipcRenderer.on("success:pdf-persediaan", (e, file_path) => {
   uiSuccessActionPersediaan(`File PDF tersimpan di ${file_path}`);

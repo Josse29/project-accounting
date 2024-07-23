@@ -42,7 +42,17 @@ export const queryGetPersediaan = (
   valPersediaanLimit,
   valPersediaanOffset
 ) => {
-  let query = `SELECT *
+  let query = `SELECT 
+               Persediaan.PersediaanId,
+               Persediaan.PersediaanDDMY,
+               Persediaan.PersediaanHMS,
+               Product.ProductName,
+               Product.ProductPrice,
+               Category.CategoryName,
+               Supplier.SupplierName,
+               Persediaan.PersediaanRp,
+               Persediaan.PersediaanQty,
+               Persediaan.PersediaanInfo
                FROM ${tableName}
                LEFT JOIN Product ON ${tableName}.${colPersediaanProductId} = Product.ProductId
                LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
@@ -55,7 +65,7 @@ export const queryGetPersediaan = (
  `;
   }
   // with order limit offset
-  query += `ORDER BY ${tableName}.${colPersediaanId} DESC
+  query += `ORDER BY Persediaan.PersediaanDDMY DESC, Persediaan.PersediaanHMS DESC
             LIMIT ${valPersediaanLimit} 
             OFFSET ${valPersediaanOffset}`;
   return query;
@@ -120,7 +130,37 @@ export const queryGetPersediaanRpSum = (valPersediaanProductId) => {
   }
   return query;
 };
-export const queryGetPersediaanProduct = () => {
+// for export report
+export const queryGetPersediaanReport = () => {
+  return `SELECT
+          Persediaan.PersediaanDDMY AS Tanggal,
+          Persediaan.PersediaanHMS AS Waktu, 
+          Product.ProductName AS NamaProduk,
+          Category.CategoryName AS Kategori, 
+          Product.ProductPrice AS Harga,
+          Supplier.SupplierName AS Supplier,  
+          Persediaan.PersediaanQty AS TotalQty,
+          Persediaan.PersediaanRp AS TotalRupiah
+          FROM Persediaan
+          LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
+          LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
+          LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId
+          ORDER BY Persediaan.PersediaanId DESC`;
+};
+export const queryGetPersediaanProductReport = () => {
+  return `SELECT
+          Persediaan.PersediaanDDMY,
+          Persediaan.PersediaanHMS, 
+          Product.ProductName, 
+          Product.ProductPrice, 
+          Persediaan.PersediaanQty,
+          Persediaan.PersediaanRp
+          FROM Persediaan
+          LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
+          ORDER BY Persediaan.PersediaanDDMY DESC, Persediaan.PersediaanHMS DESC`;
+};
+
+export const queryGetPersediaanProductGroup = () => {
   return `SELECT
           Product.ProductName,
           Product.ProductPrice,
@@ -131,7 +171,19 @@ export const queryGetPersediaanProduct = () => {
           GROUP BY Persediaan.PersediaanProductId
           ORDER BY Product.ProductName ASC`;
 };
-export const queryGetPersediaanSupplier = () => {
+export const queryGetPersediaanSupplierReport = () => {
+  return `SELECT
+          Supplier.SupplierName, 
+          Product.ProductName,
+          Product.ProductPrice,
+          Persediaan.PersediaanQty,
+          Persediaan.PersediaanRp
+          FROM Persediaan
+          LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
+          LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId
+          ORDER BY Supplier.SupplierId DESC`;
+};
+export const queryGetPersediaanSupplierGroup = () => {
   return `SELECT
           Supplier.SupplierName,
           SUM(Persediaan.PersediaanQty) AS TotalQty,
@@ -141,7 +193,6 @@ export const queryGetPersediaanSupplier = () => {
           LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId
           GROUP BY Supplier.SupplierId`;
 };
-
 // export const queryGetPersediaanProductList = (valProductName) => {
 //   return `SELECT
 //           Persediaan.PersediaanProductId,
