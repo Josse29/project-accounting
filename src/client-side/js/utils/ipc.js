@@ -1,272 +1,271 @@
 // login page
 $("#minimize-login").on("click", () => {
-    ipcRenderer.send("minimize-window:login-page")
+  ipcRenderer.send("minimize-window:login-page");
 });
 $("#min-max-login").on("click", () => {
-    ipcRenderer.send("minimize-maximize-window:login-page");
+  ipcRenderer.send("minimize-maximize-window:login-page");
 });
 $("#close-login").on("click", () => {
-    ipcRenderer.send("close-window:login-page");
+  ipcRenderer.send("close-window:login-page");
 });
 $(".register").on("click", () => {
-    ipcRenderer.send("load:register-page");
+  ipcRenderer.send("load:register-page");
 });
 $("#login").on("click", () => {
-    ipcRenderer.send("load:dashboard-page");
+  ipcRenderer.send("load:dashboard-page");
 });
 
 // dashboard page
 $("#minimize-dashboard").on("click", () => {
-    sendIpcMinDash()
-})
+  sendIpcMinDash();
+});
 $("#close-dashboard").on("click", () => {
-    sendIpcCloseDash()
-})
+  sendIpcCloseDash();
+});
 $("#orderWindow").on("click", () => {
-    sendIpcLoadOrder()
-    sendIpcHideDash()
-})
+  sendIpcLoadOrder();
+  sendIpcHideDash();
+});
 $("#inventoryWindow").on("click", () => {
-    sendIpcLoadInventory()
-    sendIpcHideDash()
-})
+  sendIpcLoadInventory();
+  sendIpcHideDash();
+});
 $("#transaksiWindow").on("click", () => {
-    sendIpcLoadTransaksi()
-    sendIpcHideDash()
-})
+  sendIpcLoadTransaksi();
+  sendIpcHideDash();
+});
 $("#usersWindow").on("click", () => {
-    sendIpcLoadUsers()
-    sendIpcHideDash()
-})
+  sendIpcLoadUsers();
+  sendIpcHideDash();
+});
 $("#aboutWindow").on("click", () => {
-    sendIpcLoadAbout()
-    sendIpcHideDash()
-})
+  sendIpcLoadAbout();
+  sendIpcHideDash();
+});
 
 // order page
 $("#minimize-window-order").on("click", () => {
-    sendIpcMinimizeWindowOrder()
-})
+  sendIpcMinimizeWindowOrder();
+});
 $("#close-window-order").on("click", () => {
-    sendIpcCloseWindowOrder()
-})
+  sendIpcCloseWindowOrder();
+});
 $("#dashboardWindowOrder").on("click", () => {
-    sendIpcLoadDashboard()
-    sendIpcHideOrder()
-})
+  sendIpcLoadDashboard();
+  sendIpcHideOrder();
+});
 $("#inventoryWindowOrder").on("click", () => {
-    sendIpcLoadInventory()
-    sendIpcHideOrder()
-})
+  sendIpcLoadInventory();
+  sendIpcHideOrder();
+});
 $("#transaksiWindowOrder").on("click", () => {
-    sendIpcLoadTransaksi()
-    sendIpcHideOrder()
-})
+  sendIpcLoadTransaksi();
+  sendIpcHideOrder();
+});
 $("#usersWindowOrder").on("click", () => {
-    sendIpcLoadUsers()
-    sendIpcHideOrder()
-})
+  sendIpcLoadUsers();
+  sendIpcHideOrder();
+});
 $("#aboutWindowOrder").on("click", () => {
-    sendIpcLoadAbout()
-    sendIpcHideOrder()
-})
+  sendIpcLoadAbout();
+  sendIpcHideOrder();
+});
 
 // inventory page
 $("#minimize-window-inventory").on("click", () => {
-    sendIpcMinimizeWindowInventory()
-})
+  sendIpcMinimizeWindowInventory();
+});
 $("#close-window-inventory").on("click", () => {
-    sendIpcCloseWindowInventory()
-})
+  sendIpcCloseWindowInventory();
+});
 $("#dashboardWindowInventory").on("click", () => {
-    sendIpcLoadDashboard()
-    sendIpcHideInventory()
-})
+  sendIpcLoadDashboard();
+  sendIpcHideInventory();
+});
 $("#orderWindowInventory").on("click", () => {
-    sendIpcLoadOrder()
-    sendIpcHideInventory()
-})
+  sendIpcLoadOrder();
+  sendIpcHideInventory();
+});
 $("#transaksiWindowInventory").on("click", () => {
-    sendIpcLoadTransaksi()
-    sendIpcHideInventory()
-})
+  sendIpcLoadTransaksi();
+  sendIpcHideInventory();
+});
 $("#usersWindowInventory").on("click", () => {
-    sendIpcLoadUsers()
-    sendIpcHideInventory()
-})
+  sendIpcLoadUsers();
+  sendIpcHideInventory();
+});
 $("#aboutWindowInventory").on("click", () => {
-    sendIpcLoadAbout()
-    sendIpcHideInventory()
-})
+  sendIpcLoadAbout();
+  sendIpcHideInventory();
+});
 
 // transaction page
 $("#minimize-transaction").on("click", () => {
-    sendIpcMinimizeWindowTransaction()
-})
+  sendIpcMinimizeWindowTransaction();
+});
 $("#close-transaction").on("click", () => {
-    sendIpcCloseWindowTransaction()
-})
+  sendIpcCloseWindowTransaction();
+});
 $("#dashboardWindowTransaction").on("click", () => {
-    sendIpcLoadDashboard()
-    sendIpcHideTransaction()
-})
+  sendIpcLoadDashboard();
+  sendIpcHideTransaction();
+});
 $("#orderWindowTransaction").on("click", () => {
-    sendIpcLoadOrder()
-    sendIpcHideTransaction()
-})
+  sendIpcLoadOrder();
+  sendIpcHideTransaction();
+});
 $("#inventoryWindowTransaction").on("click", () => {
-    sendIpcLoadInventory()
-    sendIpcHideTransaction()
-})
+  sendIpcLoadInventory();
+  sendIpcHideTransaction();
+});
 $("#usersWindowTransaction").on("click", () => {
-    sendIpcLoadUsers()
-    sendIpcHideTransaction()
-})
+  sendIpcLoadUsers();
+  sendIpcHideTransaction();
+});
 $("#aboutWindowTransaction").on("click", () => {
-    sendIpcLoadAbout()
-    sendIpcHideTransaction()
-})
+  sendIpcLoadAbout();
+  sendIpcHideTransaction();
+});
 
 // users-page
 $("#minimize-users").on("click", () => {
-    sendIpcMinimizeWindowUsers()
-})
+  sendIpcMinimizeWindowUsers();
+});
 $("#close-users").on("click", () => {
-    sendIpcCloseWindowUsers()
-})
+  sendIpcCloseWindowUsers();
+});
 $("#dashboardWindowUsers").on("click", () => {
-    sendIpcLoadDashboard()
-    sendIpcHideUsers()
-})
+  sendIpcLoadDashboard();
+  sendIpcHideUsers();
+});
 $("#orderWindowUsers").on("click", () => {
-    sendIpcLoadOrder()
-    sendIpcHideUsers()
-})
+  sendIpcLoadOrder();
+  sendIpcHideUsers();
+});
 $("#inventoryWindowUsers").on("click", () => {
-    sendIpcLoadInventory()
-    sendIpcHideUsers()
-})
+  sendIpcLoadInventory();
+  sendIpcHideUsers();
+});
 $("#transaksiWindowUsers").on("click", () => {
-    sendIpcLoadTransaksi()
-    sendIpcHideUsers()
-})
+  sendIpcLoadTransaksi();
+  sendIpcHideUsers();
+});
 $("#aboutWindowUsers").on("click", () => {
-    sendIpcLoadAbout()
-    sendIpcHideUsers()
-})
+  sendIpcLoadAbout();
+  sendIpcHideUsers();
+});
 
 // about=page
 $("#minimize-about").on("click", () => {
-    sendIpcMinimizeWindowAbout()
-})
+  sendIpcMinimizeWindowAbout();
+});
 $("#close-about").on("click", () => {
-    sendIpcCloseWindowAbout()
-})
+  sendIpcCloseWindowAbout();
+});
 $("#dashboardWindowAbout").on("click", () => {
-    sendIpcLoadDashboard()
-    sendIpcHideAbout()
-})
+  sendIpcLoadDashboard();
+  sendIpcHideAbout();
+});
 $("#orderWindowAbout").on("click", () => {
-    sendIpcLoadOrder()
-    sendIpcHideAbout()
-})
+  sendIpcLoadOrder();
+  sendIpcHideAbout();
+});
 $("#inventoryWindowAbout").on("click", () => {
-    sendIpcLoadInventory()
-    sendIpcHideAbout()
-})
+  sendIpcLoadInventory();
+  sendIpcHideAbout();
+});
 $("#transaksiWindowAbout").on("click", () => {
-    sendIpcLoadTransaksi()
-    sendIpcHideAbout()
-})
+  sendIpcLoadTransaksi();
+  sendIpcHideAbout();
+});
 $("#usersWindowAbout").on("click", () => {
-    sendIpcLoadUsers()
-    sendIpcHideAbout()
-})
+  sendIpcLoadUsers();
+  sendIpcHideAbout();
+});
 
 // load-all-pages
 // 1.dashboard
 export const sendIpcLoadDashboard = () => {
-    ipcRenderer.send("load:dashboard-page");
+  ipcRenderer.send("load:dashboard-page");
 };
 export const sendIpcCloseDash = () => {
-    ipcRenderer.send("close-window:dashboard-page")
-}
+  ipcRenderer.send("close-window:dashboard-page");
+};
 export const sendIpcHideDash = () => {
-    ipcRenderer.send("hide-window:dashboard-page");
+  ipcRenderer.send("hide-window:dashboard-page");
 };
 export const sendIpcMinDash = () => {
-    ipcRenderer.send("minimize-window:dashboard-page");
+  ipcRenderer.send("minimize-window:dashboard-page");
 };
 export const sendIpcLoadRegister = () => {
-    ipcRenderer.send("load:register-page");
+  ipcRenderer.send("load:register-page");
 };
 // 2 order
 export const sendIpcLoadOrder = () => {
-    ipcRenderer.send("load:order-page");
+  ipcRenderer.send("load:order-page");
 };
 export const sendIpcMinimizeWindowOrder = () => {
-    ipcRenderer.send("minimize-window:order-page");
+  ipcRenderer.send("minimize-window:order-page");
 };
 export const sendIpcHideOrder = () => {
-    ipcRenderer.send("hide-window:order-page");
+  ipcRenderer.send("hide-window:order-page");
 };
 export const sendIpcCloseWindowOrder = () => {
-    ipcRenderer.send("close-window:order-page");
+  ipcRenderer.send("close-window:order-page");
 };
 // 3 inventory
 export const sendIpcLoadInventory = () => {
-    ipcRenderer.send("load:inventory-page");
+  ipcRenderer.send("load:inventory-page");
 };
 export const sendIpcMinimizeWindowInventory = () => {
-    ipcRenderer.send("minimize-window:inventory-page");
+  ipcRenderer.send("minimize-window:inventory-page");
 };
 export const sendIpcHideInventory = () => {
-    ipcRenderer.send("hide-window:inventory-page");
+  ipcRenderer.send("hide-window:inventory-page");
 };
 export const sendIpcCloseWindowInventory = () => {
-    ipcRenderer.send("close-window:inventory-page");
+  ipcRenderer.send("close-window:inventory-page");
 };
 // 4 transaksi
 export const sendIpcLoadTransaksi = () => {
-    ipcRenderer.send("load:transaksi-page");
+  ipcRenderer.send("load:transaksi-page");
 };
 export const sendIpcMinimizeWindowTransaction = () => {
-    ipcRenderer.send("minimize-window:transaksi-page");
+  ipcRenderer.send("minimize-window:transaksi-page");
 };
 export const sendIpcHideTransaction = () => {
-    ipcRenderer.send("hide-window:transaksi-page");
+  ipcRenderer.send("hide-window:transaksi-page");
 };
 export const sendIpcCloseWindowTransaction = () => {
-    ipcRenderer.send("close-window:transaksi-page");
+  ipcRenderer.send("close-window:transaksi-page");
 };
 // 5. users
 export const sendIpcLoadUsers = () => {
-    ipcRenderer.send("load:users-page");
+  ipcRenderer.send("load:users-page");
 };
 export const sendIpcMinimizeWindowUsers = () => {
-    ipcRenderer.send("minimize-window:users-page");
+  ipcRenderer.send("minimize-window:users-page");
 };
 export const sendIpcHideUsers = () => {
-    ipcRenderer.send("hide-window:users-page");
+  ipcRenderer.send("hide-window:users-page");
 };
 export const sendIpcCloseWindowUsers = () => {
-    ipcRenderer.send("close-window:users-page");
+  ipcRenderer.send("close-window:users-page");
 };
 // 6. about
 export const sendIpcLoadAbout = () => {
-    ipcRenderer.send("load:about-page");
+  ipcRenderer.send("load:about-page");
 };
 export const sendIpcMinimizeWindowAbout = () => {
-    ipcRenderer.send("minimize-window:about-page");
+  ipcRenderer.send("minimize-window:about-page");
 };
 export const sendIpcHideAbout = () => {
-    ipcRenderer.send("hide-window:about-page");
+  ipcRenderer.send("hide-window:about-page");
 };
 export const sendIpcCloseWindowAbout = () => {
-    ipcRenderer.send("close-window:about-page");
+  ipcRenderer.send("close-window:about-page");
 };
 // export-pdf
 export const sendIpcLoadPDFProduct = () => {
-    ipcRenderer.send("pdf:product");
+  ipcRenderer.send("pdf:product");
 };
-

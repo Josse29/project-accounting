@@ -180,3 +180,6 @@ export const uiBlankValue = () => {
   $("input#persediaan-create-qty").val(0);
   $("textarea#persediaan-create-info").val("");
 };
+ipcRenderer.on("success:pdf-persediaan", (e, file_path) => {
+  uiSuccessActionPersediaan(`File PDF tersimpan di ${file_path}`);
+});

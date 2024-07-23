@@ -1,4 +1,3 @@
-import { getPersediaanQty } from "../../../../serverless-side/functions/persediaan.js";
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 
 // UI tr Product from dbsqlite
@@ -130,7 +129,6 @@ export const uiListRefPersediaanCreate = (productList) => {
   });
   $("#persediaan-refproduct-create-list").html(option);
 };
-
 export const uiListRefPersediaanUpdate = (productList) => {
   let option = "";
   productList.forEach((el) => {
@@ -138,7 +136,7 @@ export const uiListRefPersediaanUpdate = (productList) => {
   });
   $("#persediaan-refproduct-update-list").html(option);
 };
-// success create pdf
+
 ipcRenderer.on("success:pdf-product", (e, file_path) => {
   successActionProduct(`File PDF tersimpan di ${file_path}`);
 });

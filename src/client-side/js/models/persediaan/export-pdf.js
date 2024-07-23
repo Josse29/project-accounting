@@ -1,6 +1,5 @@
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import { formatWaktuIndo } from "../../utils/formatWaktu.js";
-const number = -1;
 // export pdf product
 $("#persediaan-export-pdf").on("click", () => {
   let file_path = dialog.showSaveDialogSync({
@@ -15,24 +14,13 @@ $("#persediaan-export-pdf").on("click", () => {
                    Persediaan.PersediaanHMS,
                    Persediaan.PersediaanQty,
                    Persediaan.PersediaanRp,
-                   Product.ProductName,
-                   Supplier.SupplierName
+                   Product.ProductName
                    FROM Persediaan
                    LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
-                   LEFT JOIN Supplier ON Supplier.SupplierId = Supplier.SupplierId
                    ORDER BY Persediaan.PersediaanId DESC`;
     db.all(query, (err, result) => {
       if (!err) {
         let no = 1;
-        let thead = `<tr>
-                        <th class="text-center">No</th>
-                        <th class="text-center">Tanggal</th>
-                        <th class="text-center">Jam</th>
-                        <th class="text-center">Nama Product</th>
-                        <th class="text-center">Qty</th>
-                        <th class="text-center">Rupiah</th>
-                        <th class="text-center">Supplier</th>
-                      </tr> `;
         let tbody = ``;
         result.forEach((row) => {
           const totalQty = row.PersediaanQty;
@@ -56,12 +44,9 @@ $("#persediaan-export-pdf").on("click", () => {
                       }</td>
                       <td class="text-nowrap align-content-center">${totalQtyTxt}</td>
                       <td class="text-nowrap align-content-center">${totalRpTxt}</td>
-                      <td class="text-nowrap align-content-center">${
-                        row.SupplierName
-                      }</td>
                     </tr>`;
         });
-        ipcRenderer.send("pdf:persediaan", thead, tbody, file_path);
+        ipcRenderer.send("pdf:persediaan", tbody, file_path);
       }
       if (err) {
         console.error(err);

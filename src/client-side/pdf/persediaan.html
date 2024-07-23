@@ -35,20 +35,60 @@
             PT. ABC, T.bk
           </div>
           <div class="card-body overflow-x-auto">
+            <!-- tabel product -->
             <div>
-              <h3>Table-Persediaan</h3>
+              <h3>Table-Persediaan-Product</h3>
               <h6 class="hari-tanggal-tahun">Jumat, 17-05-2024</h6>
               <div class="d-flex gap-1">
                 <h6 class="jam">12:00 :</h6>
                 <h6 class="menit">r</h6>
                 <h6 class="detik">s</h6>
               </div>
-            </div>
-            <!-- tabel product -->
-            <div>
               <table class="table table-striped">
-                <thead id="thead-pdf"></thead>
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Tanggal</th>
+                    <th>Jam</th>
+                    <th>Nama Product</th>
+                    <th>Qty</th>
+                    <th>Rupiah</th>
+                  </tr>
+                </thead>
                 <tbody id="tbody-pdf"></tbody>
+              </table>
+              <!-- tabel summary product-->
+              ProductName | ProductPrice | TotalQty | TotalRp
+              <div style="width: max-content">
+                <h4>Summary Product</h4>
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>No</th>
+                      <th>Nama Product</th>
+                      <th>Harga Produk</th>
+                      <th>Qty</th>
+                      <th>Rupiah</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbodysumproduct-pdf">
+                    <tr>
+                      <th>No</th>
+                      <th>Nama Product</th>
+                      <th>Harga Produk</th>
+                      <th>Qty</th>
+                      <th>Rupiah</th>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <!-- tabel summary supplier-->
+            <div>
+              <h4>Summary Supplier</h4>
+              <table class="table table-striped">
+                <thead id="theadsumsupplier-pdf"></thead>
+                <tbody id="tbodysumsupplier-pdf"></tbody>
               </table>
             </div>
           </div>
@@ -72,8 +112,7 @@
     <script src="./../require/index.js"></script>
     <script type="module" src="./../js/utils/updateUi.js"></script>
     <script>
-      ipcRenderer.on("tables:persediaan", (e, thead, tbody, filePath) => {
-        $("#thead-pdf").html(thead);
+      ipcRenderer.on("tables:persediaan", (e, tbody, filePath) => {
         $("#tbody-pdf").html(tbody);
         ipcRenderer.send("create:pdf-persediaan", filePath);
       });

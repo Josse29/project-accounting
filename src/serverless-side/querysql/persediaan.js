@@ -120,6 +120,28 @@ export const queryGetPersediaanRpSum = (valPersediaanProductId) => {
   }
   return query;
 };
+export const queryGetPersediaanProduct = () => {
+  return `SELECT
+          Product.ProductName,
+          Product.ProductPrice,
+          SUM(Persediaan.PersediaanQty) AS TotalQty,
+          SUM(Persediaan.PersediaanRp) AS TotalRp
+          FROM Persediaan
+          LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
+          GROUP BY Persediaan.PersediaanProductId
+          ORDER BY Product.ProductName ASC`;
+};
+export const queryGetPersediaanSupplier = () => {
+  return `SELECT
+          Supplier.SupplierName,
+          SUM(Persediaan.PersediaanQty) AS TotalQty,
+          SUM(Persediaan.PersediaanRp) AS TotalRp
+          FROM Persediaan
+          LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
+          LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId
+          GROUP BY Supplier.SupplierId`;
+};
+
 // export const queryGetPersediaanProductList = (valProductName) => {
 //   return `SELECT
 //           Persediaan.PersediaanProductId,
