@@ -31,7 +31,7 @@ $(document).ready(function () {
           $("#only-product").hide();
           $("#persediaan-pagination").addClass("d-none");
           $("input#persediaan-start-date").val("");
-          $("input#persediaan-start-date").val("");
+          $("input#persediaan-end-date").val("");
         }
         if (!status) {
           console.error(response);

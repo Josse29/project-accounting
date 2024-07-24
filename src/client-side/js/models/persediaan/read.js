@@ -24,7 +24,7 @@ $(document).ready(function () {
   getInit(persediaanSearch);
   $("#persediaan-sum-section").hide();
   $("button#persediaan-refresh").on("click", function () {
-    getInit();
+    getInit(persediaanSearch);
   });
   $("input#persediaan-search").on("keyup", function () {
     persediaanSearch = $(this).val();
@@ -45,13 +45,15 @@ $(document).ready(function () {
             if (status) {
               const totalRupiah = formatRupiah2(response);
               $("#persediaan-detail-totalrp").text(totalRupiah);
+              $("#persediaan-sum-section").hide();
+              $("#persediaan-pagination").removeClass("d-none");
+              $("#persediaan-pagination").show();
             }
             if (!status) {
               console.error(response);
             }
           });
           getTotalPage();
-          $("#persediaan-pagination").show();
         }
         // non-existed product
         if (persediaanTotalRow < 1) {
