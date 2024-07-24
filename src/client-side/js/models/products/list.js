@@ -152,7 +152,6 @@ export function listProductRefPersediaanCreate() {
     }
   });
 }
-
 // function to update when update list product ref persediaan hufft
 export function listProductRefPersediaanUpdate() {
   $(document).ready(function () {
@@ -296,3 +295,17 @@ export function listProductRefPersediaanUpdate() {
     }
   });
 }
+export const listProductRefPersediaanRead = () => {
+  getListProduct("", (status, response) => {
+    if (status) {
+      let option = `<option selected disabled>Produk</option>`;
+      response.forEach((row) => {
+        option += `<option value=${row.ProductId}>${row.ProductName}</option>`;
+      });
+      $("select#persediaan-refproduct-search").html(option);
+    }
+    if (!status) {
+      console.error(response);
+    }
+  });
+};

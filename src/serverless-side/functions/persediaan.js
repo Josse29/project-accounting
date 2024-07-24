@@ -2,13 +2,21 @@ import { formatQty1 } from "../../client-side/js/utils/formatQty.js";
 import {
   queryDeletePersediaan,
   queryGetPersediaan,
+  queryGetPersediaanCategoryId,
+  queryGetPersediaanDate,
+  queryGetPersediaanDateSUM,
   queryGetPersediaanProductGroup,
   queryGetPersediaanProductId,
+  queryGetPersediaanProductId2,
   queryGetPersediaanProductReport,
   queryGetPersediaanQty,
   queryGetPersediaanReport,
   queryGetPersediaanRpSum,
+  queryGetPersediaanRpSumCategoryId,
+  queryGetPersediaanRpSumProductId,
+  queryGetPersediaanRpSumSupplierId,
   queryGetPersediaanSupplierGroup,
+  queryGetPersediaanSupplierId,
   queryGetPersediaanSupplierReport,
   queryGetPersediaanTotalRow,
   queryInsertPersediaan,
@@ -210,8 +218,8 @@ export const getPersediaanQty = (valPersediaanProductId, callback) => {
     }
   });
 };
-export const getPersediaanRpSum = (valPersediaanProductId, callback) => {
-  db.each(queryGetPersediaanRpSum(valPersediaanProductId), (err, res) => {
+export const getPersediaanRpSum = (callback) => {
+  db.each(queryGetPersediaanRpSum(), (err, res) => {
     if (!err) {
       let totalRp = ``;
       if (res.TotalRp !== null) {
@@ -227,8 +235,107 @@ export const getPersediaanRpSum = (valPersediaanProductId, callback) => {
     }
   });
 };
+export const getPersediaanRpSumCategoryId = (
+  valPersediaanCategoryId,
+  callback
+) => {
+  db.each(
+    queryGetPersediaanRpSumCategoryId(valPersediaanCategoryId),
+    (err, res) => {
+      if (!err) {
+        let totalRp = ``;
+        if (res.TotalRp !== null) {
+          totalRp = parseFloat(res.TotalRp);
+        }
+        if (res.TotalRp === null) {
+          totalRp = 0;
+        }
+        return callback(true, totalRp);
+      }
+      if (err) {
+        return callback(false, err);
+      }
+    }
+  );
+};
+export const getPersediaanRpSumProductId = (
+  valPersediaanProductId,
+  callback
+) => {
+  db.each(
+    queryGetPersediaanRpSumProductId(valPersediaanProductId),
+    (err, res) => {
+      if (!err) {
+        let totalRp = ``;
+        if (res.TotalRp !== null) {
+          totalRp = parseFloat(res.TotalRp);
+        }
+        if (res.TotalRp === null) {
+          totalRp = 0;
+        }
+        return callback(true, totalRp);
+      }
+      if (err) {
+        return callback(false, err);
+      }
+    }
+  );
+};
+export const getPersediaanRpSumSupplierId = (
+  valPersediaanSupplierId,
+  callback
+) => {
+  db.each(
+    queryGetPersediaanRpSumSupplierId(valPersediaanSupplierId),
+    (err, res) => {
+      if (!err) {
+        let totalRp = ``;
+        if (res.TotalRp !== null) {
+          totalRp = parseFloat(res.TotalRp);
+        }
+        if (res.TotalRp === null) {
+          totalRp = 0;
+        }
+        return callback(true, totalRp);
+      }
+      if (err) {
+        return callback(false, err);
+      }
+    }
+  );
+};
 export const getPersediaanProductId = (valPersediaanProductId, callback) => {
   db.all(queryGetPersediaanProductId(valPersediaanProductId), (err, res) => {
+    if (!err) {
+      return callback(true, res);
+    }
+    if (err) {
+      return callback(true, err);
+    }
+  });
+};
+export const getPersediaanCategoryId = (valPersediaanCategoryId, callback) => {
+  db.all(queryGetPersediaanCategoryId(valPersediaanCategoryId), (err, res) => {
+    if (!err) {
+      return callback(true, res);
+    }
+    if (err) {
+      return callback(true, err);
+    }
+  });
+};
+export const getPersediaanSupplierId = (valSupplierId, callback) => {
+  db.all(queryGetPersediaanSupplierId(valSupplierId), (err, res) => {
+    if (!err) {
+      return callback(true, res);
+    }
+    if (err) {
+      return callback(true, err);
+    }
+  });
+};
+export const getPersediaanProductId2 = (valPersediaanProductId, callback) => {
+  db.all(queryGetPersediaanProductId2(valPersediaanProductId), (err, res) => {
     if (!err) {
       return callback(true, res);
     }
@@ -284,6 +391,28 @@ export const getPersediaanReport = (callback) => {
     }
     if (err) {
       return callback(true, err);
+    }
+  });
+};
+export const getPersediaanDate = (valStartDate, valEndDate, callback) => {
+  const query = queryGetPersediaanDate(valStartDate, valEndDate);
+  db.all(query, (err, res) => {
+    if (!err) {
+      return callback(true, res);
+    }
+    if (err) {
+      return callback(false, err);
+    }
+  });
+};
+export const getPersediaanDateSum = (valStartDate, valEndDate, callback) => {
+  const query = queryGetPersediaanDateSUM(valStartDate, valEndDate);
+  db.all(query, (err, res) => {
+    if (!err) {
+      return callback(true, res);
+    }
+    if (err) {
+      return callback(false, err);
     }
   });
 };

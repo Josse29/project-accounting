@@ -4,11 +4,21 @@ import { formatWaktuIndo } from "../../utils/formatWaktu.js";
 // ui tr inventory from db
 export const uiTrPersediaan = (el) => {
   let PersediaanQty = ``;
+  let PersediaanRp = ``;
   const formattedQty = addSpace(el.PersediaanQty);
   if (el.PersediaanQty >= 1) {
     PersediaanQty = `<span class="badge text-bg-success fs-6"> + ${el.PersediaanQty}</span>`;
   } else {
     PersediaanQty = `<span class="badge text-bg-danger fs-6">${formattedQty}</span>`;
+  }
+  if (el.PersediaanRp >= 1) {
+    PersediaanRp = `<span class="badge text-bg-success fs-6"> + ${formatRupiah2(
+      el.PersediaanRp
+    )}</span>`;
+  } else {
+    PersediaanRp = `<span class="badge text-bg-danger fs-6">- ${formatRupiah2(
+      Math.abs(el.PersediaanRp)
+    )}</span>`;
   }
   return `<tr>
             <td class="align-content-center text-center">${el.PersediaanId}</td>
@@ -30,6 +40,9 @@ export const uiTrPersediaan = (el) => {
             </td>
             <td class="text-nowrap align-content-center text-center">
               ${PersediaanQty}
+            </td>
+            <td class="text-nowrap align-content-center text-center">
+              ${PersediaanRp}
             </td>
             <td>
               <div class="d-flex w-100 justify-content-center gap-2">
@@ -160,13 +173,13 @@ export const uiActivePageButton = (
 // when total row 0 being seaching
 export const uiTrZeroSearch = (searchVal) => {
   return `<tr>
-              <td colspan="9" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">Persediaan ${searchVal} tidak ditemukan....</td>
+              <td colspan="10" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">Persediaan ${searchVal} tidak ditemukan....</td>
             </tr>`;
 };
 // when total row 0 being seaching
 export const uiTrZero = () => {
   return `<tr>
-              <td colspan="9" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">tidak ada persediaan....</td>
+              <td colspan="10" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">tidak ada persediaan....</td>
             </tr>`;
 };
 // blank value after submit action

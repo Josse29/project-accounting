@@ -1,32 +1,32 @@
-import { getListCategory } from "../../../../serverless-side/functions/categories.js";
 import {
-  getPersediaanCategoryId,
-  getPersediaanRpSumCategoryId,
+  getPersediaanRpSumSupplierId,
+  getPersediaanSupplierId,
 } from "../../../../serverless-side/functions/persediaan.js";
+import { getListSupplier } from "../../../../serverless-side/functions/supplier.js";
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import { uiTrPersediaan, uiTrZeroSearch } from "./ui.js";
 
 $(document).ready(function () {
-  getListCategory("", (status, response) => {
+  getListSupplier("", (status, response) => {
     if (status) {
-      let option = `<option selected disabled>Kategori</option>`;
-      response.forEach((el) => {
-        option += `<option value=${el.CategoryId}>${el.CategoryName}</option>`;
+      let option = `<option selected disabled>Supplier</option>`;
+      response.forEach((row) => {
+        option += `<option value=${row.SupplierId}>${row.SupplierName}</option>`;
       });
-      $("select#persediaan-refcategory-search").html(option);
+      $("select#persediaan-refsupplier-search").html(option);
     }
     if (!status) {
       console.error(response);
     }
   });
-  $("select#persediaan-refcategory-search").on("change", function () {
+  $("select#persediaan-refsupplier-search").on("change", function () {
     const selectedText = $(this).find("option:selected").text();
-    const selectedCategoryId = parseInt($(this).val());
     $("span#persediaan-id").text(selectedText);
-    getPersediaanCategoryId(selectedCategoryId, (status, response) => {
+    const selectedSupplierId = parseInt($(this).val());
+    getPersediaanSupplierId(selectedSupplierId, (status, response) => {
       if (status) {
-        const existedCategory = response.length >= 1;
-        if (existedCategory) {
+        const existedSupplier = response.length >= 1;
+        if (existedSupplier) {
           let tr = "";
           response.forEach((element) => {
             tr += uiTrPersediaan(element);
@@ -35,7 +35,7 @@ $(document).ready(function () {
           $("#persediaan-table").html(tr);
           getSum();
         }
-        if (!existedCategory) {
+        if (!existedSupplier) {
           const tr = uiTrZeroSearch(selectedText);
           $("#persediaan-table").html(tr);
           $("#persediaan-sum-section").hide();
@@ -48,7 +48,7 @@ $(document).ready(function () {
       }
     });
     function getSum() {
-      getPersediaanRpSumCategoryId(selectedCategoryId, (status, response) => {
+      getPersediaanRpSumSupplierId(selectedSupplierId, (status, response) => {
         if (status) {
           const rupiah = formatRupiah2(parseFloat(response));
           $("span#total-rupiah-byid").text(rupiah);

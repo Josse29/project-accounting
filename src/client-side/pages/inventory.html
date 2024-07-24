@@ -211,7 +211,7 @@
                   <button
                     type="button"
                     class="btn btn-secondary"
-                    id="persediaan-delete"
+                    id="persediaan-refresh"
                     data-bs-toggle="tooltip"
                     data-bs-html="true"
                     data-bs-title="<span>refresh-persediaan</span>"
@@ -233,12 +233,10 @@
                     class="form-select w-auto"
                   ></select>
                   <!-- for supplier -->
-                  <select class="form-select w-auto">
-                    <option selected>Supplier</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </select>
+                  <select
+                    class="form-select w-auto"
+                    id="persediaan-refsupplier-search"
+                  ></select>
                   <!-- for waiter -->
                   <select class="form-select w-auto">
                     <option selected>Waiter</option>
@@ -248,7 +246,7 @@
                   </select>
                 </div>
               </div>
-              <!-- search & limit persediaan -->
+              <!--datee, search & limit persediaan -->
               <div class="d-flex mb-3">
                 <!-- date -->
                 <div style="width: max-content">
@@ -256,7 +254,7 @@
                     <input
                       type="date"
                       class="form-control py-2"
-                      id="persediaanstart-date"
+                      id="persediaan-start-date"
                       style="width: 300px"
                     />
                     <span
@@ -266,10 +264,13 @@
                     <input
                       type="date"
                       class="form-control py-2"
-                      id="persediaan-akhir-date"
+                      id="persediaan-end-date"
                       style="width: 300px"
                     />
-                    <button class="btn btn-primary rounded-end-2">
+                    <button
+                      class="btn btn-primary rounded-end-2"
+                      id="persediaan-date-search"
+                    >
                       search
                     </button>
                   </div>
@@ -319,11 +320,30 @@
                       <th>Nama Supplier</th>
                       <th>Nama Petugas</th>
                       <th class="text-center">Qty</th>
+                      <th class="text-center">Harga</th>
                       <th class="text-center">Aksi</th>
                     </tr>
                   </thead>
                   <tbody id="persediaan-table"></tbody>
                 </table>
+              </div>
+              <div id="persediaan-sum-section" class="ms-3 mt-3">
+                <p class="fs-5 ms-2 mb-1">
+                  <span id="persediaan-id" class="text-capitalize fw-bold"
+                    >test</span
+                  >
+                </p>
+                <div id="only-product">
+                  <p class="fs-5 ms-4 mb-1">
+                    Harga : <span id="rupiah-byid">10000</span>
+                  </p>
+                  <p class="fs-5 ms-4 mb-1">
+                    Total Qty : <span id="total-qty-byid">10000</span>
+                  </p>
+                </div>
+                <p class="fs-5 ms-4">
+                  Total Rupiah : <span id="total-rupiah-byid">10000</span>
+                </p>
               </div>
               <!-- pagination persediaan -->
               <div

@@ -17,9 +17,10 @@ import { getPersediaanAgain } from "../persediaan/read.js";
 import {
   getPersediaanProductId,
   getPersediaanQty,
-  getPersediaanRpSum,
+  getPersediaanRpSumProductId,
 } from "../../../../serverless-side/functions/persediaan.js";
 import { formatWaktuIndo } from "../../utils/formatWaktu.js";
+import { listProductRefPersediaanRead } from "./list.js";
 $(document).ready(function () {
   let productSearch = $("#product-search-input").val();
   let productLimit = parseInt($("#product-limit").val());
@@ -205,7 +206,7 @@ $(document).ready(function () {
           console.error(response);
         }
       });
-      getPersediaanRpSum(productId, (status, response) => {
+      getPersediaanRpSumProductId(productId, (status, response) => {
         if (status) {
           $("#persediaan-detail-productid").text(formatRupiah2(response));
         }
@@ -373,4 +374,5 @@ export function getProductsAgain() {
 export const getProductRef = () => {
   getSupplierAgain();
   getPersediaanAgain();
+  listProductRefPersediaanRead();
 };

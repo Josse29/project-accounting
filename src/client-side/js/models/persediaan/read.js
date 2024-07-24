@@ -22,12 +22,10 @@ $(document).ready(function () {
   let persediaanTotalPage;
   let persediaanBtnPage;
   getInit(persediaanSearch);
-  $("select#persediaan-refproduct-search").on("change", function () {
-    persediaanSearch = $(this).val();
-    getInit(persediaanSearch);
+  $("#persediaan-sum-section").hide();
+  $("button#persediaan-refresh").on("click", function () {
+    getInit();
   });
-  $("select#persediaan-refcategory-search").on("change", function () {});
-  $("#persediaan-refcategory-search");
   $("input#persediaan-search").on("keyup", function () {
     persediaanSearch = $(this).val();
     getInit(persediaanSearch);
@@ -43,7 +41,7 @@ $(document).ready(function () {
         persediaanTotalRow = parseInt(response);
         // existed product
         if (persediaanTotalRow >= 1) {
-          getPersediaanRpSum("", (status, response) => {
+          getPersediaanRpSum((status, response) => {
             if (status) {
               const totalRupiah = formatRupiah2(response);
               $("#persediaan-detail-totalrp").text(totalRupiah);
@@ -213,7 +211,7 @@ export const getPersediaanAgain = () => {
   let persediaanTotalPage;
   let persediaanBtnPage;
   getInit(persediaanSearch);
-  getPersediaanRpSum("", (status, response) => {
+  getPersediaanRpSum((status, response) => {
     if (status) {
       const totalRupiah = formatRupiah2(response);
       $("#persediaan-detail-totalrp").text(totalRupiah);

@@ -98,7 +98,7 @@ const getPersediaanQtySumAsync = () => {
 };
 const getPersediaanRpSumAsync = () => {
   return new Promise((resolve, reject) => {
-    getPersediaanRpSum("", (status, response) => {
+    getPersediaanRpSum((status, response) => {
       if (status) {
         const rupiah = formatRupiah2(response);
         resolve(rupiah);
