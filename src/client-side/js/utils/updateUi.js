@@ -14,22 +14,13 @@ $(document).ready(function () {
     updateTimeHTML();
   }, 1000);
 });
-
-// reinit tooltip
-// export const reinitializeTooltips = () => {
-//   const tooltipTriggerList = document.querySelectorAll(
-//     '[data-bs-toggle="tooltip"]'
-//   );
-//   const tooltipList = [...tooltipTriggerList].map(
-//     (tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl)
-//   );
-//   return tooltipList;
-// };
 export const reinitializeTooltips = () => {
+  // window.addEventListener("DOMContentLoaded", () => {
   const tooltipTriggerList = document.querySelectorAll(
     '[data-bs-toggle="tooltip"]'
   );
   const tooltipList = [...tooltipTriggerList].map(
     (tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl)
   );
+  // });
 };

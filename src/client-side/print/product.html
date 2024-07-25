@@ -1,73 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <!-- Framework css bootstrap -->
     <link rel="stylesheet" href="./../third-party/bootstrap.min.css" />
     <!-- Fontawesome -->
-    <link rel="stylesheet" href="./../third-party/fontawesome-web/css/all.min.css" />
+    <link
+      rel="stylesheet"
+      href="./../third-party/fontawesome-web/css/all.min.css"
+    />
     <!-- my css -->
     <style>
-        @font-face {
-            font-family: "poppins";
-            src: url("./../third-party/Poppins-Regular.ttf");
-        }
+      @font-face {
+        font-family: "poppins";
+        src: url("./../third-party/Poppins-Regular.ttf");
+      }
 
-        * {
-            font-family: "poppins";
-        }
+      * {
+        font-family: "poppins";
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="d-flex justify-content-center">
-        <div style="width: 80%">
-            <div class="card my-2">
-                <div class="card-header text-center text-white fs-3" style="background-color: #273eec;">
-                    PT. ABC, T.bk
-                </div>
-                <div class="card-body overflow-x-scroll">
-                    <div>
-                        <h3>Table-Products</h3>
-                        <h6>Jumat, 17-05-2024</h6>
-                        <h6>12:00 Wib</h6>
-                    </div>
-                    <!-- tabel product -->
-                    <div>
-                        <table class="table table-striped">
-                            <thead id="thead-pdf"></thead>
-                            <tbody id="tbody-pdf"></tbody>
-                        </table>
-                    </div>
-                </div>
+      <div style="width: 80%">
+        <div class="card my-2">
+          <div
+            class="card-header text-center text-white fs-3"
+            style="background-color: #273eec"
+          >
+            PT. ABC, T.bk
+          </div>
+          <div class="card-body overflow-x-scroll">
+            <div>
+              <h3>Table-Products</h3>
+              <h6>Jumat, 17-05-2024</h6>
+              <h6>12:00 Wib</h6>
             </div>
+            <!-- tabel product -->
+            <div>
+              <table class="table table-striped">
+                <thead id="thead-pdf"></thead>
+                <tbody id="tbody-pdf"></tbody>
+              </table>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
     <!-- bootstrap js  -->
     <script src="./../third-party/bootstrap.bundle.min.js"></script>
     <!-- jquery & config with electron-jquery -->
     <script>
-        if (typeof module === "object") {
-            window.module = module;
-            module = undefined;
-        }
+      if (typeof module === "object") {
+        window.module = module;
+        module = undefined;
+      }
     </script>
     <script src="./../third-party/jquery-3.7.1.min.js"></script>
     <script>
-        if (window.module) module = window.module;
+      if (window.module) module = window.module;
     </script>
     <!-- myscript -->
     <script src="./../require/index.js"></script>
     <script>
-        ipcRenderer.on("tables:product", (e, thead, tbody) => {
-            $("#thead-pdf").html(thead);
-            $("#tbody-pdf").html(tbody);
-            ipcRenderer.send("create:print-product");
-        });
+      ipcRenderer.on("tables:product", (e, thead, tbody) => {
+        $("#thead-pdf").html(thead);
+        $("#tbody-pdf").html(tbody);
+        ipcRenderer.send("create:print-product");
+      });
     </script>
-</body>
-
+  </body>
 </html>

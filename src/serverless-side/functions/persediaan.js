@@ -23,6 +23,8 @@ import {
   queryUpdatePersediaan,
 } from "../querysql/persediaan.js";
 
+// const sqlite3 = require("sqlite3").verbose();
+// const db = new sqlite3.Database("./src/serverless-side/database/myapps.db");
 // 1.CREATE
 export const createPersediaan = (
   valProductName,
@@ -433,6 +435,7 @@ export const updatePersediaan = (
   if (!isNumeric) {
     return callback(false, "Mohon Masukkan Angka di Input Qty");
   }
+  console.log("product id " + valPersediaanProductId);
   // 2. validate available qty
   getPersediaanQtyValidate(
     valProductName,

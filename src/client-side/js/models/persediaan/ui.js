@@ -72,7 +72,7 @@ export const uiTrPersediaan = (el) => {
                                 data-bs-target="#persediaanUpdateModal"
                                 data-persediaanid=${el.PersediaanId}
                                 data-persediaanprice=${el.PersediaanRp}
-                                data-productid=${el.ProductId} 
+                                data-productid=${el.PersediaanProductId} 
                                 data-productname="${el.ProductName}"
                                 data-productprice=${el.ProductPrice} 
                                 data-persediaanddmy="${el.PersediaanDDMY}" 

@@ -46,6 +46,7 @@ export const queryGetPersediaan = (
                Persediaan.PersediaanId,
                Persediaan.PersediaanDDMY,
                Persediaan.PersediaanHMS,
+               Persediaan.PersediaanProductId,
                Product.ProductName,
                Product.ProductPrice,
                Category.CategoryName,
@@ -320,15 +321,6 @@ export const queryUpdatePersediaan = (
   valPersediaanRp,
   valPersediaanInfo
 ) => {
-  console.log(`UPDATE
-    ${tableName}
-    SET ${colPersediaanDDMY} = '${valPersediaanDDMY}',
-        ${colPersediaanHMS} = '${valPersediaanHMS}',
-        ${colPersediaanProductId} = ${valPersediaanProductId},
-        ${colPersediaanQty} = ${valPersediaanQty},
-        ${colPersediaanRp} = ${valPersediaanRp},
-        ${colPersediaanInfo} = '${valPersediaanInfo}'
-    WHERE ${colPersediaanId} = ${valPersediaanId}`);
   return `UPDATE
           ${tableName}
           SET ${colPersediaanDDMY} = '${valPersediaanDDMY}',

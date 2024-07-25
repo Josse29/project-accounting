@@ -71,6 +71,7 @@ $(document).ready(function () {
         );
         const valPersediaanInfo = $("#persediaan-update-info").val();
         const valProductName = $("#persediaan-refproduct-update-name").val();
+
         // action
         updatePersediaan(
           valPersediaanId,

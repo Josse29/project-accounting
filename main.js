@@ -297,6 +297,7 @@ ipcMain.on(
   }
 );
 let productPrint;
+let persediaanPrint;
 ipcMain.on("print:product", (event, thead, tbody) => {
   productPrint = new BrowserWindow({
     webPreferences: {
@@ -324,6 +325,52 @@ ipcMain.on("print:product", (event, thead, tbody) => {
     });
   });
 });
+ipcMain.on(
+  "print:persediaan",
+  (
+    event,
+    tbodyProduct,
+    tbodyProductGroup,
+    tbodySupplier,
+    tbodySupplierGroup,
+    txtPersediaanQtySum,
+    txtPersediaanRpSum
+  ) => {
+    persediaanPrint = new BrowserWindow({
+      webPreferences: {
+        nodeIntegration: true,
+        contextIsolation: false,
+      },
+      // frame: false,
+    });
+    remote.enable(persediaanPrint.webContents);
+    persediaanPrint.loadFile("./src/client-side/print/persediaan.html");
+    persediaanPrint.webContents.on("dom-ready", () => {
+      persediaanPrint.webContents.send(
+        "tables:persediaan",
+        tbodyProduct,
+        tbodyProductGroup,
+        tbodySupplier,
+        tbodySupplierGroup,
+        txtPersediaanQtySum,
+        txtPersediaanRpSum
+      );
+    });
+    ipcMain.on("create:print-persediaan", (event) => {
+      persediaanPrint.webContents.print(
+        {
+          printBackground: true,
+        },
+        () => {
+          persediaanPrint.close();
+        }
+      );
+      persediaanPrint.on("close", () => {
+        persediaanPrint = null;
+      });
+    });
+  }
+);
 app.whenReady().then(() => {
   createLoginPage();
   app.on("activate", () => {

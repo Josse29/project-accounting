@@ -5,7 +5,7 @@ import {
   uiTrZero,
   uiTrZeroSearch,
 } from "./ui.js";
-import { reinitializeTooltips } from "../../utils/updateUi.js";
+// import { reinitializeTooltips } from "../../utils/updateUi.js";
 import { addSpace } from "../../utils/formatSpace.js";
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import {
@@ -158,7 +158,6 @@ $(document).ready(function () {
           });
           $("#persediaan-table").html(tr);
           uiActivePageButton(persediaanActivePage, persediaanBtnPage);
-          reinitializeTooltips();
         }
         if (!status) {
           console.error(response);
@@ -175,7 +174,12 @@ $(document).ready(function () {
         formatWaktuIndo(persediaan.persediaanddmy)
       );
       $("#persediaan-detail-second").text(persediaan.persediaanhms);
-      $("#persediaan-detail-info").text(persediaan.persediaaninfo);
+      if (persediaan.persediaaninfo === "") {
+        $("#persediaan-detail-info").text("-");
+      }
+      if (persediaan.persediaaninfo !== "") {
+        $("#persediaan-detail-info").text(persediaan.persediaaninfo);
+      }
       $("#persediaanDetailTitle").text(persediaan.productname);
       let tdProductQty = ``;
       if (persediaan.persediaanqty < 1) {
@@ -213,31 +217,50 @@ export const getPersediaanAgain = () => {
   let persediaanTotalPage;
   let persediaanBtnPage;
   getInit(persediaanSearch);
-  getPersediaanRpSum((status, response) => {
-    if (status) {
-      const totalRupiah = formatRupiah2(response);
-      $("#persediaan-detail-totalrp").text(totalRupiah);
-    }
-    if (!status) {
-      console.error(response);
-    }
+  $("#persediaan-sum-section").hide();
+  $("button#persediaan-refresh").on("click", function () {
+    getInit(persediaanSearch);
+  });
+  $("input#persediaan-search").on("keyup", function () {
+    persediaanSearch = $(this).val();
+    getInit(persediaanSearch);
+  });
+  $("select#persediaan-limit").on("change", function () {
+    persediaanLimit = parseInt($(this).val());
+    getInit();
   });
   // 1. get first,  get total row, upadate ui (total row) as condition
   function getInit() {
     getPersediaanTotalRow(persediaanSearch, (status, response) => {
       if (status) {
         persediaanTotalRow = parseInt(response);
+        // existed product
         if (persediaanTotalRow >= 1) {
+          getPersediaanRpSum((status, response) => {
+            if (status) {
+              const totalRupiah = formatRupiah2(response);
+              $("#persediaan-detail-totalrp").text(totalRupiah);
+              $("#persediaan-sum-section").hide();
+              $("#persediaan-pagination").removeClass("d-none");
+              $("#persediaan-pagination").show();
+            }
+            if (!status) {
+              console.error(response);
+            }
+          });
           getTotalPage();
-          $("#persediaan-pagination").removeClass("d-none");
         }
+        // non-existed product
         if (persediaanTotalRow < 1) {
-          if (persediaanSearch) {
+          // with search
+          if (persediaanSearch !== "") {
             $("#persediaan-table").html(uiTrZeroSearch(persediaanSearch));
-          } else {
+          }
+          // without search
+          if (persediaanSearch === "") {
             $("#persediaan-table").html(uiTrZero);
           }
-          $("#persediaan-pagination").addClass("d-none");
+          $("#persediaan-pagination").hide();
         }
       }
       if (!status) {
@@ -329,13 +352,51 @@ export const getPersediaanAgain = () => {
             tr += uiTrPersediaan(element);
           });
           $("#persediaan-table").html(tr);
-          uiActivePageButton(persediaanActivePage, persediaanBtnPage);
           reinitializeTooltips();
+          uiActivePageButton(persediaanActivePage, persediaanBtnPage);
         }
         if (!status) {
           console.error(response);
         }
       }
     );
+    getDetail();
+  }
+  function getDetail() {
+    $(document).on("click", "#persediaanDetail", function () {
+      const persediaan = this.dataset;
+      $("#persediaan-detail-productname").text(persediaan.productname);
+      $("#persediaan-detail-date").text(
+        formatWaktuIndo(persediaan.persediaanddmy)
+      );
+      $("#persediaan-detail-second").text(persediaan.persediaanhms);
+      $("#persediaan-detail-info").text(persediaan.persediaaninfo);
+      $("#persediaanDetailTitle").text(persediaan.productname);
+      let tdProductQty = ``;
+      if (persediaan.persediaanqty < 1) {
+        tdProductQty = `<span class="badge text-bg-danger">${addSpace(
+          persediaan.persediaanqty
+        )}</span>`;
+      }
+      if (persediaan.persediaanqty >= 1) {
+        tdProductQty = `<span class="badge text-bg-success">+ ${persediaan.persediaanqty}</span>`;
+      }
+      $("td#persediaan-detail-productprice").text(
+        formatRupiah2(persediaan.productprice)
+      );
+      $("td#persediaan-detail-productqty").html(tdProductQty);
+      const persediaaanRp = persediaan.persediaanprice;
+      let txtPersediaanRp = ``;
+      if (persediaaanRp < 1) {
+        txtPersediaanRp =
+          persediaaanRp.substr(0, 1) +
+          " " +
+          formatRupiah2(persediaaanRp.substr(1));
+      }
+      if (persediaaanRp >= 1) {
+        txtPersediaanRp = formatRupiah2(persediaaanRp);
+      }
+      $("td#persediaan-detail-rp").text(txtPersediaanRp);
+    });
   }
 };

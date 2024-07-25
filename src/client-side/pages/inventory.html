@@ -208,10 +208,11 @@
                     <i class="fa-solid fa-trash fs-5"></i>
                   </button>
                   <!-- refresh -->
+
                   <button
+                    id="persediaan-refresh"
                     type="button"
                     class="btn btn-secondary"
-                    id="persediaan-refresh"
                     data-bs-toggle="tooltip"
                     data-bs-html="true"
                     data-bs-title="<span>refresh-persediaan</span>"
@@ -2435,8 +2436,16 @@
         </div>
       </div>
     </div>
-    <!-- bootstrap js  -->
-    <script src="./../third-party/bootstrap.bundle.min.js"></script>
+    <script>
+      window.addEventListener("DOMContentLoaded", () => {
+        const tooltipTriggerList = document.querySelectorAll(
+          '[data-bs-toggle="tooltip"]'
+        );
+        const tooltipList = [...tooltipTriggerList].map(
+          (tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl)
+        );
+      });
+    </script>
     <!-- jquery & config with electron-jquery -->
     <script>
       if (typeof module === "object") {
@@ -2448,6 +2457,8 @@
     <script>
       if (window.module) module = window.module;
     </script>
+    <!-- bootstrap js  -->
+    <script src="./../third-party/bootstrap.bundle.min.js"></script>
     <script src="./../require/index.js"></script>
     <script type="module" src="./../js/utils/ipc.js"></script>
     <script type="module" src="./../js/utils/updateUi.js"></script>
