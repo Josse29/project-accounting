@@ -11,6 +11,7 @@ $(document).ready(function () {
   $(document).on("click", "#persediaan-update-btn", function () {
     listProductRefPersediaanUpdate();
     const persediaan = this.dataset;
+    console.log(persediaan);
     const persediaanId = parseInt(persediaan.persediaanid);
     const persediaanProductId = parseInt(persediaan.productid);
     const persediaanRp = parseFloat(persediaan.productprice);
@@ -63,15 +64,14 @@ $(document).ready(function () {
         const valPersediaanProductId = parseInt(
           $("#persediaan-refproduct-update-id").val()
         );
-        const valPersediaanQty = $(
-          "input#persediaan-refproduct-update-qty"
-        ).val();
+        const valPersediaanQty = parseFloat(
+          $("input#persediaan-refproduct-update-qty").val()
+        );
         const valPersediaanRp = parseFloat(
           $("input#persediaan-refproduct-update-rp").val()
         );
         const valPersediaanInfo = $("#persediaan-update-info").val();
         const valProductName = $("#persediaan-refproduct-update-name").val();
-
         // action
         updatePersediaan(
           valPersediaanId,

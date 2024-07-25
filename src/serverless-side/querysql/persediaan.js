@@ -118,6 +118,7 @@ export const queryGetPersediaanProductId2 = (valPersediaanProductId) => {
                Persediaan.PersediaanId,
                Persediaan.PersediaanDDMY,
                Persediaan.PersediaanHMS,
+               Persediaan.PersediaanProductId,
                Product.ProductName,
                Product.ProductPrice,
                Category.CategoryName,
@@ -186,6 +187,18 @@ export const queryGetPersediaanQty = (valPersediaanProductId) => {
   if (valPersediaanProductId !== "") {
     query += `WHERE Persediaan.PersediaanProductId = ${valPersediaanProductId} `;
   }
+  return query;
+};
+export const queryGetPersediaanQty2 = (
+  valPersediaanId,
+  valPersediaanProductId
+) => {
+  let query = `SELECT
+               SUM(Persediaan.PersediaanQty) AS TotalQty
+               FROM Persediaan `;
+  //with persediaanproductid
+  query += `WHERE Persediaan.PersediaanProductId = ${valPersediaanProductId} `;
+  query += `AND Persediaan.PersediaanId != ${valPersediaanId}`;
   return query;
 };
 export const queryGetPersediaanRpSum = () => {

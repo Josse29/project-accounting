@@ -10,6 +10,7 @@ import {
   queryGetPersediaanProductId2,
   queryGetPersediaanProductReport,
   queryGetPersediaanQty,
+  queryGetPersediaanQty2,
   queryGetPersediaanReport,
   queryGetPersediaanRpSum,
   queryGetPersediaanRpSumCategoryId,
@@ -22,9 +23,6 @@ import {
   queryInsertPersediaan,
   queryUpdatePersediaan,
 } from "../querysql/persediaan.js";
-
-// const sqlite3 = require("sqlite3").verbose();
-// const db = new sqlite3.Database("./src/serverless-side/database/myapps.db");
 // 1.CREATE
 export const createPersediaan = (
   valProductName,
@@ -146,6 +144,39 @@ export const getPersediaanTotalRow = (valPersediaanSearch, callback) => {
       return callback(false, err);
     }
   });
+};
+export const getPersediaanQtyValidate2 = (
+  valPersediaanId,
+  valPersediaanProductId,
+  valPersediaanQty,
+  callback
+) => {
+  db.all(
+    queryGetPersediaanQty2(valPersediaanId, valPersediaanProductId),
+    (err, rows) => {
+      if (!err) {
+        const res = rows[0].TotalQty;
+        if (valPersediaanQty < 1) {
+          const availableItem = res;
+          console.log("barang yang tersedia :");
+          console.log(availableItem);
+          const editExitItem = Math.abs(valPersediaanQty);
+          const enough = editExitItem <= availableItem;
+          if (enough) {
+            return callback(true, valPersediaanQty);
+          }
+          if (!enough) {
+            return callback(false, "Mohon maaf kurangi stock pengeluaran");
+          }
+        }
+        // const selisih = res -
+        return callback(true, res);
+      }
+      if (err) {
+        return callback(false, err);
+      }
+    }
+  );
 };
 export const getPersediaanQtyValidate = (
   valProductName,
@@ -435,15 +466,15 @@ export const updatePersediaan = (
   if (!isNumeric) {
     return callback(false, "Mohon Masukkan Angka di Input Qty");
   }
-  console.log("product id " + valPersediaanProductId);
   // 2. validate available qty
-  getPersediaanQtyValidate(
-    valProductName,
+  getPersediaanQtyValidate2(
+    valPersediaanId,
     valPersediaanProductId,
     valPersediaanQty,
     (status, response) => {
       if (status) {
-        executeUpdate();
+        // executeUpdate();
+        console.log(response);
       }
       if (!status) {
         console.log(response);
