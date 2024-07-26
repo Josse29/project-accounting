@@ -7,44 +7,48 @@ export const uiTrPersediaan = (el) => {
   let PersediaanRp = ``;
   const formattedQty = addSpace(el.PersediaanQty);
   if (el.PersediaanQty >= 1) {
-    PersediaanQty = `<span class="badge text-bg-success fs-6"> + ${el.PersediaanQty}</span>`;
+    PersediaanQty = `<span class="badge text-bg-success fs-6 text-truncate"  style="max-width: 120px"> + ${el.PersediaanQty}</span>`;
   } else {
-    PersediaanQty = `<span class="badge text-bg-danger fs-6">${formattedQty}</span>`;
+    PersediaanQty = `<span class="badge text-bg-danger fs-6 text-truncate"  style="max-width: 120px">${formattedQty}</span>`;
   }
   if (el.PersediaanRp >= 1) {
-    PersediaanRp = `<span class="badge text-bg-success fs-6"> + ${formatRupiah2(
+    PersediaanRp = `<span class="badge text-bg-success fs-6 text-truncate"  style="max-width: 200px"> + ${formatRupiah2(
       el.PersediaanRp
     )}</span>`;
   } else {
-    PersediaanRp = `<span class="badge text-bg-danger fs-6">- ${formatRupiah2(
+    PersediaanRp = `<span class="badge text-bg-danger fs-6 text-truncate"  style="max-width: 200px">- ${formatRupiah2(
       Math.abs(el.PersediaanRp)
     )}</span>`;
   }
   return `<tr>
-            <td class="align-content-center text-center">${el.PersediaanId}</td>
-            <td class="align-content-center">${formatWaktuIndo(
+            <td class="align-content-center text-center" style="width: 100px">${
+              el.PersediaanId
+            }</td>
+            <td class="align-content-center" style="width: 180px">${formatWaktuIndo(
               el.PersediaanDDMY
             )}</td>
-            <td class="align-content-center">${el.PersediaanHMS}</td>
-            <td class="align-content-center text-nowrap text-capitalize">${
+            <td class="align-content-center" style="width: 100px">${
+              el.PersediaanHMS
+            }</td>
+            <td class="align-content-center text-truncate text-capitalize" style="width: 190px">${
               el.ProductName
             }</td>
-            <td class="align-content-center text-nowrap text-capitalize">${
+            <td class="align-content-center text-truncate text-capitalize" style="width: 190px">${
               el.CategoryName
             }</td>
-            <td class="align-content-center text-nowrap text-capitalize">
+            <td class="align-content-center text-truncate text-capitalize" style="width: 190px">
               ${el.SupplierName}
             </td>
-            <td class="text-nowrap align-content-center">
+            <td class="text-truncate align-content-center" style="width: 150px">
               Mr.JK
             </td>
-            <td class="text-nowrap align-content-center text-center">
+            <td class="text-truncate align-content-center text-center" style="width: 120px">
               ${PersediaanQty}
             </td>
-            <td class="text-nowrap align-content-center text-center">
+            <td class="text-truncate align-content-center text-center" style="width: 200px">
               ${PersediaanRp}
             </td>
-            <td>
+            <td style="width:217px">
               <div class="d-flex w-100 justify-content-center gap-2">
                 <button id="persediaanDetail"
                         class="btn btn-success text-white"                      

@@ -25,6 +25,8 @@ $(document).ready(function () {
   $("#persediaan-sum-section").hide();
   $("button#persediaan-refresh").on("click", function () {
     getInit(persediaanSearch);
+    // reset all select
+    $("select#persediaan-refproduct-search").val("Produk");
   });
   $("input#persediaan-search").on("keyup", function () {
     persediaanSearch = $(this).val();
@@ -59,11 +61,11 @@ $(document).ready(function () {
         if (persediaanTotalRow < 1) {
           // with search
           if (persediaanSearch !== "") {
-            $("#persediaan-table").html(uiTrZeroSearch(persediaanSearch));
+            $("tbody#persediaan-table").html(uiTrZeroSearch(persediaanSearch));
           }
           // without search
           if (persediaanSearch === "") {
-            $("#persediaan-table").html(uiTrZero);
+            $("tbody#persediaan-table").html(uiTrZero);
           }
           $("#persediaan-pagination").hide();
         }
@@ -156,7 +158,7 @@ $(document).ready(function () {
           response.forEach((element) => {
             tr += uiTrPersediaan(element);
           });
-          $("#persediaan-table").html(tr);
+          $("tbody#persediaan-table").html(tr);
           uiActivePageButton(persediaanActivePage, persediaanBtnPage);
         }
         if (!status) {
@@ -254,11 +256,11 @@ export const getPersediaanAgain = () => {
         if (persediaanTotalRow < 1) {
           // with search
           if (persediaanSearch !== "") {
-            $("#persediaan-table").html(uiTrZeroSearch(persediaanSearch));
+            $("tbody#persediaan-table").html(uiTrZeroSearch(persediaanSearch));
           }
           // without search
           if (persediaanSearch === "") {
-            $("#persediaan-table").html(uiTrZero);
+            $("tbody#persediaan-table").html(uiTrZero);
           }
           $("#persediaan-pagination").hide();
         }
@@ -351,7 +353,7 @@ export const getPersediaanAgain = () => {
           response.forEach((element) => {
             tr += uiTrPersediaan(element);
           });
-          $("#persediaan-table").html(tr);
+          $("tbody#persediaan-table").html(tr);
           reinitializeTooltips();
           uiActivePageButton(persediaanActivePage, persediaanBtnPage);
         }

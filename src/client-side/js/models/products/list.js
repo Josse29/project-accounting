@@ -81,14 +81,7 @@ export function listProductRefPersediaanCreate() {
         // function to get total qty
         getPersediaanQty($(this).attr("valueid"), (status, response) => {
           if (status) {
-            let totalQtyTxt = ``;
-            let totalQty = response[0].TotalQty >= 1;
-            if (totalQty) {
-              totalQtyTxt = response[0].TotalQty;
-            }
-            if (!totalQty) {
-              totalQtyTxt = 0;
-            }
+            const totalQtyTxt = response;
             $productSearch.val(
               `${this.textContent} - Total Qty : ${totalQtyTxt}`
             );
@@ -224,14 +217,7 @@ export function listProductRefPersediaanUpdate() {
       $(".persediaan-refproduct-update-val").on("click", function () {
         getPersediaanQty($(this).attr("valueid"), (status, response) => {
           if (status) {
-            let totalQtyTxt = ``;
-            let totalQty = response[0].TotalQty >= 1;
-            if (totalQty) {
-              totalQtyTxt = response[0].TotalQty;
-            }
-            if (!totalQty) {
-              totalQtyTxt = 0;
-            }
+            const totalQtyTxt = response;
             $productSearch.val(
               `${this.textContent} - Total Qty : ${totalQtyTxt}`
             );
@@ -303,6 +289,20 @@ export const listProductRefPersediaanRead = () => {
         option += `<option value=${row.ProductId}>${row.ProductName}</option>`;
       });
       $("select#persediaan-refproduct-search").html(option);
+    }
+    if (!status) {
+      console.error(response);
+    }
+  });
+};
+export const listProductRefPersediaanReadDate = () => {
+  getListProduct("", (status, response) => {
+    if (status) {
+      let option = `<option selected disabled>Produk</option>`;
+      response.forEach((row) => {
+        option += `<option value=${row.ProductId}>${row.ProductName}</option>`;
+      });
+      $("select#persediaan-date-product").html(option);
     }
     if (!status) {
       console.error(response);

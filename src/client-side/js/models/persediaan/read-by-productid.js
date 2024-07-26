@@ -58,7 +58,8 @@ $(document).ready(function () {
       });
       getPersediaanQty(selectedProductId, (status, response) => {
         if (status) {
-          const totalQty = response[0].TotalQty;
+          const totalQty = response;
+          console.log(totalQty);
           $("span#total-qty-byid").text(totalQty);
         }
         if (!status) {
@@ -69,6 +70,7 @@ $(document).ready(function () {
         if (status) {
           const rupiah = formatRupiah2(parseFloat(response));
           $("span#total-rupiah-byid").text(rupiah);
+          $("span#persediaan-date-product").text("");
         }
         if (!status) {
           console.log(response);

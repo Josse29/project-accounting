@@ -4,7 +4,10 @@ import {
   queryGetPersediaan,
   queryGetPersediaanCategoryId,
   queryGetPersediaanDate,
+  queryGetPersediaanDateProductId,
+  queryGetPersediaanDateQty,
   queryGetPersediaanDateSUM,
+  queryGetPersediaanDateSumProduct,
   queryGetPersediaanProductGroup,
   queryGetPersediaanProductId,
   queryGetPersediaanProductId2,
@@ -242,9 +245,17 @@ export const getPersediaanQtyValidate = (
   });
 };
 export const getPersediaanQty = (valPersediaanProductId, callback) => {
-  db.all(queryGetPersediaanQty(valPersediaanProductId), (err, res) => {
+  db.each(queryGetPersediaanQty(valPersediaanProductId), (err, res) => {
     if (!err) {
-      return callback(true, res);
+      console.log(res);
+      let TotalQty = ``;
+      if (res.TotalQty !== null) {
+        TotalQty = parseFloat(res.TotalQty);
+      }
+      if (res.TotalQty === null) {
+        TotalQty = 0;
+      }
+      return callback(true, TotalQty);
     }
     if (err) {
       return callback(false, err);
@@ -438,11 +449,85 @@ export const getPersediaanDate = (valStartDate, valEndDate, callback) => {
     }
   });
 };
-export const getPersediaanDateSum = (valStartDate, valEndDate, callback) => {
-  const query = queryGetPersediaanDateSUM(valStartDate, valEndDate);
+export const getPersediaanDateQty = (
+  valStartDate,
+  valEndDate,
+  valProductId,
+  callback
+) => {
+  const query = queryGetPersediaanDateQty(
+    valStartDate,
+    valEndDate,
+    valProductId
+  );
   db.all(query, (err, res) => {
     if (!err) {
       return callback(true, res);
+    }
+    if (err) {
+      return callback(false, err);
+    }
+  });
+};
+export const getPersediaanDateProductId = (
+  valStartDate,
+  valEndDate,
+  valProductId,
+  callback
+) => {
+  const query = queryGetPersediaanDateProductId(
+    valStartDate,
+    valEndDate,
+    valProductId
+  );
+  db.all(query, (err, res) => {
+    if (!err) {
+      return callback(true, res);
+    }
+    if (err) {
+      return callback(false, err);
+    }
+  });
+};
+export const getPersediaanDateSum = (valStartDate, valEndDate, callback) => {
+  const query = queryGetPersediaanDateSUM(valStartDate, valEndDate);
+  db.each(query, (err, res) => {
+    if (!err) {
+      let totalRp = ``;
+      if (res.TotalRp !== null) {
+        totalRp = parseFloat(res.TotalRp);
+      }
+      if (res.TotalRp === null) {
+        totalRp = 0;
+      }
+      return callback(true, totalRp);
+    }
+    if (err) {
+      return callback(false, err);
+    }
+  });
+};
+export const getPersediaanDateSumProduct = (
+  valStartDate,
+  valEndDate,
+  valProductId,
+  callback
+) => {
+  const query = queryGetPersediaanDateSumProduct(
+    valStartDate,
+    valEndDate,
+    valProductId
+  );
+  db.each(query, (err, res) => {
+    if (!err) {
+      let totalRp = ``;
+      if (res.TotalRp !== null) {
+        totalRp = parseFloat(res.TotalRp);
+      }
+      if (res.TotalRp === null) {
+        totalRp = 0;
+      }
+      return callback(true, totalRp);
     }
     if (err) {
       return callback(false, err);

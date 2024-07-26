@@ -126,3 +126,31 @@ export function listCategoryRefProductUpdate() {
     });
   }
 }
+export const listCategoryRefPersediaanRead = () => {
+  getListCategory("", (status, response) => {
+    if (status) {
+      let option = `<option selected disabled>Kategori</option>`;
+      response.forEach((el) => {
+        option += `<option value=${el.CategoryId}>${el.CategoryName}</option>`;
+      });
+      $("select#persediaan-refcategory-search").html(option);
+    }
+    if (!status) {
+      console.error(response);
+    }
+  });
+};
+export const listCategoryRefPersediaanReadDate = () => {
+  getListCategory("", (status, response) => {
+    if (status) {
+      let option = `<option selected disabled>Kategori</option>`;
+      response.forEach((el) => {
+        option += `<option value=${el.CategoryId}>${el.CategoryName}</option>`;
+      });
+      $("select#persediaan-date-category").html(option);
+    }
+    if (!status) {
+      console.error(response);
+    }
+  });
+};

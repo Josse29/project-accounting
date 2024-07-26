@@ -232,6 +232,20 @@ export const queryGetPersediaanRpSumSupplierId = (valSupplierId) => {
   query += `WHERE Supplier.SupplierId = ${valSupplierId}`;
   return query;
 };
+export const queryGetPersediaanDateQty = (
+  valStartDate,
+  valEndDate,
+  valProductId
+) => {
+  let query = `SELECT 
+               SUM(Persediaan.PersediaanQty) AS TotalQty
+               FROM ${tableName} `;
+  //  with valstartDate - endDate
+  query += `WHERE ${tableName}.${colPersediaanDDMY} BETWEEN  '${valStartDate}' AND '${valEndDate}' `;
+  // with valProductId
+  query += `AND Persediaan.PersediaanId = ${valProductId}`;
+  return query;
+};
 export const queryGetPersediaanDate = (startDate, endDate) => {
   let query = `SELECT 
                Persediaan.PersediaanId,
@@ -254,12 +268,66 @@ export const queryGetPersediaanDate = (startDate, endDate) => {
   query += `ORDER BY Persediaan.PersediaanDDMY DESC, Persediaan.PersediaanHMS DESC `;
   return query;
 };
+export const queryGetPersediaanDateRpSumProductId = (
+  valProductId,
+  valStartDate,
+  valEndDate
+) => {
+  return `SELECT
+          SUM(Persediaan.PersediaanRp)
+          FROM Persediaan
+          WHERE Persediaan.PersediaanProductId = ${valProductId}
+                AND Persediaan.PersediaanDDMY BETWEEN '${valStartDate}' AND '${valEndDate}'
+          ORDER BY Persediaan.PersediaanDDMY DESC,
+          Persediaan.PersediaanHMS DESC`;
+};
+export const queryGetPersediaanDateProductId = (
+  valStartDate,
+  valEndDate,
+  valProductId
+) => {
+  return `SELECT
+          Persediaan.PersediaanId,
+          Persediaan.PersediaanDDMY,
+          Persediaan.PersediaanHMS,
+          Persediaan.PersediaanProductId,
+          Product.ProductName,
+          Product.ProductPrice,
+          Category.CategoryName,
+          Supplier.SupplierName,
+          Persediaan.PersediaanRp,
+          Persediaan.PersediaanQty,
+          Persediaan.PersediaanInfo
+          FROM Persediaan
+          LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
+          LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
+          LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId
+          WHERE  Persediaan.PersediaanDDMY BETWEEN '${valStartDate}' AND '${valEndDate}'
+                 AND Persediaan.PersediaanProductId = ${valProductId}
+          ORDER BY Persediaan.PersediaanDDMY DESC,
+          Persediaan.PersediaanHMS DESC`;
+};
+
 export const queryGetPersediaanDateSUM = (startDate, endDate) => {
   let query = `SELECT 
                SUM(Persediaan.PersediaanRp) AS TotalRp
                FROM ${tableName} `;
   //  with valstartDate - endDate
   query += `WHERE ${tableName}.${colPersediaanDDMY} BETWEEN  '${startDate}' AND '${endDate}' `;
+  return query;
+};
+export const queryGetPersediaanDateSumProduct = (
+  startDate,
+  endDate,
+  valProductId
+) => {
+  let query = `SELECT 
+               SUM(Persediaan.PersediaanRp) AS TotalRp
+               FROM ${tableName} `;
+  //  with valstartDate - endDate
+  query += `WHERE ${tableName}.${colPersediaanDDMY} BETWEEN  '${startDate}' AND '${endDate}' `;
+  // with product id
+  query += `AND Persediaan.PersediaanProductId = ${valProductId}`;
   return query;
 };
 // for export report

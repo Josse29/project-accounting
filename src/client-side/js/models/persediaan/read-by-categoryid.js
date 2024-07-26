@@ -4,21 +4,11 @@ import {
   getPersediaanRpSumCategoryId,
 } from "../../../../serverless-side/functions/persediaan.js";
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
+import { listCategoryRefPersediaanRead } from "../categories/list.js";
 import { uiTrPersediaan, uiTrZeroSearch } from "./ui.js";
 
 $(document).ready(function () {
-  getListCategory("", (status, response) => {
-    if (status) {
-      let option = `<option selected disabled>Kategori</option>`;
-      response.forEach((el) => {
-        option += `<option value=${el.CategoryId}>${el.CategoryName}</option>`;
-      });
-      $("select#persediaan-refcategory-search").html(option);
-    }
-    if (!status) {
-      console.error(response);
-    }
-  });
+  listCategoryRefPersediaanRead();
   $("select#persediaan-refcategory-search").on("change", function () {
     const selectedText = $(this).find("option:selected").text();
     const selectedCategoryId = parseInt($(this).val());
@@ -52,6 +42,7 @@ $(document).ready(function () {
         if (status) {
           const rupiah = formatRupiah2(parseFloat(response));
           $("span#total-rupiah-byid").text(rupiah);
+          $("span#persediaan-date-product").text("");
         }
         if (!status) {
           console.error(response);

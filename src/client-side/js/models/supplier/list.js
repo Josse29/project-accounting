@@ -143,3 +143,33 @@ export function listSupplierRefProductUpdate() {
     });
   }
 }
+// function to update html list when read persediaan
+export const listSupplierRefPersediaanRead = () => {
+  getListSupplier("", (status, response) => {
+    if (status) {
+      let option = `<option selected disabled>Supplier</option>`;
+      response.forEach((row) => {
+        option += `<option value=${row.SupplierId}>${row.SupplierName}</option>`;
+      });
+      return $("select#persediaan-refsupplier-search").html(option);
+    }
+    if (!status) {
+      console.error(response);
+    }
+  });
+};
+// function to update html list when read persediaanDate
+export const listSupplierRefPersediaanReadDate = () => {
+  getListSupplier("", (status, response) => {
+    if (status) {
+      let option = `<option selected disabled>Supplier</option>`;
+      response.forEach((row) => {
+        option += `<option value=${row.SupplierId}>${row.SupplierName}</option>`;
+      });
+      return $("select#persediaan-date-supplier").html(option);
+    }
+    if (!status) {
+      console.error(response);
+    }
+  });
+};
