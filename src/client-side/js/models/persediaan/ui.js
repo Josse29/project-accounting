@@ -21,34 +21,34 @@ export const uiTrPersediaan = (el) => {
     )}</span>`;
   }
   return `<tr>
-            <td class="align-content-center text-center" style="width: 100px">${
+            <td class="align-content-center text-center" style="max-width: 100px">${
               el.PersediaanId
             }</td>
-            <td class="align-content-center" style="width: 180px">${formatWaktuIndo(
+            <td class="align-content-center" style="max-width: 180px">${formatWaktuIndo(
               el.PersediaanDDMY
             )}</td>
-            <td class="align-content-center" style="width: 100px">${
+            <td class="align-content-center" style="max-width: 100px">${
               el.PersediaanHMS
             }</td>
-            <td class="align-content-center text-truncate text-capitalize" style="width: 190px">${
+            <td class="align-content-center text-truncate text-capitalize" style="max-width: 190px">${
               el.ProductName
             }</td>
-            <td class="align-content-center text-truncate text-capitalize" style="width: 190px">${
+            <td class="align-content-center text-truncate text-capitalize" style="max-width: 190px">${
               el.CategoryName
             }</td>
-            <td class="align-content-center text-truncate text-capitalize" style="width: 190px">
+            <td class="align-content-center text-truncate text-capitalize" style="max-width: 190px">
               ${el.SupplierName}
             </td>
-            <td class="text-truncate align-content-center" style="width: 150px">
+            <td class="align-content-center text-truncate text-capitalize" style="max-width: 150px">
               Mr.JK
             </td>
-            <td class="text-truncate align-content-center text-center" style="width: 120px">
+            <td class="text-truncate align-content-center text-center" style="max-width: 120px">
               ${PersediaanQty}
             </td>
-            <td class="text-truncate align-content-center text-center" style="width: 200px">
+            <td class="text-truncate align-content-center text-center" style="max-width: 200px">
               ${PersediaanRp}
             </td>
-            <td style="width:217px">
+            <td class="align-content-center" style="width:217px">
               <div class="d-flex w-100 justify-content-center gap-2">
                 <button id="persediaanDetail"
                         class="btn btn-success text-white"                      

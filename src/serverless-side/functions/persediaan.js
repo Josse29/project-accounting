@@ -247,7 +247,6 @@ export const getPersediaanQtyValidate = (
 export const getPersediaanQty = (valPersediaanProductId, callback) => {
   db.each(queryGetPersediaanQty(valPersediaanProductId), (err, res) => {
     if (!err) {
-      console.log(res);
       let TotalQty = ``;
       if (res.TotalQty !== null) {
         TotalQty = parseFloat(res.TotalQty);

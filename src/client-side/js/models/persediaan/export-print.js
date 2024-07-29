@@ -89,7 +89,8 @@ $(document).ready(function () {
     return new Promise((resolve, reject) => {
       getPersediaanQty("", (status, response) => {
         if (status) {
-          resolve(response[0].TotalQty);
+          const totalQty = response;
+          resolve(totalQty);
         }
         if (!status) {
           reject(response);

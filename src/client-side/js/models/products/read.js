@@ -144,7 +144,7 @@ $(document).ready(function () {
           response.forEach((element) => {
             tr += uiTrProduct(element);
           });
-          $("#product-data").html(tr);
+          $("#product-table").html(tr);
           uiActivePageButton(productPageNumber, productBtnPage);
           reinitializeTooltips();
         }

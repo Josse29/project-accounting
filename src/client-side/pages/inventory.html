@@ -207,7 +207,6 @@
                   <i class="fa-solid fa-trash fs-5"></i>
                 </button>
                 <!-- refresh -->
-
                 <button
                   id="persediaan-refresh"
                   type="button"
@@ -304,32 +303,8 @@
               </div>
               <!-- section succes after action crud persediaan -->
               <div id="sectionSuccessActionPersediaan"></div>
-              <!-- table persediaan  -->
-              <div>
-                <table class="table table-striped">
-                  <thead>
-                    <tr>
-                      <th class="text-center" style="width: 100px">No</th>
-                      <th style="width: 180px">Hari / Tanggal</th>
-                      <th style="width: 100px">Jam</th>
-                      <th style="width: 190px">Nama Produk</th>
-                      <th style="width: 190px">Nama Kategori</th>
-                      <th style="width: 190px">Nama Supplier</th>
-                      <th style="width: 150px">Nama Petugas</th>
-                      <th class="text-center" style="width: 120px">Qty</th>
-                      <th class="text-center" style="width: 200px">Harga</th>
-                      <th class="text-center" style="width: 217px">Aksi</th>
-                    </tr>
-                  </thead>
-                  <tbody id="persediaan-table"></tbody>
-                </table>
-              </div>
-              <div
-                id="persediaan-date-all-search"
-                class="input-group gap-2 mb-1"
-                style="width: max-content"
-              ></div>
-              <div id="persediaan-sum-section" class="ms-3 mt-3">
+              <!-- section sum -->
+              <div id="persediaan-sum-section" class="ms-3">
                 <p class="fs-5 ms-2 mb-1">
                   <span
                     id="persediaan-date-product"
@@ -350,6 +325,31 @@
                 <p class="fs-5 ms-4">
                   Total Rupiah : <span id="total-rupiah-byid">10000</span>
                 </p>
+              </div>
+              <div
+                id="persediaan-date-all-search"
+                class="input-group gap-2 mb-3"
+                style="width: max-content"
+              ></div>
+              <!-- table persediaan  -->
+              <div>
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th class="text-center" style="width: 100px">No</th>
+                      <th style="width: 180px">Hari / Tanggal</th>
+                      <th style="width: 100px">Jam</th>
+                      <th style="width: 190px">Nama Produk</th>
+                      <th style="width: 190px">Nama Kategori</th>
+                      <th style="width: 190px">Nama Supplier</th>
+                      <th style="width: 150px">Nama Petugas</th>
+                      <th class="text-center" style="width: 120px">Qty</th>
+                      <th class="text-center" style="width: 200px">Harga</th>
+                      <th class="text-center" style="width: 217px">Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody id="persediaan-table"></tbody>
+                </table>
               </div>
               <!-- pagination persediaan -->
               <div
@@ -503,12 +503,12 @@
                 <!-- alert success -->
                 <div id="sectionSuccessActionProduct"></div>
                 <!-- tabel product -->
-                <div style="max-height: 270px; overflow: auto">
+                <div>
                   <table class="table table-striped">
                     <thead>
                       <tr>
-                        <th class="text-center">No</th>
-                        <th>Name</th>
+                        <th class="text-center" style="width: 100px">No</th>
+                        <th style="width: 150px">Name</th>
                         <th>Kategori</th>
                         <th>Supplier</th>
                         <th>Price</th>
@@ -516,7 +516,7 @@
                       </tr>
                     </thead>
                     <!-- from db -->
-                    <tbody id="product-data"></tbody>
+                    <tbody id="product-table"></tbody>
                   </table>
                 </div>
                 <!-- pagination product -->
