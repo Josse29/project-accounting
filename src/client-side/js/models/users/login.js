@@ -11,9 +11,9 @@ $("#toggle-password").on("change", function () {
   } else {
     // hide password
     let hidePassword = `<label
-                              class="fa-solid fa-eye me-2 hide-password"
-                              for="toggle-password"
-                              </label>`;
+                          class="fa-solid fa-eye me-2 hide-password"
+                          for="toggle-password"
+                        ></label>`;
     $(".toggle-password").html(hidePassword);
     $("#password").attr("type", "password");
   }

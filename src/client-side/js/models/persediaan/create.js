@@ -11,20 +11,26 @@ import { getPersediaanAgain } from "./read.js";
 $(document).ready(function () {
   $("button#btnpersediaanModal").on("click", function () {
     listProductRefPersediaanCreate();
+    $("#sectionFailedActionPersediaan").html("");
+    $("div#persediaan-create-stock").html("");
   });
   // function create increse or decrease qty
   let persediaanCreateQty = $("input#persediaan-create-qty").val();
-  $("button#persediaan-create-decrease").on("click", function () {
-    persediaanCreateQty--;
-    $("input#persediaan-create-qty").val(persediaanCreateQty);
-  });
+  $("button#persediaan-create-decrease")
+    .off("click")
+    .on("click", function () {
+      persediaanCreateQty--;
+      $("input#persediaan-create-qty").val(persediaanCreateQty);
+    });
   $("input#persediaan-create-qty").on("keyup", function () {
     persediaanCreateQty = $(this).val();
   });
-  $("button#persediaan-create-increase").on("click", function () {
-    persediaanCreateQty++;
-    $("input#persediaan-create-qty").val(persediaanCreateQty);
-  });
+  $("button#persediaan-create-increase")
+    .off("click")
+    .on("click", function () {
+      persediaanCreateQty++;
+      $("input#persediaan-create-qty").val(persediaanCreateQty);
+    });
   // function action to create persediaan
   $("#persediaan-create-submit")
     .off("click")
@@ -55,6 +61,7 @@ $(document).ready(function () {
             uiSuccessActionPersediaan(response);
             uiBlankValue();
             $("#persediaanCreateModal").modal("hide");
+            persediaanCreateQty = 0; //hufft
           }
           if (!status) {
             uiFailedActionPersediaan(response);

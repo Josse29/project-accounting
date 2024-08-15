@@ -17,7 +17,6 @@
     <!-- my css -->
     <link rel="stylesheet" href="./src/client-side/css/login.css" />
   </head>
-
   <body>
     <!-- Nav -->
     <div
@@ -53,7 +52,6 @@
         </div>
       </div>
     </div>
-
     <!-- section image and register -->
     <div class="sections">
       <div class="section-first"></div>
@@ -114,10 +112,8 @@
         </div>
       </div>
     </div>
-
     <!-- js bootstrap -->
     <script src="./src/client-side/third-party/bootstrap.bundle.min.js"></script>
-
     <!-- jquery -->
     <script>
       if (typeof module === "object") {
@@ -129,9 +125,12 @@
     <script>
       if (window.module) module = window.module;
     </script>
-
+    <script>
+      const electron = require("electron");
+      const { ipcRenderer } = electron;
+    </script>
     <!-- my script  -->
-    <script src="./src/client-side/require/index.js"></script>
+    <!-- <script src="./src/client-side/require/index.js"></script> -->
     <script type="module" src="./src/client-side/js/utils/ipc.js"></script>
     <script
       type="module"

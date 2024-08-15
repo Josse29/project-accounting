@@ -29,6 +29,8 @@ $(document).ready(function () {
           $("#persediaan-table").html(tr);
           $("#persediaan-sum-section").hide();
         }
+        $("select#persediaan-refproduct-search").val("Produk");
+        $("select#persediaan-refcategory-search").val("Kategori");
         $("#only-product").hide();
         $("#persediaan-pagination").addClass("d-none");
       }

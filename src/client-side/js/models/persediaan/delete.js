@@ -2,11 +2,14 @@ import { deletePersediaan } from "../../../../serverless-side/functions/persedia
 import { addSpace } from "../../utils/formatSpace.js";
 import { formatWaktuIndo } from "../../utils/formatWaktu.js";
 import { getPersediaanAgain } from "./read.js";
-import { uiSuccessActionPersediaan } from "./ui.js";
+import { uiFailedDelete, uiSuccessActionPersediaan } from "./ui.js";
 
 $(document).ready(function () {
+  // delete by-id
   $(document).on("click", "#persediaan-delete-btn", function () {
+    $("#persediaan-delete-failed").html(``);
     const persediaan = this.dataset;
+    const persediaanProductId = parseInt(persediaan.productid);
     const persediaanqty = parseInt(persediaan.persediaanqty);
     $("#persediaan-delete-name").text(persediaan.productname);
     let txtPersediaanQty = ``;
@@ -32,16 +35,22 @@ $(document).ready(function () {
           parseInt(persediaan.persediaanid),
           persediaan.productname,
           persediaanqty,
+          persediaanProductId,
           (status, response) => {
             if (status) {
-              uiSuccessActionPersediaan(response);
               getPersediaanAgain();
+              uiSuccessActionPersediaan(response);
+              $("#persediaanDeleteModal").modal("hide");
             }
             if (!status) {
-              console.error(response);
+              uiFailedDelete(response);
             }
           }
         );
       });
+  });
+  // delete all
+  $("button#persediaan-delete-all").on("click", function () {
+    console.log("cuci-gudang");
   });
 });

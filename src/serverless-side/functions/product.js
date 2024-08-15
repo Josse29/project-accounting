@@ -1,6 +1,10 @@
 import {
   queryDeleteProductId,
   queryGetListProduct,
+  queryGetProductCSV,
+  queryGetProductCategoryId,
+  queryGetProductPDF,
+  queryGetProductSupplierId,
   queryGetProducts,
   queryTotalRowProducts,
   queryUpdateProduct,
@@ -10,34 +14,41 @@ import {
 // 1.CREATE
 export const insertProducts = (
   productName,
-  productPrice,
+  productPriceBeli,
+  productPriceJual,
   productInfo,
   productImg,
   productCategoryId,
   productSupplierId,
   callback
 ) => {
-  db.run(
-    queryinsertProducts(
-      productName,
-      productPrice,
-      productInfo,
-      productImg,
-      productCategoryId,
-      productSupplierId
-    ),
-    (err) => {
-      if (!err) {
-        return callback(
-          true,
-          `Product <b class='text-capitalize'>${productName}</b> berhasil ditambahkan`
-        );
+  const validatePrice = productPriceBeli < productPriceJual;
+  if (validatePrice) {
+    db.run(
+      queryinsertProducts(
+        productName,
+        productPriceBeli,
+        productPriceJual,
+        productInfo,
+        productImg,
+        productCategoryId,
+        productSupplierId
+      ),
+      (err) => {
+        if (!err) {
+          const msg = `Product <b class='text-capitalize'>${productName}</b> berhasil ditambahkan`;
+          return callback(true, msg);
+        }
+        if (err) {
+          return callback(false, err);
+        }
       }
-      if (err) {
-        return callback(false, err);
-      }
-    }
-  );
+    );
+  }
+  if (!validatePrice) {
+    const msg = "Harga Jual harus lebih besar dari pada harga beli";
+    return callback(false, msg);
+  }
 };
 // 2.READ
 export const getTotalRowProduct = (productSearch, callback) => {
@@ -98,46 +109,72 @@ export const getListProduct = (productSearch, callback) => {
     }
   });
 };
+export const getProductSupplierId = (supplierId, callback) => {
+  const query = queryGetProductSupplierId(supplierId);
+  db.all(query, (err, res) => {
+    if (!err) {
+      return callback(true, res);
+    }
+    if (err) {
+      return callback(false, err);
+    }
+  });
+};
+export const getProductCategoryId = (categoryId, callback) => {
+  const query = queryGetProductCategoryId(categoryId);
+  db.all(query, (err, res) => {
+    if (!err) {
+      return callback(true, res);
+    }
+    if (err) {
+      return callback(false, err);
+    }
+  });
+};
 // 3.UPDATE
 export const updateProduct = (
   productId,
   productName,
-  productPrice,
-  productInfo,
+  productPriceBuy,
+  productPriceSell,
   productImg,
   productCategoryId,
   productSupplierId,
+  productInfo,
   callback
 ) => {
-  // productId,
-  // productName,
-  // productPrice,
-  // productInfo,
-  // imgbase64,
-  // productCategoryId,
-  // productSupplierId,
-  db.run(
-    queryUpdateProduct(
-      productId,
-      productName,
-      productPrice,
-      productInfo,
-      productImg,
-      productCategoryId,
-      productSupplierId
-    ),
-    (err) => {
-      if (!err) {
-        return callback(
-          true,
-          `Product <b class='text-capitalize'>${productName}</b> berhasil diperbaharui`
-        );
+  console.log("harga beli ", productPriceBuy);
+  console.log("harga jual ", productPriceSell);
+  const validatePrice = productPriceBuy < productPriceSell;
+  if (validatePrice) {
+    db.run(
+      queryUpdateProduct(
+        productId,
+        productName,
+        productPriceBuy,
+        productPriceSell,
+        productImg,
+        productCategoryId,
+        productSupplierId,
+        productInfo
+      ),
+      (err) => {
+        if (!err) {
+          return callback(
+            true,
+            `Product <b class='text-capitalize'>${productName}</b> berhasil diperbaharui`
+          );
+        }
+        if (err) {
+          return callback(false, err);
+        }
       }
-      if (err) {
-        return callback(false, err);
-      }
-    }
-  );
+    );
+  }
+  if (!validatePrice) {
+    const msg = `Harga Jual ${productName} harus lebih besar dari pada harga belinya`;
+    return callback(false, msg);
+  }
 };
 // 4.DELETE
 export const deleteProductId = (id, productName, callback) => {
@@ -147,6 +184,29 @@ export const deleteProductId = (id, productName, callback) => {
         true,
         `Product <b class='text-capitalize'>${productName}</b> berhasil dihapus`
       );
+    }
+    if (err) {
+      return callback(false, err);
+    }
+  });
+};
+// convert | PDF
+export const getProductPDF = (callback) => {
+  const query = queryGetProductPDF();
+  db.all(query, (err, res) => {
+    if (!err) {
+      return callback(true, res);
+    }
+    if (err) {
+      return callback(true, err);
+    }
+  });
+};
+export const getProductCSV = (callback) => {
+  const query = queryGetProductCSV();
+  db.all(query, (err, res) => {
+    if (!err) {
+      return callback(true, res);
     }
     if (err) {
       return callback(false, err);

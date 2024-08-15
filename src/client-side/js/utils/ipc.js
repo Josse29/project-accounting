@@ -72,6 +72,9 @@ $("#aboutWindowOrder").on("click", () => {
 });
 
 // inventory page
+$("#minimize-maximize-window-inventory").on("click", () => {
+  ipcRenderer.send("minimize-maximize-window:inventory-page");
+});
 $("#minimize-window-inventory").on("click", () => {
   sendIpcMinimizeWindowInventory();
 });
@@ -98,7 +101,6 @@ $("#aboutWindowInventory").on("click", () => {
   sendIpcLoadAbout();
   sendIpcHideInventory();
 });
-
 // transaction page
 $("#minimize-transaction").on("click", () => {
   sendIpcMinimizeWindowTransaction();

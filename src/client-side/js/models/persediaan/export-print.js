@@ -1,16 +1,16 @@
 import {
+  getPersediaanCategoryIdGroup,
   getPersediaanProductGroup,
   getPersediaanProductReport,
   getPersediaanQty,
   getPersediaanRpSum,
   getPersediaanSupplierGroup,
-  getPersediaanSupplierReport,
 } from "../../../../serverless-side/functions/persediaan.js";
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import {
+  uiTrCategorySum,
   uiTrPDF,
   uiTrProductSum,
-  uiTrSupplier,
   uiTrSupplierSum,
 } from "./ui.js";
 $(document).ready(function () {
@@ -49,24 +49,6 @@ $(document).ready(function () {
       });
     });
   };
-  const getPersediaanSupplierReportAsync = () => {
-    return new Promise((resolve, reject) => {
-      getPersediaanSupplierReport((status, response) => {
-        if (status) {
-          let tbody = ``;
-          let no = 1;
-          response.forEach((el) => {
-            tbody += uiTrSupplier(el, no);
-            no++;
-          });
-          resolve(tbody);
-        }
-        if (!status) {
-          reject(response);
-        }
-      });
-    });
-  };
   const getPersediaanSupplierGroupAsync = () => {
     return new Promise((resolve, reject) => {
       getPersediaanSupplierGroup((status, response) => {
@@ -75,6 +57,25 @@ $(document).ready(function () {
           let no = 1;
           response.forEach((el) => {
             tbody += uiTrSupplierSum(el, no);
+            no++;
+          });
+
+          resolve(tbody);
+        }
+        if (!status) {
+          reject(response);
+        }
+      });
+    });
+  };
+  const getPersediaanCategoryIdGroupAsync = () => {
+    return new Promise((resolve, reject) => {
+      getPersediaanCategoryIdGroup((status, response) => {
+        if (status) {
+          let no = 1;
+          let tbody = ``;
+          response.forEach((el) => {
+            tbody += uiTrCategorySum(el, no);
             no++;
           });
           resolve(tbody);
@@ -115,15 +116,15 @@ $(document).ready(function () {
     try {
       const tbodyProduct = await getPersediaanProductReportAsync();
       const tbodyProductGroup = await getPersediaanProductGroupAsync();
-      const tbodySupplier = await getPersediaanSupplierReportAsync();
       const tbodySupplierGroup = await getPersediaanSupplierGroupAsync();
+      const tbodyCategoryGroup = await getPersediaanCategoryIdGroupAsync();
       const txtPersediaanQtySum = await getPersediaanQtySumAsync();
       const txtPersediaanRpSum = await getPersediaanRpSumAsync();
       ipcRenderer.send(
         "print:persediaan",
         tbodyProduct,
+        tbodyCategoryGroup,
         tbodyProductGroup,
-        tbodySupplier,
         tbodySupplierGroup,
         txtPersediaanQtySum,
         txtPersediaanRpSum

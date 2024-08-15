@@ -31,6 +31,8 @@ $(document).ready(function () {
           const tr = uiTrZeroSearch(selectedText);
           $("#persediaan-table").html(tr);
         }
+        $("select#persediaan-refsupplier-search").val("Supplier");
+        $("select#persediaan-refcategory-search").val("Kategori");
         $("#persediaan-sum-section").hide();
         $("#persediaan-pagination").addClass("d-none");
       }
@@ -48,7 +50,9 @@ $(document).ready(function () {
           $("#persediaan-table").html(tr);
           $("#persediaan-sum-section").show();
           $("#only-product").show();
-          const rupiah = formatRupiah2(parseFloat(response[0].ProductPrice));
+          const rupiah = formatRupiah2(
+            parseFloat(response[0].ProductPriceBeli)
+          );
           $("span#rupiah-byid").text(rupiah);
           $("#persediaan-pagination").addClass("d-none");
         }
@@ -59,7 +63,6 @@ $(document).ready(function () {
       getPersediaanQty(selectedProductId, (status, response) => {
         if (status) {
           const totalQty = response;
-          console.log(totalQty);
           $("span#total-qty-byid").text(totalQty);
         }
         if (!status) {
@@ -73,7 +76,7 @@ $(document).ready(function () {
           $("span#persediaan-date-product").text("");
         }
         if (!status) {
-          console.log(response);
+          console.error(response);
         }
       });
     }

@@ -24,7 +24,7 @@ export const uiTrPersediaan = (el) => {
             <td class="align-content-center text-center" style="max-width: 100px">${
               el.PersediaanId
             }</td>
-            <td class="align-content-center" style="max-width: 180px">${formatWaktuIndo(
+            <td class="align-content-center text-nowrap" style="max-width: 200px">${formatWaktuIndo(
               el.PersediaanDDMY
             )}</td>
             <td class="align-content-center" style="max-width: 100px">${
@@ -34,80 +34,74 @@ export const uiTrPersediaan = (el) => {
               el.ProductName
             }</td>
             <td class="align-content-center text-truncate text-capitalize" style="max-width: 190px">${
-              el.CategoryName
+              el.CategoryName === null ? "-" : el.CategoryName
             }</td>
             <td class="align-content-center text-truncate text-capitalize" style="max-width: 190px">
-              ${el.SupplierName}
+              ${el.SupplierName === null ? "-" : el.SupplierName}
             </td>
             <td class="align-content-center text-truncate text-capitalize" style="max-width: 150px">
               Mr.JK
             </td>
-            <td class="text-truncate align-content-center text-center" style="max-width: 120px">
+            <td class="text-truncate align-content-end text-center" style="max-width: 120px">
               ${PersediaanQty}
             </td>
-            <td class="text-truncate align-content-center text-center" style="max-width: 200px">
+            <td class="text-truncate align-content-end text-center" style="max-width: 200px">
               ${PersediaanRp}
             </td>
             <td class="align-content-center" style="width:217px">
               <div class="d-flex w-100 justify-content-center gap-2">
                 <button id="persediaanDetail"
-                        class="btn btn-success text-white"                      
-                        data-bs-toggle="modal" 
-                        data-bs-target="#persediaanDetailModal"
-                        data-persediaanprice=${el.PersediaanRp} 
-                        data-productname="${el.ProductName}"
-                        data-productprice=${el.ProductPrice} 
+                  class="btn btn-success text-white"                      
+                  data-bs-toggle="modal" 
+                  data-bs-target="#persediaanDetailModal"
+                  data-productname="${el.ProductName}"
+                  data-productpricebuy=${el.ProductPriceBeli} 
+                  data-persediaanddmy="${el.PersediaanDDMY}" 
+                  data-persediaanHMS="${el.PersediaanHMS}"
+                  data-persediaanrp=${el.PersediaanRp}
+                  data-persediaanqty=${el.PersediaanQty}
+                  data-persediaaninfo="${el.PersediaanInfo}">
+                    <i class="fa-solid fa-eye"
+                      data-bs-toggle="tooltip" 
+                      data-bs-html="true"
+                      data-bs-title="<span>lihat-${el.ProductName}</span>" 
+                      data-bs-placement="bottom">
+                    </i>
+                </button>
+                <button id="persediaan-update-btn"
+                        class="btn btn-primary text-white"
+                        data-bs-toggle="modal"
+                        data-bs-target="#persediaanUpdateModal"
+                        data-persediaanid=${el.PersediaanId}
                         data-persediaanddmy="${el.PersediaanDDMY}" 
                         data-persediaanHMS="${el.PersediaanHMS}"
                         data-persediaanqty=${el.PersediaanQty}
-                        data-persediaaninfo="${el.PersediaanInfo}">
-                          <i class="fa-solid fa-eye"
-                             data-bs-toggle="tooltip" 
-                             data-bs-html="true"
-                             data-bs-title="<span>lihat-${
-                               el.ProductName
-                             }</span>" 
-                             data-bs-placement="bottom">
-                          </i>
-                </button>
-                <button id="persediaan-update-btn"
-                                class="btn btn-primary text-white"
-                                data-bs-toggle="modal"
-                                data-bs-target="#persediaanUpdateModal"
-                                data-persediaanid=${el.PersediaanId}
-                                data-persediaanprice=${el.PersediaanRp}
-                                data-productid=${el.PersediaanProductId} 
-                                data-productname="${el.ProductName}"
-                                data-productprice=${el.ProductPrice} 
-                                data-persediaanddmy="${el.PersediaanDDMY}" 
-                                data-persediaanHMS="${el.PersediaanHMS}"
-                                data-persediaanqty=${el.PersediaanQty}
-                                data-persediaaninfo="${el.PersediaanInfo}">
-                            <i class="fa-solid fa-pencil"
-                               data-bs-toggle="tooltip" 
-                               data-bs-html="true"
-                               data-bs-title="<span>edit-${
-                                 el.ProductName
-                               }</span>" 
-                               data-bs-placement="bottom">
-                            </i>
+                        data-persediaaninfo="${el.PersediaanInfo}"
+                        data-productid=${el.PersediaanProductId} 
+                        data-productpricebuy=${el.ProductPriceBeli} 
+                        data-productname="${el.ProductName}">
+                    <i class="fa-solid fa-pencil"
+                        data-bs-toggle="tooltip" 
+                        data-bs-html="true"
+                        data-bs-title="<span>edit-${el.ProductName}</span>" 
+                        data-bs-placement="bottom">
+                    </i>
                 </button>
                 <button id="persediaan-delete-btn"
-                                class="btn btn-danger text-white"
-                                data-bs-toggle="modal"
-                                data-bs-target="#persediaanDeleteModal"
-                                data-persediaanid=${el.PersediaanId}
-                                data-productname="${el.ProductName}"
-                                data-persediaanddmy="${el.PersediaanDDMY}" 
-                                data-persediaanHMS="${el.PersediaanHMS}"
-                                data-persediaanqty=${el.PersediaanQty}>
-                            <i class="fa-solid fa-trash-can"
-                               data-bs-toggle="tooltip" 
-                               data-bs-html="true"
-                               data-bs-title="<span>hapus-${
-                                 el.ProductName
-                               }</span>" 
-                               data-bs-placement="bottom"></i>
+                        class="btn btn-danger text-white"
+                        data-bs-toggle="modal"
+                        data-bs-target="#persediaanDeleteModal"
+                        data-persediaanid=${el.PersediaanId}
+                        data-productid=${el.PersediaanProductId}
+                        data-productname="${el.ProductName}"
+                        data-persediaanddmy="${el.PersediaanDDMY}" 
+                        data-persediaanHMS="${el.PersediaanHMS}"
+                        data-persediaanqty=${el.PersediaanQty}>
+                    <i class="fa-solid fa-trash-can"
+                       data-bs-toggle="tooltip" 
+                       data-bs-html="true"
+                       data-bs-title="<span>hapus-${el.ProductName}</span>" 
+                      data-bs-placement="bottom"></i>
                 </button>
               </div>
             </td>
@@ -132,13 +126,26 @@ export const uiFailedActionPersediaan = (res) => {
                           </div>`;
   $("#sectionFailedActionPersediaan").html(alertFailedMe);
 };
+export const uiFailedActionPersediaan1 = (res) => {
+  const alertFailedMe = `<div class="alert alert-danger" role="alert">
+                            <i class="fa-solid fa-triangle-exclamation me-1"></i>
+                            ${res}
+                          </div>`;
+  $("#sectionSuccessActionPersediaan").html(alertFailedMe);
+};
 // make alert failed after update
 export const uiFailedUpdate = (res) => {
-  const divFailed = `<div class="alert alert-danger" role="alert">
+  const divFailed = `<div class="alert alert-danger mt-2" role="alert">
                       <i class="fa-solid fa-triangle-exclamation me-1"></i>
-                      ${res}
+                        ${res}
                     </div>`;
   $("#persediaan-update-failed").html(divFailed);
+};
+export const uiFailedDelete = (res) => {
+  const divFailed = `<div class="alert alert-danger mt-2 text-start" role="alert">
+                        ${res}
+                    </div>`;
+  $("#persediaan-delete-failed").html(divFailed);
 };
 export const uiSucceedUpdate = (res) => {
   const alertSuccessMe = `<div class="alert alert-success" role="alert">
@@ -214,7 +221,7 @@ export const uiTrPDF = (rows, no) => {
               rows.ProductName
             }</td>
             <td class="text-nowrap align-content-center">${formatRupiah2(
-              rows.ProductPrice
+              rows.HargaBeli
             )}</td>
             <td class="text-nowrap align-content-center">${totalQtyTxt}</td>
             <td class="text-nowrap align-content-center">${totalRpTxt}</td>
@@ -222,62 +229,95 @@ export const uiTrPDF = (rows, no) => {
 };
 export const uiTrProductSum = (rows, no) => {
   const totalQty = rows.TotalQty;
+  let totalQtyTxt = ``;
+  if (totalQty === 0) {
+    totalQtyTxt = `${totalQty}`;
+  }
+  if (totalQty >= 1) {
+    totalQtyTxt = `+ ${totalQty}`;
+  }
+  if (totalQty < 0) {
+    totalQtyTxt = `- ${Math.abs(totalQty)}`;
+  }
   const totalRp = rows.TotalRp;
-  let totalQtyTxt = totalQty >= 1 ? `+ ${totalQty}` : `- ${Math.abs(totalQty)}`;
-  let totalRpTxt =
-    totalRp >= 1
-      ? `+ ${formatRupiah2(totalRp)}`
-      : `- ${formatRupiah2(Math.abs(totalRp))}`;
+  let totalRpTxt = ``;
+  if (totalRp === 0) {
+    totalRpTxt = `${formatRupiah2(totalRp)}`;
+  }
+  if (totalRp >= 1) {
+    totalRpTxt = `+ ${formatRupiah2(totalRp)}`;
+  }
+  if (totalRp < 0) {
+    totalRpTxt = `- ${formatRupiah2(Math.abs(totalRp))}`;
+  }
   return `<tr>
             <td class="text-center text-nowrap align-content-center">${no}</td>
             <td class="text-nowrap align-content-center">${
               rows.ProductName
             }</td>
             <td class="text-nowrap align-content-center">${formatRupiah2(
-              rows.ProductPrice
-            )}</td>
-            <td class="text-nowrap align-content-center">${totalQtyTxt}</td>
-            <td class="text-nowrap align-content-center">${totalRpTxt}</td>
-          </tr>`;
-};
-export const uiTrSupplier = (rows, no) => {
-  const totalQty = rows.PersediaanQty;
-  const totalRp = rows.PersediaanRp;
-  let totalQtyTxt = totalQty >= 1 ? `+ ${totalQty}` : `- ${Math.abs(totalQty)}`;
-  let totalRpTxt =
-    totalRp >= 1
-      ? `+ ${formatRupiah2(totalRp)}`
-      : `- ${formatRupiah2(Math.abs(totalRp))}`;
-  return `<tr>
-            <td class="text-center text-nowrap align-content-center">${no}</td>
-            <td class="text-nowrap align-content-center">${
-              rows.SupplierName
-            }</td>
-            <td class="text-nowrap align-content-center">${
-              rows.ProductName
-            }</td>
-            <td class="text-nowrap align-content-center">${formatRupiah2(
-              rows.ProductPrice
+              rows.ProductPriceBeli
             )}</td>
             <td class="text-nowrap align-content-center">${totalQtyTxt}</td>
             <td class="text-nowrap align-content-center">${totalRpTxt}</td>
           </tr>`;
 };
 export const uiTrSupplierSum = (rows, no) => {
-  const totalQty = rows.TotalQty;
   const totalRp = rows.TotalRp;
-  let totalQtyTxt = totalQty >= 1 ? `+ ${totalQty}` : `- ${Math.abs(totalQty)}`;
-  let totalRpTxt =
-    totalRp >= 1
-      ? `+ ${formatRupiah2(totalRp)}`
-      : `- ${formatRupiah2(Math.abs(totalRp))}`;
+  let totalRpTxt = ``;
+  if (totalRp === 0) {
+    totalRpTxt = `${formatRupiah2(totalRp)}`;
+  }
+  if (totalRp >= 1) {
+    totalRpTxt = `+ ${formatRupiah2(totalRp)}`;
+  }
+  if (totalRp < 0) {
+    totalRpTxt = `- ${formatRupiah2(Math.abs(totalRp))}`;
+  }
   return `<tr>
             <td class="text-center text-nowrap align-content-center">${no}</td>
             <td class="text-nowrap align-content-center">${rows.SupplierName}</td>
-            <td class="text-nowrap align-content-center">${totalQtyTxt}</td>
             <td class="text-nowrap align-content-center">${totalRpTxt}</td>
           </tr>`;
 };
+export const uiTrCategorySum = (rows, no) => {
+  const totalRp = rows.TotalRp;
+  let totalRpTxt = ``;
+  if (totalRp === 0) {
+    totalRpTxt = `${formatRupiah2(totalRp)}`;
+  }
+  if (totalRp >= 1) {
+    totalRpTxt = `+ ${formatRupiah2(totalRp)}`;
+  }
+  if (totalRp < 0) {
+    totalRpTxt = `- ${formatRupiah2(Math.abs(totalRp))}`;
+  }
+  return `<tr>
+            <td class="text-center text-nowrap align-content-center">${no}</td>
+            <td class="text-nowrap align-content-center">${rows.CategoryName}</td>
+            <td class="text-nowrap align-content-center">${totalRpTxt}</td>
+          </tr>`;
+};
+export const uiSumPersediaanDate = () => {
+  $("select#persediaan-limit").hide();
+  $("input#persediaan-search").hide();
+  $("span#persediaan-search").hide();
+  $("select#persediaan-refproduct-search").hide();
+  $("select#persediaan-refcategory-search").hide();
+  $("select#persediaan-refsupplier-search").hide();
+  $("select#persediaan-refuser-search").hide();
+};
+// for show
+export const uiSumPersediaanDate2 = () => {
+  $("select#persediaan-limit").show();
+  $("input#persediaan-search").show();
+  $("span#persediaan-search").show();
+  $("select#persediaan-refproduct-search").show();
+  $("select#persediaan-refcategory-search").show();
+  $("select#persediaan-refsupplier-search").show();
+  $("select#persediaan-refuser-search").show();
+};
+// for ipc section success:pdf-persediaan
 ipcRenderer.on("success:pdf-persediaan", (e, file_path) => {
   uiSuccessActionPersediaan(`File PDF tersimpan di ${file_path}`);
 });

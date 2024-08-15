@@ -1,46 +1,30 @@
 import { formatWaktuIndo } from "../../utils/formatWaktu.js";
 // ui tr supplier from db
-export const uiTr = (el, productList) => {
+export const uiTr = (el) => {
   const splitDateTime = el.SupplierDate.split(" ");
   const dateSupplier = formatWaktuIndo(splitDateTime[0]);
-  if (el.ProductList) {
-    let productListArray = el.ProductList.split(",");
-    let productListItems = productListArray
-      .map((product) => `<li class='text-capitalize'>${product}</li>`)
-      .join("");
-    productList = `<ul class='mt-3'>${productListItems}</ul>`;
-  } else {
-    productList = `<div class='text-muted text-center'>No products available</div>`;
-  }
+  // console.log(el.ProductList);
   return `<tr>
                 <td class="text-center align-middle">${el.SupplierId}</td>
-                <td class="align-content-center">${dateSupplier}</td>
-                <td class="align-content-center text-nowrap text-capitalize">${el.SupplierName}</td>
-                <td class="text-nowrap align-content-center">
-                  ${productList}
-                </td>
+                <td class="align-content-center text-nowrap">${dateSupplier}</td>
+                <td class="align-content-center text-capitalize">${el.SupplierName}</td>
                 <td class="align-content-center">
                     <div class="d-flex w-100 justify-content-center gap-2">
                         <button 
-                            class="btn btn-success text-white"
+                            class="btn btn-success text-white tooltip-bottom-container"
+                            id="supplierDetail" 
                             data-bs-toggle="modal" 
                             data-bs-target="#supplierDetailModal" 
-                            id="supplierDetail" 
-                            data-supplierid="${el.SupplierId}"  
+                            data-supplierid=${el.SupplierId}
                             data-suppliername="${el.SupplierName}"
                             data-supplierinfo="${el.SupplierInfo}"
                             data-supplierimg="${el.SupplierImg}"
                             >
-                                <i 
-                                    class="fa-solid fa-eye"
-                                    data-bs-toggle="tooltip" 
-                                    data-bs-html="true"
-                                    data-bs-title="<span>lihat-${el.SupplierName}</span>" 
-                                    data-bs-placement="bottom">
-                                </i>
+                              <i class="fa-solid fa-eye"></i>
+                              <div class="tooltip-bottom-text">See-${el.SupplierName}</div>
                         </button>
                         <button 
-                            class="btn btn-primary text-white"
+                            class="btn btn-primary text-white tooltip-bottom-container"
                             data-bs-toggle="modal" 
                             data-bs-target="#supplierUpdateModal" 
                             id="supplierUpdate" 
@@ -48,29 +32,19 @@ export const uiTr = (el, productList) => {
                             data-suppliername="${el.SupplierName}"
                             data-supplierinfo="${el.SupplierInfo}"
                             data-supplierimg="${el.SupplierImg}">
-                                <i 
-                                    class="fa-solid fa-pencil"
-                                    data-bs-toggle="tooltip" 
-                                    data-bs-html="true"
-                                    data-bs-title="<span>edit-${el.SupplierName}</span>" 
-                                    data-bs-placement="bottom">
-                                </i>
+                                <i class="fa-solid fa-pencil"></i>
+                                <div class="tooltip-bottom-text">See-${el.SupplierName}</div>
                         </button>
                         <button
-                            class="btn btn-danger text-white"
+                            class="btn btn-danger text-white tooltip-bottom-container"
                             data-bs-toggle="modal" 
                             data-bs-target="#supplierDeleteModal" 
                             id="supplierDelete" 
                             data-supplierid="${el.SupplierId}"  
                             data-suppliername="${el.SupplierName}"
                             data-supplierinfo="${el.SupplierInfo}">
-                                <i 
-                                    class="fa-solid fa-trash-can"
-                                    data-bs-toggle="tooltip" 
-                                    data-bs-html="true"
-                                    data-bs-title="<span>hapus-${el.SupplierName}</span>" 
-                                    data-bs-placement="bottom">
-                                </i>
+                                <i class="fa-solid fa-trash-can"></i>
+                                <div class="tooltip-bottom-text">See-${el.SupplierName}</div>
                         </button>
                     </div>
                 </td>

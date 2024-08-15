@@ -1,6 +1,10 @@
 import { insertProducts } from "../../../../serverless-side/functions/product.js";
 import { getProductRef, getProductsAgain } from "./read.js";
-import { createBlankValue, successActionProduct } from "./ui.js";
+import {
+  createBlankValue,
+  successActionProduct,
+  uiCreateFailed,
+} from "./ui.js";
 import { listCategoryRefProductCreate } from "./../categories/list.js";
 import { listSupplierRefProductCreate } from "../supplier/list.js";
 import { disFormatRupiah1, formatRupiah1 } from "../../utils/formatRupiah.js";
@@ -9,11 +13,17 @@ import { listProductRefPersediaanCreate } from "./list.js";
 
 $(document).ready(function () {
   $("button#product-create").on("click", function () {
+    $("div#productCreateFailed").html("");
     listCategoryRefProductCreate();
     listSupplierRefProductCreate();
   });
   // Format as Rupiah when input
-  $("input#product-price").on("input", function () {
+  $("input#product-price-beli").on("input", function () {
+    let formattedValue = formatRupiah1($(this).val());
+    $(this).val(formattedValue);
+  });
+  // Format as Rupiah when input
+  $("input#product-price-jual").on("input", function () {
     let formattedValue = formatRupiah1($(this).val());
     $(this).val(formattedValue);
   });
@@ -23,9 +33,10 @@ $(document).ready(function () {
     .on("click", () => {
       const productName = capitalizeWord($("#product-name").val().trim());
       const productInfo = $("#product-keterangan").val();
-      const productCategoryId = $("#product-refcategory-create-val").val();
-      const productSupplierId = $("#product-refsupplier-create-val").val();
-      const productPrice = disFormatRupiah1($("#product-price").val());
+      const productCategoryId = $("#product-refcategory-create").val();
+      const productSupplierId = $("#product-refsupplier-create").val();
+      const productPriceBuy = disFormatRupiah1($("#product-price-beli").val());
+      const productPriceSell = disFormatRupiah1($("#product-price-jual").val());
       const productImg = document.getElementById("create-image-product").files;
       // with an image
       if (productImg.length >= 1) {
@@ -46,13 +57,15 @@ $(document).ready(function () {
       function callInsertProuduct(imageBase64) {
         insertProducts(
           productName,
-          productPrice,
+          productPriceBuy,
+          productPriceSell,
           productInfo,
           imageBase64,
           productCategoryId,
           productSupplierId,
           (status, response) => {
             if (status) {
+              $("#productCreateModal").modal("hide");
               getProductsAgain();
               getProductRef();
               createBlankValue();
@@ -60,6 +73,16 @@ $(document).ready(function () {
               listProductRefPersediaanCreate();
             }
             if (!status) {
+              const modalBody = document.getElementById(
+                "productCreate-modal-body"
+              );
+              if (modalBody) {
+                modalBody.scrollTo({
+                  top: 0,
+                  behavior: "smooth",
+                });
+              }
+              uiCreateFailed(response);
               console.error(response);
             }
           }

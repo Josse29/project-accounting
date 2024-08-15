@@ -1,142 +1,254 @@
 @font-face {
-    font-family: "poppins";
-    src: url("./../third-party/Poppins-Regular.ttf");
-  }
-  * {
-    font-family: "poppins";
-  }
-  body {
-    width: 100vw;
-    background-color: #eeeeee;
-  }
-  body::-webkit-scrollbar {
-    display: none;
-  }
-  .modal .modal-body div::-webkit-scrollbar {
-    display: none;
-  }
-  .top-navigation {
-    position: fixed;
-    left: 100px;
-    right: 0px;
-    top: 0px;
-    background-color: #262848;
-    color: white;
-    padding: 15px 18px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 1;
-  }
-  .top-navigation i.custome-me {
-    font-size: 25px;
-    margin-right: 12px;
-  }
-  .top-navigation i.custome-me:hover {
-    cursor: pointer;
-  }
-  .side-navigation {
-    position: fixed;
-    top: 0px;
-    bottom: 0px;
-    left: 0px;
-    background-color: #1b1c30;
-    width: 100px;
-  }
-  .side-navigation .logo {
-    display: flex;
-    width: 100%;
-    justify-content: center;
-    padding-top: 20px;
-  }
-  .side-navigation div.custome-me {
-    cursor: pointer;
-  }
-  .side-navigation i.custome-me-active {
-    background-color: #262848;
-    padding: 22px;
-    border-radius: 12px;
-    color: #009ef7;
-  }
-  .container-custome-me {
-    margin-left: 100px;
-    margin-top: 80px;
-    padding: 30px 50px;
-  }
-  .container-custome-me i {
-    font-size: 25px;
-  }
-  .border-l-custome-me {
-    border-left: 15px solid #0178bd;
-  }
-  .container-custome-me input.focus-me:focus {
-    /* border: 3px solid #0178bd; */
-    box-shadow: 0 0 0 0.2rem #71a3c9;
-  }
-  .container-custome-me .span-bg-me {
-    background-color: #0178bd;
-    color: white;
-  }
-  .container-custome-me .span-bg-me:hover {
-    cursor: pointer;
-    background-color: #0c6ea7;
-  }
-  .container-by-me {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 22px;
-  }
-  .card-header.custome-color-me {
-    background-color: #0178bd;
-    color: white;
-    font-size: 25px;
-  }
-  .card-footer.custome-color-me {
-    background-color: #0178bd;
-    color: white;
-    font-size: 18px;
-  }
-  .card-footer:hover {
-    cursor: pointer;
-  }
-  .custome-qty-me {
-    background-color: #0178bd;
-    color: white;
-    width: 25px;
-    height: 25px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-  }
-  .custome-cart-img {
-    height: 80px;
-  }
-  .modal span.search-menu {
-    background-color: #0178bd;
-  }
-  .modal input:focus {
-    /* border: 3px solid #0178bd; */
-    box-shadow: 0 0 0 0.2rem #99a4f9;
-  }
-  .modal span.search-menu:hover {
-    cursor: pointer;
-    background-color: #0c6ea7;
-  }
-  .modal button:nth-child(2) {
-    background-color: #0178bd;
-    color: white;
-  }
-  .modal button:nth-child(2):hover {
-    background-color: #0c6ea7;
-  }
-  .cart-order:hover {
-    cursor: pointer;
-  }
-  .list-number:hover {
-    cursor: pointer;
-  }
-  .showNumbers {
-    display: block !important;
-  }
-  
+  font-family: "poppins";
+  src: url("./../third-party/Poppins-Regular.ttf");
+}
+* {
+  font-family: "poppins";
+}
+body {
+  width: 100vw;
+  background-color: #eeeeee;
+}
+body::-webkit-scrollbar {
+  display: none;
+}
+.modal .modal-body div::-webkit-scrollbar {
+  display: none;
+}
+.top-navigation {
+  position: fixed;
+  left: 100px;
+  right: 0px;
+  top: 0px;
+  background-color: #262848;
+  color: white;
+  padding: 15px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 99;
+}
+.top-navigation i.custome-me {
+  font-size: 25px;
+  margin-right: 12px;
+}
+.top-navigation i.custome-me:hover {
+  cursor: pointer;
+}
+.side-navigation {
+  position: fixed;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  background-color: #1b1c30;
+  width: 100px;
+  z-index: 999;
+}
+.side-navigation .logo {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  padding-top: 20px;
+}
+.side-navigation div.custome-me {
+  cursor: pointer;
+}
+.side-navigation i.custome-me-active {
+  background-color: #262848;
+  padding: 22px;
+  border-radius: 12px;
+  color: #009ef7;
+}
+.container-custome-me {
+  margin-left: 100px;
+  margin-top: 80px;
+  padding: 30px 50px;
+}
+.container-custome-me i {
+  font-size: 25px;
+}
+.border-l-custome-me {
+  border-left: 15px solid #0178bd;
+}
+.container-custome-me input.focus-me:focus {
+  /* border: 3px solid #0178bd; */
+  box-shadow: 0 0 0 0.2rem #71a3c9;
+}
+.container-custome-me .span-bg-me {
+  background-color: #0178bd;
+  color: white;
+}
+.container-custome-me .span-bg-me:hover {
+  cursor: pointer;
+  background-color: #0c6ea7;
+}
+.container-by-me {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 22px;
+  margin-bottom: 22px;
+}
+.card-header.custome-color-me {
+  background-color: #0178bd;
+  color: white;
+  font-size: 25px;
+}
+.card-footer.custome-color-me {
+  background-color: #0178bd;
+  color: white;
+  font-size: 18px;
+}
+.card-footer:hover {
+  cursor: pointer;
+}
+.custome-qty-me {
+  background-color: #0178bd;
+  color: white;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  padding: 18px;
+  font-size: 25px;
+}
+.custome-cart-img {
+  height: 80px;
+}
+.modal span.search-menu {
+  background-color: #0178bd;
+}
+.modal input:focus {
+  /* border: 3px solid #0178bd; */
+  box-shadow: 0 0 0 0.2rem #99a4f9;
+}
+.modal span.search-menu:hover {
+  cursor: pointer;
+  background-color: #0c6ea7;
+}
+.modal button:nth-child(2) {
+  background-color: #0178bd;
+  color: white;
+}
+.modal button:nth-child(2):hover {
+  background-color: #0c6ea7;
+}
+.list-number:hover {
+  cursor: pointer;
+}
+/* tooltip bottom */
+.tooltip-bottom-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+.tooltip-bottom-container .tooltip-bottom-text {
+  visibility: hidden;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  padding: 5px 10px;
+  position: absolute;
+  z-index: 9999 !important;
+  top: 125%; /* Position below the text */
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  white-space: nowrap; /* Prevents text from wrapping */
+}
+.tooltip-bottom-container .tooltip-bottom-text::after {
+  content: "";
+  position: absolute;
+  bottom: 100%; /* Arrow at the top of the tooltip */
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent black transparent;
+}
+.tooltip-bottom-container:hover .tooltip-bottom-text {
+  visibility: visible;
+  opacity: 1;
+}
+/* tooltip right */
+.tooltip-right-container {
+  position: relative;
+  cursor: pointer;
+}
+.tooltip-right-container .tooltip-right-text {
+  visibility: hidden;
+  background-color: black;
+  color: #fff;
+  white-space: nowrap; /* Prevents text from wrapping */
+  text-align: center;
+  border-radius: 5px;
+  padding: 5px 10px;
+  position: absolute;
+  top: 15px;
+  left: 105px; /* Position to the right of the text */
+  opacity: 0;
+  transform: translateY(-50%);
+  transition: opacity 0.3s;
+}
+.tooltip-right-container .tooltip-right-text::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%) translateX(-100%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent black transparent transparent;
+  z-index: 99999;
+}
+.tooltip-right-container:hover .tooltip-right-text {
+  visibility: visible;
+  opacity: 1;
+}
+button.order-page-active {
+  background-color: #0178bd !important;
+  color: white !important;
+  border: 4px solid #2391d0 !important;
+}
+h4#order-productname:hover {
+  text-wrap: wrap;
+  cursor: pointer;
+}
+h4#order-productprice:hover {
+  text-wrap: wrap;
+  cursor: pointer;
+}
+button.unsufficient {
+  cursor: not-allowed;
+  opacity: 0.5; /* Optional: to visually indicate the button is disabled */
+}
+h5#order-list-name:hover {
+  text-wrap: wrap;
+}
+h6#order-list-price:hover {
+  text-wrap: wrap;
+}
+h5#order-list-total:hover {
+  text-wrap: wrap;
+}
+input#order-payment {
+  border: none; /* Menghilangkan semua border */
+  border-bottom: 2px solid transparent; /* Menyediakan garis bawah yang transparan secara default */
+  outline: none; /* Menghilangkan outline default pada fokus */
+  box-shadow: none; /* Menghilangkan bayangan pada elemen */
+  transition: border-bottom-color 0.3s ease-in-out; /* Efek transisi untuk garis bawah */
+}
+input#order-payment:focus {
+  box-shadow: none;
+  border-bottom-color: blue; /* Garis bawah akan muncul dengan warna biru saat fokus */
+}
+span#order-change-result {
+  border-radius: 4px;
+  position: absolute;
+}
+span#order-change-result:hover {
+  cursor: pointer;
+}

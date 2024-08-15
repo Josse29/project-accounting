@@ -1,88 +1,87 @@
+import {
+  getProductPDF,
+  getTotalRowProduct,
+} from "../../../../serverless-side/functions/product.js";
+import { uiFailedPDF, uiTrPDf } from "./ui.js";
+
 // export pdf product
 $("#product-export-pdf").on("click", () => {
-  let file_path = dialog.showSaveDialogSync({
-    title: "Export Data",
-    filters: [{ name: "pdf", extensions: ["pdf"] }],
+  getTotalRowProduct("", (status, response) => {
+    if (status) {
+      const existProduct = response >= 1;
+      if (existProduct) {
+        actionPdf();
+      }
+      if (!existProduct) {
+        uiFailedPDF("upppps Product is still empty...");
+        console.log(response);
+      }
+    }
+    if (!status) {
+      console.error(response);
+    }
   });
-  if (file_path) {
-    file_path = file_path.replace(/\\/g, "/");
-    const query = `SELECT 
-                   Product.ProductId, 
-                   Product.ProductName, 
-                   Category.CategoryName, 
-                   Product.ProductPrice, 
-                   Product.ProductInfo, 
-                   Product.ProductImage 
-                   FROM Product
-                   LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId  
-                  ORDER BY Product.ProductId DESC`;
-    db.all(query, (err, result) => {
-      if (!err) {
-        let thead = `<tr>
-                                <th>Id</th>
-                                <th>Nama Produk</th>
-                                <th>Kategori</th>
-                                <th>Harga Produk</th>
-                                <th>Keterangan</th>
-                                <th>Gambar</th>
-                            </tr> `;
-        let tbody = "";
-        result.forEach((row) => {
-          tbody += `<tr>
-                                <td class="text-center text-nowrap align-content-center">${row.ProductId}</td>
-                                <td class="text-nowrap align-content-center">${row.ProductName}</td>
-                                <td class="text-nowrap align-content-center">${row.CategoryName}</td>
-                                <td class="text-nowrap align-content-center">${row.ProductPrice}</td>
-                                <td class="text-nowrap align-content-center">${row.ProductInfo}</td>
-                                <td style="width:200px">
-                                    <img src="${row.ProductImage}" style="width:100%"/>
-                                </td>
-                            </tr>`;
-        });
-        ipcRenderer.send("pdf:product", thead, tbody, file_path);
-      }
-      if (err) {
-        console.error(err);
-      }
+  function actionPdf() {
+    let file_path = dialog.showSaveDialogSync({
+      title: "Export Data",
+      filters: [{ name: "pdf", extensions: ["pdf"] }],
     });
+    if (file_path) {
+      file_path = file_path.replace(/\\/g, "/");
+      getProductPDF((status, response) => {
+        if (status) {
+          let no = 1;
+          let tbody = ``;
+          response.forEach((row) => {
+            tbody += uiTrPDf(no, row);
+            no++;
+          });
+          sendIpc(tbody, file_path);
+        }
+        if (!status) {
+          console.error(response);
+        }
+      });
+      function sendIpc(tbody, file_path) {
+        ipcRenderer.send("pdf:product", tbody, file_path);
+      }
+    }
   }
 });
 // export pdf product
 $("#product-export-print").on("click", () => {
-  db.all(
-    `SELECT 
-            ProductId, ProductName, CategoryName, ProductPrice, ProductInfo, ProductImage 
-            FROM Product
-            LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId  
-            ORDER BY Product.ProductId DESC`,
-    (err, result) => {
-      if (!err) {
-        let thead = `<tr>
-                            <th>Id</th>
-                            <th>Nama Produk</th>
-                            <th>Kategori</th>
-                            <th>Harga Produk</th>
-                            <th>Keterangan</th>
-                            <th>Gambar</th>
-                        </tr> `;
-        let tbody = "";
-        result.forEach((row) => {
-          tbody += `<tr>
-                            <td class="text-center text-nowrap align-content-center">${row.ProductId}</td>
-                            <td class="text-nowrap align-content-center">${row.ProductName}</td>
-                            <td class="text-nowrap align-content-center">${row.CategoryName}</td>
-                            <td class="text-nowrap align-content-center">${row.ProductPrice}</td>
-                            <td class="text-nowrap align-content-center">${row.ProductInfo}</td>
-                            <td style="width:200px">
-                                <img src="${row.ProductImage}" style="width:100%"/>
-                            </td>
-                        </tr>`;
-        });
-        ipcRenderer.send("print:product", thead, tbody);
+  getTotalRowProduct("", (status, response) => {
+    if (status) {
+      const existProduct = response >= 1;
+      if (existProduct) {
+        actionPrint();
       }
-      if (err) {
-        console.error(err);
+      if (!existProduct) {
+        uiFailedPDF("upppps Product is still empty...");
+        console.log(response);
       }
     }
-  );
+    if (!status) {
+      console.error(response);
+    }
+  });
+  function actionPrint() {
+    getProductPDF((status, response) => {
+      if (status) {
+        let no = 1;
+        let tbody = ``;
+        response.forEach((row) => {
+          tbody += uiTrPDf(no, row);
+          no++;
+        });
+        sendIpc(tbody);
+      }
+      if (!status) {
+        console.error(response);
+      }
+    });
+    function sendIpc(tbody) {
+      ipcRenderer.send("print:product", tbody);
+    }
+  }
 });

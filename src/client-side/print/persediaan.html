@@ -17,7 +17,6 @@
         font-family: "poppins";
         src: url("./../third-party/Poppins-Regular.ttf");
       }
-
       * {
         font-family: "poppins";
       }
@@ -26,7 +25,7 @@
 
   <body>
     <div class="d-flex justify-content-center">
-      <div style="width: 80%">
+      <div style="width: 90%">
         <div class="card my-2">
           <div
             class="card-header text-center text-white fs-3"
@@ -44,95 +43,106 @@
                 <h6 class="menit">r</h6>
                 <h6 class="detik">s</h6>
               </div>
-              <table class="table table-striped mb-3">
-                <thead>
-                  <tr>
-                    <th>No</th>
-                    <th>Tanggal</th>
-                    <th>Jam</th>
-                    <th>Nama Produk</th>
-                    <th>Harga Produk</th>
-                    <th>Qty</th>
-                    <th>Rupiah</th>
-                  </tr>
-                </thead>
-                <tbody id="tbodyProduct"></tbody>
-              </table>
-              <!-- tabel summary product-->
-              <div class="d-flex justify-content-end">
-                <div style="width: max-content">
-                  <h4>Summary Product</h4>
-                  <table class="table table-striped">
-                    <thead>
-                      <tr>
-                        <th>No</th>
-                        <th>Nama Product</th>
-                        <th>Harga Produk</th>
-                        <th>Qty</th>
-                        <th>Total</th>
-                      </tr>
-                    </thead>
-                    <tbody id="tbodyProductGroup">
-                      <tr>
-                        <td>No</td>
-                        <td>Nama Product</td>
-                        <td>Harga Produk</td>
-                        <td>Qty</td>
-                        <td>Total</td>
-                      </tr>
-                    </tbody>
-                    <tfoot>
-                      <th colspan="3" class="text-center">Total</th>
-                      <th id="product_sum_qty">qty</th>
-                      <th id="product_sum_rp">rupiah</th>
-                    </tfoot>
-                  </table>
+              <h4 class="text-center fst-italic" id="product-noexist">
+                Barang Kosong ...
+              </h4>
+              <div id="product-exist">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>No</th>
+                      <th>Tanggal</th>
+                      <th>Jam</th>
+                      <th>Nama Produk</th>
+                      <th>Harga Produk</th>
+                      <th>Qty</th>
+                      <th>Rupiah</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbodyProduct"></tbody>
+                </table>
+                <!-- tabel summary product-->
+                <div class="d-flex justify-content-end">
+                  <div style="width: max-content">
+                    <h4>Summary Product</h4>
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>No</th>
+                          <th>Nama Product</th>
+                          <th>Harga Produk</th>
+                          <th>Qty</th>
+                          <th>Total</th>
+                        </tr>
+                      </thead>
+                      <tbody id="tbodyProductGroup">
+                        <tr>
+                          <td>No</td>
+                          <td>Nama Product</td>
+                          <td>Harga Produk</td>
+                          <td>Qty</td>
+                          <td>Total</td>
+                        </tr>
+                      </tbody>
+                      <tfoot>
+                        <th colspan="3" class="text-center">Total</th>
+                        <th id="product_sum_qty">qty</th>
+                        <th id="product_sum_rp">rupiah</th>
+                      </tfoot>
+                    </table>
+                  </div>
                 </div>
-              </div>
-            </div>
-            <!-- tabel supplier -->
-            <div>
-              <h3>Table-Supplier</h3>
-              <table class="table table-striped mb-3">
-                <thead>
-                  <tr>
-                    <th>No</th>
-                    <th>Nama Supplier</th>
-                    <th>Nama Produk</th>
-                    <th>Harga Produk</th>
-                    <th>Qty</th>
-                    <th>Total</th>
-                  </tr>
-                </thead>
-                <tbody id="tbodySupplier"></tbody>
-              </table>
-              <!-- tabel summary supplier-->
-              <div class="d-flex justify-content-end">
-                <div style="width: max-content">
-                  <h4>Summary Supplier</h4>
-                  <table class="table table-striped">
-                    <thead>
-                      <tr>
-                        <th>No</th>
-                        <th>Nama Supplier</th>
-                        <th>Qty</th>
-                        <th>Total</th>
-                      </tr>
-                    </thead>
-                    <tbody id="tbodySupplierGroup">
-                      <tr>
-                        <td>No</td>
-                        <td>Nama Supplier</td>
-                        <td>Qty</td>
-                        <td>Total</td>
-                      </tr>
-                    </tbody>
-                    <tfoot>
-                      <th colspan="2" class="text-center">Total</th>
-                      <th id="supplier_sum_qty">qty</th>
-                      <th id="supplier_sum_rp">rupiah</th>
-                    </tfoot>
-                  </table>
+                <!-- tabel summary category-->
+                <div class="d-flex justify-content-end">
+                  <div style="width: max-content">
+                    <h4>Summary Kategori</h4>
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>No</th>
+                          <th>Nama Kategori</th>
+                          <th>Total</th>
+                        </tr>
+                      </thead>
+                      <tbody id="tbodyCategoryGroup">
+                        <tr>
+                          <td>No</td>
+                          <td>Nama Product</td>
+                          <td>Total</td>
+                        </tr>
+                      </tbody>
+                      <tfoot>
+                        <th colspan="2" class="text-center">Total</th>
+                        <th id="category_sum_rp">rupiah</th>
+                      </tfoot>
+                    </table>
+                  </div>
+                </div>
+                <!-- tabel summary supplier-->
+                <div class="d-flex justify-content-end">
+                  <div style="width: max-content">
+                    <h4>Summary Supplier</h4>
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>No</th>
+                          <th>Nama Supplier</th>
+                          <th>Total</th>
+                        </tr>
+                      </thead>
+                      <tbody id="tbodySupplierGroup">
+                        <tr>
+                          <td>No</td>
+                          <td>Nama Supplier</td>
+                          <td>Total</td>
+                        </tr>
+                      </tbody>
+                      <tfoot>
+                        <th colspan="2" class="text-center">Total</th>
+                        <th id="supplier_sum_rp">rupiah</th>
+                      </tfoot>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>
@@ -162,21 +172,29 @@
         (
           e,
           tbodyProduct,
+          tbodyCategoryGroup,
           tbodyProductGroup,
-          tbodySupplier,
           tbodySupplierGroup,
           txtPersediaanQtySum,
           txtPersediaanRpSum
         ) => {
+          if (txtPersediaanQtySum === 0) {
+            $("#product-exist").hide();
+            $("#product-noexist").show();
+          }
+          if (txtPersediaanQtySum >= 1) {
+            $("#product-exist").show();
+            $("#product-noexist").hide();
+          }
           $("#tbodyProduct").html(tbodyProduct);
+          $("#tbodyCategoryGroup").html(tbodyCategoryGroup);
           $("#tbodyProductGroup").html(tbodyProductGroup);
-          $("#tbodySupplier").html(tbodySupplier);
           $("#tbodySupplierGroup").html(tbodySupplierGroup);
           $("#product_sum_qty").text(txtPersediaanQtySum);
           $("#product_sum_rp").text(txtPersediaanRpSum);
-          $("#supplier_sum_qty").text(txtPersediaanQtySum);
+          $("#category_sum_rp").text(txtPersediaanRpSum);
           $("#supplier_sum_rp").text(txtPersediaanRpSum);
-          ipcRenderer.send("create:print-persediaan");
+          // ipcRenderer.send("create:print-persediaan");
         }
       );
     </script>

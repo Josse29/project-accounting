@@ -13,6 +13,11 @@ import {
 } from "./ui.js";
 import { getProductsAgain } from "./../products/read.js";
 import { getPersediaanAgain } from "../persediaan/read.js";
+import { getProductCategoryId } from "../../../../serverless-side/functions/product.js";
+import {
+  listCategoryRefPersediaanRead,
+  listCategoryRefPersediaanReadDate,
+} from "./list.js";
 
 $(document).ready(function () {
   let categoryTotalRow;
@@ -149,14 +154,49 @@ $(document).ready(function () {
         }
       }
     );
+    getDetail();
   }
   // get-detail-product event binding fuckkkkkkk 2 jam lebih
-  $(document).on("click", "#categoryDetailBtn", function () {
-    const category = this.dataset;
-    $("#category-detail-label").text(category.categorynama);
-    $("#category-detail-name").text(category.categorynama);
-    $("#category-detail-info").text(category.categoryketerangan);
-  });
+  function getDetail() {
+    $(document).on("click", "#categoryDetailBtn", function () {
+      const category = this.dataset;
+      console.log(category);
+      const categoryId = parseInt(category.categoryid);
+      const categoryName = category.categorynama;
+      const categoryInfo = category.categoryketerangan;
+      $("#category-detail-label").text(categoryName);
+      $("#category-detail-name").text(categoryName);
+      if (categoryInfo !== "") {
+        $("#category-detail-info").text(categoryInfo);
+      }
+      if (categoryInfo === "") {
+        $("#category-detail-info").text("-");
+      }
+      getProductCategoryId(categoryId, (status, response) => {
+        if (status) {
+          const existedProduct = response.length >= 1;
+          console.log(response);
+          console.log(existedProduct);
+          if (existedProduct) {
+            let list = `<ul>`;
+            response.forEach((el) => {
+              list += `<li class='fs-5'>${el.ProductName}</li>`;
+            });
+            list += `</li>`;
+            console.log(list);
+            $("div#category-detail-productlistid").html(list);
+          }
+          if (!existedProduct) {
+            const html = `<p class="fs-5 text-muted fst-italic">product no available</p>`;
+            $("div#category-detail-productlistid").html(html);
+          }
+        }
+        if (!status) {
+          console.error(response);
+        }
+      });
+    });
+  }
 });
 export const getCategoryAgain = () => {
   let categoryTotalRow;
@@ -293,9 +333,53 @@ export const getCategoryAgain = () => {
         }
       }
     );
+    getDetail();
+  }
+  // get-detail-product event binding fuckkkkkkk 2 jam lebih
+  function getDetail() {
+    $(document).on("click", "#categoryDetailBtn", function () {
+      const category = this.dataset;
+      console.log(category);
+      const categoryId = parseInt(category.categoryid);
+      const categoryName = category.categorynama;
+      const categoryInfo = category.categoryketerangan;
+      $("#category-detail-label").text(categoryName);
+      $("#category-detail-name").text(categoryName);
+      if (categoryInfo !== "") {
+        $("#category-detail-info").text(categoryInfo);
+      }
+      if (categoryInfo === "") {
+        $("#category-detail-info").text("-");
+      }
+      getProductCategoryId(categoryId, (status, response) => {
+        if (status) {
+          const existedProduct = response.length >= 1;
+          console.log(response);
+          console.log(existedProduct);
+          if (existedProduct) {
+            let list = `<ul>`;
+            response.forEach((el) => {
+              list += `<li class='fs-5'>${el.ProductName}</li>`;
+            });
+            list += `</li>`;
+            console.log(list);
+            $("div#category-detail-productlistid").html(list);
+          }
+          if (!existedProduct) {
+            const html = `<p class="fs-5 text-muted fst-italic">product no available</p>`;
+            $("div#category-detail-productlistid").html(html);
+          }
+        }
+        if (!status) {
+          console.error(response);
+        }
+      });
+    });
   }
 };
 export const getCategoryRef = () => {
   getProductsAgain();
   getPersediaanAgain();
+  listCategoryRefPersediaanRead();
+  listCategoryRefPersediaanReadDate();
 };

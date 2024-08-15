@@ -13,6 +13,11 @@ import {
 } from "./ui.js";
 import { getProductsAgain } from "./../products/read.js";
 import { getPersediaanAgain } from "../persediaan/read.js";
+import { getProductSupplierId } from "../../../../serverless-side/functions/product.js";
+import {
+  listSupplierRefPersediaanRead,
+  listSupplierRefPersediaanReadDate,
+} from "./list.js";
 $(document).ready(function () {
   // get all value
   let supplierSearch = $("#supplier-search-input").val();
@@ -151,6 +156,7 @@ $(document).ready(function () {
     // get detail based on paramsid
     $(document).on("click", "#supplierDetail", function () {
       const supplier = this.dataset;
+      const supplierId = parseInt(supplier.supplierid);
       const supplierName = supplier.suppliername;
       const supplierInfo = supplier.supplierinfo;
       const supplierImg = supplier.supplierimg;
@@ -171,6 +177,26 @@ $(document).ready(function () {
         $("#no-image").addClass("d-none");
         $("#supplier-detail-img").attr("src", supplierImg);
       }
+      getProductSupplierId(supplierId, (status, response) => {
+        if (status) {
+          const existedProduct = response.length >= 1;
+          if (existedProduct) {
+            let list = `<ul>`;
+            response.forEach((el) => {
+              list += `<li class="fs-5">${el.ProductName}</li>`;
+            });
+            list += `</ul>`;
+            $("div#supplier-detail-productid").html(list);
+          }
+          if (!existedProduct) {
+            const list = `<p class='fs-5 ms-2 text-muted fst-italic'>product-no available</p>`;
+            $("div#supplier-detail-productid").html(list);
+          }
+        }
+        if (!status) {
+          console.error(response);
+        }
+      });
     });
   }
 });
@@ -183,6 +209,14 @@ export const getSupplierAgain = () => {
   let supplierTotalPage;
   let supplierBtnPage;
   getInit();
+  $("#supplier-search-input").on("keyup", function () {
+    supplierSearch = $(this).val();
+    getInit(supplierSearch);
+  });
+  $("#supplier-limit").on("change", function () {
+    supplierLimit = parseInt($(this).val());
+    getInit();
+  });
   // 1. get first,  get total row, upadate ui (total row) as condition
   function getInit() {
     getTotalRowSupplier(supplierSearch, (status, response) => {
@@ -286,6 +320,7 @@ export const getSupplierAgain = () => {
       (status, response) => {
         if (status) {
           let tr = ``;
+
           response.forEach((element) => {
             tr += uiTr(element);
           });
@@ -298,9 +333,59 @@ export const getSupplierAgain = () => {
         }
       }
     );
+    getDetail();
+  }
+  function getDetail() {
+    // get detail based on paramsid
+    $(document).on("click", "#supplierDetail", function () {
+      const supplier = this.dataset;
+      const supplierId = parseInt(supplier.supplierid);
+      const supplierName = supplier.suppliername;
+      const supplierInfo = supplier.supplierinfo;
+      const supplierImg = supplier.supplierimg;
+      $("#supplierDetailModalLabel").text(supplierName);
+      $("#supplier-detail-name").text(supplierName);
+      $("#supplier-detail-info").text(supplierInfo);
+      // if it no information further
+      if (supplierInfo === "") {
+        $("#supplier-detail-info").text("-");
+      }
+      // if exist photo
+      if (supplierImg === "null") {
+        $("#no-image").removeClass("d-none");
+        $("#supplier-detail-img").attr("src", "");
+      }
+      // if it doesn't exist photo
+      if (supplierImg !== "null") {
+        $("#no-image").addClass("d-none");
+        $("#supplier-detail-img").attr("src", supplierImg);
+      }
+      getProductSupplierId(supplierId, (status, response) => {
+        if (status) {
+          const existedProduct = response.length >= 1;
+          if (existedProduct) {
+            let list = `<ul>`;
+            response.forEach((el) => {
+              list += `<li class="fs-5">${el.ProductName}</li>`;
+            });
+            list += `</ul>`;
+            $("div#supplier-detail-productid").html(list);
+          }
+          if (!existedProduct) {
+            const list = `<p class='fs-5 ms-2 text-muted fst-italic'>product-no available</p>`;
+            $("div#supplier-detail-productid").html(list);
+          }
+        }
+        if (!status) {
+          console.error(response);
+        }
+      });
+    });
   }
 };
 export const getSupplierRef = () => {
   getProductsAgain();
   getPersediaanAgain();
+  listSupplierRefPersediaanRead();
+  listSupplierRefPersediaanReadDate();
 };

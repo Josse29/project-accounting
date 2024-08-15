@@ -21,7 +21,6 @@ export function disFormatRupiah1(angka) {
     .replace(/,/g, ".");
   return parseFloat(price);
 }
-
 export function formatRupiah2(input) {
   let formattedValue = new Intl.NumberFormat("id-ID", {
     style: "currency",

@@ -1,15 +1,7 @@
-const {
-  app,
-  BrowserWindow,
-  ipcMain,
-  screen,
-  dialog,
-} = require("electron/main");
+const { app, BrowserWindow, ipcMain } = require("electron/main");
 const db = require("./src/client-side/config/db");
 const remote = require("@electron/remote/main");
 const fs = require("fs");
-const path = require("path");
-const url = require("url");
 remote.initialize();
 // all-pages
 let loginPage;
@@ -27,7 +19,7 @@ const createLoginPage = () => {
       nodeIntegration: true,
       contextIsolation: false,
     },
-    // frame: false,
+    frame: false,
     width: 1200,
     height: 800,
     autoHideMenuBar: true,
@@ -100,6 +92,7 @@ ipcMain.on("load:order-page", () => {
       contextIsolation: false,
     },
     // frame: false,
+    autoHideMenuBar: true,
   });
   orderPage.setFullScreen(true);
   orderPage.loadFile("./src/client-side/pages/order.html");
@@ -122,11 +115,21 @@ ipcMain.on("load:inventory-page", () => {
       nodeIntegration: true,
       contextIsolation: false,
     },
-    // frame: true,
+    // frame: false,
+    width: 1200,
+    height: 800,
+    autoHideMenuBar: true,
   });
   // inventoryPage.setFullScreen(true);
   inventoryPage.loadFile("./src/client-side/pages/inventory.html");
   remote.enable(inventoryPage.webContents);
+  ipcMain.on("minimize-maximize-window:inventory-page", () => {
+    if (inventoryPage.isMaximized()) {
+      inventoryPage.unmaximize();
+    } else {
+      inventoryPage.maximize();
+    }
+  });
   ipcMain.on("minimize-window:inventory-page", () => {
     inventoryPage.minimize();
   });
@@ -209,7 +212,7 @@ ipcMain.on("load:about-page", () => {
 // export-pdf
 let productPDF;
 let persediaanPdf;
-ipcMain.on("pdf:product", (event, thead, tbody, file_path) => {
+ipcMain.on("pdf:product", (event, tbody, file_path) => {
   productPDF = new BrowserWindow({
     webPreferences: {
       nodeIntegration: true,
@@ -220,7 +223,7 @@ ipcMain.on("pdf:product", (event, thead, tbody, file_path) => {
   remote.enable(productPDF.webContents);
   productPDF.loadFile("./src/client-side/pdf/product.html");
   productPDF.webContents.on("dom-ready", () => {
-    productPDF.webContents.send("tables:product", thead, tbody, file_path);
+    productPDF.webContents.send("tables:product", tbody, file_path);
   });
   ipcMain.on("create:pdf-product", (event, file_path) => {
     productPDF.webContents
@@ -247,9 +250,11 @@ ipcMain.on(
   (
     event,
     tbodyProduct,
+    tbodyCategoryGroup,
+    txtSumCategory,
     tbodyProductGroup,
-    tbodySupplier,
     tbodySupplierGroup,
+    txtSumSupplier,
     txtPersediaanQtySum,
     txtPersediaanRpSum,
     file_path
@@ -267,9 +272,11 @@ ipcMain.on(
       persediaanPdf.webContents.send(
         "tables:persediaan",
         tbodyProduct,
+        tbodyCategoryGroup,
+        txtSumCategory,
         tbodyProductGroup,
-        tbodySupplier,
         tbodySupplierGroup,
+        txtSumSupplier,
         txtPersediaanQtySum,
         txtPersediaanRpSum,
         file_path
@@ -286,7 +293,7 @@ ipcMain.on(
         .then((data) => {
           fs.writeFile(file_path, data, (err) => {
             if (err) throw err;
-            // persediaanPdf.close();
+            persediaanPdf.close();
             inventoryPage.webContents.send("success:pdf-persediaan", file_path);
           });
         })
@@ -298,7 +305,7 @@ ipcMain.on(
 );
 let productPrint;
 let persediaanPrint;
-ipcMain.on("print:product", (event, thead, tbody) => {
+ipcMain.on("print:product", (event, tbody) => {
   productPrint = new BrowserWindow({
     webPreferences: {
       nodeIntegration: true,
@@ -309,7 +316,7 @@ ipcMain.on("print:product", (event, thead, tbody) => {
   remote.enable(productPrint.webContents);
   productPrint.loadFile("./src/client-side/print/product.html");
   productPrint.webContents.on("dom-ready", () => {
-    productPrint.webContents.send("tables:product", thead, tbody);
+    productPrint.webContents.send("tables:product", tbody);
   });
   ipcMain.on("create:print-product", (event) => {
     productPrint.webContents.print(
@@ -330,8 +337,8 @@ ipcMain.on(
   (
     event,
     tbodyProduct,
+    tbodyCategoryGroup,
     tbodyProductGroup,
-    tbodySupplier,
     tbodySupplierGroup,
     txtPersediaanQtySum,
     txtPersediaanRpSum
@@ -349,8 +356,8 @@ ipcMain.on(
       persediaanPrint.webContents.send(
         "tables:persediaan",
         tbodyProduct,
+        tbodyCategoryGroup,
         tbodyProductGroup,
-        tbodySupplier,
         tbodySupplierGroup,
         txtPersediaanQtySum,
         txtPersediaanRpSum

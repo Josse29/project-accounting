@@ -5,7 +5,7 @@
 //     CategoryInfo text
 // );
 
-// init table & columnn
+// schema category
 const tableName = `Category`;
 const colCategoryId = `CategoryId`;
 const colCategoryName = `CategoryName`;
@@ -25,7 +25,9 @@ export const queryGetCategory = (
   categoryLimit,
   categoryStartOffset
 ) => {
-  let query = `SELECT * 
+  let query = `SELECT * ,
+               (SELECT GROUP_CONCAT(Product.ProductName) FROM Product
+               WHERE Product.ProductCategoryId = ${tableName}.${colCategoryId})
                FROM ${tableName} `;
   //  with search value
   if (categorySearch !== "") {
@@ -54,9 +56,9 @@ export const queryGetListCategory = (categorySearch) => {
   // with search value categories
   if (categorySearch !== "") {
     query += `WHERE ${colCategoryName} LIKE '%${categorySearch}%' ESCAPE '!' OR 
-              ${colCategoryInfo} LIKE '%${categorySearch}%' ESCAPE '!' `;
+                    ${colCategoryInfo} LIKE '%${categorySearch}%' ESCAPE '!' `;
   }
-  //  with limit, offset, order
+  //  with limit, offset, order alphabet
   query += `ORDER BY ${colCategoryName} ASC`;
   return query;
 };
@@ -65,7 +67,7 @@ export const queryUpdateCategory = (categoryId, categoryName, categoryInfo) => {
   return `UPDATE 
           ${tableName}
           SET ${colCategoryName} = '${categoryName}',
-          ${colCategoryInfo} = '${categoryInfo}'
+              ${colCategoryInfo} = '${categoryInfo}'
           WHERE ${colCategoryId} = '${categoryId}'`;
 };
 // 4.DELETE

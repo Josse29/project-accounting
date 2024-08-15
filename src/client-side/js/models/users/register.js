@@ -1,5 +1,4 @@
 import { register } from "../../../../serverless-side/functions/users.js";
-import { getUsersAgain } from "./read.js";
 import {
   uiHidePassword,
   uiHidePasswordConfirm,
@@ -11,21 +10,21 @@ $(document).ready(function () {
   $("#email").focus();
   $("#toggle-password").on("change", function () {
     if ($(this).is(":checked")) {
-      $(".toggle-password").html(uiShowPassword);
+      $(".toggle-password").html(uiShowPassword());
       $("#password").attr("type", "text");
     }
     if (!$(this).is(":checked")) {
-      $(".toggle-password").html(uiHidePassword);
+      $(".toggle-password").html(uiHidePassword());
       $("#password").attr("type", "password");
     }
   });
   $("#toggle-confirm-password").on("change", function () {
     if ($(this).is(":checked")) {
-      $(".toggle-confirm-password").html(uishowConfirmPassword);
+      $(".toggle-confirm-password").html(uishowConfirmPassword());
       $("#confirmPassword").attr("type", "text");
     }
     if (!$(this).is(":checked")) {
-      $(".toggle-confirm-password").html(uiHidePasswordConfirm);
+      $(".toggle-confirm-password").html(uiHidePasswordConfirm());
       $("#confirmPassword").attr("type", "password");
     }
   });
@@ -34,10 +33,13 @@ $(document).ready(function () {
     const email = $("#email").val();
     const fullname = $("#fullname").val();
     const password = $("#password").val();
-    register(email, fullname, password, (status, response) => {
+    // const img = $("input#user-create-img").val();
+    const confirmPassword = $("input#confirmPassword").val();
+    const position = $("select#user-create-position").val();
+    const req = { email, fullname, password, confirmPassword, position };
+    register(req, (status, response) => {
       if (status) {
         console.log(response);
-        getUsersAgain();
         // blankValue();
         $("#email").focus();
       }

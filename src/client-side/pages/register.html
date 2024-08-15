@@ -1,94 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Register-page</title>
     <!-- Framework css bootstrap -->
     <link rel="stylesheet" href="./../third-party/bootstrap.min.css" />
     <!-- Fontawesome -->
-    <link rel="stylesheet" href="./../third-party/fontawesome-web/css/all.min.css" />
+    <link
+      rel="stylesheet"
+      href="./../third-party/fontawesome-web/css/all.min.css"
+    />
     <!-- my css -->
     <link rel="stylesheet" href="./../css/register.css" />
-</head>
-
-<body>
+  </head>
+  <body>
     <div class="px-4 py-2">
-        <h1 class="my-3 fw-bolder" style="color: #3669cc">Register Here !</h1>
-        <!-- email -->
-        <div class="mb-3">
-            <label for="email" class="form-label">Email address</label>
-            <input type="text" class="form-control" id="email" placeholder="name@example.com" />
+      <h1 class="my-3 fw-bolder" style="color: #3669cc">Register Here !</h1>
+      <!-- email -->
+      <div class="mb-3">
+        <label for="email" class="form-label">Email address</label>
+        <input
+          type="text"
+          class="form-control"
+          id="email"
+          placeholder="name@example.com"
+        />
+      </div>
+      <!-- fullname -->
+      <div class="mb-3">
+        <label for="fullname" class="form-label">Fullname</label>
+        <input
+          type="text"
+          class="form-control"
+          id="fullname"
+          placeholder="ex: john doe"
+        />
+      </div>
+      <!-- password -->
+      <div class="mb-3">
+        <div class="d-flex justify-content-between align-items-center w-100">
+          <label for="password" class="form-label custome-me">Password</label>
+          <div class="toggle-password">
+            <label
+              class="fa-solid fa-eye me-2 hide-password"
+              for="toggle-password"
+            ></label>
+          </div>
+          <input type="checkbox" id="toggle-password" class="d-none" />
         </div>
-        <!-- fullname -->
-        <div class="mb-3">
-            <label for="fullname" class="form-label">Fullname</label>
-            <input type="text" class="form-control" id="fullname" placeholder="ex: john doe" />
+        <input
+          type="password"
+          class="form-control custome-me"
+          id="password"
+          placeholder="********"
+        />
+      </div>
+      <!-- confirm password -->
+      <div class="mb-3">
+        <div class="d-flex justify-content-between align-items-center w-100">
+          <label for="confirmPassword" class="form-label custome-me"
+            >Confirm Password</label
+          >
+          <div class="toggle-confirm-password">
+            <label
+              class="fa-solid fa-eye me-2 hide-password"
+              for="toggle-confirm-password"
+            ></label>
+          </div>
+          <input type="checkbox" id="toggle-confirm-password" class="d-none" />
         </div>
-        <!-- password -->
-        <div class="mb-3">
-            <div class="d-flex justify-content-between align-items-center w-100">
-                <label for="password" class="form-label custome-me">Password</label>
-                <div class="toggle-password">
-                    <label class="fa-solid fa-eye me-2 hide-password" for="toggle-password"></label>
-                </div>
-                <input type="checkbox" id="toggle-password" class="d-none" />
-            </div>
-            <input type="password" class="form-control custome-me" id="password" placeholder="********" />
-        </div>
-        <!-- confirm password -->
-        <div class="mb-3">
-            <div class="d-flex justify-content-between align-items-center w-100">
-                <label for="confirmPassword" class="form-label custome-me">Confirm Password</label>
-                <div class="toggle-confirm-password">
-                    <label class="fa-solid fa-eye me-2 hide-password" for="toggle-confirm-password"></label>
-                </div>
-                <input type="checkbox" id="toggle-confirm-password" class="d-none" />
-            </div>
-            <input type="password" class="form-control custome-me" id="confirmPassword" placeholder="********" />
-        </div>
-        <!-- photo -->
-        <div class="mb-3">
-            <label for="formFile" class="form-label">Photo</label>
-            <input class="form-control" type="file" id="formFile" />
-        </div>
-        <!-- select option -->
-        <div class="mb-3">
-            <label for="position" class="form-label">Position</label>
-            <select class="form-select" aria-label="Default select example">
-                <option selected>Open this select menu</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-            </select>
-        </div>
-        <!-- submit -->
-        <button class="btn w-100 text-white btn-register-me my-2" id="register">
-            Submit
-        </button>
+        <input
+          type="password"
+          class="form-control custome-me"
+          id="confirmPassword"
+          placeholder="********"
+        />
+      </div>
+      <!-- photo -->
+      <div class="mb-3">
+        <label for="formFile" class="form-label">Photo</label>
+        <input class="form-control" type="file" id="user-create-img" />
+      </div>
+      <!-- select option -->
+      <div class="mb-3">
+        <label for="position" class="form-label">Position</label>
+        <select
+          class="form-select"
+          aria-label="Default select example"
+          id="user-create-position"
+        >
+          <option disabled>Open this select menu</option>
+          <option value="sales">Sales</option>
+          <option value="customer">Customer</option>
+        </select>
+      </div>
+      <!-- submit -->
+      <button class="btn w-100 text-white btn-register-me my-2" id="register">
+        Submit
+      </button>
     </div>
-    <li>users</li>
-    <ul id="testData">
-        <li></li>
-    </ul>
     <!-- bootstrap js  -->
     <script src="./../third-party/bootstrap.bundle.min.js"></script>
     <!-- jquery & config with electron-jquery -->
     <script>
-        if (typeof module === "object") {
-            window.module = module;
-            module = undefined;
-        }
+      if (typeof module === "object") {
+        window.module = module;
+        module = undefined;
+      }
     </script>
     <script src="./../third-party/jquery-3.7.1.min.js"></script>
     <script>
-        if (window.module) module = window.module;
+      if (window.module) module = window.module;
     </script>
     <!-- myscript -->
     <script src="./../require/index.js"></script>
     <script type="module" src="./../js/models/users/read.js"></script>
     <script type="module" src="./../js/models/users/register.js"></script>
-</body>
-
+  </body>
 </html>

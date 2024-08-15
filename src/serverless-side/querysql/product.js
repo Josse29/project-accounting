@@ -5,7 +5,8 @@ export const createTable = () => {
             ProductName VARCHAR(255),
             ProductImage BLOB,
             ProductInfo TEXT,
-            ProductPrice REAL,
+            ProductPriceBeli REAL,
+            ProductPriceJual REAL,
             ProductCategoryId INTEGER, 
             ProductSupplierId INTEGER,
             FOREIGN KEY (ProductCategoryId) REFERENCES Category(CategoryId)
@@ -18,14 +19,16 @@ const colProductId = `ProductId`;
 const colProductName = `ProductName`;
 const colProductImg = `ProductImage`;
 const colProductInfo = `ProductInfo`;
-const colProductPrice = `ProductPrice`;
+const colProductPriceBeli = `ProductPriceBeli`;
+const colProductPriceJual = `ProductPriceJual`;
 const colProductCategoryId = `ProductCategoryId`;
-const colSupplierId = `ProductSupplierId`;
+const colProductSupplierId = `ProductSupplierId`;
 
 // 1.CREATE
 export const queryinsertProducts = (
   productName,
-  productPrice,
+  productPriceBeli,
+  productPriceJual,
   productInfo,
   productImg,
   productCategoryId,
@@ -33,9 +36,9 @@ export const queryinsertProducts = (
 ) => {
   return `INSERT 
           INTO ${tableName} 
-          (${colProductName}, ${colProductPrice}, ${colProductInfo}, ${colProductImg}, ${colProductCategoryId}, ${colSupplierId}) 
+          (${colProductName}, ${colProductPriceBeli}, ${colProductPriceJual}, ${colProductInfo}, ${colProductImg}, ${colProductCategoryId}, ${colProductSupplierId}) 
           VALUES 
-          ('${productName}', ${productPrice}, '${productInfo}', '${productImg}', ${productCategoryId}, ${productSupplierId})`;
+          ('${productName}', ${productPriceBeli}, ${productPriceJual}, '${productInfo}', '${productImg}', ${productCategoryId}, ${productSupplierId})`;
 };
 // 2.READ
 export const queryGetProducts = (
@@ -46,12 +49,13 @@ export const queryGetProducts = (
   let query = `SELECT *
                FROM ${tableName}
                LEFT JOIN Category ON ${tableName}.${colProductCategoryId} = Category.CategoryId
-               LEFT JOIN Supplier ON ${tableName}.${colSupplierId} = Supplier.SupplierId `;
+               LEFT JOIN Supplier ON ${tableName}.${colProductSupplierId} = Supplier.SupplierId `;
   //  with search value
   if (productSearch !== "") {
-    query += `WHERE ${tableName}.ProductName LIKE '%${productSearch}%' ESCAPE '!' OR
-                    ${tableName}.ProductPrice LIKE '%${productSearch}%' ESCAPE '!' OR
-                    ${tableName}.ProductInfo LIKE '%${productSearch}%' ESCAPE '!' OR
+    query += `WHERE ${tableName}.${colProductName} LIKE '%${productSearch}%' ESCAPE '!' OR
+                    ${tableName}.${colProductPriceBeli} LIKE '%${productSearch}%' ESCAPE '!' OR
+                    ${tableName}.${colProductPriceJual} LIKE '%${productSearch}%' ESCAPE '!' OR
+                    ${tableName}.${colProductInfo} LIKE '%${productSearch}%' ESCAPE '!' OR
                     Category.CategoryName LIKE '%${productSearch}%' ESCAPE '!' OR 
                     Supplier.SupplierName LIKE '%${productSearch}%' ESCAPE '!' `;
   }
@@ -65,14 +69,14 @@ export const queryGetListProduct = (productSearch) => {
   let query = `SELECT 
                ${tableName}.${colProductId},
                ${tableName}.${colProductName},
-               ${tableName}.${colProductPrice}
+               ${tableName}.${colProductPriceBeli}
                FROM ${tableName}
                LEFT JOIN Category ON ${tableName}.${colProductCategoryId} = Category.CategoryId
-               LEFT JOIN Supplier ON ${tableName}.${colSupplierId} = Supplier.SupplierId `;
+               LEFT JOIN Supplier ON ${tableName}.${colProductSupplierId} = Supplier.SupplierId `;
   //  with search value
   if (productSearch !== "") {
     query += `WHERE ${tableName}.${colProductName} LIKE '%${productSearch}%' ESCAPE '!' OR
-                    ${tableName}.${colProductPrice} LIKE '%${productSearch}%' ESCAPE '!' OR
+                    ${tableName}.${colProductPriceBeli} LIKE '%${productSearch}%' ESCAPE '!' OR
                     ${tableName}.${colProductInfo} LIKE '%${productSearch}%' ESCAPE '!' OR
                     Category.CategoryName LIKE '%${productSearch}%' ESCAPE '!' OR 
                     Supplier.SupplierName LIKE '%${productSearch}%' ESCAPE '!' `;
@@ -85,33 +89,51 @@ export const queryTotalRowProducts = (productSearch) => {
                AS TOTAL_ROW
                FROM ${tableName}
                LEFT JOIN Category ON ${tableName}.${colProductCategoryId} = Category.CategoryId
-               LEFT JOIN Supplier ON ${tableName}.${colSupplierId} = Supplier.SupplierId `;
+               LEFT JOIN Supplier ON ${tableName}.${colProductSupplierId} = Supplier.SupplierId `;
   // with search value product
   if (productSearch !== "") {
     query += `WHERE ${tableName}.${colProductName} LIKE '%${productSearch}%' ESCAPE '!' OR 
-                    ${tableName}.${colProductPrice} LIKE '%${productSearch}%' ESCAPE '!' OR 
+                    ${tableName}.${colProductPriceBeli} LIKE '%${productSearch}%' ESCAPE '!' OR 
                     ${tableName}.${colProductInfo} LIKE '%${productSearch}%' ESCAPE '!' OR
                     Category.CategoryName LIKE '%${productSearch}%' ESCAPE '!' OR 
                     Supplier.SupplierName LIKE '%${productSearch}%' ESCAPE '!' `;
   }
   return query;
 };
+export const queryGetProductSupplierId = (supplierId) => {
+  let query = `SELECT Product.ProductName FROM Product `;
+  // join table supplier
+  query += `LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId `;
+  // by supplierid
+  query += `WHERE Supplier.SupplierId = ${supplierId}`;
+  return query;
+};
+export const queryGetProductCategoryId = (categoryId) => {
+  let query = `SELECT Product.ProductName FROM Product `;
+  // join table supplier
+  query += `LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId `;
+  // by categoryId
+  query += `WHERE Category.CategoryId = ${categoryId}`;
+  return query;
+};
 // 3.UPDATE
 export const queryUpdateProduct = (
   productId,
   productName,
-  productPrice,
-  productInfo,
+  productPriceBuy,
+  productPriceSell,
   productImg,
   productCategoryId,
-  productSupplierId
+  productSupplierId,
+  productInfo
 ) => {
   let query = `UPDATE ${tableName}
                SET ${colProductName} = '${productName}',
+                   ${colProductPriceBeli} = ${productPriceBuy},
+                   ${colProductPriceJual} = ${productPriceSell},
                    ${colProductCategoryId} = ${productCategoryId},
-                   ${colProductPrice} = '${productPrice}',
-                   ${colProductInfo} = '${productInfo}',
-                   ${colSupplierId} = ${productSupplierId} `;
+                   ${colProductSupplierId} = ${productSupplierId}, 
+                   ${colProductInfo} = '${productInfo}' `;
   //with image
   if (productImg !== "") {
     query += `,
@@ -125,4 +147,27 @@ export const queryDeleteProductId = (id) => {
   return `DELETE 
           FROM ${tableName} 
           WHERE ${colProductId} = ${id} `;
+};
+// convert report
+export const queryGetProductPDF = () => {
+  let query = `SELECT * FROM Product `;
+  // ascending product name
+  query += `ORDER BY Product.ProductName ASC`;
+  return query;
+};
+export const queryGetProductCSV = () => {
+  let query = `SELECT 
+               Product.ProductName AS ProductName,
+               Product.ProductPriceBeli AS ProductPriceBuy,
+               Product.ProductPriceJual AS ProductPriceSell,
+               Supplier.SupplierName AS SupplieName,
+               Category.CategoryName AS CategoryName
+               FROM Product `;
+  // left join table supplier
+  query += `LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId `;
+  // left join table Category
+  query += `LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId `;
+  // ascending product name
+  query += `ORDER BY Product.ProductName ASC`;
+  return query;
 };

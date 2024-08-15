@@ -20,12 +20,11 @@ $("#create-image-product").on("change", (event) => {
 $("#edit-product-image-file").on("change", (event) => {
   const files = event.target.files;
   if (files.length > 0) {
-    $("#section-edit-product-img").removeClass("d-none");
+    $("#section-edit-product-img").show();
     const reader = new FileReader();
     reader.onload = function () {
-      const preview = document.getElementById("edit-product-image");
       const imgbase64 = reader.result;
-      preview.src = imgbase64;
+      $("div#edit-product-image").attr("src", imgbase64);
     };
     reader.readAsDataURL(event.target.files[0]);
   }
