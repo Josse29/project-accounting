@@ -817,6 +817,7 @@ export const deletePersediaan = (
   valPersediaanProductId,
   callback
 ) => {
+  console.log(valPersediaanId);
   // 1. get total row product id by persediaan
   db.each(
     queryGetPersediaanProductRow(valPersediaanProductId),

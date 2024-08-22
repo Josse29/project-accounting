@@ -1,5 +1,5 @@
 import { createAccounting } from "../../../../serverless-side/functions/accounting.js";
-import { insertKas } from "../../../../serverless-side/functions/kas.js";
+import { insertCash } from "../../../../serverless-side/functions/cash.js";
 import { createPersediaan1 } from "../../../../serverless-side/functions/persediaan.js";
 import { createSales } from "../../../../serverless-side/functions/sales.js";
 import { disFormatRupiah1, formatRupiah1 } from "../../utils/formatRupiah.js";
@@ -11,8 +11,10 @@ import {
   removeStorageCart,
   removeStorageCartSUM,
 } from "../../utils/localStorage.js";
+import { getSalesAgain } from "../sales/read.js";
 import { listUserForRefOrder } from "../users/list.js";
 import { listCart } from "./cart.js";
+import { getProductAgain } from "./read.js";
 
 $(document).ready(function () {
   // FOR LIST user ORDER
@@ -50,6 +52,9 @@ $(document).ready(function () {
     .on("click", function () {
       const { formattedDDMY, formattedHMS } = getTimeNow();
       const userSalesId = $("select#order-create-usersalesid").val();
+      const userSalesText = $("select#order-create-usersalesid")
+        .find("option:selected")
+        .text();
       const customerId = $("select#order-create-usercustomerid").val();
       const totalPaid = disFormatRupiah1($("input#order-payment").val());
       const totalCart = Number(getStorageCartSum());
@@ -89,106 +94,142 @@ $(document).ready(function () {
       }
       if (totalPaid >= totalCart) {
         // SEND TO PERSEDIAAN
-        console.log("send to persediaan");
-        const storageCart1 = getStorageCart();
-        storageCart1.forEach((el) => {
-          const req = {
-            ProductYMD: formattedDDMY,
-            ProductHMS: formattedHMS,
-            ProductId: el.ProductId,
-            ProductQty: el.ProductQty * -1,
-            ProductTotal: el.ProductTotal * -1,
-            PersonSalesId: parseInt(userSalesId),
-          };
-          return;
-          createPersediaan1(req, (status, response) => {
-            if (status) {
-              console.log(response);
-            }
-            if (!status) {
-              console.error(response);
-            }
+        const insertPromise1 = () => {
+          const promises = storageCart.map((el) => {
+            return new Promise((resolve, reject) => {
+              const req = {
+                ProductYMD: formattedDDMY,
+                ProductHMS: formattedHMS,
+                ProductId: el.ProductId,
+                ProductQty: el.ProductQty * -1,
+                ProductTotal: el.ProductTotal * -1,
+                PersonSalesId: parseInt(userSalesId),
+              };
+              createPersediaan1(req, (status, response) => {
+                if (status) {
+                  console.log(response);
+                  resolve();
+                } else {
+                  console.error(response);
+                  reject(response);
+                }
+              });
+            });
           });
-        });
+          return Promise.all(promises);
+        };
         // SEND TO SALES
-        console.log("send to sales");
-        const storageCart2 = getStorageCart();
-        storageCart2.forEach((el) => {
-          const req = {
-            ymdVal: formattedDDMY,
-            hmsVal: formattedHMS,
-            productIdVal: el.ProductId,
-            productQtyVal: el.ProductQty,
-            productTotalVal: el.ProductTotal,
-            personIdVal: parseInt(userSalesId),
-            customerIdVal: parseInt(customerId),
-          };
-          console.log(req);
-          createSales(req, (status, response) => {
-            if (status) {
-              console.log("berhasil ");
-            }
-            if (!status) {
-              console.error(response);
-            }
-          });
-        });
-        // SEND TO KAS
-        console.log("send to kas");
-        const storageCart3 = getStorageCart();
-        storageCart3.forEach((el) => {
-          const req = {
-            valKasYMD: formattedDDMY,
-            valKasHMS: formattedHMS,
-            valKasName: "Kas",
-            valKasRp: el.ProductTotal,
-            valKasInfo: `Sales | ${el.ProductId} - ${el.ProductName}, Total Qty : ${el.ProductQty}`,
-          };
-          return;
-          insertKas(req, (status, response) => {
-            if (status) {
-              console.log("berhasil ");
-            }
-            if (!status) {
-              console.error(response);
-            }
-          });
-        });
-        // send to db.accounting
-        const storageCart4 = getStorageCart();
-        storageCart4.forEach((row) => {
-          const req = [
-            [
+        const insertPromise2 = () => {
+          const promises = storageCart.map((el) => {
+            return new Promise((resolve, reject) => {
               {
-                AccountingYMD: formattedDDMY,
-                AccountingHMS: formattedHMS,
-                AccountingRef: "111",
-                AccountingName: "Cash",
-                AccountingPosition: "debt",
-                AccountingRp: row.ProductPrice,
-                AccountingInfo: `Sales Product ${row.ProductId} - ${row.ProductName}`,
-              },
-              {
-                AccountingYMD: formattedDDMY,
-                AccountingHMS: formattedHMS,
-                AccountingRef: "411",
-                AccountingName: "Sales",
-                AccountingPosition: "credit",
-                AccountingRp: row.ProductPrice,
-                AccountingInfo: `Paid`,
-              },
-            ],
-          ];
-          return;
-          createAccounting(req, (status, response) => {
-            if (status) {
-              console.log(response);
-            }
-            if (!status) {
-              console.log(response);
-            }
+                const req = {
+                  SalesYMDVal: formattedDDMY,
+                  SalesHMSVal: formattedHMS,
+                  SalesProductIdVal: el.ProductId,
+                  SalesProductQtyVal: el.ProductQty,
+                  SalesProductRpVal: el.ProductTotal,
+                  SalesPersonIdVal: parseInt(userSalesId),
+                  SalesCustomerIdVal: parseInt(customerId),
+                  SalesStatusVal: "PAID",
+                };
+                createSales(req, (status, response) => {
+                  if (status) {
+                    console.log("berhasil ");
+                    resolve();
+                  }
+                  if (!status) {
+                    console.error(response);
+                    reject();
+                  }
+                });
+              }
+            });
           });
-        });
+          return Promise.all(promises);
+        };
+        // SEND TO CASH
+        const insertPromise3 = () => {
+          const promises = storageCart.map((el) => {
+            return new Promise((resolve, reject) => {
+              const req = {
+                CashYYYYMMDDVal: formattedDDMY,
+                CashHMSVal: formattedHMS,
+                CashNameVal: "Sales",
+                CashRpVal: el.ProductTotal,
+                CashInfoVal: `Sales | ${el.ProductId} - ${el.ProductName}, Total Qty : ${el.ProductQty}`,
+              };
+              insertCash(req, (status, response) => {
+                if (status) {
+                  console.log("Cash insertion successful: ", response);
+                  resolve();
+                } else {
+                  console.error("Cash insertion failed: ", response);
+                  reject(response);
+                }
+              });
+            });
+          });
+          return Promise.all(promises);
+        };
+        // send to db.accounting | huffttt
+        const insertPromise4 = () => {
+          const promises = storageCart.flatMap((row) => {
+            const debitEntry = {
+              accountingYMDVal: formattedDDMY,
+              accountingHMSVal: formattedHMS,
+              accountingRefVal: 111,
+              accountingNameVal: "Cash",
+              accountingPositionVal: "debt",
+              accountingRpVal: row.ProductPrice,
+              accountingInfoVal: `Sales | ${row.ProductId} - ${row.ProductName}, Total Qty : ${row.ProductQty}`,
+            };
+            const creditEntry = {
+              accountingYMDVal: formattedDDMY,
+              accountingHMSVal: formattedHMS,
+              accountingRefVal: 411,
+              accountingNameVal: "Sales",
+              accountingPositionVal: "credit",
+              accountingRpVal: row.ProductPrice,
+              accountingInfoVal: `Sales : ${parseInt(
+                userSalesId
+              )} - ${userSalesText} | Product : ${row.ProductId} - ${
+                row.ProductName
+              }`,
+            };
+            return [
+              processAccountingEntry(debitEntry),
+              processAccountingEntry(creditEntry),
+            ];
+          });
+          // Return a promise that resolves when all accounting entries have been processed
+          return Promise.all(promises);
+        };
+        function processAccountingEntry(entry) {
+          return new Promise((resolve, reject) => {
+            createAccounting(entry, (status, response) => {
+              if (status) {
+                resolve(response);
+              } else {
+                reject(new Error(response));
+              }
+            });
+          });
+        }
+        Promise.all([
+          insertPromise1(),
+          insertPromise2(),
+          insertPromise3(),
+          insertPromise4(),
+        ])
+          .then(() => {
+            getProductAgain();
+            getSalesAgain();
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+        $("#printModal").modal("hide");
         // send to db.piutang|| it credit
         // remove storage cart and sum storage card
         removeStorageCart();
@@ -201,6 +242,7 @@ $(document).ready(function () {
         $("select#order-create-usersalesid").val("Choose One Of Sales");
         $("select#order-create-usercustomerid").val("Choose One Of Customers");
         listCart();
+        $("#printModal").modal("hide");
       }
     });
 });

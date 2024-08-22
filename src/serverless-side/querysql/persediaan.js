@@ -56,7 +56,6 @@ export const queryInsertPersediaan1 = (
                ('${ProductYMDval}', '${ProductHMSval}',${ProductIdval}, ${PersediaanQtyval}, ${PersediaanRpval}, ${PersonIdval})`;
   return query;
 };
-
 // 2.READ
 export const queryGetPersediaan = (
   valPersediaanSearch,
@@ -67,10 +66,10 @@ export const queryGetPersediaan = (
                Persediaan.PersediaanId,
                Persediaan.PersediaanDDMY,
                Persediaan.PersediaanHMS,
-               Persediaan.PersediaanProductId,
                Persediaan.PersediaanRp,
                Persediaan.PersediaanQty,
                Persediaan.PersediaanInfo,
+               Product.ProductId,
                Product.ProductName,
                Product.ProductPriceBeli,
                Product.ProductPriceJual,
@@ -145,13 +144,14 @@ export const queryGetPersediaanDate = (startDate, endDate) => {
                Persediaan.PersediaanId,
                Persediaan.PersediaanDDMY,
                Persediaan.PersediaanHMS,
+               Persediaan.PersediaanRp,
+               Persediaan.PersediaanQty,
+               Persediaan.PersediaanInfo,
+               Product.ProductId,
                Product.ProductName,
                Product.ProductPriceBeli,
                Category.CategoryName,
-               Supplier.SupplierName,
-               Persediaan.PersediaanRp,
-               Persediaan.PersediaanQty,
-               Persediaan.PersediaanInfo
+               Supplier.SupplierName
                FROM ${tableName}
                LEFT JOIN Product ON ${tableName}.${colPersediaanProductId} = Product.ProductId
                LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
@@ -165,10 +165,12 @@ export const queryGetPersediaanDate = (startDate, endDate) => {
 
 // reference product
 export const queryGetPersediaanProductRow = (valPersediaanProductId) => {
-  return `SELECT
-          COUNT(Persediaan.PersediaanProductId) AS TotalProduct
-          FROM Persediaan
-          WHERE Persediaan.PersediaanProductId = ${valPersediaanProductId} `;
+  let query = `SELECT
+               COUNT(Persediaan.PersediaanProductId) AS TotalProduct
+               FROM Persediaan
+               WHERE Persediaan.PersediaanProductId = ${valPersediaanProductId} `;
+  console.log(query);
+  return query;
 };
 export const queryGetPersediaanProductId = (valPersediaanProductId) => {
   return `SELECT
@@ -185,14 +187,14 @@ export const queryGetPersediaanProductId2 = (valPersediaanProductId) => {
                Persediaan.PersediaanId,
                Persediaan.PersediaanDDMY,
                Persediaan.PersediaanHMS,
-               Persediaan.PersediaanProductId,
+               Persediaan.PersediaanRp,
+               Persediaan.PersediaanQty,
+               Persediaan.PersediaanInfo,
+               Product.ProductId,
                Product.ProductName,
                Product.ProductPriceBeli,
                Category.CategoryName,
-               Supplier.SupplierName,
-               Persediaan.PersediaanRp,
-               Persediaan.PersediaanQty,
-               Persediaan.PersediaanInfo
+               Supplier.SupplierName
                FROM ${tableName}
                LEFT JOIN Product ON ${tableName}.${colPersediaanProductId} = Product.ProductId
                LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
@@ -267,13 +269,14 @@ export const queryGetPersediaanCategoryId = (valCategoryId) => {
                Persediaan.PersediaanId,
                Persediaan.PersediaanDDMY,
                Persediaan.PersediaanHMS,
+               Persediaan.PersediaanRp,
+               Persediaan.PersediaanQty,
+               Persediaan.PersediaanInfo,
+               Product.ProductId,
                Product.ProductName,
                Product.ProductPriceBeli,
                Category.CategoryName,
-               Supplier.SupplierName,
-               Persediaan.PersediaanRp,
-               Persediaan.PersediaanQty,
-               Persediaan.PersediaanInfo
+               Supplier.SupplierName
                FROM ${tableName}
                LEFT JOIN Product ON ${tableName}.${colPersediaanProductId} = Product.ProductId
                LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
@@ -292,7 +295,6 @@ export const queryGetPersediaanCategoryGroup = () => {
           FROM Persediaan
           LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
           LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
-          WHERE Category.CategoryId IS NOT NULL
           GROUP BY Category.CategoryId`;
 };
 export const queryGetPersediaanDateCategoryId = (
@@ -404,13 +406,14 @@ export const queryGetPersediaanSupplierId = (valSupplierId) => {
                Persediaan.PersediaanId,
                Persediaan.PersediaanDDMY,
                Persediaan.PersediaanHMS,
+               Persediaan.PersediaanRp,
+               Persediaan.PersediaanQty,
+               Persediaan.PersediaanInfo,
+               Product.ProductId,
                Product.ProductName,
                Product.ProductPriceBeli,
                Category.CategoryName,
-               Supplier.SupplierName,
-               Persediaan.PersediaanRp,
-               Persediaan.PersediaanQty,
-               Persediaan.PersediaanInfo
+               Supplier.SupplierName
                FROM ${tableName}
                LEFT JOIN Product ON ${tableName}.${colPersediaanProductId} = Product.ProductId
                LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
@@ -595,9 +598,10 @@ export const queryUpdatePersediaan = (
 };
 // 4.DELETE
 export const queryDeletePersediaan = (valPersediaanId) => {
-  return `DELETE
-          FROM ${tableName}
-          WHERE ${colPersediaanId} = ${valPersediaanId}`;
+  let query = `DELETE
+               FROM ${tableName}
+               WHERE ${colPersediaanId} = ${valPersediaanId}`;
+  return query;
 };
 export const queryDeletePersediaanAll = () => {
   return `DELETE

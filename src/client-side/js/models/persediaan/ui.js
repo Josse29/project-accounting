@@ -77,7 +77,7 @@ export const uiTrPersediaan = (el) => {
                         data-persediaanHMS="${el.PersediaanHMS}"
                         data-persediaanqty=${el.PersediaanQty}
                         data-persediaaninfo="${el.PersediaanInfo}"
-                        data-productid=${el.PersediaanProductId} 
+                        data-productid=${el.ProductId} 
                         data-productpricebuy=${el.ProductPriceBeli} 
                         data-productname="${el.ProductName}">
                     <i class="fa-solid fa-pencil"
@@ -92,11 +92,11 @@ export const uiTrPersediaan = (el) => {
                         data-bs-toggle="modal"
                         data-bs-target="#persediaanDeleteModal"
                         data-persediaanid=${el.PersediaanId}
-                        data-productid=${el.PersediaanProductId}
-                        data-productname="${el.ProductName}"
                         data-persediaanddmy="${el.PersediaanDDMY}" 
                         data-persediaanHMS="${el.PersediaanHMS}"
-                        data-persediaanqty=${el.PersediaanQty}>
+                        data-persediaanqty=${el.PersediaanQty}
+                        data-productid=${el.ProductId}
+                        data-productname="${el.ProductName}">
                     <i class="fa-solid fa-trash-can"
                        data-bs-toggle="tooltip" 
                        data-bs-html="true"

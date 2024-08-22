@@ -6,49 +6,51 @@ import { uiFailedDelete, uiSuccessActionPersediaan } from "./ui.js";
 
 $(document).ready(function () {
   // delete by-id
-  $(document).on("click", "#persediaan-delete-btn", function () {
-    $("#persediaan-delete-failed").html(``);
-    const persediaan = this.dataset;
-    const persediaanProductId = parseInt(persediaan.productid);
-    const persediaanqty = parseInt(persediaan.persediaanqty);
-    $("#persediaan-delete-name").text(persediaan.productname);
-    let txtPersediaanQty = ``;
-    if (persediaanqty >= 1) {
-      txtPersediaanQty = `<span class="badge text-bg-success">+ ${persediaanqty}</span>`;
-    }
-    if (persediaanqty < 0) {
-      txtPersediaanQty = `<span class="badge text-bg-danger">${addSpace(
-        persediaanqty
-      )}</span>`;
-    }
-    const konfirmasiDelete = `Apakah anda yakin menghapus ${txtPersediaanQty} ${
-      persediaan.productname
-    } pada <span class="fw-bold">Tanggal : ${formatWaktuIndo(
-      persediaan.persediaanddmy
-    )} Waktu ${persediaan.persediaanhms} </span> ?`;
-    $("#confirm-text").html(konfirmasiDelete);
-    // action to delete
-    $("#persediaan-delete-yes")
-      .off("click")
-      .on("click", function () {
-        deletePersediaan(
-          parseInt(persediaan.persediaanid),
-          persediaan.productname,
-          persediaanqty,
-          persediaanProductId,
-          (status, response) => {
-            if (status) {
-              getPersediaanAgain();
-              uiSuccessActionPersediaan(response);
-              $("#persediaanDeleteModal").modal("hide");
+  $(document)
+    .off("click", "#persediaan-delete-btn")
+    .on("click", "#persediaan-delete-btn", function () {
+      $("#persediaan-delete-failed").html(``);
+      const persediaan = this.dataset;
+      const persediaanId = parseInt(persediaan.persediaanid);
+      const persediaanProductId = parseInt(persediaan.productid);
+      const persediaanName = persediaan.productname;
+      const persediaanqty = parseInt(persediaan.persediaanqty);
+      $("#persediaan-delete-name").text();
+      let txtPersediaanQty = ``;
+      if (persediaanqty >= 1) {
+        txtPersediaanQty = `<span class="badge text-bg-success">+ ${persediaanqty}</span>`;
+      }
+      if (persediaanqty < 0) {
+        txtPersediaanQty = `<span class="badge text-bg-danger">${addSpace(
+          persediaanqty
+        )}</span>`;
+      }
+      const konfirmasiDelete = `Apakah anda yakin menghapus ${txtPersediaanQty} ${persediaanName} pada <span class="fw-bold">Tanggal : ${formatWaktuIndo(
+        persediaan.persediaanddmy
+      )} Waktu ${persediaan.persediaanhms} </span> ?`;
+      $("#confirm-text").html(konfirmasiDelete);
+      // action to delete
+      $("#persediaan-delete-yes")
+        .off("click")
+        .on("click", function () {
+          deletePersediaan(
+            persediaanId,
+            persediaanName,
+            persediaanqty,
+            persediaanProductId,
+            (status, response) => {
+              if (status) {
+                getPersediaanAgain();
+                uiSuccessActionPersediaan(response);
+                $("#persediaanDeleteModal").modal("hide");
+              }
+              if (!status) {
+                uiFailedDelete(response);
+              }
             }
-            if (!status) {
-              uiFailedDelete(response);
-            }
-          }
-        );
-      });
-  });
+          );
+        });
+    });
   // delete all
   $("button#persediaan-delete-all").on("click", function () {
     console.log("cuci-gudang");

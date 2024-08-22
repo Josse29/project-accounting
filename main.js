@@ -148,7 +148,7 @@ ipcMain.on("load:transaksi-page", () => {
       nodeIntegration: true,
       contextIsolation: false,
     },
-    frame: false,
+    frame: true,
   });
   transaksiPage.setFullScreen(true);
   transaksiPage.loadFile("./src/client-side/pages/transaksi.html");
@@ -212,6 +212,7 @@ ipcMain.on("load:about-page", () => {
 // export-pdf
 let productPDF;
 let persediaanPdf;
+let salesPDF;
 ipcMain.on("pdf:product", (event, tbody, file_path) => {
   productPDF = new BrowserWindow({
     webPreferences: {
@@ -303,6 +304,39 @@ ipcMain.on(
     });
   }
 );
+ipcMain.on("pdf:sales", (event, tbodySales, file_path) => {
+  salesPDF = new BrowserWindow({
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+    },
+    // frame: false,
+  });
+  remote.enable(salesPDF.webContents);
+  salesPDF.loadFile("./src/client-side/pdf/sales.html");
+  salesPDF.webContents.on("dom-ready", () => {
+    salesPDF.webContents.send("tables:sales", tbodySales, file_path);
+  });
+  ipcMain.on("create:pdf-sales", (event, file_path) => {
+    salesPDF.webContents
+      .printToPDF({
+        marginsType: 0,
+        printBackground: true,
+        printSelectionOnly: false,
+        landscape: true,
+      })
+      .then((data) => {
+        fs.writeFile(file_path, data, (err) => {
+          if (err) throw err;
+          salesPDF.close();
+          orderPage.webContents.send("success:pdf-sales", file_path);
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  });
+});
 let productPrint;
 let persediaanPrint;
 ipcMain.on("print:product", (event, tbody) => {

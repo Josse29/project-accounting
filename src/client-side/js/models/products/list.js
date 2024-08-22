@@ -186,3 +186,32 @@ export const listProductRefPersediaanReadDate = () => {
     }
   });
 };
+export const listProductRefSalesRead = () => {
+  getListProduct("", (status, response) => {
+    if (status) {
+      let option = `<option selected disabled>Choose One Of Products</option>`;
+      response.forEach((row) => {
+        option += `<option value=${row.ProductId}>${row.ProductName}</option>`;
+      });
+      $("select#sales-read-productid").html(option);
+    }
+    if (!status) {
+      console.error(response);
+    }
+  });
+};
+export const listProductRefSalesReadDate = () => {
+  getListProduct("", (status, response) => {
+    if (status) {
+      let option = `<option selected disabled>Choose One Of Products</option>`;
+      response.forEach((row) => {
+        option += `<option value=${row.ProductId}>${row.ProductName}</option>`;
+      });
+      console.log(option);
+      $("select#sales-read-productid-date").html(option);
+    }
+    if (!status) {
+      console.error(response);
+    }
+  });
+};

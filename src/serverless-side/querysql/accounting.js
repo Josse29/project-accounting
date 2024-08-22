@@ -23,7 +23,7 @@ export const queryCreateAccounting = (
   let query = `INSERT INTO Accounting
                (AccountingYMD, AccountingHMS, AccountingRef, AccountingName, AccountingPosition, AccountingRp, AccountingInfo)
                VALUES
-               ('${accountingYMDVal}', '${accountingHMSVal}', '${accountingRefVal}', '${accountingNameVal}', ${accountingPositionVal}, ${accountingRpVal}, '${accountingInfoVal}')`;
+               ('${accountingYMDVal}', '${accountingHMSVal}', '${accountingRefVal}', '${accountingNameVal}', '${accountingPositionVal}', ${accountingRpVal}, '${accountingInfoVal}')`;
   console.log(query);
   return query;
 };

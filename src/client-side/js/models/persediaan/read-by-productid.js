@@ -6,6 +6,7 @@ import {
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import { listProductRefPersediaanRead } from "../products/list.js";
 import { uiTrPersediaan, uiTrZeroSearch } from "./ui.js";
+
 $(document).ready(function () {
   listProductRefPersediaanRead();
   $("select#persediaan-refproduct-search").on("change", function () {

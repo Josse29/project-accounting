@@ -158,37 +158,39 @@ $(document).ready(function () {
     });
   };
 
-  $("#persediaan-export-pdf").on("click", async () => {
-    let file_path = dialog.showSaveDialogSync({
-      title: "Export Data",
-      filters: [{ name: "pdf", extensions: ["pdf"] }],
-    });
-    if (file_path) {
-      file_path = file_path.replace(/\\/g, "/");
-      try {
-        const tbodyProduct = await getPersediaanProductReportAsync();
-        const tbodyProductGroup = await getPersediaanProductGroupAsync();
-        const tbodySupplierGroup = await getPersediaanSupplierGroupAsync();
-        const txtSumSupplier = await getPersediaanSupplierSumAsync();
-        const tbodyCategoryGroup = await getPersediaanCategoryIdGroupAsync();
-        const txtSumCategory = await getPersediaanCategorySumAsync();
-        const txtPersediaanQtySum = await getPersediaanQtySumAsync();
-        const txtPersediaanRpSum = await getPersediaanRpSumAsync();
-        ipcRenderer.send(
-          "pdf:persediaan",
-          tbodyProduct,
-          tbodyCategoryGroup,
-          txtSumCategory,
-          tbodyProductGroup,
-          tbodySupplierGroup,
-          txtSumSupplier,
-          txtPersediaanQtySum,
-          txtPersediaanRpSum,
-          file_path
-        );
-      } catch (error) {
-        console.error("Error fetching data: ", error);
+  $("#persediaan-export-pdf")
+    .off("click")
+    .on("click", async () => {
+      let file_path = dialog.showSaveDialogSync({
+        title: "Export Data",
+        filters: [{ name: "pdf", extensions: ["pdf"] }],
+      });
+      if (file_path) {
+        file_path = file_path.replace(/\\/g, "/");
+        try {
+          const tbodyProduct = await getPersediaanProductReportAsync();
+          const tbodyProductGroup = await getPersediaanProductGroupAsync();
+          const tbodySupplierGroup = await getPersediaanSupplierGroupAsync();
+          const txtSumSupplier = await getPersediaanSupplierSumAsync();
+          const tbodyCategoryGroup = await getPersediaanCategoryIdGroupAsync();
+          const txtSumCategory = await getPersediaanCategorySumAsync();
+          const txtPersediaanQtySum = await getPersediaanQtySumAsync();
+          const txtPersediaanRpSum = await getPersediaanRpSumAsync();
+          ipcRenderer.send(
+            "pdf:persediaan",
+            tbodyProduct,
+            tbodyCategoryGroup,
+            txtSumCategory,
+            tbodyProductGroup,
+            tbodySupplierGroup,
+            txtSumSupplier,
+            txtPersediaanQtySum,
+            txtPersediaanRpSum,
+            file_path
+          );
+        } catch (error) {
+          console.error("Error fetching data: ", error);
+        }
       }
-    }
-  });
+    });
 });
