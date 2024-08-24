@@ -3,7 +3,10 @@ import {
   getTotalRowProduct,
 } from "../../../../serverless-side/functions/product.js";
 import { uiListRefPersediaanCreate } from "./ui.js";
-import { getPersediaanQty } from "../../../../serverless-side/functions/persediaan.js";
+import {
+  getPersediaanQty,
+  getPersediaanTotalRow,
+} from "../../../../serverless-side/functions/persediaan.js";
 // function to update when create list product ref persediaan
 export function listProductRefPersediaanCreate() {
   $(document).ready(function () {
@@ -80,19 +83,22 @@ export function listProductRefPersediaanCreate() {
       // Re-bind click event to new elements
       $(".persediaan-refproduct-create-val")
         .off("click")
-        .on("click", function () {
-          // function to get total qty
-          getPersediaanQty($(this).attr("valueid"), (status, response) => {
-            if (status) {
-              const totalQtyTxt = response ? response : 0;
+        .on("click", async function () {
+          try {
+            const totalRow = await getPersediaanTotalRowAsync();
+            if (totalRow < 1) {
               $productSearch.val(`${this.textContent}`);
-              const htmlStock = `<div class="fs-5 text-start">Stock : ${totalQtyTxt}</div>`;
+            }
+            if (totalRow >= 1) {
+              const selected = parseInt($(this).attr("valueid"));
+              const qty = await getPersediaanQtyAsync(selected);
+              $productSearch.val(`${this.textContent}`);
+              const htmlStock = `<div class="fs-5 text-start">Stock : ${qty}</div>`;
               $("div#persediaan-create-stock").html(htmlStock);
             }
-            if (!status) {
-              console.error(response);
-            }
-          });
+          } catch (error) {
+            console.error("Failed to process persediaan:", error);
+          }
           $("input#persediaan-refproduct-create-name").val(this.textContent);
           $("input#persediaan-refproduct-create-id").val(
             $(this).attr("valueid")
@@ -102,6 +108,32 @@ export function listProductRefPersediaanCreate() {
           );
           $productList.hide();
         });
+    }
+    function getPersediaanTotalRowAsync() {
+      return new Promise((resolve, reject) => {
+        getPersediaanTotalRow("", (status, response) => {
+          if (status) {
+            resolve(response);
+          }
+          if (!status) {
+            console.error(response);
+            reject();
+          }
+        });
+      });
+    }
+    function getPersediaanQtyAsync(selected) {
+      return new Promise((resolve, reject) => {
+        getPersediaanQty(selected, (status, response) => {
+          if (status) {
+            resolve(response);
+          }
+          if (!status) {
+            console.error(response);
+            reject();
+          }
+        });
+      });
     }
     // 3 function to get value event keydown and class active hufft
     let index = -1;
@@ -149,7 +181,7 @@ export function listProductRefPersediaanCreate() {
           }
         });
       $productList
-        .off("mouseenter")
+        .off("mouseenter", ".persediaan-refproduct-create-val")
         .on("mouseenter", ".persediaan-refproduct-create-val", function () {
           items.removeClass("active-list");
           $(this).addClass("active-list");
@@ -207,7 +239,6 @@ export const listProductRefSalesReadDate = () => {
       response.forEach((row) => {
         option += `<option value=${row.ProductId}>${row.ProductName}</option>`;
       });
-      console.log(option);
       $("select#sales-read-productid-date").html(option);
     }
     if (!status) {

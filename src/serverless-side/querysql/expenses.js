@@ -1,8 +1,10 @@
-export const createTableBeban = () => {
-  return `CREATE TABLE Beban(
-              BebanId INTEGER PRIMARY KEY AUTOINCREMENT,
-              BebanYYYYMMDD TEXT,
-              BebanHMS TEXT,
-              BebanRp INTEGER
+export const createTableExpense = () => {
+  return `CREATE TABLE Expense(
+              ExpenseId INTEGER PRIMARY KEY AUTOINCREMENT,
+              ExpenseYYYYMMDD TEXT,
+              ExpenseHMS TEXT,
+              ExpenseName VARCHAR(255),
+              ExpenseRp INTEGER,
+              ExpenseInfo TEXT
             )`;
 };

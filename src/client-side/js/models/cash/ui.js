@@ -4,24 +4,18 @@ import { formatWaktuIndo } from "../../utils/formatWaktu.js";
 export const uiTbody = (rows) => {
   const formatYMD = formatWaktuIndo(rows.CashYYYYMMDD);
   const rupiah = formatRupiah2(rows.CashRp);
-  //   CashHMS: "13:34:08";
-  //   CashId: 1;
-  //   CashInfo: "Sales | 52 - Ayam Goreng , Total Qty : 1";
-  //   CashName: "Sales";
-  //   CashRp: 15000;
-  //   CashYYYYMMDD: "2024-08-16";
   const html = `<tr>
-                    <td class="text-center align-content-center">1</td>
-                    <td class="text-nowrap align-content-center border border-1" style="width:220px">
+                    <td class="text-center align-content-center">${rows.CashId}</td>
+                    <td class="text-nowrap align-content-center" style="width:220px">
                         ${formatYMD}
                     </td>
-                    <td class="text-wrap align-content-center border border-1" style="width;110px;">
+                    <td class="text-wrap align-content-center" style="width:110px;">
                         ${rows.CashHMS}
                     </td>
                     <td class="text-nowrap align-content-center">
                         ${rows.CashName}
                     </td>
-                    <td class="text-nowrap align-content-center">
+                    <td class="text-nowrap align-content-center text-center">
                         <span class="badge fs-6" style="background-color: #119687">${rupiah}</span>
                     </td>
                     <td>
@@ -37,6 +31,12 @@ export const uiTbody = (rows) => {
                             </button>
                         </div>
                     </td>
+                </tr>`;
+  return html;
+};
+export const uiTbodyEmpty = (searchVal) => {
+  const html = `<tr>
+                    <td colspan="6" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">${searchVal} not found....</td>
                 </tr>`;
   return html;
 };

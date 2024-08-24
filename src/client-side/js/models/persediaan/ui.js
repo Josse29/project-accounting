@@ -2,7 +2,7 @@ import { addSpace } from "../../utils/formatSpace.js";
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import { formatWaktuIndo } from "../../utils/formatWaktu.js";
 // ui tr inventory from db
-export const uiTrPersediaan = (el) => {
+export const uiTbody = (el) => {
   let PersediaanQty = ``;
   let PersediaanRp = ``;
   const formattedQty = addSpace(el.PersediaanQty);
@@ -167,31 +167,23 @@ export const uiBtnPersediaanPage = (i) => {
           </button>`;
 };
 // Function to update active page button
-export const uiActivePageButton = (
-  persediaanNoActivePage,
-  persediaanBtnPage
-) => {
-  const persediaanBtnPageActive = document.getElementsByClassName(
-    "persediaan-active-page"
-  );
-  if (persediaanBtnPageActive.length >= 1) {
-    persediaanBtnPageActive[0].classList.remove("persediaan-active-page");
+export const uiActivePageButton = (activePage) => {
+  const btnPage = $("button.persediaan-btn-page");
+  $(btnPage).removeClass("persediaan-active-page");
+  $(btnPage)
+    .eq(activePage - 1)
+    .addClass("persediaan-active-page");
+};
+// when total row 0 being seaching
+export const uiTbodyEmpty = (searchVal) => {
+  let search = ``;
+  if (searchVal !== "") {
+    search = searchVal;
   }
-  persediaanBtnPage[persediaanNoActivePage - 1].classList.add(
-    "persediaan-active-page"
-  );
-};
-// when total row 0 being seaching
-export const uiTrZeroSearch = (searchVal) => {
-  return `<tr>
-              <td colspan="10" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">Persediaan ${searchVal} tidak ditemukan....</td>
+  const html = `<tr>
+              <td colspan="10" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">Product ${search} empty....</td>
             </tr>`;
-};
-// when total row 0 being seaching
-export const uiTrZero = () => {
-  return `<tr>
-              <td colspan="10" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">tidak ada persediaan....</td>
-            </tr>`;
+  return html;
 };
 // blank value after submit action
 export const uiBlankValue = () => {

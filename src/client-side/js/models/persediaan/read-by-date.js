@@ -14,7 +14,7 @@ import { formatWaktuIndo } from "../../utils/formatWaktu.js";
 import { listCategoryRefPersediaanReadDate } from "../categories/list.js";
 import { listProductRefPersediaanReadDate } from "../products/list.js";
 import { listSupplierRefPersediaanReadDate } from "../supplier/list.js";
-import { uiSumPersediaanDate, uiTrPersediaan, uiTrZeroSearch } from "./ui.js";
+import { uiSumPersediaanDate, uiTbody, uiTbodyEmpty } from "./ui.js";
 
 $(document).ready(function () {
   $("button#persediaan-date-search").on("click", function () {
@@ -27,7 +27,7 @@ $(document).ready(function () {
           if (existed) {
             let tr = "";
             response.forEach((element) => {
-              tr += uiTrPersediaan(element);
+              tr += uiTbody(element);
             });
             $("#persediaan-sum-section").show();
             $("#persediaan-table").html(tr);
@@ -39,7 +39,7 @@ $(document).ready(function () {
             selectDateBy(startDate, endDate);
           }
           if (!existed) {
-            const tr = uiTrZeroSearch(
+            const tr = uiTbodyEmpty(
               formatWaktuIndo(startDate) + " - " + formatWaktuIndo(endDate)
             );
             $("#persediaan-table").html(tr);
@@ -101,7 +101,7 @@ $(document).ready(function () {
                 const existed = response.length >= 1;
                 if (existed) {
                   const rupiah = formatRupiah2(
-                    parseFloat(response[0].ProductPrice)
+                    parseFloat(response[0].ProductPriceBeli)
                   );
                   $("#rupiah-byid").text(rupiah);
                   $("#only-product").show();

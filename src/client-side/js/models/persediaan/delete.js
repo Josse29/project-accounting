@@ -1,4 +1,7 @@
-import { deletePersediaan } from "../../../../serverless-side/functions/persediaan.js";
+import {
+  deletePersediaan,
+  deletePersediaanAll,
+} from "../../../../serverless-side/functions/persediaan.js";
 import { addSpace } from "../../utils/formatSpace.js";
 import { formatWaktuIndo } from "../../utils/formatWaktu.js";
 import { getPersediaanAgain } from "./read.js";
@@ -52,7 +55,18 @@ $(document).ready(function () {
         });
     });
   // delete all
-  $("button#persediaan-delete-all").on("click", function () {
-    console.log("cuci-gudang");
-  });
+  $("button#persediaan-delete-all-yes")
+    .off("click")
+    .on("click", function () {
+      deletePersediaanAll((status, response) => {
+        if (status) {
+          uiSuccessActionPersediaan(response);
+          getPersediaanAgain();
+          $("#persediaanDeleteAllModal").modal("hide");
+        }
+        if (!status) {
+          console.log(response);
+        }
+      });
+    });
 });

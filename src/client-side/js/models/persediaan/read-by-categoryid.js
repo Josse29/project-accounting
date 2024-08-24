@@ -4,7 +4,7 @@ import {
 } from "../../../../serverless-side/functions/persediaan.js";
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import { listCategoryRefPersediaanRead } from "../categories/list.js";
-import { uiTrPersediaan, uiTrZeroSearch } from "./ui.js";
+import { uiTbody, uiTbodyEmpty } from "./ui.js";
 
 $(document).ready(function () {
   listCategoryRefPersediaanRead();
@@ -18,14 +18,14 @@ $(document).ready(function () {
         if (existedCategory) {
           let tr = "";
           response.forEach((element) => {
-            tr += uiTrPersediaan(element);
+            tr += uiTbody(element);
           });
           $("#persediaan-sum-section").show();
           $("#persediaan-table").html(tr);
           getSum();
         }
         if (!existedCategory) {
-          const tr = uiTrZeroSearch(selectedText);
+          const tr = uiTbodyEmpty(selectedText);
           $("#persediaan-table").html(tr);
           $("#persediaan-sum-section").hide();
         }

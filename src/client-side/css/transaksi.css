@@ -141,3 +141,13 @@ button.btn.cash-out:hover {
   visibility: visible;
   opacity: 1;
 }
+button.cash-page-active {
+  background-color: #273eec !important;
+  color: white !important;
+  border: 4px solid #99a4f9 !important;
+}
+button.general-entries-page-active {
+  background-color: #273eec !important;
+  color: white !important;
+  border: 4px solid #99a4f9 !important;
+}

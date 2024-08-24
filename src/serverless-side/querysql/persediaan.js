@@ -57,11 +57,7 @@ export const queryInsertPersediaan1 = (
   return query;
 };
 // 2.READ
-export const queryGetPersediaan = (
-  valPersediaanSearch,
-  valPersediaanLimit,
-  valPersediaanOffset
-) => {
+export const queryGetPersediaan = (searchVal, limitVal, offsetStartVal) => {
   let query = `SELECT 
                Persediaan.PersediaanId,
                Persediaan.PersediaanDDMY,
@@ -80,29 +76,29 @@ export const queryGetPersediaan = (
                LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
                LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId `;
   //  with searhing value
-  if (valPersediaanSearch !== "") {
-    query += `WHERE Product.ProductName LIKE '%${valPersediaanSearch}%' ESCAPE '!' OR
-                    Category.CategoryName LIKE '%${valPersediaanSearch}%' ESCAPE '!' OR
-                    Supplier.SupplierName LIKE '%${valPersediaanSearch}%' ESCAPE '!' `;
+  if (searchVal !== "") {
+    query += `WHERE Product.ProductName LIKE '%${searchVal}%' ESCAPE '!' OR
+                    Category.CategoryName LIKE '%${searchVal}%' ESCAPE '!' OR
+                    Supplier.SupplierName LIKE '%${searchVal}%' ESCAPE '!' `;
   }
   // with order limit offset
   query += `ORDER BY Persediaan.PersediaanDDMY DESC, Persediaan.PersediaanHMS DESC
-            LIMIT ${valPersediaanLimit} 
-            OFFSET ${valPersediaanOffset}`;
+            LIMIT ${limitVal} 
+            OFFSET ${offsetStartVal}`;
   return query;
 };
-export const queryGetPersediaanTotalRow = (valPersediaanSearch) => {
-  let query = `SELECT COUNT(Persediaan.PersediaanId)
+export const queryGetPersediaanTotalRow = (searchVal) => {
+  let query = `SELECT COUNT(*)
                AS TOTAL_ROW
                FROM ${tableName}
                LEFT JOIN Product ON ${tableName}.${colPersediaanProductId} = Product.ProductId
                LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
                LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId `;
-  if (valPersediaanSearch !== "") {
+  if (searchVal !== "") {
     //  with searhing value
-    query += `WHERE Product.ProductName LIKE '%${valPersediaanSearch}%' ESCAPE '!' OR
-                    Category.CategoryName LIKE '%${valPersediaanSearch}%' ESCAPE '!' OR
-                    Supplier.SupplierName LIKE '%${valPersediaanSearch}%' ESCAPE '!'
+    query += `WHERE Product.ProductName LIKE '%${searchVal}%' ESCAPE '!' OR
+                    Category.CategoryName LIKE '%${searchVal}%' ESCAPE '!' OR
+                    Supplier.SupplierName LIKE '%${searchVal}%' ESCAPE '!'
  `;
   }
   return query;
@@ -169,7 +165,6 @@ export const queryGetPersediaanProductRow = (valPersediaanProductId) => {
                COUNT(Persediaan.PersediaanProductId) AS TotalProduct
                FROM Persediaan
                WHERE Persediaan.PersediaanProductId = ${valPersediaanProductId} `;
-  console.log(query);
   return query;
 };
 export const queryGetPersediaanProductId = (valPersediaanProductId) => {
@@ -236,7 +231,7 @@ export const queryGetPersediaanDateProductId = (
                   AND Persediaan.PersediaanProductId = ${valProductId} `;
   // with order persediaaddmy and date  desc
   query += `ORDER BY Persediaan.PersediaanDDMY DESC,
-               Persediaan.PersediaanHMS DESC`;
+                     Persediaan.PersediaanHMS DESC`;
   return query;
 };
 export const queryGetPersediaanProductReport = () => {
@@ -428,10 +423,11 @@ export const queryGetPersediaanSupplierId = (valSupplierId) => {
 // qty
 export const queryGetPersediaanQty = (valPersediaanProductId) => {
   let query = `SELECT
-               SUM(Persediaan.PersediaanQty) AS TotalQty
+               PersediaanProductId,
+               SUM(PersediaanQty) AS TotalQty
                FROM Persediaan `;
   if (valPersediaanProductId !== "") {
-    query += `WHERE Persediaan.PersediaanProductId = ${valPersediaanProductId} `;
+    query += `WHERE PersediaanProductId = ${valPersediaanProductId} `;
   }
   return query;
 };
@@ -465,15 +461,15 @@ export const queryGetPersediaanDateQtyProductId = (
 // totalrp
 export const queryGetPersediaanRpSum = () => {
   let query = `SELECT
-               SUM(Persediaan.PersediaanRp) AS TotalRp
+               SUM(PersediaanRp) AS TotalRp
                FROM Persediaan `;
   return query;
 };
 export const queryGetPersediaanRpSumProductId = (valPersediaanProductId) => {
-  let query = `SELECT
-               SUM(Persediaan.PersediaanRp) AS TotalRp
+  let query = `SELECT 
+               SUM(PersediaanRp) AS TotalRp
                FROM Persediaan `;
-  query += `WHERE Persediaan.PersediaanProductId = ${valPersediaanProductId}`;
+  query += `WHERE PersediaanProductId = ${valPersediaanProductId} `;
   return query;
 };
 export const queryGetPersediaanRpSumCategoryId = (valCategoryId) => {

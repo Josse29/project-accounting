@@ -2,27 +2,24 @@ import {
   uiActivePageButton,
   uiBtnPersediaanPage,
   uiSumPersediaanDate2,
-  uiTrPersediaan,
-  uiTrZero,
-  uiTrZeroSearch,
+  uiTbody,
+  uiTbodyEmpty,
 } from "./ui.js";
 import { addSpace } from "../../utils/formatSpace.js";
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import {
   getPersediaan,
+  getPersediaanInit,
   getPersediaanRpSum,
-  getPersediaanTotalPage,
-  getPersediaanTotalRow,
 } from "../../../../serverless-side/functions/persediaan.js";
 import { formatWaktuIndo } from "../../utils/formatWaktu.js";
 $(document).ready(function () {
-  let persediaanSearch = $("input#persediaan-search").val();
-  let persediaanLimit = parseInt($("#persediaan-limit").val());
-  let persediaanTotalRow;
-  let persediaanTotalPage;
-  let persediaanBtnPage;
-  getInit("");
-  $("#persediaan-sum-section").hide();
+  let searchVal = $("input#persediaan-search").val();
+  let limitVal = parseInt($("#persediaan-limit").val());
+  let offsetVal = 1;
+  let totalRow;
+  let totalPage;
+  getInitAsync();
   $("button#persediaan-refresh")
     .off("click")
     .on("click", function () {
@@ -32,154 +29,141 @@ $(document).ready(function () {
       $("select#persediaan-refcategory-search").val("Kategori");
       $("div#persediaan-date-all-search").html(``);
       $("input#persediaan-search").val("");
-      getInit("");
+      getInitAsync();
       uiSumPersediaanDate2();
     });
   $("input#persediaan-search")
     .off("keyup")
     .on("keyup", function () {
-      persediaanSearch = $(this).val();
-      getInit(persediaanSearch);
+      searchVal = $(this).val();
+      getInitAsync();
     });
   $("select#persediaan-limit")
     .off("change")
     .on("change", function () {
-      persediaanLimit = parseInt($(this).val());
-      getInit();
+      limitVal = parseInt($(this).val());
+      getInitAsync();
     });
-  // 1. get first,  get total row, upadate ui (total row) as condition
-  function getInit() {
-    getPersediaanTotalRow(persediaanSearch, (status, response) => {
-      if (status) {
-        persediaanTotalRow = parseInt(response);
-        // existed product
-        if (persediaanTotalRow >= 1) {
-          getPersediaanRpSum((status, response) => {
-            if (status) {
-              const totalRupiah = formatRupiah2(response);
-              $("#persediaan-detail-totalrp").text(totalRupiah);
-              $("#persediaan-sum-section").hide();
-            }
-            if (!status) {
-              console.error(response);
-            }
-          });
-          $("#persediaan-pagination").removeClass("d-none");
-          getTotalPage();
-        }
-        // non-existed product
-        if (persediaanTotalRow < 1) {
-          // with search
-          if (persediaanSearch !== "") {
-            $("tbody#persediaan-table").html(uiTrZeroSearch(persediaanSearch));
-          }
-          // without search
-          if (persediaanSearch === "") {
-            $("tbody#persediaan-table").html(uiTrZero);
-          }
-          $("#persediaan-pagination").addClass("d-none");
-        }
+  async function getInitAsync() {
+    try {
+      const req = {
+        searchVal,
+        limitVal,
+        offsetVal,
+      };
+      const init = await getPersediaanInit(req);
+      totalRow = init.totalRow;
+      totalPage = init.totalPage;
+      // if it exist inventory
+      if (totalRow >= 1) {
+        // sum rupiah persediaan
+        const totalRupiah = await getPersediaanRpSum();
+        $("#persediaan-detail-totalrp").text(formatRupiah2(totalRupiah));
+        await getPersediaanPage(req);
+        handlePagination(totalPage);
+        getDetail();
       }
-      if (!status) {
-        console.error(response);
+      // if it doesn't exist inventory
+      if (totalRow < 1) {
+        $("tbody#persediaan-table").html(uiTbodyEmpty(searchVal));
+        $("#persediaan-pagination").addClass("d-none");
       }
-    });
+      $("#persediaan-sum-section").hide();
+    } catch (error) {
+      console.error(error);
+    }
   }
-  // 2. get total page, update ui (total row)
-  function getTotalPage() {
-    getPersediaanTotalPage(
-      persediaanSearch,
-      persediaanLimit,
-      (status, response) => {
-        if (status) {
-          persediaanTotalPage = parseInt(response);
-          uiPagination(persediaanTotalPage);
-        }
-        if (!status) {
-          console.error(response);
-        }
-      }
-    );
-  }
-  // 3. Function to insert html pagination
-  function uiPagination(persediaanTotalPage) {
+  function handlePagination(totalPage) {
+    // for pagination
     let uiBtnPaginate = "";
-    for (let i = 1; i <= persediaanTotalPage; i++) {
+    for (let i = 1; i <= totalPage; i++) {
       uiBtnPaginate += uiBtnPersediaanPage(i);
     }
     $("#persediaan-number-page").html(uiBtnPaginate);
-    handlePagination(persediaanTotalPage);
-  }
-  // 4. function to handle pagination(first,prev,number,next,last)
-  function handlePagination(persediaanTotalPage) {
-    // Event listeners for pagination buttons
-    persediaanBtnPage = document.getElementsByClassName("persediaan-btn-page");
+    $("#persediaan-pagination").removeClass("d-none");
     // first page
     $("#persediaan-first-page")
       .off("click")
-      .on("click", () => {
-        getPersediaanPage(1);
+      .on("click", async () => {
+        const req = {
+          searchVal,
+          limitVal,
+          offsetVal: 1,
+        };
+        await getPersediaanPage(req);
       });
     // previous page
     $("#persediaan-prev-page")
       .off("click")
-      .on("click", () => {
+      .on("click", async () => {
         let pageActive = parseInt($(".persediaan-active-page").text().trim());
         let decrementPage = pageActive - 1;
         if (decrementPage < 1) {
-          decrementPage = persediaanTotalPage;
+          decrementPage = totalPage;
         }
-        getPersediaanPage(decrementPage);
+        const req = {
+          searchVal,
+          limitVal,
+          offsetVal: decrementPage,
+        };
+        await getPersediaanPage(req);
       });
     // based on number when clicked
-    for (let i = 0; i < persediaanTotalPage; i++) {
-      $(persediaanBtnPage)
-        .eq(i)
-        .off("click")
-        .on("click", function () {
-          const pageNumber = parseInt(this.textContent.trim());
-          getPersediaanPage(pageNumber);
-        });
-    }
+    $("div#persediaan-number-page")
+      .off("click", "button.persediaan-btn-page")
+      .on("click", "button.persediaan-btn-page", async function () {
+        console.log(this);
+        const pageNumber = parseInt(this.textContent.trim());
+        console.log(pageNumber);
+        const req = {
+          searchVal,
+          limitVal,
+          offsetVal: pageNumber,
+        };
+        await getPersediaanPage(req);
+      });
     // next page
     $("#persediaan-next-page")
       .off("click")
-      .on("click", () => {
+      .on("click", async () => {
         let pageActive = parseInt($(".persediaan-active-page").text().trim());
         let incrementPage = pageActive + 1;
-        if (incrementPage > persediaanTotalPage) {
+        if (incrementPage > totalPage) {
           incrementPage = 1;
         }
-        getPersediaanPage(incrementPage);
+        const req = {
+          searchVal,
+          limitVal,
+          offsetVal: incrementPage,
+        };
+        await getPersediaanPage(req);
       });
     // last page
     $("#persediaan-last-page")
       .off("click")
-      .on("click", () => getPersediaanPage(persediaanTotalPage));
-    // get init
-    getPersediaanPage(1);
+      .on("click", async () => {
+        const req = {
+          searchVal,
+          limitVal,
+          offsetVal: totalPage,
+        };
+        await getPersediaanPage(req);
+      });
   }
-  // 5. function to handle get satuan based on pageActive
-  function getPersediaanPage(persediaanActivePage) {
-    getPersediaan(
-      persediaanSearch,
-      persediaanLimit,
-      persediaanActivePage,
-      (status, response) => {
-        if (status) {
-          let tr = "";
-          response.forEach((element) => {
-            tr += uiTrPersediaan(element);
-          });
-          $("tbody#persediaan-table").html(tr);
-          uiActivePageButton(persediaanActivePage, persediaanBtnPage);
-        }
-        if (!status) {
-          console.error(response);
-        }
-      }
-    );
-    getDetail();
+  async function getPersediaanPage(req) {
+    try {
+      const response = await getPersediaan(req);
+      let tr = ``;
+      response.forEach((element) => {
+        tr += uiTbody(element);
+      });
+      $("tbody#persediaan-table").html(tr);
+      uiActivePageButton(req.offsetVal);
+      // Inisialisasi ulang tooltip setelah konten baru di-load
+      $('[data-bs-toggle="tooltip"]').tooltip();
+    } catch (error) {
+      console.error(error);
+    }
   }
   function getDetail() {
     $(document)
@@ -233,7 +217,6 @@ $(document).ready(function () {
       });
   }
 });
-
 export const getPersediaanAgain = () => {
   let persediaanSearch = $("input#persediaan-search").val();
   let persediaanLimit = parseInt($("#persediaan-limit").val());
@@ -241,7 +224,6 @@ export const getPersediaanAgain = () => {
   let persediaanTotalPage;
   let persediaanBtnPage;
   getInit("");
-  $("#persediaan-sum-section").hide();
   $("button#persediaan-refresh")
     .off("click")
     .on("click", function () {
@@ -298,6 +280,7 @@ export const getPersediaanAgain = () => {
           }
           $("#persediaan-pagination").addClass("d-none");
         }
+        $("#persediaan-sum-section").hide();
       }
       if (!status) {
         console.error(response);

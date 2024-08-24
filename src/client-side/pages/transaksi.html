@@ -118,48 +118,41 @@
             style="background-color: #5c5cff"
           >
             <h2>Cash</h2>
-            <span class="badge fs-5" style="background-color: #12b2a0"
+            <span
+              class="badge fs-5"
+              style="background-color: #12b2a0"
+              id="cash_sum"
               >Rp. 100,000,00 ,-</span
             >
           </div>
           <div class="card-body overflow-auto">
-            <!-- create -->
-            <div class="d-flex justify-content-end mb-3">
+            <!-- create, convert, etc -->
+            <div class="d-flex justify-content-end mb-2">
               <div class="btn-group gap-2">
+                <!-- excel -->
                 <button class="btn btn-success d-flex gap-2">
                   <i class="fa-solid fa-file-excel fs-5"></i>
                   <span>Excel</span>
                 </button>
-                <button class="btn btn-secondary d-flex gap-2">
+                <!-- pdf -->
+                <button class="btn btn-primary d-flex gap-2">
                   <i class="fa-solid fa-file-pdf fs-5"></i>
                   <span>PDF</span>
                 </button>
+                <!-- delete -->
                 <button class="btn btn-danger d-flex gap-2">
                   <i class="fa-solid fa-trash fs-5"></i>
                   <span>Delete</span>
                 </button>
-                <button
-                  class="btn d-flex gap-2 text-white cash-in"
-                  style="background-color: #119687"
-                  data-bs-toggle="modal"
-                  data-bs-target="#cashInModal"
-                >
-                  <i class="fa-solid fa-square-plus fs-5"></i>
-                  <span class="">Cash-in</span>
-                </button>
-                <button
-                  class="btn d-flex gap-2 text-white cash-out"
-                  style="background-color: #e11d48"
-                  data-bs-toggle="modal"
-                  data-bs-target="#cashOutModal"
-                >
-                  <i class="fa-solid fa-square-minus fs-5"></i>
-                  <span class="">Cash-out</span>
+                <!-- reset -->
+                <button class="btn btn-secondary" id="cash-read-reset">
+                  <i class="fa-solid fa-arrows-rotate fs-5 me-1"></i>
+                  <span>Refresh</span>
                 </button>
               </div>
             </div>
             <!-- date -->
-            <div class="d-flex justify-content-end mb-3">
+            <div class="d-flex justify-content-end mb-2">
               <div class="input-group" style="width: max-content">
                 <input
                   type="date"
@@ -186,6 +179,307 @@
                 class="form-select me-3"
                 aria-label="Default select example"
                 style="width: auto"
+                id="cash-read-limit"
+              >
+                <option value="3">3</option>
+                <option value="5">5</option>
+                <option value="7">7</option>
+              </select>
+              <div class="input-group" style="width: max-content">
+                <input
+                  type="text"
+                  class="form-control focus-by-me"
+                  placeholder="masukkan keyword menu..."
+                  style="width: 450px"
+                  id="cash-read-search"
+                />
+                <span
+                  class="input-group-text hover-by-me"
+                  style="background-color: #3c50e0; color: white"
+                  >Search</span
+                >
+              </div>
+            </div>
+            <!-- tabel cash -->
+            <div style="overflow: auto">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th class="text-center">No</th>
+                    <th style="width: 220px">Day / Date</th>
+                    <th style="width: 110px">Hours</th>
+                    <th style="width: 180px">Name</th>
+                    <th class="text-center">Amount</th>
+                    <th class="text-center">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="cash"></tbody>
+              </table>
+            </div>
+            <!-- pagination menu -->
+            <div
+              class="w-100 d-flex justify-content-center"
+              id="cash-pagination-container"
+            >
+              <div class="btn-group">
+                <button
+                  type="button"
+                  class="btn border border-2"
+                  id="cash-first-page"
+                >
+                  <i class="fa-solid fa-backward-fast fs-6"></i>
+                </button>
+                <button
+                  type="button"
+                  class="btn border border-2"
+                  id="cash-prev-page"
+                >
+                  <i class="fa-solid fa-backward-step fs-6"></i>
+                </button>
+                <div class="btn-group" id="cash-pagination"></div>
+                <button
+                  type="button"
+                  class="btn border border-2"
+                  id="cash-next-page"
+                >
+                  <i class="fa-solid fa-forward-step fs-6"></i>
+                </button>
+                <button
+                  type="button"
+                  class="btn border border-2"
+                  id="cash-last-page"
+                >
+                  <i class="fa-solid fa-forward-fast fs-6"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- section general-entries -->
+        <div class="card w-100 mb-4 mt-4">
+          <div
+            class="card-header text-white fs-3"
+            style="background-color: #5c5cff"
+          >
+            General Entries
+          </div>
+          <div class="card-body">
+            <!-- entry all cases -->
+            <div class="btn-group gap-2">
+              <!-- entry - sales -->
+              <button
+                class="btn d-flex gap-2"
+                style="background-color: #3c50e0; color: white"
+                data-bs-toggle="modal"
+                data-bs-target="#entrySales"
+              >
+                <i class="fa-solid fa-money-check-dollar fs-5"></i>
+                <span class="">Sales</span>
+              </button>
+              <!-- entry - purchase -->
+              <button
+                class="btn d-flex gap-2 text-white bg-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#entryPurchase"
+              >
+                <i class="fa-solid fa-cart-shopping fs-5"></i>
+                <span class="">Purchase</span>
+              </button>
+              <!-- cash-in -->
+              <button
+                class="btn d-flex gap-2 text-white cash-in"
+                style="background-color: #119687"
+                data-bs-toggle="modal"
+                data-bs-target="#cashInModal"
+              >
+                <i class="fa-solid fa-square-plus fs-5"></i>
+                <span class="">Cash-in</span>
+              </button>
+              <!-- cashout -->
+              <button
+                class="btn d-flex gap-2 text-white cash-out"
+                style="background-color: #e11d48"
+                data-bs-toggle="modal"
+                data-bs-target="#cashOutModal"
+              >
+                <i class="fa-solid fa-square-minus fs-5"></i>
+                <span class="">Cash-out</span>
+              </button>
+            </div>
+            <!-- create, convert ,misc -->
+            <div class="d-flex gap-1 justify-content-end mb-2">
+              <div class="btn-group gap-2">
+                <button class="btn btn-success d-flex gap-2">
+                  <i class="fa-solid fa-file-excel fs-4"></i>
+                  <span>Excel</span>
+                </button>
+                <button class="btn btn-secondary d-flex gap-2">
+                  <i class="fa-solid fa-file-pdf fs-4"></i>
+                  <span>PDF</span>
+                </button>
+                <button class="btn btn-danger d-flex gap-2">
+                  <i class="fa-solid fa-trash fs-4"></i>
+                  <span>Delete</span>
+                </button>
+              </div>
+            </div>
+            <!-- date -->
+            <div class="d-flex justify-content-end mb-2">
+              <div class="input-group" style="width: max-content">
+                <input
+                  type="date"
+                  class="form-control"
+                  id="startDate"
+                  style="width: 250px"
+                />
+                <span
+                  class="text-center align-content-center p-2 bg-body-secondary"
+                  >s/d</span
+                >
+                <input
+                  type="date"
+                  class="form-control"
+                  id="endDate"
+                  style="width: 250px"
+                />
+                <button class="btn btn-primary">Search</button>
+              </div>
+            </div>
+            <!-- limit & search -->
+            <div class="d-flex justify-content-end gap-1 mb-3">
+              <select
+                class="form-select"
+                style="width: auto"
+                id="general-entries-limit"
+              >
+                <option value="4">4</option>
+                <option value="6">6</option>
+                <option value="10">12</option>
+              </select>
+              <div class="input-group" style="width: max-content">
+                <input
+                  type="text"
+                  class="form-control focus-by-me"
+                  placeholder="masukkan keyword menu..."
+                  style="width: 450px"
+                  id="general-entries-search"
+                />
+                <span
+                  class="input-group-text hover-by-me"
+                  style="background-color: #3c50e0; color: white"
+                  >Search</span
+                >
+              </div>
+            </div>
+            <!-- tabel jurnal-umum -->
+            <div style="overflow: auto">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th class="text-center">Kode</th>
+                    <th style="width: 220px">Day / Date</th>
+                    <th style="width: 180px">Name</th>
+                    <th>Debt</th>
+                    <th>Credit</th>
+                    <th class="text-center">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="general-entries"></tbody>
+              </table>
+            </div>
+            <!-- pagination general-entries -->
+            <div
+              class="w-100 d-flex justify-content-center"
+              id="general-entries-pagination"
+            >
+              <div class="btn-group">
+                <button
+                  type="button"
+                  class="btn border border-2"
+                  id="general-entry-first"
+                >
+                  <i class="fa-solid fa-backward-fast fs-6"></i>
+                </button>
+                <button
+                  type="button"
+                  class="btn border border-2"
+                  id="general-entry-prev"
+                >
+                  <i class="fa-solid fa-backward-step fs-6"></i>
+                </button>
+                <div id="general-entries-page-number" class="btn-group"></div>
+                <button
+                  type="button"
+                  class="btn border border-2"
+                  id="general-entry-next"
+                >
+                  <i class="fa-solid fa-forward-step fs-6"></i>
+                </button>
+                <button
+                  type="button"
+                  class="btn border border-2"
+                  id="general-entry-last"
+                >
+                  <i class="fa-solid fa-forward-fast fs-6"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- section balance sheet -->
+        <div class="card w-100 mb-4">
+          <div
+            class="card-header text-white fs-3"
+            style="background-color: #5c5cff"
+          >
+            Balance Sheet
+          </div>
+          <div class="card-body overflow-x-auto">
+            <div class="d-flex gap-1 justify-content-end mb-2">
+              <div class="d-flex gap-2">
+                <button class="btn btn-success d-flex gap-2">
+                  <i class="fa-solid fa-file-excel fs-4"></i>
+                  <span>Excel</span>
+                </button>
+                <button class="btn btn-secondary d-flex gap-2">
+                  <i class="fa-solid fa-file-pdf fs-4"></i>
+                  <span>PDF</span>
+                </button>
+                <button class="btn btn-danger d-flex gap-2">
+                  <i class="fa-solid fa-trash fs-4"></i>
+                  <span>Delete</span>
+                </button>
+              </div>
+            </div>
+            <!-- date -->
+            <div class="d-flex justify-content-end gap-2 mb-2">
+              <div class="input-group" style="width: max-content">
+                <input
+                  type="date"
+                  class="form-control"
+                  id="startDate"
+                  style="width: 250px"
+                />
+                <span
+                  class="text-center align-content-center p-2 bg-body-secondary"
+                  >s/d</span
+                >
+
+                <input
+                  type="date"
+                  class="form-control"
+                  id="endDate"
+                  style="width: 250px"
+                />
+                <button class="btn btn-primary">Search</button>
+              </div>
+            </div>
+            <!-- limit & search -->
+            <div class="d-flex justify-content-end gap-1 mb-3">
+              <select
+                class="form-select me-3"
+                aria-label="Default select example"
+                style="width: auto"
               >
                 <option selected>10</option>
                 <option value="1">One</option>
@@ -206,394 +500,28 @@
                 >
               </div>
             </div>
-            <!-- tabel cash -->
+            <!-- tabel balace-sheet-->
             <div style="overflow: auto">
               <table class="table table-striped">
                 <thead>
                   <tr>
-                    <th class="text-center">No</th>
-                    <th style="width: 220px">Day / Date</th>
-                    <th>Hours</th>
-                    <th>Name</th>
-                    <th>Amount</th>
-                    <th class="text-center">Aksi</th>
+                    <th class="text-center align-content-center">Code</th>
+                    <th class="align-content-center">Name</th>
+                    <th class="text-center">Debt</th>
+                    <th class="text-center">Credit</th>
+                    <th class="text-center align-content-center">Action</th>
                   </tr>
                 </thead>
-                <tbody id="cash"></tbody>
-              </table>
-            </div>
-            <!-- pagination menu -->
-            <div class="w-100 d-flex justify-content-center">
-              <div class="btn-group gap-2">
-                <button type="button" class="btn border border-2">
-                  <i class="fa-solid fa-backward-fast fs-6"></i>
-                </button>
-                <button type="button" class="btn border border-2">
-                  <i class="fa-solid fa-backward-step fs-6"></i>
-                </button>
-                <button type="button" class="btn border border-2 fs-6">
-                  1
-                </button>
-                <button
-                  type="button"
-                  class="btn fs-6"
-                  style="
-                    background-color: #273eec;
-                    color: white;
-                    border: 4px solid #99a4f9;
-                  "
-                >
-                  2
-                </button>
-                <button type="button" class="btn border border-2">
-                  <i class="fa-solid fa-forward-step fs-6"></i>
-                </button>
-                <button type="button" class="btn border border-2">
-                  <i class="fa-solid fa-forward-fast fs-6"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- section jurnal umum -->
-        <div class="card w-100 mb-4 mt-4">
-          <div
-            class="card-header text-white d-flex justify-content-between align-items-center"
-            style="background-color: #5c5cff"
-          >
-            <h2>Jurnal Umum</h2>
-          </div>
-          <div class="card-body">
-            <div class="d-flex gap-1 justify-content-end mb-3">
-              <select
-                class="form-select me-3"
-                aria-label="Default select example"
-                style="width: auto"
-              >
-                <option selected>10</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-              </select>
-              <div class="btn-group gap-2">
-                <button class="btn btn-success d-flex gap-2">
-                  <i class="fa-solid fa-file-excel fs-4"></i>
-                  <span>Excel</span>
-                </button>
-                <button class="btn btn-secondary d-flex gap-2">
-                  <i class="fa-solid fa-file-pdf fs-4"></i>
-                  <span>PDF</span>
-                </button>
-                <button class="btn btn-danger d-flex gap-2">
-                  <i class="fa-solid fa-trash fs-4"></i>
-                  <span>Delete</span>
-                </button>
-              </div>
-            </div>
-            <div class="d-flex gap-2 mb-3">
-              <div class="input-group w-50">
-                <input type="date" class="form-control" id="startDate" />
-                <span
-                  class="text-center align-content-center p-2 bg-body-secondary"
-                  >s/d</span
-                >
-
-                <input type="date" class="form-control" id="endDate" />
-                <button class="btn btn-primary">Search</button>
-              </div>
-              <div class="input-group w-50">
-                <input
-                  type="text"
-                  class="form-control focus-by-me"
-                  placeholder="masukkan keyword menu..."
-                />
-                <span
-                  class="input-group-text hover-by-me"
-                  style="background-color: #3c50e0; color: white"
-                  >Search</span
-                >
-              </div>
-            </div>
-            <!-- tabel jurnal-umum -->
-            <div style="max-height: 270px; overflow: auto">
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th class="text-center">Kode</th>
-                    <th>Hari / Tanggal</th>
-                    <th>Nama</th>
-                    <th>Debet</th>
-                    <th>Kredit</th>
-                    <th>Keterangan</th>
-                    <th class="text-center">Aksi</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td class="text-center align-content-center">111</td>
-                    <td class="text-nowrap align-content-center">
-                      Senin, 11-05-2024
-                    </td>
-                    <td class="text-nowrap align-content-center">Kas</td>
-                    <td class="text-nowrap align-content-center">
-                      Rp. 100,000,00 ,-
-                    </td>
-                    <td class="text-nowrap align-content-center">Rp. -</td>
-                    <td class="text-nowrap align-content-center">PT.indahhh</td>
-                    <td>
-                      <div class="d-flex w-100 justify-content-center gap-2">
-                        <button class="btn btn-success text-white">
-                          <i class="fa-solid fa-eye"></i>
-                        </button>
-                        <button class="btn btn-primary text-white">
-                          <i class="fa-solid fa-pencil"></i>
-                        </button>
-                        <button class="btn btn-danger text-white">
-                          <i class="fa-solid fa-trash-can"></i>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="text-center align-content-center">111</td>
-                    <td class="text-nowrap align-content-center">
-                      Senin, 11-05-2024
-                    </td>
-                    <td class="text-nowrap align-content-center ps-5">
-                      Modals
-                    </td>
-                    <td class="text-nowrap align-content-center">Rp. -</td>
-                    <td class="text-nowrap align-content-center">
-                      Rp. 100,000,00 ,-
-                    </td>
-                    <td class="text-nowrap align-content-center">PT.indahhh</td>
-                    <td>
-                      <div class="d-flex w-100 justify-content-center gap-2">
-                        <button class="btn btn-success text-white">
-                          <i class="fa-solid fa-eye"></i>
-                        </button>
-                        <button class="btn btn-primary text-white">
-                          <i class="fa-solid fa-pencil"></i>
-                        </button>
-                        <button class="btn btn-danger text-white">
-                          <i class="fa-solid fa-trash-can"></i>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <!-- pagination menu -->
-            <div class="w-100 d-flex justify-content-center">
-              <div class="btn-group gap-2">
-                <button type="button" class="btn border border-2">
-                  <i class="fa-solid fa-backward-fast fs-6"></i>
-                </button>
-                <button type="button" class="btn border border-2">
-                  <i class="fa-solid fa-backward-step fs-6"></i>
-                </button>
-                <button type="button" class="btn border border-2 fs-6">
-                  1
-                </button>
-                <button
-                  type="button"
-                  class="btn fs-6"
-                  style="
-                    background-color: #273eec;
-                    color: white;
-                    border: 4px solid #99a4f9;
-                  "
-                >
-                  2
-                </button>
-                <button type="button" class="btn border border-2">
-                  <i class="fa-solid fa-forward-step fs-6"></i>
-                </button>
-                <button type="button" class="btn border border-2">
-                  <i class="fa-solid fa-forward-fast fs-6"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- section Neraca Saldo -->
-        <div class="card w-100 mb-4">
-          <div
-            class="card-header text-white d-flex justify-content-between align-items-center"
-            style="background-color: #5c5cff"
-          >
-            <h2>Neraca Saldo</h2>
-          </div>
-          <div class="card-body">
-            <div class="d-flex gap-1 justify-content-end mb-3">
-              <select
-                class="form-select me-3"
-                aria-label="Default select example"
-                style="width: auto"
-              >
-                <option selected>10</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-              </select>
-              <div class="d-flex gap-2">
-                <button class="btn btn-success d-flex gap-2">
-                  <i class="fa-solid fa-file-excel fs-4"></i>
-                  <span>Excel</span>
-                </button>
-                <button class="btn btn-secondary d-flex gap-2">
-                  <i class="fa-solid fa-file-pdf fs-4"></i>
-                  <span>PDF</span>
-                </button>
-                <button class="btn btn-danger d-flex gap-2">
-                  <i class="fa-solid fa-trash fs-4"></i>
-                  <span>Delete</span>
-                </button>
-              </div>
-            </div>
-            <div class="d-flex gap-2 mb-3">
-              <div class="input-group w-50">
-                <input type="date" class="form-control" id="startDate" />
-                <span
-                  class="text-center align-content-center p-2 bg-body-secondary"
-                  >s/d</span
-                >
-
-                <input type="date" class="form-control" id="endDate" />
-                <button class="btn btn-primary">Search</button>
-              </div>
-              <div class="input-group w-50">
-                <input
-                  type="text"
-                  class="form-control focus-by-me"
-                  placeholder="masukkan keyword menu..."
-                />
-                <span
-                  class="input-group-text hover-by-me"
-                  style="background-color: #3c50e0; color: white"
-                  >Search</span
-                >
-              </div>
-            </div>
-            <!-- tabel jurnal-umum -->
-            <div style="max-height: 270px; overflow: auto">
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th class="text-center align-content-center" rowspan="2">
-                      Kode
-                    </th>
-                    <th rowspan="2" class="align-content-center">
-                      Hari / Tanggal
-                    </th>
-                    <th rowspan="2" class="align-content-center">Nama</th>
-                    <th colspan="2" class="text-center border border-white">
-                      Saldo
-                    </th>
-                    <th rowspan="2" class="align-content-center">Keterangan</th>
-                    <th rowspan="2" class="text-center align-content-center">
-                      Aksi
-                    </th>
-                  </tr>
-                  <tr>
-                    <th class="text-center">Debet</th>
-                    <th class="text-center">Kredit</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td class="text-center align-content-center">111</td>
-                    <td class="text-nowrap align-content-center">
-                      Senin, 11-05-2024
-                    </td>
-                    <td class="text-nowrap align-content-center">Kas</td>
-                    <td class="text-nowrap align-content-center">
-                      Rp. 100,000,00 ,-
-                    </td>
-                    <td class="text-nowrap align-content-center">Rp. -</td>
-                    <td class="text-nowrap align-content-center">PT.indahhh</td>
-                    <td>
-                      <div class="d-flex w-100 justify-content-center gap-2">
-                        <button class="btn btn-success text-white">
-                          <i class="fa-solid fa-eye"></i>
-                        </button>
-                        <button class="btn btn-primary text-white">
-                          <i class="fa-solid fa-pencil"></i>
-                        </button>
-                        <button class="btn btn-danger text-white">
-                          <i class="fa-solid fa-trash-can"></i>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="text-center align-content-center">111</td>
-                    <td class="text-nowrap align-content-center">
-                      Senin, 11-05-2024
-                    </td>
-                    <td class="text-nowrap align-content-center">Modal</td>
-                    <td class="text-nowrap align-content-center">Rp. -</td>
-                    <td class="text-nowrap align-content-center">
-                      Rp. 100,000,00 ,-
-                    </td>
-                    <td class="text-nowrap align-content-center">PT.indahhh</td>
-                    <td>
-                      <div class="d-flex w-100 justify-content-center gap-2">
-                        <button class="btn btn-success text-white">
-                          <i class="fa-solid fa-eye"></i>
-                        </button>
-                        <button class="btn btn-primary text-white">
-                          <i class="fa-solid fa-pencil"></i>
-                        </button>
-                        <button class="btn btn-danger text-white">
-                          <i class="fa-solid fa-trash-can"></i>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
+                <tbody id="balance-sheet"></tbody>
                 <tfoot>
                   <tr>
-                    <th colspan="3" class="text-end pe-5">Total</th>
-                    <th>Rp. 10,000,00 ,-</th>
-                    <th>Rp. 10,000,00 ,-</th>
-                    <th></th>
+                    <th colspan="2" class="text-end pe-5">Total</th>
+                    <th id="accounting-debt">Rp. 10,000,00 ,-</th>
+                    <th id="accounting-credit">Rp. 10,000,00 ,-</th>
                     <th></th>
                   </tr>
                 </tfoot>
               </table>
-            </div>
-            <!-- pagination menu -->
-            <div class="w-100 d-flex justify-content-center">
-              <div class="btn-group gap-2">
-                <button type="button" class="btn border border-2">
-                  <i class="fa-solid fa-backward-fast fs-6"></i>
-                </button>
-                <button type="button" class="btn border border-2">
-                  <i class="fa-solid fa-backward-step fs-6"></i>
-                </button>
-                <button type="button" class="btn border border-2 fs-6">
-                  1
-                </button>
-                <button
-                  type="button"
-                  class="btn fs-6"
-                  style="
-                    background-color: #273eec;
-                    color: white;
-                    border: 4px solid #99a4f9;
-                  "
-                >
-                  2
-                </button>
-                <button type="button" class="btn border border-2">
-                  <i class="fa-solid fa-forward-step fs-6"></i>
-                </button>
-                <button type="button" class="btn border border-2">
-                  <i class="fa-solid fa-forward-fast fs-6"></i>
-                </button>
-              </div>
             </div>
           </div>
         </div>
@@ -601,6 +529,147 @@
     </div>
     <!-- all modals -->
     <div>
+      <!-- Modal Sales-->
+      <div class="modal fade" id="entrySales" tabindex="-1">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+          <div class="modal-content">
+            <div
+              class="modal-header text-white"
+              style="background-color: #3c50e0; color: white"
+            >
+              <h1 class="modal-title fs-2">Cash in</h1>
+            </div>
+            <div class="modal-body">
+              <div class="mb-3">
+                <label class="form-label fs-4">Metode</label>
+                <select class="form-select" aria-label="Default select example">
+                  <option selected>Open this select menu</option>
+                  <option value="cash">Tunai</option>
+                  <option value="2">Kredit</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label fs-4">Jenis Akun</label>
+                <select class="form-select" aria-label="Default select example">
+                  <option selected>Open this select menu</option>
+                  <option value="1">One</option>
+                  <option value="2">Two</option>
+                  <option value="3">Three</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="nominal" class="form-label fs-4">Nominal</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="nominal"
+                  placeholder="40,000,00 ,-"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="bukti" class="form-label fs-4">Bukti</label>
+                <input class="form-control" type="file" id="bukti" />
+              </div>
+              <div class="mb-3">
+                <label for="keterangan" class="form-label fs-4"
+                  >Keterangan</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="keterangan"
+                  placeholder="40,000,00 ,-"
+                />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                class="btn text-white"
+                style="background-color: #119687"
+              >
+                Save changes
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Modal Sales-->
+      <div class="modal fade" id="entryPurchase" tabindex="-1">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header text-white bg-primary">
+              <h1 class="modal-title fs-2">Cash in</h1>
+            </div>
+            <div class="modal-body">
+              <div class="mb-3">
+                <label class="form-label fs-4">Metode</label>
+                <select class="form-select" aria-label="Default select example">
+                  <option selected>Open this select menu</option>
+                  <option value="cash">Tunai</option>
+                  <option value="2">Kredit</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label fs-4">Jenis Akun</label>
+                <select class="form-select" aria-label="Default select example">
+                  <option selected>Open this select menu</option>
+                  <option value="1">One</option>
+                  <option value="2">Two</option>
+                  <option value="3">Three</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="nominal" class="form-label fs-4">Nominal</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="nominal"
+                  placeholder="40,000,00 ,-"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="bukti" class="form-label fs-4">Bukti</label>
+                <input class="form-control" type="file" id="bukti" />
+              </div>
+              <div class="mb-3">
+                <label for="keterangan" class="form-label fs-4"
+                  >Keterangan</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="keterangan"
+                  placeholder="40,000,00 ,-"
+                />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                class="btn text-white"
+                style="background-color: #119687"
+              >
+                Save changes
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
       <!-- Modal Cash in -->
       <div
         class="modal fade"
@@ -776,5 +845,6 @@
     <script type="module" src="./../js/utils/ipc.js"></script>
     <script type="module" src="./../js/utils/updateUi.js"></script>
     <script type="module" src="./../js/models/cash/index.js"></script>
+    <script type="module" src="./../js/models/accounting/index.js"></script>
   </body>
 </html>

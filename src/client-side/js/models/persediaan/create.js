@@ -9,11 +9,13 @@ import { listProductRefPersediaanCreate } from "../products/list.js";
 import { getPersediaanAgain } from "./read.js";
 
 $(document).ready(function () {
-  $("button#btnpersediaanModal").on("click", function () {
-    listProductRefPersediaanCreate();
-    $("#sectionFailedActionPersediaan").html("");
-    $("div#persediaan-create-stock").html("");
-  });
+  $("button#btnpersediaanModal")
+    .off("click")
+    .on("click", function () {
+      listProductRefPersediaanCreate();
+      $("#sectionFailedActionPersediaan").html("");
+      $("div#persediaan-create-stock").html("");
+    });
   // function create increse or decrease qty
   let persediaanCreateQty = $("input#persediaan-create-qty").val();
   $("button#persediaan-create-decrease")

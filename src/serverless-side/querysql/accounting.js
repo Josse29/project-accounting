@@ -24,11 +24,43 @@ export const queryCreateAccounting = (
                (AccountingYMD, AccountingHMS, AccountingRef, AccountingName, AccountingPosition, AccountingRp, AccountingInfo)
                VALUES
                ('${accountingYMDVal}', '${accountingHMSVal}', '${accountingRefVal}', '${accountingNameVal}', '${accountingPositionVal}', ${accountingRpVal}, '${accountingInfoVal}')`;
-  console.log(query);
   return query;
 };
-export const queryReadAccounting = () => {
-  let query = `SELECT * FROM Accounting`;
+export const queryInitAccounting = () => {
+  let query = `SELECT 
+               COUNT(Accounting.AccountingId) AS Total_Row
+               FROM Accounting `;
+  return query;
+};
+export const queryReadAccounting = (searchVal, limitVal, startoffsetVal) => {
+  let query = `SELECT * FROM Accounting `;
+  query += `ORDER BY Accounting.AccountingYMD DESC 
+            LIMIT ${limitVal}
+            OFFSET ${startoffsetVal} `;
+  return query;
+};
+// balance sheet
+export const querySumDebt = () => {
+  let query = `SELECT
+               SUM(AccountingRp) AS Total_Rp 
+               FROM Accounting `;
+  query += `WHERE AccountingPosition = 'debt' `;
+  return query;
+};
+export const querySumCredit = () => {
+  let query = `SELECT
+               SUM(AccountingRp) AS Total_Rp 
+               FROM Accounting `;
+  query += `WHERE AccountingPosition = 'credit' `;
+  return query;
+};
+export const queryReadAccounting1 = () => {
+  let query = `SELECT 
+               AccountingRef, 
+               AccountingName, AccountingPosition, 
+               SUM(AccountingRp) AS TotalRp
+               FROM Accounting `;
+  query += `GROUP BY Accounting.AccountingRef`;
   return query;
 };
 export const queryUpdateAccounting = (req) => {

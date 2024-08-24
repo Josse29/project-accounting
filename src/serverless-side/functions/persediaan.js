@@ -128,53 +128,6 @@ export const createPersediaan1 = (request, response) => {
   });
 };
 // 2.READ
-export const getPersediaan = (
-  valPersediaanSearch,
-  valPersediaanLimit,
-  valPersediaanOffset,
-  callback
-) => {
-  const valPersediaanStartOffset =
-    (valPersediaanOffset - 1) * valPersediaanLimit;
-  db.all(
-    queryGetPersediaan(
-      valPersediaanSearch,
-      valPersediaanLimit,
-      valPersediaanStartOffset
-    ),
-    (err, res) => {
-      if (!err) {
-        return callback(true, res);
-      }
-      if (err) {
-        return callback(false, err);
-      }
-    }
-  );
-};
-export const getPersediaanTotalPage = (
-  valPersediaanSearch,
-  valPersediaanLimit,
-  callback
-) => {
-  db.each(queryGetPersediaanTotalRow(valPersediaanSearch), (err, res) => {
-    if (!err) {
-      let persediaanTotalPage;
-      let persediaanTotalRow = parseInt(res.TOTAL_ROW);
-      let persediaanLimitInt = parseInt(valPersediaanLimit);
-      if (persediaanTotalRow % persediaanLimitInt === 0) {
-        persediaanTotalPage = parseInt(persediaanTotalRow / persediaanLimitInt);
-      } else {
-        persediaanTotalPage =
-          parseInt(persediaanTotalRow / persediaanLimitInt) + 1;
-      }
-      return callback(true, persediaanTotalPage);
-    }
-    if (err) {
-      return callback(false, err);
-    }
-  });
-};
 export const getPersediaanTotalRow = (valPersediaanSearch, callback) => {
   db.each(queryGetPersediaanTotalRow(valPersediaanSearch), (err, res) => {
     if (!err) {
@@ -184,6 +137,45 @@ export const getPersediaanTotalRow = (valPersediaanSearch, callback) => {
     if (err) {
       return callback(false, err);
     }
+  });
+};
+export const getPersediaanInit = (req) => {
+  const { searchVal, limitVal } = req;
+  return new Promise((resolve, reject) => {
+    db.each(queryGetPersediaanTotalRow(searchVal), (err, res) => {
+      if (!err) {
+        let totalRow = parseInt(res.TOTAL_ROW);
+        let totalPage;
+        if (totalRow % limitVal === 0) {
+          totalPage = parseInt(totalRow / limitVal);
+        } else {
+          totalPage = parseInt(totalRow / limitVal) + 1;
+        }
+        const rowAndPage = {
+          totalRow,
+          totalPage,
+        };
+        resolve(rowAndPage);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
+  });
+};
+export const getPersediaan = (req) => {
+  const { searchVal, limitVal, offsetVal } = req;
+  const offsetStartVal = (offsetVal - 1) * limitVal;
+  const query = queryGetPersediaan(searchVal, limitVal, offsetStartVal);
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, res) => {
+      if (!err) {
+        resolve(res);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
 export const getPersediaanQtyValidate = (
@@ -253,28 +245,31 @@ export const getPersediaanQtyValidate = (
 export const getPersediaanQty = (valPersediaanProductId, callback) => {
   db.each(queryGetPersediaanQty(valPersediaanProductId), (err, res) => {
     if (!err) {
-      return callback(true, res.TotalQty);
+      const totalQty = res.TotalQty ? res.TotalQty : 0;
+      return callback(true, parseFloat(totalQty));
     }
     if (err) {
       return callback(false, err);
     }
   });
 };
-export const getPersediaanRpSum = (callback) => {
-  db.each(queryGetPersediaanRpSum(), (err, res) => {
-    if (!err) {
-      let totalRp = ``;
-      if (res.TotalRp !== null) {
-        totalRp = parseFloat(res.TotalRp);
+export const getPersediaanRpSum = () => {
+  return new Promise((resolve, reject) => {
+    db.each(queryGetPersediaanRpSum(), (err, res) => {
+      if (!err) {
+        let totalRp = ``;
+        if (res.TotalRp !== null) {
+          totalRp = parseFloat(res.TotalRp);
+        }
+        if (res.TotalRp === null) {
+          totalRp = 0;
+        }
+        resolve(totalRp);
       }
-      if (res.TotalRp === null) {
-        totalRp = 0;
+      if (err) {
+        reject(err);
       }
-      return callback(true, totalRp);
-    }
-    if (err) {
-      return callback(false, err);
-    }
+    });
   });
 };
 export const getPersediaanRpSumCategoryId = (
@@ -517,6 +512,7 @@ export const getPersediaanDateSumProduct = (
   );
   db.each(query, (err, res) => {
     if (!err) {
+      console.log(res.TotalRp);
       let totalRp = ``;
       if (res.TotalRp !== null) {
         totalRp = parseFloat(res.TotalRp);

@@ -54,7 +54,7 @@ export const createSales = (req, res) => {
 };
 // read
 export const getSalesRowPage = (req, res) => {
-  const { searchVal, limitVal, offsetVal } = req;
+  const { searchVal, limitVal } = req;
   const query = queryGetSalesRowPage(searchVal);
   db.each(query, (err, result) => {
     if (!err) {

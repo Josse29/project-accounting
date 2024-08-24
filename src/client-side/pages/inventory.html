@@ -177,6 +177,8 @@
                   type="button"
                   class="btn btn-danger text-white tooltip-bottom-container"
                   id="persediaan-delete-all"
+                  data-bs-toggle="modal"
+                  data-bs-target="#persediaanDeleteAllModal"
                 >
                   <div class="tooltip-bottom-text">delete-inventory</div>
                   <i class="fa-solid fa-trash fs-5"></i>
@@ -1238,6 +1240,50 @@
                   type="button"
                   class="btn btn-danger d-flex align-items-center gap-2"
                   id="persediaan-delete-yes"
+                >
+                  <i class="fa-solid fa-check me-1 fs-4"></i>
+                  <span class="fs-5">Yes</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- delete-persediaan -->
+        <div class="modal fade" id="persediaanDeleteAllModal" tabindex="-1">
+          <div
+            class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+          >
+            <div class="modal-content">
+              <div class="modal-header bg-danger">
+                <div
+                  class="modal-title fs-2 text-white text-capitalize d-flex justify-content-between w-100"
+                >
+                  <div>Delete All</div>
+                </div>
+              </div>
+              <div class="modal-body text-center">
+                <div id="persediaan-delete-failed"></div>
+                <i
+                  class="fa-solid fa-triangle-exclamation text-danger"
+                  style="font-size: 120px"
+                ></i>
+                <p class="my-3 lh-base fs-4 fw-semibold">
+                  Are you sure to delete all stocks ?
+                </p>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary d-flex align-items-center gap-2"
+                  data-bs-dismiss="modal"
+                >
+                  <i class="fa-solid fa-times me-1 fs-4"></i>
+                  <span class="fs-5">No</span>
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-danger d-flex align-items-center gap-2"
+                  id="persediaan-delete-all-yes"
                 >
                   <i class="fa-solid fa-check me-1 fs-4"></i>
                   <span class="fs-5">Yes</span>
@@ -2357,16 +2403,6 @@
         </div>
       </div>
     </div>
-    <script>
-      window.addEventListener("DOMContentLoaded", () => {
-        const tooltipTriggerList = document.querySelectorAll(
-          '[data-bs-toggle="tooltip"]'
-        );
-        const tooltipList = [...tooltipTriggerList].map(
-          (tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl)
-        );
-      });
-    </script>
     <!-- jquery & config with electron-jquery -->
     <script>
       if (typeof module === "object") {
