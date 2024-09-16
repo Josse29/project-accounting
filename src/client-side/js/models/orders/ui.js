@@ -5,20 +5,16 @@ export const uiMenu = (rows) => {
   const productName = rows.ProductName;
   const priceJual = formatRupiah2(parseFloat(rows.ProductPriceJual));
   const productStock = parseInt(rows.TotalQty);
-  const htmlNoImg = `<div 
-                        class="border border-1 d-flex justify-content-center      align-items-center fst-italic w-100"
-                        style="width: 200px;
-                            height: 180px;
-                            background-color: #f1f0f0;
-                            color: grey;">
-                            No Image...
-                    </div>`;
-  const withImg = `<img
-                    src=${rows.ProductImage}
+  let imgSrc = ``;
+  if (rows.ProductImage !== "null") {
+    imgSrc = rows.ProductImage;
+  } else {
+    imgSrc = "./../images/no-img.jpg";
+  }
+  const productImg = `<img
+                    src=${imgSrc}
                     class="card-img-top"
-                    alt="..."
-                    style="height: 180px"/>`;
-  const productImg = rows.ProductImage !== "null" ? withImg : htmlNoImg;
+                    alt="..."/>`;
   return `<div class="card w-full shadow-sm">
             ${productImg}
             <div class="card-body">
@@ -56,54 +52,46 @@ export const uiBtnPage = (number) => {
             }">${number}</button>`;
 };
 
-export const uiOrderCard1 = (rows) => {
-  const productId = parseInt(rows.PersediaanProductId);
-  const productName = rows.ProductName;
-  const priceJual = formatRupiah2(parseFloat(rows.ProductPriceJual));
-  const productStock = parseInt(rows.TotalQty);
-  const htmlNoImg = `<div 
-                        class="border border-1 d-flex justify-content-center      align-items-center fst-italic w-100"
-                        style="width: 200px;
-                            height: 180px;
-                            background-color: #f1f0f0;
-                            color: grey;">
-                            No Image...
-                    </div>`;
-  const withImg = `<img
-                    src=${rows.ProductImage}
-                    class="card-img-top"
-                    alt="..."
-                    style="height: 180px"/>`;
-  const productImg = rows.ProductImage !== "null" ? withImg : htmlNoImg;
-  return `<div class="card w-full shadow-sm">
-            ${productImg}
-            <div class="card-body">
-                <h4 class="fw-bold text-truncate" id="order-productname">${productName}</h4>
-                <h4 class="text-truncate" id="order-productprice">${priceJual}</h4>
-                <p class='fs-5'>Stock : ${productStock}</p>
-                <div class="mt-3 d-flex justify-content-between align-items-center">
-                  <div id="order-create-qty">
-                  </div>
-                  <div>
-                    <button id="order-create-qty-plus" class="btn btn-success" 
-                            data-productid=${productId}
-                            data-productname="${productName}"
-                            data-productstock=${productStock}
-                            data-productprice=${priceJual}>
-                      <i class="fa-solid fa-plus" style="font-size: 18px"></i>
-                    </button>
-                    <button class="btn btn-danger" id="order-create-qty-minus"
-                            data-productid=${productId}
-                            data-productname="${productName}"
-                            data-productstock=${productStock}
-                            data-productprice=${priceJual}>
-                      <i class="fa-solid fa-minus" style="font-size: 18px"></i>
-                    </button>
-                  </div>
-              </div>
-            </div>
-          </div>`;
-};
+// export const uiOrderCard1 = (rows) => {
+//   const productId = parseInt(rows.PersediaanProductId);
+//   const productName = rows.ProductName;
+//   const priceJual = formatRupiah2(parseFloat(rows.ProductPriceJual));
+//   const productStock = parseInt(rows.TotalQty);
+//   const withNoImg = `<img
+//                       src="./../../../images/no-img.jpg"
+//                       class="card-img-top"/>`;
+//   const productImg = `<img
+//                     src=${rows.ProductImage || "./../../../images/no-img.jpg"}
+//                     class="card-img-top"/>`;
+//   return `<div class="card w-full shadow-sm">
+//             ${productImg}
+//             <div class="card-body">
+//                 <h4 class="fw-bold text-truncate" id="order-productname">${productName}</h4>
+//                 <h4 class="text-truncate" id="order-productprice">${priceJual}</h4>
+//                 <p class='fs-5'>Stocks : ${productStock}</p>
+//                 <div class="mt-3 d-flex justify-content-between align-items-center">
+//                   <div id="order-create-qty">
+//                   </div>
+//                   <div>
+//                     <button id="order-create-qty-plus" class="btn btn-success"
+//                             data-productid=${productId}
+//                             data-productname="${productName}"
+//                             data-productstock=${productStock}
+//                             data-productprice=${priceJual}>
+//                       <i class="fa-solid fa-plus" style="font-size: 18px"></i>
+//                     </button>
+//                     <button class="btn btn-danger" id="order-create-qty-minus"
+//                             data-productid=${productId}
+//                             data-productname="${productName}"
+//                             data-productstock=${productStock}
+//                             data-productprice=${priceJual}>
+//                       <i class="fa-solid fa-minus" style="font-size: 18px"></i>
+//                     </button>
+//                   </div>
+//               </div>
+//             </div>
+//           </div>`;
+// };
 // only loop to card menu
 export const uiQty = () => {
   const cartStorage = getStorageCart();

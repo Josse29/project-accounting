@@ -128,17 +128,6 @@ export const createPersediaan1 = (request, response) => {
   });
 };
 // 2.READ
-export const getPersediaanTotalRow = (valPersediaanSearch, callback) => {
-  db.each(queryGetPersediaanTotalRow(valPersediaanSearch), (err, res) => {
-    if (!err) {
-      const persediaanTotalRow = parseInt(res.TOTAL_ROW);
-      return callback(true, persediaanTotalRow);
-    }
-    if (err) {
-      return callback(false, err);
-    }
-  });
-};
 export const getPersediaanInit = (req) => {
   const { searchVal, limitVal } = req;
   return new Promise((resolve, reject) => {
@@ -242,15 +231,18 @@ export const getPersediaanQtyValidate = (
     }
   });
 };
-export const getPersediaanQty = (valPersediaanProductId, callback) => {
-  db.each(queryGetPersediaanQty(valPersediaanProductId), (err, res) => {
-    if (!err) {
-      const totalQty = res.TotalQty ? res.TotalQty : 0;
-      return callback(true, parseFloat(totalQty));
-    }
-    if (err) {
-      return callback(false, err);
-    }
+export const getPersediaanQty = (valPersediaanProductId) => {
+  const query = queryGetPersediaanQty(valPersediaanProductId);
+  return new Promise((resolve, reject) => {
+    db.each(query, (err, res) => {
+      if (!err) {
+        const totalQty = res.TotalQty ? res.TotalQty : 0;
+        resolve(totalQty);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
 export const getPersediaanRpSum = () => {
@@ -272,13 +264,10 @@ export const getPersediaanRpSum = () => {
     });
   });
 };
-export const getPersediaanRpSumCategoryId = (
-  valPersediaanCategoryId,
-  callback
-) => {
-  db.each(
-    queryGetPersediaanRpSumCategoryId(valPersediaanCategoryId),
-    (err, res) => {
+export const getPersediaanRpSumCategoryId = (valPersediaanCategoryId) => {
+  const query = queryGetPersediaanRpSumCategoryId(valPersediaanCategoryId);
+  return new Promise((resolve, reject) => {
+    db.each(query, (err, res) => {
       if (!err) {
         let totalRp = ``;
         if (res.TotalRp !== null) {
@@ -287,21 +276,18 @@ export const getPersediaanRpSumCategoryId = (
         if (res.TotalRp === null) {
           totalRp = 0;
         }
-        return callback(true, totalRp);
+        resolve(totalRp);
       }
       if (err) {
-        return callback(false, err);
+        reject(err);
       }
-    }
-  );
+    });
+  });
 };
-export const getPersediaanRpSumProductId = (
-  valPersediaanProductId,
-  callback
-) => {
-  db.each(
-    queryGetPersediaanRpSumProductId(valPersediaanProductId),
-    (err, res) => {
+export const getPersediaanRpSumProductId = (valPersediaanProductId) => {
+  const query = queryGetPersediaanRpSumProductId(valPersediaanProductId);
+  return new Promise((resolve, reject) => {
+    db.each(query, (err, res) => {
       if (!err) {
         let totalRp = ``;
         if (res.TotalRp !== null) {
@@ -310,21 +296,18 @@ export const getPersediaanRpSumProductId = (
         if (res.TotalRp === null) {
           totalRp = 0;
         }
-        return callback(true, totalRp);
+        resolve(totalRp);
       }
       if (err) {
-        return callback(false, err);
+        reject(err);
       }
-    }
-  );
+    });
+  });
 };
-export const getPersediaanRpSumSupplierId = (
-  valPersediaanSupplierId,
-  callback
-) => {
-  db.each(
-    queryGetPersediaanRpSumSupplierId(valPersediaanSupplierId),
-    (err, res) => {
+export const getPersediaanRpSumSupplierId = (valPersediaanSupplierId) => {
+  const query = queryGetPersediaanRpSumSupplierId(valPersediaanSupplierId);
+  return new Promise((resolve, reject) => {
+    db.each(query, (err, res) => {
       if (!err) {
         let totalRp = ``;
         if (res.TotalRp !== null) {
@@ -333,13 +316,24 @@ export const getPersediaanRpSumSupplierId = (
         if (res.TotalRp === null) {
           totalRp = 0;
         }
-        return callback(true, totalRp);
+        resolve(totalRp);
       }
       if (err) {
-        return callback(false, err);
+        reject(err);
       }
+    });
+  });
+};
+export const getPersediaanTotalRow = (valPersediaanSearch, callback) => {
+  db.each(queryGetPersediaanTotalRow(valPersediaanSearch), (err, res) => {
+    if (!err) {
+      const persediaanTotalRow = parseInt(res.TOTAL_ROW);
+      return callback(true, persediaanTotalRow);
     }
-  );
+    if (err) {
+      return callback(false, err);
+    }
+  });
 };
 export const getPersediaanProductId = (valPersediaanProductId, callback) => {
   db.all(queryGetPersediaanProductId(valPersediaanProductId), (err, res) => {
@@ -351,322 +345,338 @@ export const getPersediaanProductId = (valPersediaanProductId, callback) => {
     }
   });
 };
-export const getPersediaanCategoryId = (valPersediaanCategoryId, callback) => {
-  db.all(queryGetPersediaanCategoryId(valPersediaanCategoryId), (err, res) => {
-    if (!err) {
-      return callback(true, res);
-    }
-    if (err) {
-      return callback(true, err);
-    }
+export const getPersediaanCategoryId = (valPersediaanCategoryId) => {
+  const query = queryGetPersediaanCategoryId(valPersediaanCategoryId);
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, res) => {
+      if (!err) {
+        resolve(res);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
-export const getPersediaanSupplierId = (valSupplierId, callback) => {
-  db.all(queryGetPersediaanSupplierId(valSupplierId), (err, res) => {
-    if (!err) {
-      return callback(true, res);
-    }
-    if (err) {
-      return callback(true, err);
-    }
+export const getPersediaanSupplierId = (valSupplierId) => {
+  const query = queryGetPersediaanSupplierId(valSupplierId);
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, res) => {
+      if (!err) {
+        resolve(res);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
-export const getPersediaanProductId2 = (valPersediaanProductId, callback) => {
-  db.all(queryGetPersediaanProductId2(valPersediaanProductId), (err, res) => {
-    if (!err) {
-      return callback(true, res);
-    }
-    if (err) {
-      return callback(true, err);
-    }
+export const getPersediaanProductId2 = (valPersediaanProductId) => {
+  const query = queryGetPersediaanProductId2(valPersediaanProductId);
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, res) => {
+      if (!err) {
+        resolve(res);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
-export const getPersediaanProductReport = (callback) => {
-  db.all(queryGetPersediaanProductReport(), (err, result) => {
-    if (!err) {
-      return callback(true, result);
-    }
-    if (err) {
-      return callback(false, err);
-    }
+export const getPersediaanProductReport = () => {
+  const query = queryGetPersediaanProductReport();
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, result) => {
+      if (!err) {
+        resolve(result);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
-export const getPersediaanProductGroup = (callback) => {
-  db.all(queryGetPersediaanProductGroup(), (err, res) => {
-    if (!err) {
-      return callback(true, res);
-    }
-    if (err) {
-      return callback(true, err);
-    }
+export const getPersediaanProductGroup = () => {
+  const query = queryGetPersediaanProductGroup();
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, res) => {
+      if (!err) {
+        resolve(res);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
 
-export const getPersediaanSupplierGroup = (callback) => {
-  db.all(queryGetPersediaanSupplierGroup(), (err, res) => {
-    if (!err) {
-      return callback(true, res);
-    }
-    if (err) {
-      return callback(false, err);
-    }
+export const getPersediaanSupplierGroup = () => {
+  const query = queryGetPersediaanSupplierGroup();
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, res) => {
+      if (!err) {
+        resolve(res);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
-export const getPersediaanReport = (callback) => {
-  db.all(queryGetPersediaanReport(), (err, res) => {
-    if (!err) {
-      return callback(true, res);
-    }
-    if (err) {
-      return callback(true, err);
-    }
+export const getPersediaanReport = () => {
+  return new Promise((resolve, reject) => {
+    db.all(queryGetPersediaanReport(), (err, res) => {
+      if (!err) {
+        resolve(res);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
-export const getPersediaanDate = (valStartDate, valEndDate, callback) => {
+export const getPersediaanDate = (valStartDate, valEndDate) => {
   const query = queryGetPersediaanDate(valStartDate, valEndDate);
-  db.all(query, (err, res) => {
-    if (!err) {
-      return callback(true, res);
-    }
-    if (err) {
-      return callback(false, err);
-    }
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, res) => {
+      if (!err) {
+        resolve(res);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
-export const getPersediaanDateSum = (valStartDate, valEndDate, callback) => {
+export const getPersediaanDateSum = (valStartDate, valEndDate) => {
   const query = queryGetPersediaanDateSUM(valStartDate, valEndDate);
-  db.each(query, (err, res) => {
-    if (!err) {
-      let totalRp = ``;
-      if (res.TotalRp !== null) {
-        totalRp = parseFloat(res.TotalRp);
+  return new Promise((resolve, reject) => {
+    db.each(query, (err, res) => {
+      if (!err) {
+        let totalRp = ``;
+        if (res.TotalRp !== null) {
+          totalRp = parseFloat(res.TotalRp);
+        }
+        if (res.TotalRp === null) {
+          totalRp = 0;
+        }
+        resolve(totalRp);
       }
-      if (res.TotalRp === null) {
-        totalRp = 0;
+      if (err) {
+        reject(err);
       }
-      return callback(true, totalRp);
-    }
-    if (err) {
-      return callback(false, err);
-    }
+    });
   });
 };
-export const getPersediaanDateQtyProductId = (
-  valStartDate,
-  valEndDate,
-  valProductId,
-  callback
-) => {
+export const getPersediaanDateQtyProductId = (req) => {
+  const { startDateVal, endDateVal, productId } = req;
   const query = queryGetPersediaanDateQtyProductId(
-    valStartDate,
-    valEndDate,
-    valProductId
+    startDateVal,
+    endDateVal,
+    productId
   );
-  db.each(query, (err, res) => {
-    if (!err) {
-      const result = res.TotalQty !== null;
-      let totalQty = ``;
-      if (result) {
-        totalQty = res.TotalQty;
+  return new Promise((resolve, reject) => {
+    db.each(query, (err, res) => {
+      if (!err) {
+        const result = res.TotalQty !== null;
+        let totalQty = ``;
+        if (result) {
+          totalQty = res.TotalQty;
+        }
+        if (!result) {
+          totalQty = 0;
+        }
+        resolve(totalQty);
       }
-      if (!result) {
-        totalQty = 0;
+      if (err) {
+        reject(err);
       }
-      return callback(true, totalQty);
-    }
-    if (err) {
-      return callback(false, err);
-    }
+    });
   });
 };
-export const getPersediaanDateProductId = (
-  valStartDate,
-  valEndDate,
-  valProductId,
-  callback
-) => {
+export const getPersediaanDateProductId = (req) => {
+  const { startDateVal, endDateVal, productId } = req;
   const query = queryGetPersediaanDateProductId(
-    valStartDate,
-    valEndDate,
-    valProductId
+    startDateVal,
+    endDateVal,
+    productId
   );
-  db.all(query, (err, res) => {
-    if (!err) {
-      return callback(true, res);
-    }
-    if (err) {
-      return callback(false, err);
-    }
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, res) => {
+      if (!err) {
+        resolve(res);
+      }
+      if (err) {
+        reject(res);
+      }
+    });
   });
 };
-export const getPersediaanDateSumProduct = (
-  valStartDate,
-  valEndDate,
-  valProductId,
-  callback
-) => {
+export const getPersediaanDateSumProduct = (req) => {
+  const { startDateVal, endDateVal, productId } = req;
   const query = queryGetPersediaanDateSumProduct(
-    valStartDate,
-    valEndDate,
-    valProductId
+    startDateVal,
+    endDateVal,
+    productId
   );
-  db.each(query, (err, res) => {
-    if (!err) {
-      console.log(res.TotalRp);
-      let totalRp = ``;
-      if (res.TotalRp !== null) {
-        totalRp = parseFloat(res.TotalRp);
+  return new Promise((resolve, reject) => {
+    db.each(query, (err, res) => {
+      if (!err) {
+        let totalRp = ``;
+        if (res.TotalRp !== null) {
+          totalRp = parseFloat(res.TotalRp);
+        }
+        if (res.TotalRp === null) {
+          totalRp = 0;
+        }
+        resolve(totalRp);
       }
-      if (res.TotalRp === null) {
-        totalRp = 0;
+      if (err) {
+        reject(err);
       }
-      return callback(true, totalRp);
-    }
-    if (err) {
-      return callback(false, err);
-    }
+    });
   });
 };
-export const getPersediaanDateSupplierId = (
-  valStartDate,
-  valEndDate,
-  valSupplierId,
-  callback
-) => {
+
+export const getPersediaanDateSupplierId = (req) => {
+  const { startDateVal, endDateVal, supplierId } = req;
   const query = queryGetPersediaanDateSupplierId(
-    valStartDate,
-    valEndDate,
-    valSupplierId
+    startDateVal,
+    endDateVal,
+    supplierId
   );
-  db.all(query, (err, res) => {
-    if (!err) {
-      return callback(true, res);
-    }
-    if (err) {
-      return callback(false, err);
-    }
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, res) => {
+      if (!err) {
+        resolve(res);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
-export const getPersediaanDateRpSupplierId = (
-  startDate,
-  endDate,
-  valSupplierId,
-  callback
-) => {
+export const getPersediaanDateRpSupplierId = (req) => {
+  const { startDateVal, endDateVal, supplierId } = req;
   const query = queryGetPersediaanDateRpSupplierId(
-    startDate,
-    endDate,
-    valSupplierId
+    startDateVal,
+    endDateVal,
+    supplierId
   );
-  db.each(query, (err, res) => {
-    if (!err) {
-      let totalRp = ``;
-      if (res.TotalRp !== null) {
-        totalRp = parseFloat(res.TotalRp);
+  return new Promise((resolve, reject) => {
+    db.each(query, (err, res) => {
+      if (!err) {
+        let totalRp = ``;
+        if (res.TotalRp !== null) {
+          totalRp = parseFloat(res.TotalRp);
+        }
+        if (res.TotalRp === null) {
+          totalRp = 0;
+        }
+        resolve(totalRp);
       }
-      if (res.TotalRp === null) {
-        totalRp = 0;
+      if (err) {
+        reject(err);
       }
-      return callback(true, totalRp);
-    }
-    if (err) {
-      return callback(false, console.error(err));
-    }
+    });
   });
 };
-export const getPersediaanDateCategoryId = (
-  startDate,
-  endDate,
-  categoryId,
-  callback
-) => {
+export const getPersediaanDateCategoryId = (req) => {
+  const { startDateVal, endDateVal, categoryId } = req;
   const query = queryGetPersediaanDateCategoryId(
-    startDate,
-    endDate,
+    startDateVal,
+    endDateVal,
     categoryId
   );
-  db.all(query, (err, res) => {
-    if (!err) {
-      return callback(true, res);
-    }
-    if (err) {
-      return callback(false, err);
-    }
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, res) => {
+      if (!err) {
+        resolve(res);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
-export const getPersediaanDateRpCategoryId = (
-  startDate,
-  endDate,
-  categoryId,
-  callback
-) => {
+export const getPersediaanDateRpCategoryId = (req) => {
+  const { startDateVal, endDateVal, categoryId } = req;
   const query = queryGetPersediaanDateRpCategoryId(
-    startDate,
-    endDate,
+    startDateVal,
+    endDateVal,
     categoryId
   );
-  db.each(query, (err, res) => {
-    if (!err) {
-      const result = res.TotalRp !== null;
-      let totalRp = ``;
-      if (result) {
-        totalRp = parseFloat(res.TotalRp);
+  return new Promise((resolve, reject) => {
+    db.each(query, (err, res) => {
+      if (!err) {
+        const result = res.TotalRp !== null;
+        let totalRp = ``;
+        if (result) {
+          totalRp = parseFloat(res.TotalRp);
+        }
+        if (!result) {
+          totalRp = 0;
+        }
+        resolve(totalRp);
       }
-      if (!result) {
-        totalRp = 0;
+      if (err) {
+        reject(err);
       }
-      return callback(true, totalRp);
-    }
-    if (err) {
-      return callback(true, err);
-    }
+    });
   });
 };
-export const getPersediaanCategoryIdGroup = (callback) => {
+export const getPersediaanCategoryIdGroup = () => {
   const query = queryGetPersediaanCategoryGroup();
-  db.all(query, (err, res) => {
-    if (!err) {
-      return callback(true, res);
-    }
-    if (err) {
-      return callback(true, err);
-    }
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, res) => {
+      if (!err) {
+        resolve(res);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
-export const getPersediaanSupplierSum = (callback) => {
+export const getPersediaanSupplierSum = () => {
   const query = queryGetPersediaanSupplierSum();
-  db.each(query, (err, res) => {
-    if (!err) {
-      let totalRp = ``;
-      if (res.TotalRp !== null) {
-        totalRp = parseFloat(res.TotalRp);
+  return new Promise((resolve, reject) => {
+    db.each(query, (err, res) => {
+      if (!err) {
+        let totalRp = ``;
+        if (res.TotalRp !== null) {
+          totalRp = parseFloat(res.TotalRp);
+        }
+        if (res.TotalRp === null) {
+          totalRp = 0;
+        }
+        resolve(totalRp);
       }
-      if (res.TotalRp === null) {
-        totalRp = 0;
+      if (err) {
+        reject(err);
       }
-      return callback(true, totalRp);
-    }
-    if (err) {
-      return callback(false, err);
-    }
+    });
   });
 };
-export const getPersediaanCategorySum = (callback) => {
+export const getPersediaanCategorySum = () => {
   const query = queryGetPersediaanCategorySum();
-  db.each(query, (err, res) => {
-    if (!err) {
-      let totalRp = ``;
-      if (res.TotalRp !== null) {
-        totalRp = parseFloat(res.TotalRp);
+  return new Promise((resolve, reject) => {
+    db.each(query, (err, res) => {
+      if (!err) {
+        let totalRp = ``;
+        if (res.TotalRp !== null) {
+          totalRp = parseFloat(res.TotalRp);
+        }
+        if (res.TotalRp === null) {
+          totalRp = 0;
+        }
+        resolve(totalRp);
       }
-      if (res.TotalRp === null) {
-        totalRp = 0;
+      if (err) {
+        reject(err);
       }
-      return callback(true, totalRp);
-    }
-    if (err) {
-      return callback(false, err);
-    }
+    });
   });
 };
 // references order

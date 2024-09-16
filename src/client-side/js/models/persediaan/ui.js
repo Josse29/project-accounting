@@ -291,23 +291,13 @@ export const uiTrCategorySum = (rows, no) => {
           </tr>`;
 };
 export const uiSumPersediaanDate = () => {
-  $("select#persediaan-limit").hide();
-  $("input#persediaan-search").hide();
-  $("span#persediaan-search").hide();
-  $("select#persediaan-refproduct-search").hide();
-  $("select#persediaan-refcategory-search").hide();
-  $("select#persediaan-refsupplier-search").hide();
-  $("select#persediaan-refuser-search").hide();
+  $("#persediaanLimitSearch").addClass("d-none");
+  $("#persediaanList").addClass("d-none");
 };
 // for show
 export const uiSumPersediaanDate2 = () => {
-  $("select#persediaan-limit").show();
-  $("input#persediaan-search").show();
-  $("span#persediaan-search").show();
-  $("select#persediaan-refproduct-search").show();
-  $("select#persediaan-refcategory-search").show();
-  $("select#persediaan-refsupplier-search").show();
-  $("select#persediaan-refuser-search").show();
+  $("#persediaanLimitSearch").removeClass("d-none");
+  $("#persediaanList").removeClass("d-none");
 };
 // for ipc section success:pdf-persediaan
 ipcRenderer.on("success:pdf-persediaan", (e, file_path) => {

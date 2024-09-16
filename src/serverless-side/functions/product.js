@@ -62,42 +62,41 @@ export const getTotalRowProduct = (productSearch, callback) => {
     }
   });
 };
-export const getTotalPageProduct = (limitProduct, searchVal, callback) => {
-  db.each(queryTotalRowProducts(searchVal), (err, res) => {
-    if (!err) {
-      let lastPage;
-      let totalRow = parseInt(res.TOTAL_ROW);
-      let limitProductInt = parseInt(limitProduct);
-      if (totalRow % limitProductInt === 0) {
-        lastPage = parseInt(totalRow / limitProductInt);
-      } else {
-        lastPage = parseInt(totalRow / limitProductInt) + 1;
-      }
-      return callback(true, lastPage);
-    }
-    if (err) {
-      return callback(false, err);
-    }
-  });
-};
-export const getProducts = (
-  productSearch,
-  productLimit,
-  productOffset,
-  callback
-) => {
-  const productOffsetStart = (productOffset - 1) * productLimit;
-  db.all(
-    queryGetProducts(productSearch, productLimit, productOffsetStart),
-    (err, res) => {
+export const getProductInit = (req) => {
+  const { searchVal, limitVal } = req;
+  const query = queryTotalRowProducts(searchVal);
+  return new Promise((resolve, reject) => {
+    db.each(query, (err, res) => {
       if (!err) {
-        return callback(true, res);
+        let totalPage;
+        let totalRow = parseInt(res.TOTAL_ROW);
+        if (totalRow % limitVal === 0) {
+          totalPage = parseInt(totalRow / limitVal);
+        } else {
+          totalPage = parseInt(totalRow / limitVal) + 1;
+        }
+        resolve({ totalPage, totalRow });
       }
       if (err) {
-        return callback(false, err);
+        reject(err);
       }
-    }
-  );
+    });
+  });
+};
+export const getProducts = (req) => {
+  const { searchVal, limitVal, offsetVal } = req;
+  const startOffset = (offsetVal - 1) * limitVal;
+  const query = queryGetProducts(searchVal, limitVal, startOffset);
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, res) => {
+      if (!err) {
+        resolve(res);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
+  });
 };
 export const getListProduct = (productSearch, callback) => {
   db.all(queryGetListProduct(productSearch), (err, res) => {

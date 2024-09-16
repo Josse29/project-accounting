@@ -14,13 +14,11 @@ $(document).ready(function () {
     updateTimeHTML();
   }, 1000);
 });
+export const reinitTooltip = () => {
+  // Inisialisasi ulang tooltip setelah konten baru di-load
+  $('[data-bs-toggle="tooltip"]').tooltip();
+};
 export const reinitializeTooltips = () => {
-  // window.addEventListener("DOMContentLoaded", () => {
-  const tooltipTriggerList = document.querySelectorAll(
-    '[data-bs-toggle="tooltip"]'
-  );
-  const tooltipList = [...tooltipTriggerList].map(
-    (tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl)
-  );
-  // });
+  // Inisialisasi ulang tooltip setelah konten baru di-load
+  $('[data-bs-toggle="tooltip"]').tooltip();
 };

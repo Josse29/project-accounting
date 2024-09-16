@@ -3,52 +3,46 @@ import {
   getPersediaanSupplierId,
 } from "../../../../serverless-side/functions/persediaan.js";
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
+import { reinitTooltip } from "../../utils/updateUi.js";
 import { listSupplierRefPersediaanRead } from "../supplier/list.js";
 import { uiTbody, uiTbodyEmpty } from "./ui.js";
 
 $(document).ready(function () {
   listSupplierRefPersediaanRead();
-  $("select#persediaan-refsupplier-search").on("change", function () {
-    const selectedText = $(this).find("option:selected").text();
-    $("span#persediaan-id").text(selectedText);
-    const selectedSupplierId = parseInt($(this).val());
-    getPersediaanSupplierId(selectedSupplierId, (status, response) => {
-      if (status) {
-        const existedSupplier = response.length >= 1;
-        if (existedSupplier) {
-          let tr = "";
-          response.forEach((element) => {
-            tr += uiTbody(element);
-          });
-          $("#persediaan-sum-section").show();
-          $("#persediaan-table").html(tr);
-          getSum();
-        }
-        if (!existedSupplier) {
-          const tr = uiTbodyEmpty(selectedText);
-          $("#persediaan-table").html(tr);
-          $("#persediaan-sum-section").hide();
-        }
-        $("select#persediaan-refproduct-search").val("Produk");
-        $("select#persediaan-refcategory-search").val("Kategori");
-        $("#only-product").hide();
-        $("#persediaan-pagination").addClass("d-none");
+  $("select#persediaan-refsupplier-search").on("change", async function () {
+    try {
+      const selectedText = $(this).find("option:selected").text();
+      const selectedSupplierId = parseInt($(this).val());
+      // caption
+      $("span#persediaan-id").text(selectedText);
+      // sum
+      const sum = await getPersediaanRpSumSupplierId(selectedSupplierId);
+      const rupiah = formatRupiah2(parseFloat(sum));
+      $("span#total-rupiah-byid").text(rupiah);
+      // table
+      const bySupplierId = await getPersediaanSupplierId(selectedSupplierId);
+      const existedSupplier = bySupplierId.length >= 1;
+      if (existedSupplier) {
+        let tr = "";
+        bySupplierId.forEach((element) => {
+          tr += uiTbody(element);
+        });
+        $("#persediaan-table").html(tr);
+        reinitTooltip();
       }
-      if (!status) {
-        console.error(response);
+      if (!existedSupplier) {
+        const tr = uiTbodyEmpty(selectedText);
+        $("#persediaan-table").html(tr);
       }
-    });
-    function getSum() {
-      getPersediaanRpSumSupplierId(selectedSupplierId, (status, response) => {
-        if (status) {
-          const rupiah = formatRupiah2(parseFloat(response));
-          $("span#total-rupiah-byid").text(rupiah);
-          $("span#persediaan-date-product").text("");
-        }
-        if (!status) {
-          console.error(response);
-        }
-      });
+      // references
+      $("#persediaan-sum-section").show();
+      $("#only-product").hide();
+      $("span#persediaan-date-product").text("");
+      $("select#persediaan-refproduct-search").val("Produk");
+      $("select#persediaan-refcategory-search").val("Kategori");
+      $("#persediaan-pagination").addClass("d-none");
+    } catch (error) {
+      console.error(error);
     }
   });
 });

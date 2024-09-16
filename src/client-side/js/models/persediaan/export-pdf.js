@@ -18,144 +18,114 @@ import {
 
 // export pdf persediaan
 $(document).ready(function () {
-  const getPersediaanProductReportAsync = () => {
-    return new Promise((resolve, reject) => {
-      getPersediaanProductReport((status, response) => {
-        if (status) {
-          let no = 1;
-          let tbodyProduct = ``;
-          response.forEach((rows) => {
-            tbodyProduct += uiTrPDF(rows, no);
+  const getPersediaanProductReportAsync = async () => {
+    try {
+      const response = await getPersediaanProductReport();
+      let no = 1;
+      let tbodyProduct = ``;
+      response.forEach((rows) => {
+        tbodyProduct += uiTrPDF(rows, no);
+        no++;
+      });
+      return tbodyProduct;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const getPersediaanProductGroupAsync = async () => {
+    try {
+      const response = await getPersediaanProductGroup();
+      let no = 1;
+      let tbodyProductSum = ``;
+      response.forEach((element) => {
+        tbodyProductSum += uiTrProductSum(element, no);
+        no++;
+      });
+      return tbodyProductSum;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const getPersediaanSupplierGroupAsync = async () => {
+    try {
+      const response = await getPersediaanSupplierGroup();
+      const existedSupplier = response.length >= 1;
+      let tbody = ``;
+      let no = 1;
+      if (existedSupplier) {
+        response.forEach((el) => {
+          tbody += uiTrSupplierSum(el, no);
+          no++;
+        });
+      }
+      if (!existedSupplier) {
+        tbody += `<tr>
+                    <td class="text-center text-nowrap align-content-center" colspan="3">supplier empty....</td>
+                 </tr>`;
+      }
+      return tbody;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const getPersediaanSupplierSumAsync = async () => {
+    try {
+      const response = await getPersediaanSupplierSum();
+      const totalRp = formatRupiah2(response);
+      return totalRp;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const getPersediaanCategoryIdGroupAsync = async () => {
+    try {
+      const response = await getPersediaanCategoryIdGroup();
+      const existedCategory = response.length >= 1;
+      if (existedCategory) {
+        let no = 1;
+        let tbody = ``;
+        if (existedCategory) {
+          response.forEach((el) => {
+            tbody += uiTrCategorySum(el, no);
             no++;
           });
-          resolve(tbodyProduct);
-        } else {
-          reject(response);
         }
-      });
-    });
+      }
+      if (!existedCategory) {
+        tbody += `<tr>
+                    <td class="text-center text-nowrap align-content-center" colspan="3">category empty....</td>
+                  </tr>`;
+      }
+      return tbody;
+    } catch (error) {
+      console.error(error);
+    }
   };
-  const getPersediaanProductGroupAsync = () => {
-    return new Promise((resolve, reject) => {
-      getPersediaanProductGroup((status, response) => {
-        if (status) {
-          let no = 1;
-          let tbodyProductSum = ``;
-          response.forEach((element) => {
-            tbodyProductSum += uiTrProductSum(element, no);
-            no++;
-          });
-          resolve(tbodyProductSum);
-        }
-        if (!status) {
-          reject(response);
-        }
-      });
-    });
+  const getPersediaanCategorySumAsync = async () => {
+    try {
+      const response = await getPersediaanCategorySum();
+      const totalRp = formatRupiah2(response);
+      return totalRp;
+    } catch (error) {
+      console.error(error);
+    }
   };
-  const getPersediaanSupplierGroupAsync = () => {
-    return new Promise((resolve, reject) => {
-      getPersediaanSupplierGroup((status, response) => {
-        if (status) {
-          const existedSupplier = response.length >= 1;
-          let tbody = ``;
-          let no = 1;
-          if (existedSupplier) {
-            response.forEach((el) => {
-              tbody += uiTrSupplierSum(el, no);
-              no++;
-            });
-          }
-          if (!existedSupplier) {
-            tbody += `<tr>
-                        <td class="text-center text-nowrap align-content-center" colspan="3">supplier empty....</td>
-                     </tr>`;
-          }
-          resolve(tbody);
-        }
-        if (!status) {
-          reject(response);
-        }
-      });
-    });
+  const getPersediaanQtySumAsync = async () => {
+    try {
+      const response = await getPersediaanQty("");
+      return response;
+    } catch (error) {
+      console.error(error);
+    }
   };
-  const getPersediaanSupplierSumAsync = () => {
-    return new Promise((resolve, reject) => {
-      getPersediaanSupplierSum((status, response) => {
-        if (status) {
-          const totalRp = formatRupiah2(response);
-          resolve(totalRp);
-        }
-        if (!status) {
-          reject(response);
-        }
-      });
-    });
-  };
-  const getPersediaanCategoryIdGroupAsync = () => {
-    return new Promise((resolve, reject) => {
-      getPersediaanCategoryIdGroup((status, response) => {
-        if (status) {
-          const existedCategory = response.length >= 1;
-          let no = 1;
-          let tbody = ``;
-          if (existedCategory) {
-            response.forEach((el) => {
-              tbody += uiTrCategorySum(el, no);
-              no++;
-            });
-          }
-          if (!existedCategory) {
-            tbody += `<tr>
-                        <td class="text-center text-nowrap align-content-center" colspan="3">category empty....</td>
-                      </tr>`;
-          }
-          resolve(tbody);
-        }
-        if (!status) {
-          reject(response);
-        }
-      });
-    });
-  };
-  const getPersediaanCategorySumAsync = () => {
-    return new Promise((resolve, reject) => {
-      getPersediaanCategorySum((status, response) => {
-        if (status) {
-          const totalRp = formatRupiah2(response);
-          resolve(totalRp);
-        }
-        if (!status) {
-          reject(response);
-        }
-      });
-    });
-  };
-  const getPersediaanQtySumAsync = () => {
-    return new Promise((resolve, reject) => {
-      getPersediaanQty("", (status, response) => {
-        if (status) {
-          const totalQty = response;
-          resolve(totalQty);
-        }
-        if (!status) {
-          reject(response);
-        }
-      });
-    });
-  };
-  const getPersediaanRpSumAsync = () => {
-    return new Promise((resolve, reject) => {
-      getPersediaanRpSum((status, response) => {
-        if (status) {
-          const rupiah = formatRupiah2(response);
-          resolve(rupiah);
-        }
-        if (!status) {
-          reject(response);
-        }
-      });
-    });
+  const getPersediaanRpSumAsync = async () => {
+    try {
+      const response = await getPersediaanRpSum();
+      const rupiah = formatRupiah2(response);
+      return rupiah;
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   $("#persediaan-export-pdf")

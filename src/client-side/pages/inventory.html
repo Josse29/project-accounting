@@ -195,96 +195,84 @@
               </div>
               <!-- section succes after action crud persediaan -->
               <div id="sectionSuccessActionPersediaan"></div>
-              <!--select product, category, supplier ,date -->
-              <div class="d-flex gap-2 flex-wrap mb-3">
-                <!-- for limit & search-->
-                <div class="d-flex gap-2">
-                  <!-- limit -->
-                  <select
-                    class="form-select py-2 w-auto"
-                    aria-label="Default select example"
-                    id="persediaan-limit"
-                  >
-                    <option value="2">2</option>
-                    <option value="5">5</option>
-                    <option value="10">10</option>
-                  </select>
-                  <!-- search -->
-                  <div class="input-group" style="width: 580px">
-                    <input
-                      type="text"
-                      class="form-control py-2"
-                      placeholder="masukkan keyword persediaan..."
-                      id="persediaan-search"
-                    />
-                    <span
-                      id="persediaan-search"
-                      class="input-group-text text-white"
-                      style="background-color: #3b82f6"
-                      >Search</span
-                    >
-                  </div>
-                </div>
-                <!-- select product,categories,supplier,user -->
-                <div class="d-flex gap-2">
-                  <!-- for product -->
-                  <select
-                    id="persediaan-refproduct-search"
-                    class="form-select w-auto py-2"
-                  ></select>
-                  <!-- for supplier -->
-                  <select
-                    class="form-select w-auto py-2"
-                    id="persediaan-refsupplier-search"
-                  ></select>
-                  <!-- for category -->
-                  <select
-                    id="persediaan-refcategory-search"
-                    class="form-select w-auto py-2"
-                  ></select>
-                  <!-- for waiter -->
-                  <select
-                    class="form-select w-auto py-2"
-                    id="persediaan-refuser-search"
-                  >
-                    <option selected>Waiter</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </select>
-                </div>
-                <!-- date -->
-                <div class="input-group" style="width: max-content">
+              <!-- for limit & search-->
+              <div class="d-flex gap-2 mb-3" id="persediaanLimitSearch">
+                <!-- limit -->
+                <select
+                  class="form-select py-2 w-auto"
+                  aria-label="Default select example"
+                  id="persediaan-limit"
+                >
+                  <option value="2">2</option>
+                  <option value="5">5</option>
+                  <option value="10">10</option>
+                </select>
+                <!-- search -->
+                <div class="input-group" style="width: 580px">
                   <input
-                    type="date"
+                    type="text"
                     class="form-control py-2"
-                    id="persediaan-start-date"
-                    style="width: 300px"
+                    placeholder="masukkan keyword persediaan..."
+                    id="persediaan-search"
                   />
                   <span
-                    class="text-center align-content-center p-2 bg-body-secondary"
-                    >s/d</span
+                    id="persediaan-search"
+                    class="input-group-text text-white"
+                    style="background-color: #3b82f6"
+                    >Search</span
                   >
-                  <input
-                    type="date"
-                    class="form-control py-2"
-                    id="persediaan-end-date"
-                    style="width: 300px"
-                  />
-                  <button
-                    class="btn btn-primary rounded-end-2"
-                    id="persediaan-date-search"
-                  >
-                    search
-                  </button>
                 </div>
               </div>
-              <!-- section sum -->
+              <!-- select product,categories,supplier,user -->
+              <div class="d-flex gap-2 mb-3" id="persediaanList">
+                <!-- for product -->
+                <select
+                  id="persediaan-refproduct-search"
+                  class="form-select w-auto py-2"
+                ></select>
+                <!-- for supplier -->
+                <select
+                  class="form-select w-auto py-2"
+                  id="persediaan-refsupplier-search"
+                ></select>
+                <!-- for category -->
+                <select
+                  id="persediaan-refcategory-search"
+                  class="form-select w-auto py-2"
+                ></select>
+              </div>
+              <!-- date -->
+              <div class="input-group mb-3" style="width: max-content">
+                <input
+                  type="date"
+                  class="form-control py-2"
+                  id="persediaan-start-date"
+                  style="width: 300px"
+                />
+                <span
+                  class="text-center align-content-center p-2 bg-body-secondary"
+                  >s/d</span
+                >
+                <input
+                  type="date"
+                  class="form-control py-2"
+                  id="persediaan-end-date"
+                  style="width: 300px"
+                />
+                <button
+                  class="btn btn-primary rounded-end-2"
+                  id="persediaan-date-search"
+                >
+                  search
+                </button>
+              </div>
+              <!-- section list date with misc -->
               <div
                 id="persediaan-date-all-search"
                 class="input-group gap-2"
                 style="width: max-content"
               ></div>
+              <!-- section sum -->
               <div id="persediaan-sum-section" class="ms-3">
                 <p class="fs-5 ms-2 mb-1">
                   <span
@@ -297,14 +285,14 @@
                 </p>
                 <div id="only-product">
                   <p class="fs-5 ms-4 mb-1">
-                    Harga : <span id="rupiah-byid">10000</span>
+                    Price : <span id="rupiah-byid">10000</span>
                   </p>
                   <p class="fs-5 ms-4 mb-1">
                     Total Qty : <span id="total-qty-byid">0</span>
                   </p>
                 </div>
                 <p class="fs-5 ms-4">
-                  Total Rupiah : <span id="total-rupiah-byid">10000</span>
+                  Total Price : <span id="total-rupiah-byid">10000</span>
                 </p>
               </div>
               <!-- table persediaan  -->

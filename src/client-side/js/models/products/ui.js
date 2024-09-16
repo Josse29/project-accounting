@@ -1,7 +1,7 @@
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 
 // UI tr Product from dbsqlite
-export const uiTrProduct = (el) => {
+export const uiTbody = (el) => {
   const productPriceRupiah = formatRupiah2(el.ProductPriceBeli);
   const supplierName = el.SupplierName === null ? " - " : el.SupplierName;
   const categoryName = el.CategoryName === null ? " - " : el.CategoryName;
@@ -72,15 +72,13 @@ export const successActionProduct = (res) => {
   }, 20000);
 };
 // when total product row 0 being seaching
-export const trProductZeroSearch = (searchVal) => {
+export const uiTbodyZero = (searchVal) => {
+  let search = `product empty....`;
+  if (searchVal !== "") {
+    search = searchVal;
+  }
   return `<tr>
-              <td colspan="6" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">product ${searchVal} tidak ditemukan....</td>
-            </tr>`;
-};
-// when total product row 0 being seaching
-export const trProductZero = () => {
-  return `<tr>
-              <td colspan="6" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">tidak ada product....</td>
+              <td colspan="6" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">${search}</td>
             </tr>`;
 };
 // blank value after submit action
@@ -103,14 +101,10 @@ export const btnProductPage = (i) => {
           </button>`;
 };
 // Function to update active page button
-export const uiActivePageButton = (productPageNumber, productBtnPage) => {
-  const productBtnPageActive = document.getElementsByClassName(
-    "product-active-page"
-  );
-  if (productBtnPageActive.length >= 1) {
-    productBtnPageActive[0].classList.remove("product-active-page");
-  }
-  productBtnPage[productPageNumber - 1].classList.add("product-active-page");
+export const uiActivePageButton = (numberPage) => {
+  const btnPage = $("button.product-btn-page");
+  btnPage.removeClass("product-active-page");
+  btnPage.eq(numberPage - 1).addClass("product-active-page");
 };
 export const uiCreateFailed = (res) => {
   const alert = `<div class="alert alert-danger" role="alert">
