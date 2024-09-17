@@ -578,25 +578,9 @@ div#persediaan-scroll-byme::-webkit-scrollbar-thumb:hover {
   visibility: visible;
   opacity: 1;
 }
-/* tbody#persediaan-table {
-  display: block;
-  max-height: 350px;
-  overflow-y: auto;
-  overflow-x: hidden;
+td:hover {
+  text-wrap: wrap;
 }
-thead,
-tbody tr {
-  display: table;
-  table-layout: fixed;
-} */
-/* CSS for fade-in effect */
-.fade-in {
-  opacity: 0;
-  /* transform: scale(0.5); */
-  /* transform: scaleY(0); */
-  /* transform-origin: top; */
-  transition: opacity 0.5s ease-in;
-}
-.fade-in.show {
-  opacity: 1;
+span:hover {
+  text-wrap: wrap;
 }

@@ -15,7 +15,7 @@ export const uiTbody = (el) => {
               <div class="d-flex justify-content-center gap-2" >
                 <button
                   id="productDetailBtn" 
-                  class="btn btn-success text-white tooltip-bottom-container"
+                  class="btn btn-success text-white"
                   data-bs-toggle="modal" 
                   data-bs-target="#productDetailModal" 
                   data-productid="${el.ProductId}"  
@@ -26,12 +26,15 @@ export const uiTbody = (el) => {
                   data-productcategory="${el.CategoryName}"
                   data-productimage="${el.ProductImage}"
                   data-productsupplier="${el.SupplierName}">
-                  <span class="tooltip-bottom-text">See-${el.ProductName}</span>
-                    <i class="fa-solid fa-eye"></i>
+                    <i class="fa-solid fa-eye"
+                      data-bs-toggle="tooltip" 
+                      data-bs-html="true"
+                      data-bs-title="<span>See-${el.ProductName}</span>" 
+                      data-bs-placement="bottom"></i>
                 </button>
                 <button 
                   id="editProduct" 
-                  class="btn btn-primary text-white tooltip-bottom-container"
+                  class="btn btn-primary text-white"
                   data-bs-toggle="modal" 
                   data-bs-target="#editProductModal" 
                   data-productid=${el.ProductId}
@@ -44,18 +47,24 @@ export const uiTbody = (el) => {
                   data-productcategoryname="${el.CategoryName}"
                   data-productsupplierid=${el.SupplierId}
                   data-productsuppliername="${el.SupplierName}">
-                  <span class="tooltip-bottom-text">Edit-${el.ProductName}</span>
-                    <i class="fa-solid fa-pencil"></i>
+                    <i class="fa-solid fa-pencil"
+                       data-bs-toggle="tooltip" 
+                       data-bs-html="true"
+                       data-bs-title="<span>Update-${el.ProductName}</span>" 
+                       data-bs-placement="bottom"></i>
                 </button>
                 <button 
                   id="deleteProduct" 
-                  class="btn btn-danger text-white tooltip-bottom-container" 
+                  class="btn btn-danger text-white" 
                   data-productid="${el.ProductId}" 
                   data-productname="${el.ProductName}" 
                   data-bs-toggle="modal" 
                   data-bs-target="#confirmDeleteProductModal">
-                  <span class="tooltip-bottom-text">Delete-${el.ProductName}</span>
-                    <i class="fa-solid fa-trash-can"></i>
+                    <i class="fa-solid fa-trash-can"
+                       data-bs-toggle="tooltip" 
+                       data-bs-html="true"
+                       data-bs-title="<span>Delete-${el.ProductName}</span>" 
+                       data-bs-placement="bottom"></i>
                 </button>
               </div>
             </td>
@@ -96,7 +105,7 @@ export const createBlankValue = () => {
 export const btnProductPage = (i) => {
   return `<button 
             type="button" 
-            class="product-btn-page ${i === 1 ? "product-active-page" : ""}" >
+            class="product-btn-page ${i === 1 ? "product-active-page" : ""} ">
               ${i}
           </button>`;
 };

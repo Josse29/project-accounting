@@ -22,24 +22,20 @@ export const createCategory = (categoryName, categoryInfo, callback) => {
   });
 };
 // 2.READ
-export const getCategory = (
-  categorySearch,
-  categoryLimit,
-  categoryOffset,
-  callback
-) => {
-  const categoryStartOffset = (categoryOffset - 1) * categoryLimit;
-  db.all(
-    queryGetCategory(categorySearch, categoryLimit, categoryStartOffset),
-    (err, res) => {
+export const getCategory = (req) => {
+  const { searchVal, limitVal, offsetVal } = req;
+  const startOffsetVal = (offsetVal - 1) * limitVal;
+  const query = queryGetCategory(searchVal, limitVal, startOffsetVal);
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, res) => {
       if (!err) {
-        return callback(true, res);
+        resolve(res);
       }
       if (err) {
-        return callback(false, err);
+        reject(err);
       }
-    }
-  );
+    });
+  });
 };
 export const getListCategory = (categorySearch, callback) => {
   db.all(queryGetListCategory(categorySearch), (err, res) => {
@@ -62,26 +58,25 @@ export const getTotalRowCategory = (categorySearch, callback) => {
     }
   });
 };
-export const getTotalPageCategory = (
-  categorySearch,
-  categoryLimit,
-  callback
-) => {
-  db.each(queryTotalRowCategory(categorySearch), (err, res) => {
-    if (!err) {
-      let lastPage;
-      let totalRow = parseInt(res.TOTAL_ROW);
-      let categoryLimitInt = parseInt(categoryLimit);
-      if (totalRow % categoryLimit === 0) {
-        lastPage = totalRow / categoryLimitInt;
-      } else {
-        lastPage = parseInt(totalRow / categoryLimitInt) + 1;
+export const getCategoryInit = (req) => {
+  const { searchVal, limitVal } = req;
+  const query = queryTotalRowCategory(searchVal);
+  return new Promise((resolve, reject) => {
+    db.each(query, (err, res) => {
+      if (!err) {
+        let totalPage;
+        let totalRow = parseInt(res.TOTAL_ROW);
+        if (totalRow % limitVal === 0) {
+          totalPage = totalRow / limitVal;
+        } else {
+          totalPage = parseInt(totalRow / limitVal) + 1;
+        }
+        resolve({ totalPage, totalRow });
       }
-      return callback(true, lastPage);
-    }
-    if (err) {
-      return callback(false, err);
-    }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
 // 3.UPDATE

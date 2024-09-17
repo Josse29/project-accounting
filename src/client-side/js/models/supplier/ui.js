@@ -11,7 +11,7 @@ export const uiTr = (el) => {
                 <td class="align-content-center">
                     <div class="d-flex w-100 justify-content-center gap-2">
                         <button 
-                            class="btn btn-success text-white tooltip-bottom-container"
+                            class="btn btn-success text-white"
                             id="supplierDetail" 
                             data-bs-toggle="modal" 
                             data-bs-target="#supplierDetailModal" 
@@ -20,11 +20,14 @@ export const uiTr = (el) => {
                             data-supplierinfo="${el.SupplierInfo}"
                             data-supplierimg="${el.SupplierImg}"
                             >
-                              <i class="fa-solid fa-eye"></i>
-                              <div class="tooltip-bottom-text">See-${el.SupplierName}</div>
+                              <i class="fa-solid fa-eye"
+                                 data-bs-toggle="tooltip" 
+                                 data-bs-html="true"
+                                 data-bs-title="<span>See-${el.SupplierName}</span>" 
+                                 data-bs-placement="bottom"></i>
                         </button>
                         <button 
-                            class="btn btn-primary text-white tooltip-bottom-container"
+                            class="btn btn-primary text-white"
                             data-bs-toggle="modal" 
                             data-bs-target="#supplierUpdateModal" 
                             id="supplierUpdate" 
@@ -32,19 +35,25 @@ export const uiTr = (el) => {
                             data-suppliername="${el.SupplierName}"
                             data-supplierinfo="${el.SupplierInfo}"
                             data-supplierimg="${el.SupplierImg}">
-                                <i class="fa-solid fa-pencil"></i>
-                                <div class="tooltip-bottom-text">See-${el.SupplierName}</div>
+                                <i class="fa-solid fa-pencil"
+                                 data-bs-toggle="tooltip" 
+                                 data-bs-html="true"
+                                 data-bs-title="<span>Update-${el.SupplierName}</span>" 
+                                 data-bs-placement="bottom"></i>
                         </button>
                         <button
-                            class="btn btn-danger text-white tooltip-bottom-container"
+                            class="btn btn-danger text-white"
                             data-bs-toggle="modal" 
                             data-bs-target="#supplierDeleteModal" 
                             id="supplierDelete" 
                             data-supplierid="${el.SupplierId}"  
                             data-suppliername="${el.SupplierName}"
                             data-supplierinfo="${el.SupplierInfo}">
-                                <i class="fa-solid fa-trash-can"></i>
-                                <div class="tooltip-bottom-text">See-${el.SupplierName}</div>
+                                <i class="fa-solid fa-trash-can"
+                                   data-bs-toggle="tooltip" 
+                                   data-bs-html="true"
+                                   data-bs-title="<span>Delete-${el.SupplierName}</span>" 
+                                   data-bs-placement="bottom"></i>
                         </button>
                     </div>
                 </td>
@@ -60,16 +69,14 @@ export const successActionSupplier = (res) => {
     $("#sectionSuccessActionSupply").html("");
   }, 20000);
 };
-// it doesn't exist supplier
-export const trSupplierZero = () => {
-  return `<tr>
-                <td colspan="5" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">belum ada supplier</td>
-            </tr>`;
-};
 // it doesn't exist supplier while  event search
-export const trSupplierZeroSearch = (supplierSearch) => {
+export const uiTrZero = (searchVal) => {
+  let search = `Supplier Empty ......`;
+  if (searchVal !== "") {
+    search = `Supplier - ${searchVal} is empty`;
+  }
   return `<tr>
-                <td colspan="5" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">tidak ada supplier - ${supplierSearch}</td>
+                <td colspan="5" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">${search}</td>
             </tr>`;
 };
 // button pagination
@@ -81,12 +88,11 @@ export const btnSupplierPage = (i) => {
           </button>`;
 };
 // update active pagination
-export function updateActivePageButton(pageNumber, supplierBtnPage) {
-  let current = document.getElementsByClassName("supplier-active-page");
-  if (current.length >= 1) {
-    current[0].classList.remove("supplier-active-page");
-  }
-  supplierBtnPage[pageNumber - 1].classList.add("supplier-active-page");
+export function uiActivePageBtn(pageNumber) {
+  $("button.supplier-btn-page").removeClass("supplier-active-page");
+  $("button.supplier-btn-page")
+    .eq(pageNumber - 1)
+    .addClass("supplier-active-page");
 }
 // create blank after success event
 export const supplierCreateBlank = () => {

@@ -98,36 +98,43 @@ export const getProducts = (req) => {
     });
   });
 };
-export const getListProduct = (productSearch, callback) => {
-  db.all(queryGetListProduct(productSearch), (err, res) => {
-    if (!err) {
-      return callback(true, res);
-    }
-    if (err) {
-      return callback(false, err);
-    }
+export const getListProduct = (productSearch) => {
+  const query = queryGetListProduct(productSearch);
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, res) => {
+      if (!err) {
+        resolve(res);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
-export const getProductSupplierId = (supplierId, callback) => {
+export const getProductSupplierId = (supplierId) => {
   const query = queryGetProductSupplierId(supplierId);
-  db.all(query, (err, res) => {
-    if (!err) {
-      return callback(true, res);
-    }
-    if (err) {
-      return callback(false, err);
-    }
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, res) => {
+      if (!err) {
+        resolve(res);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
-export const getProductCategoryId = (categoryId, callback) => {
+export const getProductCategoryId = (categoryId) => {
   const query = queryGetProductCategoryId(categoryId);
-  db.all(query, (err, res) => {
-    if (!err) {
-      return callback(true, res);
-    }
-    if (err) {
-      return callback(false, err);
-    }
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, res) => {
+      if (!err) {
+        resolve(res);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
 // 3.UPDATE

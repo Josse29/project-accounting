@@ -1,386 +1,272 @@
 import {
   getSupplier,
-  getTotalPageSupplier,
-  getTotalRowSupplier,
+  getSupplierInit,
 } from "../../../../serverless-side/functions/supplier.js";
-import { reinitializeTooltips } from "../../utils/updateUi.js";
-import {
-  btnSupplierPage,
-  trSupplierZero,
-  trSupplierZeroSearch,
-  uiTr,
-  updateActivePageButton,
-} from "./ui.js";
+import { reinitTooltip } from "../../utils/updateUi.js";
+import { btnSupplierPage, uiActivePageBtn, uiTr, uiTrZero } from "./ui.js";
 import { getProductsAgain } from "./../products/read.js";
 import { getPersediaanAgain } from "../persediaan/read.js";
-import { getProductSupplierId } from "../../../../serverless-side/functions/product.js";
+
 import {
   listSupplierRefPersediaanRead,
   listSupplierRefPersediaanReadDate,
 } from "./list.js";
 $(document).ready(function () {
-  // get all value
-  let supplierSearch = $("#supplier-search-input").val();
-  let supplierLimit = parseInt($("#supplier-limit").val());
-  let supplierCurrentPage = 1;
-  let supplierTotalRow;
-  let supplierTotalPage;
-  let supplierBtnPage;
+  let searchVal = $("#supplier-search-input").val();
+  let limitVal = parseInt($("#supplier-limit").val());
+  let offsetVal = 1;
   getInit();
-  $("#supplier-search-input").on("keyup", function () {
-    supplierSearch = $(this).val();
-    getInit(supplierSearch);
-  });
-  $("#supplier-limit").on("change", function () {
-    supplierLimit = parseInt($(this).val());
-    getInit();
-  });
-  // 1. get first,  get total row, upadate ui (total row) as condition
-  function getInit() {
-    getTotalRowSupplier(supplierSearch, (status, response) => {
-      if (status) {
-        supplierTotalRow = parseInt(response);
-        $("#supplier-total-row").text(supplierTotalRow);
-        // if it exist product
-        if (supplierTotalRow >= 1) {
-          getTotalPage();
-          $("#supplier-pagination").removeClass("d-none");
-        }
-        // if it doesn't exist product
-        if (supplierTotalRow < 1) {
-          if (supplierSearch) {
-            $("#supplier-table").html(trSupplierZeroSearch(supplierSearch));
-          } else {
-            $("#supplier-table").html(trSupplierZero);
-          }
-          $("#supplier-pagination").addClass("d-none");
-        }
-      }
-      if (!status) {
-        console.log(response);
-      }
+  $("#supplier-search-input")
+    .off("keyup")
+    .on("keyup", function () {
+      searchVal = $(this).val();
+      getInit();
     });
-  }
-  // 2. get total page, update ui (total row)
-  function getTotalPage() {
-    getTotalPageSupplier(supplierSearch, supplierLimit, (status, response) => {
-      if (status) {
-        supplierTotalPage = parseInt(response);
-        uiPagination(supplierTotalPage);
-      }
-      if (!status) {
-        console.error(response);
-      }
+  $("#supplier-limit")
+    .off("change")
+    .on("change", function () {
+      limitVal = parseInt($(this).val());
+      getInit();
     });
+  async function getInit() {
+    try {
+      const req = {
+        searchVal,
+        limitVal,
+        offsetVal,
+      };
+      const init = await getSupplierInit(req);
+      const totalPage = init.totalPage;
+      const totalRow = init.totalRow;
+      // totalSupplier
+      $("span#supplier-total-row").text(totalRow);
+      if (totalRow >= 1) {
+        await getSupplierPage(req);
+        handlePagination(totalPage);
+      }
+      if (totalRow < 1) {
+        const empty = uiTrZero(searchVal);
+        $("#supplier-table").html(empty);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   }
-  // 3. Function to insert html pagination
-  function uiPagination(supplierTotalPage) {
+  async function getSupplierPage(req) {
+    try {
+      const response = await getSupplier(req);
+      let tr = ``;
+      response.forEach((element) => {
+        tr += uiTr(element);
+      });
+      $("#supplier-table").html(tr);
+      reinitTooltip();
+      uiActivePageBtn(req.offsetVal);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  function handlePagination(totalPage) {
     let uiBtnPaginate = "";
-    for (let i = 1; i <= supplierTotalPage; i++) {
+    for (let i = 1; i <= totalPage; i++) {
       uiBtnPaginate += btnSupplierPage(i);
     }
     $("#supplier-number-page").html(uiBtnPaginate);
-    handlePagination(supplierTotalPage);
-  }
-  // 4. function to handle pagination(first,prev,number,next,last)
-  function handlePagination(supplierTotalPage) {
-    // Event listeners for pagination buttons
-    supplierBtnPage = document.getElementsByClassName("supplier-btn-page");
     // first page
     $("#supplier-first-page")
       .off("click")
-      .on("click", () => {
-        getSupplierPage(1);
+      .on("click", async () => {
+        const req = {
+          searchVal,
+          limitVal,
+          offsetVal: 1,
+        };
+        await getSupplierPage(req);
       });
     // previous page
     $("#supplier-prev-page")
       .off("click")
-      .on("click", () => {
+      .on("click", async () => {
         let pageActive = parseInt($(".supplier-active-page").text().trim());
         let decrementPage = pageActive - 1;
         if (decrementPage < 1) {
           decrementPage = supplierTotalPage;
         }
-        getSupplierPage(decrementPage);
+        const req = {
+          searchVal,
+          limitVal,
+          offsetVal: decrementPage,
+        };
+        await getSupplierPage(req);
       });
-    // based on number when clicked
-    for (let i = 0; i < supplierTotalPage; i++) {
-      supplierBtnPage[i].addEventListener("click", function () {
+    // by based number page
+    $("#supplier-number-page")
+      .off("click", "button.supplier-btn-page")
+      .on("click", "button.supplier-btn-page", async function () {
         const pageNumber = parseInt(this.textContent.trim());
-        getSupplierPage(pageNumber);
+        const req = {
+          searchVal,
+          limitVal,
+          offsetVal: pageNumber,
+        };
+        await getSupplierPage(req);
       });
-    }
     // next page
     $("#supplier-next-page")
       .off("click")
-      .on("click", () => {
+      .on("click", async function () {
         let pageActive = parseInt($(".supplier-active-page").text().trim());
         let incrementPage = pageActive + 1;
-        if (incrementPage > supplierTotalPage) {
+        if (incrementPage > totalPage) {
           incrementPage = 1;
         }
-        getSupplierPage(incrementPage);
+        const req = {
+          searchVal,
+          limitVal,
+          offsetVal: incrementPage,
+        };
+        await getSupplierPage(req);
       });
     // last page
     $("#supplier-last-page")
       .off("click")
-      .on("click", () => getSupplierPage(supplierTotalPage));
-
-    // Initial page load
-    getSupplierPage(supplierCurrentPage);
-  }
-  // 5. function to handle get satuan based on pageActive
-  function getSupplierPage(supplierPageNumber) {
-    getSupplier(
-      supplierSearch,
-      supplierLimit,
-      supplierPageNumber,
-      (status, response) => {
-        if (status) {
-          let tr = ``;
-          response.forEach((element) => {
-            tr += uiTr(element);
-          });
-          $("#supplier-table").html(tr);
-          updateActivePageButton(supplierPageNumber, supplierBtnPage);
-          reinitializeTooltips();
-        }
-        if (!status) {
-          console.error(response);
-        }
-      }
-    );
-    getDetail();
-  }
-  function getDetail() {
-    // get detail based on paramsid
-    $(document).on("click", "#supplierDetail", function () {
-      const supplier = this.dataset;
-      const supplierId = parseInt(supplier.supplierid);
-      const supplierName = supplier.suppliername;
-      const supplierInfo = supplier.supplierinfo;
-      const supplierImg = supplier.supplierimg;
-      $("#supplierDetailModalLabel").text(supplierName);
-      $("#supplier-detail-name").text(supplierName);
-      $("#supplier-detail-info").text(supplierInfo);
-      // if it no information further
-      if (supplierInfo === "") {
-        $("#supplier-detail-info").text("-");
-      }
-      // if exist photo
-      if (supplierImg === "null") {
-        $("#no-image").removeClass("d-none");
-        $("#supplier-detail-img").attr("src", "");
-      }
-      // if it doesn't exist photo
-      if (supplierImg !== "null") {
-        $("#no-image").addClass("d-none");
-        $("#supplier-detail-img").attr("src", supplierImg);
-      }
-      getProductSupplierId(supplierId, (status, response) => {
-        if (status) {
-          const existedProduct = response.length >= 1;
-          if (existedProduct) {
-            let list = `<ul>`;
-            response.forEach((el) => {
-              list += `<li class="fs-5">${el.ProductName}</li>`;
-            });
-            list += `</ul>`;
-            $("div#supplier-detail-productid").html(list);
-          }
-          if (!existedProduct) {
-            const list = `<p class='fs-5 ms-2 text-muted fst-italic'>product-no available</p>`;
-            $("div#supplier-detail-productid").html(list);
-          }
-        }
-        if (!status) {
-          console.error(response);
-        }
+      .on("click", async () => {
+        const req = {
+          searchVal,
+          limitVal,
+          offsetVal: totalPage,
+        };
+        await getSupplierPage(req);
       });
-    });
   }
 });
 export const getSupplierAgain = () => {
-  // get all value
-  let supplierSearch = $("#supplier-search-input").val();
-  let supplierLimit = parseInt($("#supplier-limit").val());
-  let supplierCurrentPage = 1;
-  let supplierTotalRow;
-  let supplierTotalPage;
-  let supplierBtnPage;
+  let searchVal = "";
+  let limitVal = parseInt($("#supplier-limit").val());
+  let offsetVal = 1;
   getInit();
-  $("#supplier-search-input").on("keyup", function () {
-    supplierSearch = $(this).val();
-    getInit(supplierSearch);
-  });
-  $("#supplier-limit").on("change", function () {
-    supplierLimit = parseInt($(this).val());
-    getInit();
-  });
-  // 1. get first,  get total row, upadate ui (total row) as condition
-  function getInit() {
-    getTotalRowSupplier(supplierSearch, (status, response) => {
-      if (status) {
-        supplierTotalRow = parseInt(response);
-        $("#supplier-total-row").text(supplierTotalRow);
-        // if it exist product
-        if (supplierTotalRow >= 1) {
-          getTotalPage();
-          $("#supplier-pagination").removeClass("d-none");
-        }
-        // if it doesn't exist product
-        if (supplierTotalRow < 1) {
-          if (supplierSearch) {
-            $("#supplier-table").html(trSupplierZeroSearch(supplierSearch));
-          } else {
-            $("#supplier-table").html(trSupplierZero);
-          }
-          $("#supplier-pagination").addClass("d-none");
-        }
-      }
-      if (!status) {
-        console.log(response);
-      }
+  $("#supplier-search-input")
+    .off("keyup")
+    .on("keyup", function () {
+      searchVal = $(this).val();
+      getInit();
     });
-  }
-  // 2. get total page, update ui (total row)
-  function getTotalPage() {
-    getTotalPageSupplier(supplierSearch, supplierLimit, (status, response) => {
-      if (status) {
-        supplierTotalPage = parseInt(response);
-        uiPagination(supplierTotalPage);
-      }
-      if (!status) {
-        console.error(response);
-      }
+  $("#supplier-limit")
+    .off("change")
+    .on("change", function () {
+      limitVal = parseInt($(this).val());
+      getInit();
     });
+  async function getInit() {
+    try {
+      const req = {
+        searchVal,
+        limitVal,
+        offsetVal,
+      };
+      const init = await getSupplierInit(req);
+      const totalPage = init.totalPage;
+      const totalRow = init.totalRow;
+      // totalSupplier
+      $("span#supplier-total-row").text(totalRow);
+      if (totalRow >= 1) {
+        await getSupplierPage(req);
+        handlePagination(totalPage);
+      }
+      if (totalRow < 1) {
+        const empty = uiTrZero(searchVal);
+        $("#supplier-table").html(empty);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   }
-  // 3. Function to insert html pagination
-  function uiPagination(supplierTotalPage) {
+  async function getSupplierPage(req) {
+    try {
+      const response = await getSupplier(req);
+      let tr = ``;
+      response.forEach((element) => {
+        tr += uiTr(element);
+      });
+      $("#supplier-table").html(tr);
+      reinitTooltip();
+      uiActivePageBtn(req.offsetVal);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  function handlePagination(totalPage) {
     let uiBtnPaginate = "";
-    for (let i = 1; i <= supplierTotalPage; i++) {
+    for (let i = 1; i <= totalPage; i++) {
       uiBtnPaginate += btnSupplierPage(i);
     }
     $("#supplier-number-page").html(uiBtnPaginate);
-    handlePagination(supplierTotalPage);
-  }
-  // 4. function to handle pagination(first,prev,number,next,last)
-  function handlePagination(supplierTotalPage) {
-    // Event listeners for pagination buttons
-    supplierBtnPage = document.getElementsByClassName("supplier-btn-page");
     // first page
     $("#supplier-first-page")
       .off("click")
-      .on("click", () => {
-        getSupplierPage(1);
+      .on("click", async () => {
+        const req = {
+          searchVal,
+          limitVal,
+          offsetVal: 1,
+        };
+        await getSupplierPage(req);
       });
     // previous page
     $("#supplier-prev-page")
       .off("click")
-      .on("click", () => {
+      .on("click", async () => {
         let pageActive = parseInt($(".supplier-active-page").text().trim());
         let decrementPage = pageActive - 1;
         if (decrementPage < 1) {
           decrementPage = supplierTotalPage;
         }
-        getSupplierPage(decrementPage);
+        const req = {
+          searchVal,
+          limitVal,
+          offsetVal: decrementPage,
+        };
+        await getSupplierPage(req);
       });
-    // based on number when clicked
-    for (let i = 0; i < supplierTotalPage; i++) {
-      supplierBtnPage[i].addEventListener("click", function () {
+    // by based number page
+    $("#supplier-number-page")
+      .off("click", "button.supplier-btn-page")
+      .on("click", "button.supplier-btn-page", async function () {
         const pageNumber = parseInt(this.textContent.trim());
-        getSupplierPage(pageNumber);
+        const req = {
+          searchVal,
+          limitVal,
+          offsetVal: pageNumber,
+        };
+        await getSupplierPage(req);
       });
-    }
     // next page
     $("#supplier-next-page")
       .off("click")
-      .on("click", () => {
+      .on("click", async function () {
         let pageActive = parseInt($(".supplier-active-page").text().trim());
         let incrementPage = pageActive + 1;
-        if (incrementPage > supplierTotalPage) {
+        if (incrementPage > totalPage) {
           incrementPage = 1;
         }
-        getSupplierPage(incrementPage);
+        const req = {
+          searchVal,
+          limitVal,
+          offsetVal: incrementPage,
+        };
+        await getSupplierPage(req);
       });
     // last page
     $("#supplier-last-page")
       .off("click")
-      .on("click", () => getSupplierPage(supplierTotalPage));
-
-    // Initial page load
-    getSupplierPage(supplierCurrentPage);
-  }
-  // 5. function to handle get satuan based on pageActive
-  function getSupplierPage(supplierPageNumber) {
-    getSupplier(
-      supplierSearch,
-      supplierLimit,
-      supplierPageNumber,
-      (status, response) => {
-        if (status) {
-          let tr = ``;
-
-          response.forEach((element) => {
-            tr += uiTr(element);
-          });
-          $("#supplier-table").html(tr);
-          updateActivePageButton(supplierPageNumber, supplierBtnPage);
-          reinitializeTooltips();
-        }
-        if (!status) {
-          console.error(response);
-        }
-      }
-    );
-    getDetail();
-  }
-  function getDetail() {
-    // get detail based on paramsid
-    $(document).on("click", "#supplierDetail", function () {
-      const supplier = this.dataset;
-      const supplierId = parseInt(supplier.supplierid);
-      const supplierName = supplier.suppliername;
-      const supplierInfo = supplier.supplierinfo;
-      const supplierImg = supplier.supplierimg;
-      $("#supplierDetailModalLabel").text(supplierName);
-      $("#supplier-detail-name").text(supplierName);
-      $("#supplier-detail-info").text(supplierInfo);
-      // if it no information further
-      if (supplierInfo === "") {
-        $("#supplier-detail-info").text("-");
-      }
-      // if exist photo
-      if (supplierImg === "null") {
-        $("#no-image").removeClass("d-none");
-        $("#supplier-detail-img").attr("src", "");
-      }
-      // if it doesn't exist photo
-      if (supplierImg !== "null") {
-        $("#no-image").addClass("d-none");
-        $("#supplier-detail-img").attr("src", supplierImg);
-      }
-      getProductSupplierId(supplierId, (status, response) => {
-        if (status) {
-          const existedProduct = response.length >= 1;
-          if (existedProduct) {
-            let list = `<ul>`;
-            response.forEach((el) => {
-              list += `<li class="fs-5">${el.ProductName}</li>`;
-            });
-            list += `</ul>`;
-            $("div#supplier-detail-productid").html(list);
-          }
-          if (!existedProduct) {
-            const list = `<p class='fs-5 ms-2 text-muted fst-italic'>product-no available</p>`;
-            $("div#supplier-detail-productid").html(list);
-          }
-        }
-        if (!status) {
-          console.error(response);
-        }
+      .on("click", async () => {
+        const req = {
+          searchVal,
+          limitVal,
+          offsetVal: totalPage,
+        };
+        await getSupplierPage(req);
       });
-    });
   }
 };
 export const getSupplierRef = () => {

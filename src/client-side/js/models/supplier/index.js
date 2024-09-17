@@ -5,3 +5,4 @@ import "./delete.js";
 
 import "./ui.js";
 import "./previewImge.js";
+import "./read-by-id.js";

@@ -59,17 +59,14 @@ export const createBlankValue = () => {
   $("#category-keterangan").val("");
 };
 // when total category row 0 being seaching
-export const uiTrZeroSearch = (categorySearch) => {
+export const uiTrZero = (searchVal) => {
+  let search = `Category is empty....`;
+  if (searchVal !== "") {
+    search = `Category - ${searchVal} not found`;
+  }
   return `<tr>
               <td colspan="4" 
-              class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">kategori ${categorySearch} tidak ditemukan....</td>
-          </tr>`;
-};
-// when total category row 0 being seaching
-export const uiTrZero = () => {
-  return `<tr>
-              <td colspan="5" 
-              class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">tidak ada category....</td>
+              class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">${search}</td>
           </tr>`;
 };
 // button pagination
@@ -81,14 +78,11 @@ export const uiBtnPage = (i) => {
           </button>`;
 };
 // Function to update active page button
-export const uiActivePageButton = (categoryPageNumber, categoryBtnPage) => {
-  const categoryBtnPageActive = document.getElementsByClassName(
-    "category-active-page"
-  );
-  if (categoryBtnPageActive.length >= 1) {
-    categoryBtnPageActive[0].classList.remove("category-active-page");
-  }
-  categoryBtnPage[categoryPageNumber - 1].classList.add("category-active-page");
+export const uiActivePageButton = (pageActive) => {
+  $("button.category-btn-page").removeClass("category-active-page");
+  $("button.category-btn-page")
+    .eq(pageActive - 1)
+    .addClass("category-active-page");
 };
 export const uiListRefProductUpdate = (categoryList) => {
   let option = "";

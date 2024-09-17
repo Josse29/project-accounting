@@ -14,59 +14,59 @@ $(document).ready(function () {
     .on("click", "#persediaan-delete-btn", function () {
       $("#persediaan-delete-failed").html(``);
       const persediaan = this.dataset;
-      const persediaanId = parseInt(persediaan.persediaanid);
-      const persediaanProductId = parseInt(persediaan.productid);
-      const persediaanName = persediaan.productname;
-      const persediaanqty = parseInt(persediaan.persediaanqty);
+      const valPersediaanId = parseInt(persediaan.persediaanid);
+      const valPersediaanProductId = parseInt(persediaan.productid);
+      const valProductName = persediaan.productname;
+      const valPersediaanQty = parseInt(persediaan.persediaanqty);
       $("#persediaan-delete-name").text();
       let txtPersediaanQty = ``;
-      if (persediaanqty >= 1) {
-        txtPersediaanQty = `<span class="badge text-bg-success">+ ${persediaanqty}</span>`;
+      if (valPersediaanQty >= 1) {
+        txtPersediaanQty = `<span class="badge text-bg-success">+ ${valPersediaanQty}</span>`;
       }
-      if (persediaanqty < 0) {
+      if (valPersediaanQty < 0) {
         txtPersediaanQty = `<span class="badge text-bg-danger">${addSpace(
-          persediaanqty
+          valPersediaanQty
         )}</span>`;
       }
-      const konfirmasiDelete = `Apakah anda yakin menghapus ${txtPersediaanQty} ${persediaanName} pada <span class="fw-bold">Tanggal : ${formatWaktuIndo(
+      const konfirmasiDelete = `Are you sure to delete ${txtPersediaanQty} ${valProductName} on <span class="fw-bold">Tanggal : ${formatWaktuIndo(
         persediaan.persediaanddmy
       )} Waktu ${persediaan.persediaanhms} </span> ?`;
       $("#confirm-text").html(konfirmasiDelete);
       // action to delete
       $("#persediaan-delete-yes")
         .off("click")
-        .on("click", function () {
-          deletePersediaan(
-            persediaanId,
-            persediaanName,
-            persediaanqty,
-            persediaanProductId,
-            (status, response) => {
-              if (status) {
-                getPersediaanAgain();
-                uiSuccessActionPersediaan(response);
-                $("#persediaanDeleteModal").modal("hide");
-              }
-              if (!status) {
-                uiFailedDelete(response);
-              }
-            }
-          );
+        .on("click", async function () {
+          try {
+            const req = {
+              valPersediaanId,
+              valProductName,
+              valPersediaanQty,
+              valPersediaanProductId,
+            };
+
+            const response = await deletePersediaan(req);
+            getPersediaanAgain();
+            uiSuccessActionPersediaan(response);
+            $("#persediaanDeleteModal").modal("hide");
+          } catch (error) {
+            const errMsg = error || error.message;
+            uiFailedDelete(errMsg);
+            console.error(errMsg);
+          }
         });
     });
   // delete all
   $("button#persediaan-delete-all-yes")
     .off("click")
-    .on("click", function () {
-      deletePersediaanAll((status, response) => {
-        if (status) {
-          uiSuccessActionPersediaan(response);
-          getPersediaanAgain();
-          $("#persediaanDeleteAllModal").modal("hide");
-        }
-        if (!status) {
-          console.log(response);
-        }
-      });
+    .on("click", async function () {
+      try {
+        const response = await deletePersediaanAll();
+        uiSuccessActionPersediaan(response);
+        getPersediaanAgain();
+        $("#persediaanDeleteAllModal").modal("hide");
+      } catch (error) {
+        const errMsg = error || error.message;
+        console.error(errMsg);
+      }
     });
 });

@@ -1,248 +1,98 @@
-import {
-  getListProduct,
-  getTotalRowProduct,
-} from "../../../../serverless-side/functions/product.js";
-import { uiListRefPersediaanCreate } from "./ui.js";
-import {
-  getPersediaanQty,
-  getPersediaanTotalRow,
-} from "../../../../serverless-side/functions/persediaan.js";
+import { getListProduct } from "../../../../serverless-side/functions/product.js";
 // function to update when create list product ref persediaan
-export function listProductRefPersediaanCreate() {
-  $(document).ready(function () {
-    const $productList = $("#persediaan-refproduct-create-list");
-    let $productSearch = $("input#persediaan-refproduct-search-name");
-    $productList.hide();
-    getInit($productSearch.val());
-    $productSearch.on("focus", () => {
-      $productList.show();
-    });
-    $productSearch.on("blur", () => {
-      setTimeout(() => {
-        $productList.hide();
-      }, 200);
-    });
-    $productSearch.on("keyup", function (event) {
-      if (
-        event.keyCode === 38 || // Arrow Up
-        event.keyCode === 40 || // Arrow Down
-        event.keyCode === 13 || // Enter
-        event.keyCode === 37 || // Arrow Left
-        event.keyCode === 39 // Arrow Right
-      ) {
-        return false;
-      }
-      getInit($productSearch.val());
-    });
-    // 1.Initial Product (getTotalRow, and getListProduct)
-    function getInit(productSearch) {
-      // total row product
-      getTotalRowProduct(productSearch, (status, response) => {
-        // success total row product
-        if (status) {
-          const totalProductList = parseInt(response);
-          // existed product
-          if (totalProductList >= 1) {
-            $("#productList-empty").hide();
-            $productSearch.show();
-            getListProduct(productSearch, (status, response) => {
-              if (status) {
-                const productList = response;
-                uiListRefPersediaanCreate(productList);
-                getValue();
-                getValue2();
-              }
-              if (!status) {
-                console.error(response);
-              }
-            });
-          }
-          // nonexistence product
-          if (totalProductList < 1) {
-            // without search feature
-            if (productSearch === "") {
-              $productSearch.hide();
-              $("#persediaan-refproduct-create-list").hide();
-              $("#productList-empty").show();
-            }
-            // with search feature
-            if (productSearch !== "") {
-              const optionNotFound = `<div class='persediaan-refproduct-not-found'>product - <b>${productSearch}</b> tidak ditemukan</div>`;
-              $("#persediaan-refproduct-create-list").html(optionNotFound);
-            }
-          }
-        }
-        // failed total row product
-        if (!status) {
-          console.error(response);
-        }
-      });
-    }
-    // 2.function to get value, get total qty based on click
-    function getValue() {
-      // Re-bind click event to new elements
-      $(".persediaan-refproduct-create-val")
-        .off("click")
-        .on("click", async function () {
-          try {
-            const totalRow = await getPersediaanTotalRowAsync();
-            if (totalRow < 1) {
-              $productSearch.val(`${this.textContent}`);
-            }
-            if (totalRow >= 1) {
-              const selected = parseInt($(this).attr("valueid"));
-              const qty = await getPersediaanQtyAsync(selected);
-              $productSearch.val(`${this.textContent}`);
-              const htmlStock = `<div class="fs-5 text-start">Stock : ${qty}</div>`;
-              $("div#persediaan-create-stock").html(htmlStock);
-            }
-          } catch (error) {
-            console.error("Failed to process persediaan:", error);
-          }
-          $("input#persediaan-refproduct-create-name").val(this.textContent);
-          $("input#persediaan-refproduct-create-id").val(
-            $(this).attr("valueid")
-          );
-          $("input#persediaan-refproduct-create-rp").val(
-            $(this).attr("valueprice")
-          );
-          $productList.hide();
-        });
-    }
-    function getPersediaanTotalRowAsync() {
-      return new Promise((resolve, reject) => {
-        getPersediaanTotalRow("", (status, response) => {
-          if (status) {
-            resolve(response);
-          }
-          if (!status) {
-            console.error(response);
-            reject();
-          }
-        });
-      });
-    }
-    function getPersediaanQtyAsync(selected) {
-      return new Promise((resolve, reject) => {
-        getPersediaanQty(selected, (status, response) => {
-          if (status) {
-            resolve(response);
-          }
-          if (!status) {
-            console.error(response);
-            reject();
-          }
-        });
-      });
-    }
-    // 3 function to get value event keydown and class active hufft
-    let index = -1;
-    function getValue2() {
-      const items = $(".persediaan-refproduct-create-val");
-      // akhhhhhhhhhhhhhhhhhh event off huyfftt
-      $($productSearch)
-        .off("keydown")
-        .on("keydown", function (e) {
-          $productList.show();
-          if (e.key === "ArrowDown") {
-            e.preventDefault();
-            index++;
-            if (index >= items.length) {
-              index = 0;
-            }
-            items.removeClass("active-list");
-            $(items).eq(index).addClass("active-list");
-            // Scroll into view
-            $(items).eq(index)[0].scrollIntoView({
-              behavior: "smooth", // Optional: smooth scroll animation
-              block: "nearest", // Scroll the item into the nearest visible area
-            });
-          }
-          if (e.key === "ArrowUp") {
-            e.preventDefault();
-            index--;
-            if (index < 0) {
-              index = items.length - 1;
-            }
-            items.removeClass("active-list");
-            $(items).eq(index).addClass("active-list");
-            // Scroll into view
-            $(items).eq(index)[0].scrollIntoView({
-              behavior: "smooth",
-              block: "nearest",
-            });
-          }
-          if (e.key === "Enter") {
-            e.preventDefault();
-            if (index >= 0 && index < items.length) {
-              $(items).eq(index).click();
-              index = -1;
-            }
-          }
-        });
-      $productList
-        .off("mouseenter", ".persediaan-refproduct-create-val")
-        .on("mouseenter", ".persediaan-refproduct-create-val", function () {
-          items.removeClass("active-list");
-          $(this).addClass("active-list");
-          index = items.index(this);
-        });
-    }
-  });
-}
-export const listProductRefPersediaanRead = () => {
-  getListProduct("", (status, response) => {
-    if (status) {
-      let option = `<option selected disabled>Produk</option>`;
+export const listProductRefPersediaanCreate = async () => {
+  try {
+    const response = await getListProduct("");
+    console.log(response);
+    const existed = response.length >= 1;
+    let option = ``;
+    if (existed) {
+      option = `<option selected disabled>Choose One Of Products</option>`;
       response.forEach((row) => {
-        option += `<option value=${row.ProductId}>${row.ProductName}</option>`;
+        option += `<option value=${row.ProductId} data-pricebuy=${row.ProductPriceBeli}>${row.ProductName}</option>`;
       });
-      $("select#persediaan-refproduct-search").html(option);
     }
-    if (!status) {
-      console.error(response);
+    if (!existed) {
+      option = `<option selected disabled class="fst-italic">Product Empty....</option>`;
     }
-  });
+    $("select#persediaan-refproduct-search-name").html(option);
+  } catch (error) {
+    console.error(error);
+  }
 };
-export const listProductRefPersediaanReadDate = () => {
-  getListProduct("", (status, response) => {
-    if (status) {
-      let option = `<option selected disabled>Produk</option>`;
+export const listProductRefPersediaanRead = async () => {
+  try {
+    const response = await getListProduct("");
+    const existed = response.length >= 1;
+    let option = ``;
+    if (existed) {
+      option = `<option selected disabled>Choose One Of Products</option>`;
       response.forEach((row) => {
         option += `<option value=${row.ProductId}>${row.ProductName}</option>`;
       });
-      $("select#persediaan-date-product").html(option);
     }
-    if (!status) {
-      console.error(response);
+    if (!existed) {
+      option = `<option selected disabled>Product Empty</option>`;
     }
-  });
+    $("select#persediaan-refproduct-search").html(option);
+  } catch (error) {
+    console.error(error);
+  }
 };
-export const listProductRefSalesRead = () => {
-  getListProduct("", (status, response) => {
-    if (status) {
-      let option = `<option selected disabled>Choose One Of Products</option>`;
+export const listProductRefPersediaanReadDate = async () => {
+  try {
+    const response = await getListProduct("");
+    const existed = response.length >= 1;
+    let option = ``;
+    if (existed) {
+      option = `<option selected disabled>Choose One Of Products</option>`;
       response.forEach((row) => {
         option += `<option value=${row.ProductId}>${row.ProductName}</option>`;
       });
-      $("select#sales-read-productid").html(option);
     }
-    if (!status) {
-      console.error(response);
+    if (!existed) {
+      option = `<option selected disabled>Product Empty</option>`;
     }
-  });
+    $("select#persediaan-date-product").html(option);
+  } catch (error) {
+    console.error(error);
+  }
 };
-export const listProductRefSalesReadDate = () => {
-  getListProduct("", (status, response) => {
-    if (status) {
-      let option = `<option selected disabled>Choose One Of Products</option>`;
+export const listProductRefSalesRead = async () => {
+  try {
+    const response = await getListProduct("");
+    const existed = response.length >= 1;
+    let option = ``;
+    if (existed) {
+      option = `<option selected disabled>Choose One Of Products</option>`;
       response.forEach((row) => {
         option += `<option value=${row.ProductId}>${row.ProductName}</option>`;
       });
-      $("select#sales-read-productid-date").html(option);
     }
-    if (!status) {
-      console.error(response);
+    if (!existed) {
+      option = `<option selected disabled>Product Empty</option>`;
     }
-  });
+    $("select#sales-read-productid").html(option);
+  } catch (error) {
+    console.error(error);
+  }
+};
+export const listProductRefSalesReadDate = async () => {
+  try {
+    const response = await getListProduct("");
+    const existed = response.length >= 1;
+    let option = ``;
+    if (existed) {
+      option = `<option selected disabled>Choose One Of Products</option>`;
+      response.forEach((row) => {
+        option += `<option value=${row.ProductId}>${row.ProductName}</option>`;
+      });
+    }
+    if (!existed) {
+      option = `<option selected disabled>Product Empty</option>`;
+    }
+    $("select#sales-read-productid-date").html(option);
+  } catch (error) {
+    console.error(error);
+  }
 };

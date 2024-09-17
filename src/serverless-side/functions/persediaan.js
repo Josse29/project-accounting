@@ -41,65 +41,53 @@ import {
 } from "../querysql/persediaan.js";
 
 // 1.CREATE
-export const createPersediaan = (
-  valProductName,
-  valPersediaanDDMY,
-  valPersediaanHMS,
-  valPersediaanProductId,
-  valPersediaanQty,
-  valPersediaanRp,
-  valPersediaanInfo,
-  callback
-) => {
+export const createPersediaan = async (req) => {
+  const {
+    valProductName,
+    valPersediaanDDMY,
+    valPersediaanHMS,
+    valPersediaanProductId,
+    valPersediaanQty,
+    valPersediaanRp,
+    valPersediaanInfo,
+  } = req;
   const valdateNum = isNumeric(valPersediaanQty);
   const isNaN = Number.isNaN(valPersediaanProductId);
   // 1.validate product exist
   if (isNaN) {
-    return callback(false, "Mohon tambah Product terlebih dahulu");
+    const msg = "Please add Product First...";
+    throw new Error(msg);
   }
   // 2.validate numeric on valPersediaanQty
   if (!valdateNum) {
-    return callback(false, "Mohon Masukkan Angka di Input Qty");
+    const msg = "Please input type of number in qty";
+    throw new Error(msg);
   }
   // 3.validate qty product
-  getPersediaanQtyValidate(
-    valProductName,
+  await getPersediaanQtyValidate(req);
+  // execute insert
+  const valPersediaanTotalRp = valPersediaanQty * valPersediaanRp;
+  const query = queryInsertPersediaan(
+    valPersediaanDDMY,
+    valPersediaanHMS,
     valPersediaanProductId,
     valPersediaanQty,
-    (status, response) => {
-      if (status) {
-        executeInsert();
-      }
-      if (!status) {
-        return callback(false, response);
-      }
-    }
+    valPersediaanTotalRp,
+    valPersediaanInfo
   );
-  // execute insert
-  function executeInsert() {
-    const valPersediaanTotalRp = valPersediaanQty * valPersediaanRp;
-    const query = queryInsertPersediaan(
-      valPersediaanDDMY,
-      valPersediaanHMS,
-      valPersediaanProductId,
-      valPersediaanQty,
-      valPersediaanTotalRp,
-      valPersediaanInfo
-    );
+  return new Promise((resolve, reject) => {
     db.run(query, (err) => {
       if (!err) {
-        return callback(
-          true,
-          `Persediaan <b class='text-capitalize'>${valProductName} ${formatQty1(
-            valPersediaanQty
-          )}</b> berhasil ditambahkan`
-        );
+        const msg = `Product - <b class='text-capitalize'>${valProductName} ${formatQty1(
+          valPersediaanQty
+        )}</b> has been stored`;
+        resolve(msg);
       }
       if (err) {
-        return callback(false, err);
+        reject(err);
       }
     });
-  }
+  });
 };
 export const createPersediaan1 = (request, response) => {
   const {
@@ -167,68 +155,62 @@ export const getPersediaan = (req) => {
     });
   });
 };
-export const getPersediaanQtyValidate = (
-  valProductName,
-  valPersediaanProductId,
-  valPersediaanQty,
-  callback
-) => {
+export const getPersediaanQtyValidate = (req) => {
+  const { valProductName, valPersediaanProductId, valPersediaanQty } = req;
   const query = queryGetPersediaanQty(valPersediaanProductId);
-  db.all(query, (err, rows) => {
-    if (!err) {
-      const res = rows[0];
-      const existItem = res.TotalQty >= 1;
-      // Produk sudah terdaftar ke tablePersediaan
-      if (existItem) {
-        // barang masuk
-        const stockQty = parseFloat(res.TotalQty);
-        if (valPersediaanQty >= 1) {
-          return callback(true, valPersediaanQty);
-        }
-        // barang keluar
-        if (valPersediaanQty < 0) {
-          // barang keluar tapi persediaan masih ada
-          if (stockQty >= 1) {
-            const qtyOutAbs = Math.abs(parseFloat(valPersediaanQty));
-            // stock unsufficient
-            if (qtyOutAbs <= stockQty) {
-              return callback(true, valPersediaanQty);
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, rows) => {
+      if (!err) {
+        const res = rows[0];
+        const existItem = res.TotalQty >= 1;
+        // Produk sudah terdaftar ke tablePersediaan
+        if (existItem) {
+          // barang masuk
+          const stockQty = parseFloat(res.TotalQty);
+          if (valPersediaanQty >= 1) {
+            resolve();
+          }
+          // barang keluar
+          if (valPersediaanQty < 0) {
+            // barang keluar tapi persediaan masih ada
+            if (stockQty >= 1) {
+              // change min to positive value
+              const qtyOutAbs = Math.abs(parseFloat(valPersediaanQty));
+              // stock sufficient
+              if (qtyOutAbs <= stockQty) {
+                resolve();
+              }
+              // stock unsufficient
+              if (qtyOutAbs > stockQty) {
+                const msg = `Upppss Sorry, ${valProductName} only available : ${stockQty}`;
+                reject(msg);
+              }
             }
-            // stock sufficient
-            if (qtyOutAbs > stockQty) {
-              return callback(
-                false,
-                `Mohon Maaf, ${valProductName} hanya tersedia : ${stockQty}`
-              );
+            // barang keluar tapi persediaan masih kosong
+            if (stockQty < 1) {
+              const msg = `${valProductName} is still empty....`;
+              reject(msg);
             }
           }
-          // barang keluar tapi persediaan masih kosong
-          if (stockQty < 1) {
-            return callback(false, `${valProductName} masih kosong`);
+        }
+        // Produk belum terdaftar ke tablePersediaan
+        if (!existItem) {
+          // barang masuk
+          if (valPersediaanQty >= 1) {
+            const msg = `${valProductName} has been added with qty : ${valPersediaanQty}`;
+            resolve(msg);
+          }
+          // barang keluar
+          if (valPersediaanQty < 1) {
+            const msg = `Upppsss Sorry... ${valProductName} is'nt listed`;
+            reject(msg);
           }
         }
       }
-      // Produk belum terdaftar ke tablePersediaan
-      if (!existItem) {
-        // barang masuk
-        if (valPersediaanQty >= 1) {
-          return callback(
-            true,
-            `${valProductName} sudah ditambahkan dengan jumlah : ${valPersediaanQty}`
-          );
-        }
-        // barang keluar
-        if (valPersediaanQty < 1) {
-          return callback(
-            false,
-            `Mohon maaf ${valProductName} belum terdaftar silakan tambah`
-          );
-        }
+      if (err) {
+        reject(err);
       }
-    }
-    if (err) {
-      return callback(false, err);
-    }
+    });
   });
 };
 export const getPersediaanQty = (valPersediaanProductId) => {
@@ -335,14 +317,17 @@ export const getPersediaanTotalRow = (valPersediaanSearch, callback) => {
     }
   });
 };
-export const getPersediaanProductId = (valPersediaanProductId, callback) => {
-  db.all(queryGetPersediaanProductId(valPersediaanProductId), (err, res) => {
-    if (!err) {
-      return callback(true, res);
-    }
-    if (err) {
-      return callback(true, err);
-    }
+export const getPersediaanProductId = (valPersediaanProductId) => {
+  const query = queryGetPersediaanProductId(valPersediaanProductId);
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, res) => {
+      if (!err) {
+        resolve(res);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
 export const getPersediaanCategoryId = (valPersediaanCategoryId) => {
@@ -721,182 +706,196 @@ export const getPersediaanProductGroup1 = (
   });
 };
 // 3.UPDATE
-export const updatePersediaan = (
-  valPersediaanId,
-  valPersediaanDDMY,
-  valPersediaanHMS,
-  valPersediaanProductId,
-  valPersediaanQty,
-  valPersediaanRp,
-  valPersediaanInfo,
-  valProductName,
-  callback
-) => {
+export const updatePersediaan = async (req) => {
+  const {
+    valPersediaanId,
+    valPersediaanDDMY,
+    valPersediaanHMS,
+    valPersediaanProductId,
+    valPersediaanQty,
+    valPersediaanRp,
+    valPersediaanInfo,
+    valProductName,
+  } = req;
   const valdateNum = isNumeric(valPersediaanQty);
   // 1.validate numeric on valPersediaanQty
   if (!valdateNum) {
-    const msg = "Mohon Masukkan Angka di Input Qty";
-    return callback(false, msg);
+    const msg = "Please input type of number in qty";
+    throw new Error(msg);
   }
-  // 2.get total row by persediaan-product id
-  db.each(
-    queryGetPersediaanProductRow(valPersediaanProductId),
-    (err, response) => {
+  // assure more than 1 row
+  await validateStock(valPersediaanProductId, valPersediaanQty);
+  // 3. validate available stock value must-be positive
+  await validateStock1(
+    valPersediaanId,
+    valPersediaanProductId,
+    valPersediaanQty
+  );
+  // execute update
+  const valPersediaanTotalRp = valPersediaanQty * valPersediaanRp;
+  const query = queryUpdatePersediaan(
+    valPersediaanId,
+    valPersediaanDDMY,
+    valPersediaanHMS,
+    valPersediaanProductId,
+    valPersediaanQty,
+    valPersediaanTotalRp,
+    valPersediaanInfo
+  );
+  return new Promise((resolve, reject) => {
+    db.run(query, (err) => {
+      if (!err) {
+        const msg = `Product <b class='text-capitalize'>${valProductName} ${formatQty1(
+          valPersediaanQty
+        )}</b> has been Updated`;
+        resolve(msg);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
+  });
+};
+export const validateStock = (valPersediaanProductId, valPersediaanQty) => {
+  const query = queryGetPersediaanProductRow(valPersediaanProductId);
+  return new Promise((resolve, reject) => {
+    db.each(query, (err, response) => {
       if (!err) {
         const stock = parseFloat(response.TotalProduct);
         // only one stock value
         if (stock === 1) {
           if (valPersediaanQty >= 1) {
-            executeUpdate(valPersediaanQty);
+            resolve();
           }
           if (valPersediaanQty < 1) {
-            const msg = `Gagal diperbaharui, Jika ini berhasil diperbaharui maka total stock menjadi ${valPersediaanQty}`;
-            return callback(false, msg);
+            const msg = `Failed to update, If Succeed to update, The total stock is ${valPersediaanQty}`;
+            reject(msg);
           }
         }
         if (stock > 1) {
-          validatePositiveStock();
+          resolve();
         }
       }
       if (err) {
-        console.error(response);
+        reject(err);
       }
-    }
-  );
-  // 3. validate available stock value must-be positive
-  function validatePositiveStock() {
-    const query = queryGetPersediaanQty2(
-      valPersediaanId,
-      valPersediaanProductId
-    );
+    });
+  });
+};
+export const validateStock1 = (
+  valPersediaanId,
+  valPersediaanProductId,
+  valPersediaanQty
+) => {
+  const query = queryGetPersediaanQty2(valPersediaanId, valPersediaanProductId);
+  return new Promise((resolve, reject) => {
     db.all(query, (err, rows) => {
       if (!err) {
         const response = parseFloat(rows[0].TotalQty);
         const stock = response + valPersediaanQty >= 0;
         if (stock) {
-          executeUpdate(valPersediaanQty);
+          resolve();
         }
         if (!stock) {
           const totalQty = valPersediaanQty + response;
-          const msg = `Gagal diupdate, Jika Stock ini berhasil diupdate maka Total Stock Produk ini menjadi : 
+          const msg = `Failed to Update, If Succeed to Update, The Total Stock is : 
           ${totalQty}`;
-          return callback(false, msg);
+          reject(msg);
         }
       }
       if (err) {
         return callback(false, err);
       }
     });
-  }
-  // execute update
-  function executeUpdate(qtyUpdate) {
-    const valPersediaanTotalRp = qtyUpdate * valPersediaanRp;
-    const query = queryUpdatePersediaan(
-      valPersediaanId,
-      valPersediaanDDMY,
-      valPersediaanHMS,
-      valPersediaanProductId,
-      valPersediaanQty,
-      valPersediaanTotalRp,
-      valPersediaanInfo
-    );
-    db.run(query, (err) => {
-      if (!err) {
-        return callback(
-          true,
-          `Persediaan <b class='text-capitalize'>${valProductName} ${formatQty1(
-            valPersediaanQty
-          )}</b> berhasil diperbaharui`
-        );
-      }
-      if (err) {
-        return callback(false, err);
-      }
-    });
-  }
+  });
 };
 // 4.DELETE
-export const deletePersediaan = (
-  valPersediaanId,
-  valProductName,
-  valPersediaanQty,
-  valPersediaanProductId,
-  callback
-) => {
-  console.log(valPersediaanId);
-  // 1. get total row product id by persediaan
-  db.each(
-    queryGetPersediaanProductRow(valPersediaanProductId),
-    (err, response) => {
+export const deletePersediaan = async (req) => {
+  const {
+    valPersediaanId,
+    valProductName,
+    valPersediaanQty,
+    valPersediaanProductId,
+  } = req;
+  console.log(valPersediaanProductId);
+  // sure conditionally with rows
+  await validateStock2(valPersediaanProductId, valPersediaanQty);
+  // validate stock must be postiive
+  await validateStock3(valPersediaanId, valPersediaanProductId);
+  // 3. execute delete
+  return new Promise((resolve, reject) => {
+    db.run(queryDeletePersediaan(valPersediaanId), (err) => {
+      if (!err) {
+        const msg = `Stock Product <b class='text-capitalize'>${valProductName} ${formatQty1(
+          valPersediaanQty
+        )}</b> has been deleted`;
+        resolve(msg);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
+  });
+};
+export const validateStock2 = (valPersediaanProductId, valPersediaanQty) => {
+  console.log(valPersediaanProductId);
+  const query = queryGetPersediaanProductRow(valPersediaanProductId);
+  return new Promise((resolve, reject) => {
+    db.each(query, (err, response) => {
       if (!err) {
         const stock = parseFloat(response.TotalProduct);
         if (stock === 1) {
           if (valPersediaanQty >= 1) {
-            executeDelete();
+            resolve();
           }
           if (valPersediaanQty < 1) {
-            const msg = `Gagal diperbaharui, Jika ini berhasil diperbaharui maka total stock menjadi ${valPersediaanQty}`;
-            return callback(false, msg);
+            const msg = `If Succeed to Delete,The Stock total is : ${valPersediaanQty}`;
+            reject(msg);
           }
         }
         if (stock > 1) {
-          validatePositiveStock();
+          resolve();
         }
       }
       if (err) {
-        console.error(response);
-      }
-    }
-  );
-  // 2. validate available stock value must-be positive
-  function validatePositiveStock() {
-    db.all(
-      queryGetPersediaanQty2(valPersediaanId, valPersediaanProductId),
-      (err, rows) => {
-        if (!err) {
-          const response = parseFloat(rows[0].TotalQty);
-          const stock = response >= 0;
-          if (stock) {
-            executeDelete();
-          }
-          if (!stock) {
-            const msg = `Gagal dihapus, Jika Stock ini berhasil dihapus maka Total Stock Produk ini menjadi : ${response}, hapus yang stock pengeluaran terlebih dahulu`;
-            return callback(false, msg);
-          }
-        }
-        if (err) {
-          return callback(false, err);
-        }
-      }
-    );
-  }
-  // 3. execute delete
-  function executeDelete() {
-    db.run(queryDeletePersediaan(valPersediaanId), (err) => {
-      if (!err) {
-        return callback(
-          true,
-          `Persediaan <b class='text-capitalize'>${valProductName} ${formatQty1(
-            valPersediaanQty
-          )}</b> berhasil dihapus`
-        );
-      }
-      if (err) {
-        return callback(false, err);
+        reject(err);
       }
     });
-  }
+  });
 };
-export const deletePersediaanAll = (callback) => {
+export const validateStock3 = (valPersediaanId, valPersediaanProductId) => {
+  const query = queryGetPersediaanQty2(valPersediaanId, valPersediaanProductId);
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, rows) => {
+      if (!err) {
+        const response = parseFloat(rows[0].TotalQty);
+        const stock = response >= 0;
+        if (stock) {
+          resolve();
+        }
+        if (!stock) {
+          const msg = `Failed to delete, If Succeed to delete, The total Stock is : ${response}`;
+          reject(msg);
+        }
+      }
+      if (err) {
+        reject(err);
+      }
+    });
+  });
+};
+export const deletePersediaanAll = () => {
   const query = queryDeletePersediaanAll();
-  db.all(query, (err) => {
-    if (!err) {
-      const msg = "Seluruh Stok berhasil dihapus";
-      return callback(true, msg);
-    }
-    if (err) {
-      return callback(false, err);
-    }
+  return new Promise((resolve, reject) => {
+    db.all(query, (err) => {
+      if (!err) {
+        const msg = "Seluruh Stok berhasil dihapus";
+        resolve(msg);
+      }
+      if (err) {
+        reject(msg);
+      }
+    });
   });
 };
 export const deletePersediaanProductId = (valProductId, callback) => {

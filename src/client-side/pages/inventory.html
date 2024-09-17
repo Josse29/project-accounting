@@ -126,7 +126,7 @@
               class="card-header text-white fs-3 d-flex justify-content-between"
               style="background-color: #3b82f6"
             >
-              <div id="test">Persediaan</div>
+              <div id="test">Stock</div>
               <div id="persediaan-detail-totalrp" class="me-4"></div>
             </div>
             <div class="card-body overflow-auto">
@@ -297,48 +297,42 @@
               </div>
               <!-- table persediaan  -->
               <div class="overflow-auto py-2" id="persediaan-scroll-byme">
-                <table class="table table-striped">
+                <table class="table table-striped" style="table-layout: fixed">
                   <thead>
                     <tr>
+                      <!-- id -->
                       <th class="text-center text-nowrap" style="width: 100px">
-                        No
+                        #
                       </th>
-                      <th style="width: 180px" class="text-nowrap">
-                        Hari / Tanggal
+                      <!-- day / date -->
+                      <th style="width: 260px" class="text-nowrap">
+                        Day / Date
                       </th>
-                      <th style="width: 100px" class="text-nowrap">Jam</th>
+                      <!-- hours -->
+                      <th style="width: 140px" class="text-nowrap">Hours</th>
+                      <!-- product name -->
                       <th style="width: 190px" class="text-nowrap">
-                        Nama Produk
+                        Product Name
                       </th>
+                      <!-- category name -->
                       <th style="width: 190px" class="text-nowrap">
-                        Nama Kategori
+                        Category Name
                       </th>
+                      <!-- supplier name -->
                       <th style="width: 190px" class="text-nowrap">
-                        Nama Supplier
+                        Supplier Name
                       </th>
-                      <th style="width: 150px" class="text-nowrap">
-                        Nama Petugas
-                      </th>
-                      <th
-                        class="text-center"
-                        style="width: 120px"
-                        class="text-nowrap"
-                      >
+                      <!-- qty -->
+                      <th class="text-center text-nowrap" style="width: 120px">
                         Qty
                       </th>
-                      <th
-                        class="text-center"
-                        style="width: 200px"
-                        class="text-nowrap"
-                      >
-                        Harga
+                      <!-- action -->
+                      <th class="text-center text-nowrap" style="width: 200px">
+                        Price
                       </th>
-                      <th
-                        class="text-center"
-                        style="width: 217px"
-                        class="text-nowrap"
-                      >
-                        Aksi
+                      <!-- action -->
+                      <th class="text-center text-nowrap" style="width: 217px">
+                        Action
                       </th>
                     </tr>
                   </thead>
@@ -919,37 +913,28 @@
                 <!-- alert failed -->
                 <div id="sectionFailedActionPersediaan"></div>
                 <!-- product-list -->
-                <div class="mb-3 position-relative">
+                <div class="mb-3">
                   <label
                     for="persediaan-refproduct-search-name"
                     class="form-label fs-4"
-                    >Nama Produk</label
+                    >Product Name</label
                   >
-                  <input
-                    type="text"
-                    class="form-control text-capitalize"
+                  <!-- for product -->
+                  <select
                     id="persediaan-refproduct-search-name"
-                    placeholder="masukkan nama product"
-                  />
-                  <div id="persediaan-refproduct-create-list"></div>
-                  <div id="productList-empty" class="mb-3">
-                    <input
-                      type="text"
-                      class="form-control text-center fst-italic"
-                      placeholder="Produk Kosong...."
-                      disabled
-                    />
-                  </div>
-                  <!-- input product id, and name send to request -->
-                  <input
-                    type="hidden"
-                    class="form-control text-capitalize"
-                    id="persediaan-refproduct-create-name"
-                  />
-                  <input type="hidden" id="persediaan-refproduct-create-id" />
+                    class="form-select w-100"
+                  >
+                    <option>Choose One Of Products</option>
+                  </select>
                 </div>
                 <!-- stock -->
-                <div id="persediaan-create-stock"></div>
+                <div
+                  id="persediaan-create-stock"
+                  class="d-flex justify-content-between"
+                >
+                  <p class="fs-5">Stock :</p>
+                  <p class="fs-5 me-4" id="persediaan-create-product-qty">1</p>
+                </div>
                 <!-- QTY -->
                 <div
                   class="mb-3 d-flex justify-content-between align-items-center w-100"
@@ -983,15 +968,6 @@
                     </button>
                   </div>
                 </div>
-                <!-- product per price -->
-                <div>
-                  <input
-                    type="hidden"
-                    class="border-0 fs-3 mx-2 p-1 text-center"
-                    id="persediaan-refproduct-create-rp"
-                    value="0"
-                  />
-                </div>
                 <!-- KETERANGAN -->
                 <div class="mb-3">
                   <label for="persediaan-create-info" class="form-label fs-4"
@@ -1001,6 +977,24 @@
                     class="form-control"
                     id="persediaan-create-info"
                   ></textarea>
+                </div>
+                <!-- send to request -->
+                <div>
+                  <!-- productname  -->
+                  <input
+                    type="hidden"
+                    class="form-control text-capitalize"
+                    id="persediaan-refproduct-create-name"
+                  />
+                  <!-- productid -->
+                  <input type="hidden" id="persediaan-refproduct-create-id" />
+                  <!-- productprice -->
+                  <input
+                    type="hidden"
+                    class="border-0 fs-3 mx-2 p-1 text-center"
+                    id="persediaan-refproduct-create-rp"
+                    value="0"
+                  />
                 </div>
               </div>
               <div class="modal-footer">
@@ -1127,10 +1121,6 @@
                     placeholder="masukkan nama product"
                     disabled
                   />
-                  <!-- send to request persediaanrefproduct id,rp  -->
-                  <input type="hidden" id="persediaan-refproduct-update-id" />
-                  <input type="hidden" id="persediaan-refproduct-update-rp" />
-                  <input type="hidden" id="persediaan-refproduct-update-name" />
                 </div>
                 <!-- QTY -->
                 <div
@@ -1173,6 +1163,13 @@
                     class="form-control"
                     id="persediaan-update-info"
                   ></textarea>
+                </div>
+                <!-- send to request -->
+                <div>
+                  <!-- send to request persediaanrefproduct id,rp  -->
+                  <input type="hidden" id="persediaan-refproduct-update-id" />
+                  <input type="hidden" id="persediaan-refproduct-update-rp" />
+                  <input type="hidden" id="persediaan-refproduct-update-name" />
                 </div>
               </div>
               <div class="modal-footer">

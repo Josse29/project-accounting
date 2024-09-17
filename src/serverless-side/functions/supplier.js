@@ -30,24 +30,19 @@ export const createSupplier = (
   );
 };
 // 2.READ
-export const getSupplier = (
-  supplierSearch,
-  supplierLimit,
-  supplierPage,
-  callback
-) => {
-  const supplierStartOffset = (supplierPage - 1) * supplierLimit;
-  db.all(
-    queryGetSupplier(supplierSearch, supplierLimit, supplierStartOffset),
-    (err, res) => {
+export const getSupplier = (req) => {
+  const { searchVal, limitVal, offsetVal } = req;
+  const startOffset = (offsetVal - 1) * limitVal;
+  return new Promise((resolve, reject) => {
+    db.all(queryGetSupplier(searchVal, limitVal, startOffset), (err, res) => {
       if (!err) {
-        return callback(true, res);
+        resolve(res);
       }
       if (err) {
-        return callback(false, err);
+        reject(err);
       }
-    }
-  );
+    });
+  });
 };
 export const getTotalRowSupplier = (supplierSearch, callback) => {
   db.each(queryTotalRowSupplier(supplierSearch), (err, res) => {
@@ -60,27 +55,26 @@ export const getTotalRowSupplier = (supplierSearch, callback) => {
     }
   });
 };
-export const getTotalPageSupplier = (
-  supplierSearch,
-  supplierLimit,
-  callback
-) => {
-  db.each(queryTotalRowSupplier(supplierSearch), (err, res) => {
-    if (!err) {
-      let lastPage;
-      let totalRowSupplier = parseInt(res.TOTAL_ROW);
-      let supplierLimitInt = parseInt(supplierLimit);
-      if (totalRowSupplier % supplierLimit === 0) {
-        lastPage = totalRowSupplier / supplierLimitInt;
+export const getSupplierInit = (req) => {
+  const { searchVal, limitVal } = req;
+  const query = queryTotalRowSupplier(searchVal);
+  return new Promise((resolve, reject) => {
+    db.each(query, (err, res) => {
+      if (!err) {
+        let totalPage;
+        let totalRow = parseInt(res.TOTAL_ROW);
+        if (totalRow % limitVal === 0) {
+          totalPage = totalRow / limitVal;
+        }
+        if (totalRow % limitVal !== 0) {
+          totalPage = parseInt(totalRow / limitVal) + 1;
+        }
+        resolve({ totalRow, totalPage });
       }
-      if (totalRowSupplier % supplierLimit !== 0) {
-        lastPage = parseInt(totalRowSupplier / supplierLimitInt) + 1;
+      if (err) {
+        reject(err);
       }
-      return callback(true, lastPage);
-    }
-    if (err) {
-      return callback(false, err);
-    }
+    });
   });
 };
 export const getListSupplier = (supplierSearch, callback) => {

@@ -1,380 +1,261 @@
 import {
   getCategory,
-  getTotalPageCategory,
-  getTotalRowCategory,
+  getCategoryInit,
 } from "../../../../serverless-side/functions/categories.js";
-import { reinitializeTooltips } from "../../utils/updateUi.js";
-import {
-  uiActivePageButton,
-  uiBtnPage,
-  uiTrCategory,
-  uiTrZero,
-  uiTrZeroSearch,
-} from "./ui.js";
+import { reinitTooltip } from "../../utils/updateUi.js";
+import { uiActivePageButton, uiBtnPage, uiTrCategory, uiTrZero } from "./ui.js";
 import { getProductsAgain } from "./../products/read.js";
 import { getPersediaanAgain } from "../persediaan/read.js";
-import { getProductCategoryId } from "../../../../serverless-side/functions/product.js";
 import {
   listCategoryRefPersediaanRead,
   listCategoryRefPersediaanReadDate,
 } from "./list.js";
-
 $(document).ready(function () {
-  let categoryTotalRow;
-  let categoryTotalPage;
-  let categoryBtnPage;
-  let categorySearch = $("#category-search-input").val();
-  let categoryLimit = $("#category-limit").val();
+  let searchVal = $("#category-search-input").val();
+  let limitVal = parseInt($("#category-limit").val());
+  let offsetVal = 1;
   getInit();
-  $("#category-search-input").on("keyup", function () {
-    categorySearch = $(this).val();
-    getInit(categorySearch);
-  });
-  $("#category-limit").on("change", function () {
-    categoryLimit = parseInt($(this).val());
-    getInit();
-  });
-  // 1. get first,  get total row, upadate ui (total row) as condition
-  function getInit() {
-    getTotalRowCategory(categorySearch, (status, response) => {
-      // if success get total row category
-      if (status) {
-        categoryTotalRow = response;
-        $("#categories-total-row").text(categoryTotalRow);
-        // if it exist category
-        if (categoryTotalRow >= 1) {
-          getTotalPage();
-          $("#category-pagination").removeClass("d-none");
-        }
-        // if it doesn't exist category
-        if (categoryTotalRow < 1) {
-          if (categorySearch) {
-            $("#category-data").html(uiTrZeroSearch(categorySearch));
-          } else {
-            $("#category-data").html(uiTrZero);
-          }
-          $("#category-pagination").addClass("d-none");
-        }
-      }
-      // if failed get total row category
-      if (!status) {
-        console.error(response);
-      }
+  $("#category-search-input")
+    .off("keyup")
+    .on("keyup", function () {
+      searchVal = $(this).val();
+      getInit(searchVal);
     });
-  }
-  // 2. get total page, update ui (total row)
-  function getTotalPage() {
-    getTotalPageCategory(categorySearch, categoryLimit, (status, response) => {
-      if (status) {
-        categoryTotalPage = parseInt(response);
-        uiPagination(categoryTotalPage);
-      }
-      if (!status) {
-        console.error(response);
-      }
+  $("#category-limit")
+    .off("change")
+    .on("change", function () {
+      limitVal = parseInt($(this).val());
+      getInit();
     });
+  async function getInit() {
+    try {
+      const req = {
+        searchVal,
+        limitVal,
+        offsetVal,
+      };
+      const init = await getCategoryInit(req);
+      const totalPage = init.totalPage;
+      const totalRow = init.totalRow;
+      $("div#categories-total-row").text(totalRow);
+      if (totalRow >= 1) {
+        await getCategoryPage(req);
+        handlePagination(totalPage);
+        $("div#category-pagination").removeClass("d-none");
+      }
+      if (totalRow < 1) {
+        const empty = uiTrZero(searchVal);
+        $("#category-data").html(empty);
+        $("div#category-pagination").addClass("d-none");
+      }
+    } catch (error) {
+      console.error(error);
+    }
   }
-  // 3. Function to insert html pagination
-  function uiPagination(categoryTotalPage) {
+  async function getCategoryPage(req) {
+    try {
+      const response = await getCategory(req);
+      let tr = "";
+      response.forEach((element) => {
+        tr += uiTrCategory(element);
+      });
+      $("#category-data").html(tr);
+      reinitTooltip();
+      uiActivePageButton(req.offsetVal);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  function handlePagination(totalPage) {
     let uiBtnPaginate = "";
-    for (let i = 1; i <= categoryTotalPage; i++) {
+    for (let i = 1; i <= totalPage; i++) {
       uiBtnPaginate += uiBtnPage(i);
     }
     $("#category-number-page").html(uiBtnPaginate);
-    handlePagination(categoryTotalPage);
-  }
-  // 4. function to handle pagination(first,prev,number,next,last)
-  function handlePagination(categoryTotalPage) {
-    // Event listeners for pagination buttons
-    categoryBtnPage = document.getElementsByClassName("category-btn-page");
     // first page
     $("#category-first-page")
       .off("click")
-      .on("click", () => {
-        getCategoryPage(1);
+      .on("click", async () => {
+        const req = {
+          searchVal,
+          limitVal,
+          offsetVal: 1,
+        };
+        await getCategoryPage(req);
       });
     // previous page
     $("#category-prev-page")
       .off("click")
-      .on("click", () => {
+      .on("click", async function () {
         let pageActive = parseInt($(".category-active-page").text().trim());
         let decrementPage = pageActive - 1;
         if (decrementPage < 1) {
-          decrementPage = categoryTotalPage;
+          decrementPage = totalPage;
         }
-        getCategoryPage(decrementPage);
+        const req = {
+          searchVal,
+          limitVal,
+          offsetVal: decrementPage,
+        };
+        await getCategoryPage(req);
       });
     // based on number when clicked
-    for (let i = 0; i < categoryTotalPage; i++) {
-      categoryBtnPage[i].addEventListener("click", function () {
+    $("#category-number-page")
+      .off("click", "button.category-btn-page")
+      .on("click", "button.category-btn-page", async function () {
         const pageNumber = parseInt(this.textContent.trim());
-        getCategoryPage(pageNumber);
+        const req = {
+          searchVal,
+          limitVal,
+          offsetVal: pageNumber,
+        };
+        await getCategoryPage(req);
       });
-    }
     // // next page
     $("#category-next-page")
       .off("click")
-      .on("click", () => {
+      .on("click", async () => {
         let pageActive = parseInt($(".category-active-page").text().trim());
         let incrementPage = pageActive + 1;
-        if (incrementPage > categoryTotalPage) {
+        if (incrementPage > totalPage) {
           incrementPage = 1;
         }
-        getCategoryPage(incrementPage);
+        const req = {
+          searchVal,
+          limitVal,
+          offsetVal: incrementPage,
+        };
+        await getCategoryPage(req);
       });
     // last page
     $("#category-last-page")
       .off("click")
-      .on("click", () => getCategoryPage(categoryTotalPage));
-
-    // Initial page load
-    getCategoryPage(1);
-  }
-  // 5. function to handle get satuan based on pageActive
-  function getCategoryPage(categoryPageNumber) {
-    // function to only get product based on search, limit, page
-    getCategory(
-      categorySearch,
-      categoryLimit,
-      categoryPageNumber,
-      (status, response) => {
-        // if success
-        if (status) {
-          let tr = "";
-          response.forEach((element) => {
-            tr += uiTrCategory(element);
-          });
-          $("#category-data").html(tr);
-          uiActivePageButton(categoryPageNumber, categoryBtnPage);
-          reinitializeTooltips();
-        }
-        // if failed
-        if (!status) {
-          console.error(response);
-        }
-      }
-    );
-    getDetail();
-  }
-  // get-detail-product event binding fuckkkkkkk 2 jam lebih
-  function getDetail() {
-    $(document).on("click", "#categoryDetailBtn", function () {
-      const category = this.dataset;
-      console.log(category);
-      const categoryId = parseInt(category.categoryid);
-      const categoryName = category.categorynama;
-      const categoryInfo = category.categoryketerangan;
-      $("#category-detail-label").text(categoryName);
-      $("#category-detail-name").text(categoryName);
-      if (categoryInfo !== "") {
-        $("#category-detail-info").text(categoryInfo);
-      }
-      if (categoryInfo === "") {
-        $("#category-detail-info").text("-");
-      }
-      getProductCategoryId(categoryId, (status, response) => {
-        if (status) {
-          const existedProduct = response.length >= 1;
-          console.log(response);
-          console.log(existedProduct);
-          if (existedProduct) {
-            let list = `<ul>`;
-            response.forEach((el) => {
-              list += `<li class='fs-5'>${el.ProductName}</li>`;
-            });
-            list += `</li>`;
-            console.log(list);
-            $("div#category-detail-productlistid").html(list);
-          }
-          if (!existedProduct) {
-            const html = `<p class="fs-5 text-muted fst-italic">product no available</p>`;
-            $("div#category-detail-productlistid").html(html);
-          }
-        }
-        if (!status) {
-          console.error(response);
-        }
+      .on("click", async () => {
+        const req = {
+          searchVal,
+          limitVal,
+          offsetVal: totalPage,
+        };
+        await getCategoryPage(req);
       });
-    });
   }
 });
 export const getCategoryAgain = () => {
-  let categoryTotalRow;
-  let categoryTotalPage;
-  let categoryBtnPage;
-  let categorySearch = $("#category-search-input").val();
-  let categoryLimit = $("#category-limit").val();
+  let searchVal = "";
+  let limitVal = $("#category-limit").val();
+  let offsetVal = 1;
   getInit();
-  $("#category-search-input").on("keyup", function () {
-    categorySearch = $(this).val();
-    getInit(categorySearch);
-  });
-  $("#category-limit").on("change", function () {
-    categoryLimit = parseInt($(this).val());
-    getInit();
-  });
-  // 1. get first,  get total row, upadate ui (total row) as condition
-  function getInit() {
-    getTotalRowCategory(categorySearch, (status, response) => {
-      // if success get total row category
-      if (status) {
-        categoryTotalRow = response;
-        $("#categories-total-row").text(categoryTotalRow);
-        // if it exist category
-        if (categoryTotalRow >= 1) {
-          getTotalPage();
-          $("#category-pagination").removeClass("d-none");
-        }
-        // if it doesn't exist category
-        if (categoryTotalRow < 1) {
-          if (categorySearch) {
-            $("#category-data").html(uiTrZeroSearch(categorySearch));
-          } else {
-            $("#category-data").html(uiTrZero);
-          }
-          $("#category-pagination").addClass("d-none");
-        }
+  async function getInit() {
+    try {
+      const req = {
+        searchVal,
+        limitVal,
+        offsetVal,
+      };
+      const init = await getCategoryInit(req);
+      const totalPage = init.totalPage;
+      const totalRow = init.totalRow;
+      $("div#categories-total-row").text(totalRow);
+      if (totalRow >= 1) {
+        await getCategoryPage(req);
+        handlePagination(totalPage);
+        $("div#category-pagination").removeClass("d-none");
       }
-      // if failed get total row category
-      if (!status) {
-        console.error(response);
+      if (totalRow < 1) {
+        const empty = uiTrZero(searchVal);
+        $("#category-data").html(empty);
+        $("div#category-pagination").addClass("d-none");
       }
-    });
+    } catch (error) {
+      console.error(error);
+    }
   }
-  // 2. get total page, update ui (total row)
-  function getTotalPage() {
-    getTotalPageCategory(categorySearch, categoryLimit, (status, response) => {
-      if (status) {
-        categoryTotalPage = parseInt(response);
-        uiPagination(categoryTotalPage);
-      }
-      if (!status) {
-        console.error(response);
-      }
-    });
+  async function getCategoryPage(req) {
+    try {
+      const response = await getCategory(req);
+      let tr = "";
+      response.forEach((element) => {
+        tr += uiTrCategory(element);
+      });
+      $("#category-data").html(tr);
+      reinitTooltip();
+      uiActivePageButton(req.offsetVal);
+    } catch (error) {
+      console.error(error);
+    }
   }
-  // 3. Function to insert html pagination
-  function uiPagination(categoryTotalPage) {
+  function handlePagination(totalPage) {
     let uiBtnPaginate = "";
-    for (let i = 1; i <= categoryTotalPage; i++) {
+    for (let i = 1; i <= totalPage; i++) {
       uiBtnPaginate += uiBtnPage(i);
     }
     $("#category-number-page").html(uiBtnPaginate);
-    handlePagination(categoryTotalPage);
-  }
-  // 4. function to handle pagination(first,prev,number,next,last)
-  function handlePagination(categoryTotalPage) {
-    // Event listeners for pagination buttons
-    categoryBtnPage = document.getElementsByClassName("category-btn-page");
     // first page
     $("#category-first-page")
       .off("click")
-      .on("click", () => {
-        getCategoryPage(1);
+      .on("click", async () => {
+        const req = {
+          searchVal,
+          limitVal,
+          offsetVal: 1,
+        };
+        await getCategoryPage(req);
       });
     // previous page
     $("#category-prev-page")
       .off("click")
-      .on("click", () => {
+      .on("click", async function () {
         let pageActive = parseInt($(".category-active-page").text().trim());
         let decrementPage = pageActive - 1;
         if (decrementPage < 1) {
-          decrementPage = categoryTotalPage;
+          decrementPage = totalPage;
         }
-        getCategoryPage(decrementPage);
+        const req = {
+          searchVal,
+          limitVal,
+          offsetVal: decrementPage,
+        };
+        await getCategoryPage(req);
       });
     // based on number when clicked
-    for (let i = 0; i < categoryTotalPage; i++) {
-      categoryBtnPage[i].addEventListener("click", function () {
+    $("#category-number-page")
+      .off("click", "button.category-btn-page")
+      .on("click", "button.category-btn-page", async function () {
         const pageNumber = parseInt(this.textContent.trim());
-        getCategoryPage(pageNumber);
+        const req = {
+          searchVal,
+          limitVal,
+          offsetVal: pageNumber,
+        };
+        await getCategoryPage(req);
       });
-    }
     // // next page
     $("#category-next-page")
       .off("click")
-      .on("click", () => {
+      .on("click", async () => {
         let pageActive = parseInt($(".category-active-page").text().trim());
         let incrementPage = pageActive + 1;
-        if (incrementPage > categoryTotalPage) {
+        if (incrementPage > totalPage) {
           incrementPage = 1;
         }
-        getCategoryPage(incrementPage);
+        const req = {
+          searchVal,
+          limitVal,
+          offsetVal: incrementPage,
+        };
+        await getCategoryPage(req);
       });
     // last page
     $("#category-last-page")
       .off("click")
-      .on("click", () => getCategoryPage(categoryTotalPage));
-
-    // Initial page load
-    getCategoryPage(1);
-  }
-  // 5. function to handle get satuan based on pageActive
-  function getCategoryPage(categoryPageNumber) {
-    // function to only get product based on search, limit, page
-    getCategory(
-      categorySearch,
-      categoryLimit,
-      categoryPageNumber,
-      (status, response) => {
-        // if success
-        if (status) {
-          let tr = "";
-          response.forEach((element) => {
-            tr += uiTrCategory(element);
-          });
-          $("#category-data").html(tr);
-          uiActivePageButton(categoryPageNumber, categoryBtnPage);
-          reinitializeTooltips();
-        }
-        // if failed
-        if (!status) {
-          console.error(response);
-        }
-      }
-    );
-    getDetail();
-  }
-  // get-detail-product event binding fuckkkkkkk 2 jam lebih
-  function getDetail() {
-    $(document).on("click", "#categoryDetailBtn", function () {
-      const category = this.dataset;
-      console.log(category);
-      const categoryId = parseInt(category.categoryid);
-      const categoryName = category.categorynama;
-      const categoryInfo = category.categoryketerangan;
-      $("#category-detail-label").text(categoryName);
-      $("#category-detail-name").text(categoryName);
-      if (categoryInfo !== "") {
-        $("#category-detail-info").text(categoryInfo);
-      }
-      if (categoryInfo === "") {
-        $("#category-detail-info").text("-");
-      }
-      getProductCategoryId(categoryId, (status, response) => {
-        if (status) {
-          const existedProduct = response.length >= 1;
-          console.log(response);
-          console.log(existedProduct);
-          if (existedProduct) {
-            let list = `<ul>`;
-            response.forEach((el) => {
-              list += `<li class='fs-5'>${el.ProductName}</li>`;
-            });
-            list += `</li>`;
-            console.log(list);
-            $("div#category-detail-productlistid").html(list);
-          }
-          if (!existedProduct) {
-            const html = `<p class="fs-5 text-muted fst-italic">product no available</p>`;
-            $("div#category-detail-productlistid").html(html);
-          }
-        }
-        if (!status) {
-          console.error(response);
-        }
+      .on("click", async () => {
+        const req = {
+          searchVal,
+          limitVal,
+          offsetVal: totalPage,
+        };
+        await getCategoryPage(req);
       });
-    });
   }
 };
 export const getCategoryRef = () => {

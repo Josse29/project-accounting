@@ -163,7 +163,7 @@ $(document).ready(function () {
   }
 });
 export const getPersediaanAgain = () => {
-  let searchVal = $("input#persediaan-search").val();
+  let searchVal = "";
   let limitVal = parseInt($("#persediaan-limit").val());
   let offsetVal = 1;
   getInitAsync();
@@ -249,7 +249,6 @@ export const getPersediaanAgain = () => {
       .off("click", "button.persediaan-btn-page")
       .on("click", "button.persediaan-btn-page", async function () {
         const pageNumber = parseInt(this.textContent.trim());
-        console.log(pageNumber);
         const req = {
           searchVal,
           limitVal,

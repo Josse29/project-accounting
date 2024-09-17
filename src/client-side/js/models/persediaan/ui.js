@@ -6,46 +6,45 @@ export const uiTbody = (el) => {
   let PersediaanQty = ``;
   let PersediaanRp = ``;
   const formattedQty = addSpace(el.PersediaanQty);
+  // qty
   if (el.PersediaanQty >= 1) {
-    PersediaanQty = `<span class="badge text-bg-success fs-6 text-truncate"  style="max-width: 120px"> + ${el.PersediaanQty}</span>`;
+    PersediaanQty = `<span class="badge text-bg-success fs-6 text-truncate"  style="max-width:100%"> + ${el.PersediaanQty}</span>`;
   } else {
-    PersediaanQty = `<span class="badge text-bg-danger fs-6 text-truncate"  style="max-width: 120px">${formattedQty}</span>`;
+    PersediaanQty = `<span class="badge text-bg-danger fs-6 text-truncate"  style="max-width:100%">${formattedQty}</span>`;
   }
+  // rupiah
   if (el.PersediaanRp >= 1) {
-    PersediaanRp = `<span class="badge text-bg-success fs-6 text-truncate"  style="max-width: 200px"> + ${formatRupiah2(
+    PersediaanRp = `<span class="badge text-bg-success fs-6 text-truncate"  style="max-width: 100%"> + ${formatRupiah2(
       el.PersediaanRp
     )}</span>`;
   } else {
-    PersediaanRp = `<span class="badge text-bg-danger fs-6 text-truncate"  style="max-width: 200px">- ${formatRupiah2(
+    PersediaanRp = `<span class="badge text-bg-danger fs-6 text-truncate"  style="max-width: 100%">- ${formatRupiah2(
       Math.abs(el.PersediaanRp)
     )}</span>`;
   }
   return `<tr>
-            <td class="align-content-center text-center" style="max-width: 100px">${
+            <td class="align-content-center text-center pe-3 text-truncate">${
               el.PersediaanId
-            }</td>
-            <td class="align-content-center text-nowrap" style="max-width: 200px">${formatWaktuIndo(
+            } </td>
+            <td class="align-content-center text-truncate pe-3">${formatWaktuIndo(
               el.PersediaanDDMY
             )}</td>
-            <td class="align-content-center" style="max-width: 100px">${
+            <td class="align-content-center pe-3 text-truncate">${
               el.PersediaanHMS
             }</td>
-            <td class="align-content-center text-truncate text-capitalize" style="max-width: 190px">${
+            <td class="align-content-center text-truncate text-capitalize pe-3">${
               el.ProductName
             }</td>
-            <td class="align-content-center text-truncate text-capitalize" style="max-width: 190px">${
+            <td class="align-content-center text-truncate text-capitalize pe-3">${
               el.CategoryName === null ? "-" : el.CategoryName
-            }</td>
-            <td class="align-content-center text-truncate text-capitalize" style="max-width: 190px">
+            } </td>
+            <td class="align-content-center text-truncate text-capitalize pe-3">
               ${el.SupplierName === null ? "-" : el.SupplierName}
             </td>
-            <td class="align-content-center text-truncate text-capitalize" style="max-width: 150px">
-              Mr.JK
-            </td>
-            <td class="text-truncate align-content-end text-center" style="max-width: 120px">
+            <td class="text-truncate align-content-center text-center">
               ${PersediaanQty}
             </td>
-            <td class="text-truncate align-content-end text-center" style="max-width: 200px">
+            <td class="text-truncate align-content-center text-center">
               ${PersediaanRp}
             </td>
             <td class="align-content-center" style="width:217px">
@@ -64,7 +63,7 @@ export const uiTbody = (el) => {
                     <i class="fa-solid fa-eye"
                       data-bs-toggle="tooltip" 
                       data-bs-html="true"
-                      data-bs-title="<span>lihat-${el.ProductName}</span>" 
+                      data-bs-title="<span>See-${el.ProductName}</span>" 
                       data-bs-placement="bottom">
                     </i>
                 </button>
@@ -83,7 +82,7 @@ export const uiTbody = (el) => {
                     <i class="fa-solid fa-pencil"
                         data-bs-toggle="tooltip" 
                         data-bs-html="true"
-                        data-bs-title="<span>edit-${el.ProductName}</span>" 
+                        data-bs-title="<span>Update-${el.ProductName}</span>" 
                         data-bs-placement="bottom">
                     </i>
                 </button>
@@ -100,7 +99,7 @@ export const uiTbody = (el) => {
                     <i class="fa-solid fa-trash-can"
                        data-bs-toggle="tooltip" 
                        data-bs-html="true"
-                       data-bs-title="<span>hapus-${el.ProductName}</span>" 
+                       data-bs-title="<span>Delete-${el.ProductName}</span>" 
                       data-bs-placement="bottom"></i>
                 </button>
               </div>
