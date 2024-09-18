@@ -119,3 +119,15 @@ export const uiListProductUpdate = (supplierList) => {
   });
   $(".product-refsupplier-update-list").html(option);
 };
+export const uiCreateFailed = (res) => {
+  const alert = `<div class="alert alert-danger" role="alert">
+                    <i class="fa-solid fa-triangle-exclamation me-1"></i> ${res}
+                 </div>`;
+  $("#supplier-create-failed").html(alert);
+};
+export const uiUpdateFailed = (res) => {
+  const alert = `<div class="alert alert-danger" role="alert">
+                    <i class="fa-solid fa-triangle-exclamation me-1"></i> ${res}
+                 </div>`;
+  $("#supplier-update-failed").html(alert);
+};

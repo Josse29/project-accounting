@@ -27,18 +27,18 @@ const colProductSupplierId = `ProductSupplierId`;
 // 1.CREATE
 export const queryinsertProducts = (
   productName,
-  productPriceBeli,
-  productPriceJual,
+  productPriceBuy,
+  productPriceSell,
   productInfo,
-  productImg,
   productCategoryId,
-  productSupplierId
+  productSupplierId,
+  imgBase64
 ) => {
   return `INSERT 
           INTO ${tableName} 
           (${colProductName}, ${colProductPriceBeli}, ${colProductPriceJual}, ${colProductInfo}, ${colProductImg}, ${colProductCategoryId}, ${colProductSupplierId}) 
           VALUES 
-          ('${productName}', ${productPriceBeli}, ${productPriceJual}, '${productInfo}', '${productImg}', ${productCategoryId}, ${productSupplierId})`;
+          ('${productName}', ${productPriceBuy}, ${productPriceSell}, '${productInfo}', '${imgBase64}', ${productCategoryId}, ${productSupplierId})`;
 };
 // 2.READ
 export const queryGetProducts = (
@@ -63,6 +63,13 @@ export const queryGetProducts = (
   query += `ORDER BY ${tableName}.${colProductName} ASC
             LIMIT ${productLimit} 
             OFFSET ${productOffset}`;
+  return query;
+};
+export const queryGetProductPriceBuy = (productId) => {
+  let query = `SELECT    
+               ProductPriceBeli
+               FROM ${tableName} 
+               WHERE ProductId = ${productId}`;
   return query;
 };
 export const queryGetListProduct = (productSearch) => {
@@ -122,7 +129,7 @@ export const queryUpdateProduct = (
   productName,
   productPriceBuy,
   productPriceSell,
-  productImg,
+  imgBase64,
   productCategoryId,
   productSupplierId,
   productInfo
@@ -133,12 +140,8 @@ export const queryUpdateProduct = (
                    ${colProductPriceJual} = ${productPriceSell},
                    ${colProductCategoryId} = ${productCategoryId},
                    ${colProductSupplierId} = ${productSupplierId}, 
-                   ${colProductInfo} = '${productInfo}' `;
-  //with image
-  if (productImg !== "") {
-    query += `,
-              ${colProductImg} = '${productImg}' `;
-  }
+                   ${colProductInfo} = '${productInfo}',
+                   ${colProductImg} = '${imgBase64}' `;
   query += `WHERE ${colProductId} = ${productId} `;
   return query;
 };

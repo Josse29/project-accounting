@@ -3,7 +3,6 @@ import { getListProduct } from "../../../../serverless-side/functions/product.js
 export const listProductRefPersediaanCreate = async () => {
   try {
     const response = await getListProduct("");
-    console.log(response);
     const existed = response.length >= 1;
     let option = ``;
     if (existed) {
@@ -13,7 +12,7 @@ export const listProductRefPersediaanCreate = async () => {
       });
     }
     if (!existed) {
-      option = `<option selected disabled class="fst-italic">Product Empty....</option>`;
+      option = `<option selected disabled class="fst-italic">Product Empty</option>`;
     }
     $("select#persediaan-refproduct-search-name").html(option);
   } catch (error) {
@@ -32,7 +31,7 @@ export const listProductRefPersediaanRead = async () => {
       });
     }
     if (!existed) {
-      option = `<option selected disabled>Product Empty</option>`;
+      option = `<option selected disabled class="fst-italic">Product Empty</option>`;
     }
     $("select#persediaan-refproduct-search").html(option);
   } catch (error) {
@@ -51,7 +50,7 @@ export const listProductRefPersediaanReadDate = async () => {
       });
     }
     if (!existed) {
-      option = `<option selected disabled>Product Empty</option>`;
+      option = `<option selected disabled class="fst-italic">Product Empty</option>`;
     }
     $("select#persediaan-date-product").html(option);
   } catch (error) {
@@ -70,7 +69,7 @@ export const listProductRefSalesRead = async () => {
       });
     }
     if (!existed) {
-      option = `<option selected disabled>Product Empty</option>`;
+      option = `<option selected disabled class="fst-italic">Product Empty</option>`;
     }
     $("select#sales-read-productid").html(option);
   } catch (error) {
@@ -89,7 +88,7 @@ export const listProductRefSalesReadDate = async () => {
       });
     }
     if (!existed) {
-      option = `<option selected disabled>Product Empty</option>`;
+      option = `<option selected disabled class="fst-italic">Product Empty</option>`;
     }
     $("select#sales-read-productid-date").html(option);
   } catch (error) {

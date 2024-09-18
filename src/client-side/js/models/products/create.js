@@ -10,6 +10,7 @@ import { listSupplierRefProductCreate } from "../supplier/list.js";
 import { disFormatRupiah1, formatRupiah1 } from "../../utils/formatRupiah.js";
 import { capitalizeWord } from "../../utils/formatCapitalize.js";
 import { listProductRefPersediaanCreate } from "./list.js";
+import { getImageBase64 } from "../../utils/loadImg.js";
 
 $(document).ready(function () {
   $("button#product-create").on("click", function () {
@@ -18,80 +19,100 @@ $(document).ready(function () {
     listSupplierRefProductCreate();
   });
   // Format as Rupiah when input
-  $("input#product-price-beli").on("input", function () {
-    let formattedValue = formatRupiah1($(this).val());
-    $(this).val(formattedValue);
-  });
-  // Format as Rupiah when input
-  $("input#product-price-jual").on("input", function () {
-    let formattedValue = formatRupiah1($(this).val());
-    $(this).val(formattedValue);
-  });
+  $("input#product-price-beli")
+    .off("input")
+    .on("input", function () {
+      let formattedValue = formatRupiah1($(this).val());
+      $(this).val(formattedValue);
+    });
+  $("input#product-price-jual")
+    .off("input")
+    .on("input", function () {
+      let formattedValue = formatRupiah1($(this).val());
+      $(this).val(formattedValue);
+    });
+  // preview-image-product on create
+  $("#create-image-product")
+    .off("change")
+    .on("change", async (event) => {
+      try {
+        const files = event.target.files;
+        const validImageTypes = ["image/jpeg", "image/png", "image/gif"];
+        if (files.length > 0) {
+          if (validImageTypes.includes(files[0].type)) {
+            const imgBase64 = await getImageBase64(files[0]);
+            $("#create-image-product-preview").attr("src", imgBase64);
+            $("#section-image").removeClass("d-none");
+          }
+          if (!validImageTypes.includes(files[0].type)) {
+            $("#section-image").addClass("d-none");
+          }
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    });
+  // cancel-product-create-image
+  $("#cancel-image")
+    .off("click")
+    .on("click", () => {
+      $("#create-image-product").val("");
+      $("#section-image").addClass("d-none");
+    });
   // create product
   $("#submit_product")
     .off("click")
-    .on("click", () => {
-      const productName = capitalizeWord($("#product-name").val().trim());
-      const productInfo = $("#product-keterangan").val();
-      const productCategoryId = $("#product-refcategory-create").val();
-      const productSupplierId = $("#product-refsupplier-create").val();
-      const productPriceBuy = disFormatRupiah1($("#product-price-beli").val());
-      const productPriceSell = disFormatRupiah1($("#product-price-jual").val());
-      const productImg = document.getElementById("create-image-product").files;
-      // with an image
-      if (productImg.length >= 1) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          const imageBase64 = reader.result;
-          callInsertProuduct(imageBase64);
-        };
-        if (productImg[0]) {
-          reader.readAsDataURL(productImg[0]);
+    .on("click", async () => {
+      try {
+        const productName = capitalizeWord($("#product-name").val().trim());
+        const productInfo = $("#product-keterangan").val();
+        const productCategoryId = $("#product-refcategory-create").val();
+        const productSupplierId = $("#product-refsupplier-create").val();
+        const productPriceBuy = disFormatRupiah1(
+          $("#product-price-beli").val()
+        );
+        const productPriceSell = disFormatRupiah1(
+          $("#product-price-jual").val()
+        );
+        const productImg = document.getElementById(
+          "create-image-product"
+        ).files;
+        let imgBase64 = ``;
+        const validImageTypes = ["image/jpeg", "image/png", "image/gif"];
+        if (
+          productImg.length > 0 &&
+          validImageTypes.includes(productImg[0].type)
+        ) {
+          imgBase64 = await getImageBase64(productImg[0]);
+        } else {
+          imgBase64 = "null";
         }
-      }
-      // without an image
-      if (productImg.length < 1) {
-        callInsertProuduct("null");
-      }
-      // function to submit product
-      function callInsertProuduct(imageBase64) {
-        insertProducts(
+        const req = {
           productName,
           productPriceBuy,
           productPriceSell,
           productInfo,
-          imageBase64,
           productCategoryId,
           productSupplierId,
-          (status, response) => {
-            if (status) {
-              $("#productCreateModal").modal("hide");
-              getProductsAgain();
-              getProductRef();
-              createBlankValue();
-              successActionProduct(response);
-              listProductRefPersediaanCreate();
-            }
-            if (!status) {
-              const modalBody = document.getElementById(
-                "productCreate-modal-body"
-              );
-              if (modalBody) {
-                modalBody.scrollTo({
-                  top: 0,
-                  behavior: "smooth",
-                });
-              }
-              uiCreateFailed(response);
-              console.error(response);
-            }
-          }
-        );
+          productImg,
+          imgBase64,
+        };
+        const response = await insertProducts(req);
+        successActionProduct(response);
+        getProductsAgain();
+        getProductRef();
+        createBlankValue();
+        listProductRefPersediaanCreate();
+        $("#productCreateModal").modal("hide");
+      } catch (error) {
+        const errMsg = error || error.message;
+        uiCreateFailed(errMsg);
+        const modalBody = $("#productCreate-modal-body").get(0);
+        modalBody.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+        console.error(error);
       }
     });
-  // cancel-product-create-image
-  $("#cancel-image").on("click", () => {
-    $("#create-image-product").val("");
-    $("#section-image").addClass("d-none");
-  });
 });

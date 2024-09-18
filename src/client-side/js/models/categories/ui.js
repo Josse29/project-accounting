@@ -7,18 +7,21 @@ export const uiTrCategory = (el) => {
             <td>
               <div class="d-flex w-100 justify-content-center gap-2">
                 <button 
-                  class="btn btn-success text-white tooltip-bottom-container"
+                  class="btn btn-success text-white"
                   id="categoryDetailBtn"
                   data-bs-toggle="modal" 
                   data-bs-target="#categoryDetailModal"
                   data-categoryid=${el.CategoryId}
-                  data-categorynama=${el.CategoryName}" 
+                  data-categorynama="${el.CategoryName}" 
                   data-categoryketerangan="${el.CategoryInfo}">
-                    <i class="fa-solid fa-eye"></i>
-                    <span class="tooltip-bottom-text">See-${el.CategoryName}</span>
+                    <i class="fa-solid fa-eye"
+                       data-bs-toggle="tooltip" 
+                       data-bs-html="true"
+                       data-bs-title="<span>See-${el.CategoryName}</span>" 
+                       data-bs-placement="bottom"></i>
                 </button>
                 <button 
-                  class="btn btn-primary text-white tooltip-bottom-container" 
+                  class="btn btn-primary text-white" 
                   id="editCategory"
                   data-bs-toggle="modal" 
                   data-bs-target="#categoryModalEdit"
@@ -26,11 +29,14 @@ export const uiTrCategory = (el) => {
                   data-categorynama="${el.CategoryName}" 
                   data-categoryketerangan="${el.CategoryInfo}"   
                   >
-                  <div class="tooltip-bottom-text">Update-${el.CategoryName}</div>
-                  <i class="fa-solid fa-pencil"></i>
+                  <i class="fa-solid fa-pencil"
+                     data-bs-toggle="tooltip" 
+                     data-bs-html="true"
+                     data-bs-title="<span>Update-${el.CategoryName}</span>" 
+                     data-bs-placement="bottom"></i>
                 </button>
                 <button 
-                class="btn btn-danger text-white tooltip-bottom-container"
+                class="btn btn-danger text-white"
                 id="deleteCategory"
                 data-bs-toggle="modal" 
                 data-bs-target="#confirmDeleteCategoryModal"
@@ -38,8 +44,11 @@ export const uiTrCategory = (el) => {
                 data-categorynama="${el.CategoryName}" 
                 data-categoryketerangan="${el.CategoryInfo}"
                 >
-                  <i class="fa-solid fa-trash-can"></i>
-                 <div class="tooltip-bottom-text">Delete-${el.CategoryName}</div>
+                  <i class="fa-solid fa-trash-can"
+                     data-bs-toggle="tooltip" 
+                     data-bs-html="true"
+                     data-bs-title="<span>Delete-${el.CategoryName}</span>" 
+                     data-bs-placement="bottom"></i>
                 </button>
               </div>
             </td>
@@ -90,4 +99,16 @@ export const uiListRefProductUpdate = (categoryList) => {
     option += `<div class='product-refcategory-val-update fs-6' value='${el.CategoryId}'>${el.CategoryName}</div>`;
   });
   $(".product-refcategory-update-list").html(option);
+};
+export const uiCreateFailed = (res) => {
+  const alertFail = `<div class="alert alert-danger fs-6" role="alert">
+                      <i class="fa-solid fa-triangle-exclamation me-1"></i> ${res}
+                    </div>`;
+  $("#category-create-failed").html(alertFail);
+};
+export const uiUpdateFailed = (res) => {
+  const alertFail = `<div class="alert alert-danger fs-6" role="alert">
+                      <i class="fa-solid fa-triangle-exclamation me-1"></i> ${res}
+                    </div>`;
+  $("#category-update-failed").html(alertFail);
 };

@@ -1,5 +1,6 @@
 import { formatQty1 } from "../../client-side/js/utils/formatQty.js";
 import { isNumeric } from "../etc/regex.js";
+import { validateProductAdd, validateQty } from "../etc/validation.js";
 import {
   queryDeletePersediaan,
   queryDeletePersediaanAll,
@@ -51,18 +52,10 @@ export const createPersediaan = async (req) => {
     valPersediaanRp,
     valPersediaanInfo,
   } = req;
-  const valdateNum = isNumeric(valPersediaanQty);
-  const isNaN = Number.isNaN(valPersediaanProductId);
   // 1.validate product exist
-  if (isNaN) {
-    const msg = "Please add Product First...";
-    throw new Error(msg);
-  }
+  validateProductAdd(valPersediaanProductId);
   // 2.validate numeric on valPersediaanQty
-  if (!valdateNum) {
-    const msg = "Please input type of number in qty";
-    throw new Error(msg);
-  }
+  validateQty(valPersediaanQty);
   // 3.validate qty product
   await getPersediaanQtyValidate(req);
   // execute insert
@@ -717,12 +710,8 @@ export const updatePersediaan = async (req) => {
     valPersediaanInfo,
     valProductName,
   } = req;
-  const valdateNum = isNumeric(valPersediaanQty);
   // 1.validate numeric on valPersediaanQty
-  if (!valdateNum) {
-    const msg = "Please input type of number in qty";
-    throw new Error(msg);
-  }
+  validateQty(valPersediaanQty);
   // assure more than 1 row
   await validateStock(valPersediaanProductId, valPersediaanQty);
   // 3. validate available stock value must-be positive
@@ -900,12 +889,14 @@ export const deletePersediaanAll = () => {
 };
 export const deletePersediaanProductId = (valProductId, callback) => {
   const query = queryDeletePersediaanProductId(valProductId);
-  db.run(query, (err) => {
-    if (!err) {
-      return callback(true, `berhasil hapus product ke - ${valProductId}`);
-    }
-    if (err) {
-      return callback(false, err);
-    }
+  return new Promise((resolve, reject) => {
+    db.run(query, (err) => {
+      if (!err) {
+        resolve();
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };

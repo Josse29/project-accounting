@@ -10,24 +10,20 @@ $(document).ready(function () {
     const supplierName = supplier.suppliername;
     $("#supplierDeleteModalLabel").text(supplierName);
     $("#supplier-delete-name").html(
-      `Apakah anda yakin menghapus <b>${supplierName}</b> ?`
+      `Are you sure to delete <b>${supplierName}</b> ?`
     );
-    // Hapus event listener sebelumnya jika ada MCCCCCKKKKKKKK
-    $("#supplier-delete-submit").off("click");
     // event submit delete
-    $("#supplier-delete-submit").on("click", () => {
-      deleteSupplier(supplierId, supplierName, (status, response) => {
-        // if succcess delete
-        if (status) {
+    $("#supplier-delete-submit")
+      .off("click")
+      .on("click", async () => {
+        try {
+          const response = await deleteSupplier(supplierId, supplierName);
           getSupplierAgain();
           getSupplierRef();
           successActionSupplier(response);
-        }
-        // if fail delete
-        if (!status) {
-          console.error(response);
+        } catch (error) {
+          console.error(error);
         }
       });
-    });
   });
 });

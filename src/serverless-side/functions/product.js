@@ -1,9 +1,15 @@
 import {
+  validateImg,
+  validatePrice,
+  validateProductName,
+} from "../etc/validation.js";
+import {
   queryDeleteProductId,
   queryGetListProduct,
   queryGetProductCSV,
   queryGetProductCategoryId,
   queryGetProductPDF,
+  queryGetProductPriceBuy,
   queryGetProductSupplierId,
   queryGetProducts,
   queryTotalRowProducts,
@@ -12,43 +18,44 @@ import {
 } from "../querysql/product.js";
 
 // 1.CREATE
-export const insertProducts = (
-  productName,
-  productPriceBeli,
-  productPriceJual,
-  productInfo,
-  productImg,
-  productCategoryId,
-  productSupplierId,
-  callback
-) => {
-  const validatePrice = productPriceBeli < productPriceJual;
-  if (validatePrice) {
-    db.run(
-      queryinsertProducts(
-        productName,
-        productPriceBeli,
-        productPriceJual,
-        productInfo,
-        productImg,
-        productCategoryId,
-        productSupplierId
-      ),
-      (err) => {
-        if (!err) {
-          const msg = `Product <b class='text-capitalize'>${productName}</b> berhasil ditambahkan`;
-          return callback(true, msg);
-        }
-        if (err) {
-          return callback(false, err);
-        }
+export const insertProducts = (req) => {
+  const {
+    productName,
+    productPriceBuy,
+    productPriceSell,
+    productInfo,
+    productCategoryId,
+    productSupplierId,
+    productImg,
+    imgBase64,
+  } = req;
+  // 1.validate name
+  validateProductName(productName);
+  // 2.validate price
+  validatePrice(productPriceBuy, productPriceSell);
+  // 3.Validation image
+  validateImg(productImg);
+  // execute
+  const query = queryinsertProducts(
+    productName,
+    productPriceBuy,
+    productPriceSell,
+    productInfo,
+    productCategoryId,
+    productSupplierId,
+    imgBase64
+  );
+  return new Promise((resolve, reject) => {
+    db.run(query, (err) => {
+      if (!err) {
+        const msg = `Product <b class='text-capitalize'>${productName}</b> has been added `;
+        resolve(msg);
       }
-    );
-  }
-  if (!validatePrice) {
-    const msg = "Harga Jual harus lebih besar dari pada harga beli";
-    return callback(false, msg);
-  }
+      if (err) {
+        reject(err);
+      }
+    });
+  });
 };
 // 2.READ
 export const getTotalRowProduct = (productSearch, callback) => {
@@ -98,6 +105,19 @@ export const getProducts = (req) => {
     });
   });
 };
+export const getProductPriceBuy = (productId) => {
+  const query = queryGetProductPriceBuy(productId);
+  return new Promise((resolve, reject) => {
+    db.each(query, (err, result) => {
+      if (!err) {
+        resolve(result);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
+  });
+};
 export const getListProduct = (productSearch) => {
   const query = queryGetListProduct(productSearch);
   return new Promise((resolve, reject) => {
@@ -138,62 +158,59 @@ export const getProductCategoryId = (categoryId) => {
   });
 };
 // 3.UPDATE
-export const updateProduct = (
-  productId,
-  productName,
-  productPriceBuy,
-  productPriceSell,
-  productImg,
-  productCategoryId,
-  productSupplierId,
-  productInfo,
-  callback
-) => {
-  console.log("harga beli ", productPriceBuy);
-  console.log("harga jual ", productPriceSell);
-  const validatePrice = productPriceBuy < productPriceSell;
-  if (validatePrice) {
-    db.run(
-      queryUpdateProduct(
-        productId,
-        productName,
-        productPriceBuy,
-        productPriceSell,
-        productImg,
-        productCategoryId,
-        productSupplierId,
-        productInfo
-      ),
-      (err) => {
-        if (!err) {
-          return callback(
-            true,
-            `Product <b class='text-capitalize'>${productName}</b> berhasil diperbaharui`
-          );
-        }
-        if (err) {
-          return callback(false, err);
-        }
+export const updateProduct = (req) => {
+  const {
+    productId,
+    productName,
+    productPriceBuy,
+    productPriceSell,
+    productImgVal,
+    productCategoryId,
+    productSupplierId,
+    productInfo,
+    imgBase64,
+  } = req;
+  // 1.validate name
+  validateProductName(productName);
+  // 2.validate price
+  validatePrice(productPriceBuy, productPriceSell);
+  // 3.Validation image
+  validateImg(productImgVal);
+  // execute
+  const query = queryUpdateProduct(
+    productId,
+    productName,
+    productPriceBuy,
+    productPriceSell,
+    imgBase64,
+    productCategoryId,
+    productSupplierId,
+    productInfo
+  );
+  return new Promise((resolve, reject) => {
+    db.run(query, (err) => {
+      if (!err) {
+        const msg = `Product <b class='text-capitalize'>${productName}</b> has been updated`;
+        resolve(msg);
       }
-    );
-  }
-  if (!validatePrice) {
-    const msg = `Harga Jual ${productName} harus lebih besar dari pada harga belinya`;
-    return callback(false, msg);
-  }
+      if (err) {
+        reject(err);
+      }
+    });
+  });
 };
 // 4.DELETE
-export const deleteProductId = (id, productName, callback) => {
-  db.run(queryDeleteProductId(id), (err) => {
-    if (!err) {
-      return callback(
-        true,
-        `Product <b class='text-capitalize'>${productName}</b> berhasil dihapus`
-      );
-    }
-    if (err) {
-      return callback(false, err);
-    }
+export const deleteProductId = (id, productName) => {
+  return new Promise((resolve, reject) => {
+    db.run(queryDeleteProductId(id), (err) => {
+      if (!err) {
+        const msg = `Product <b class='text-capitalize'>${productName}</b> has been deleted`;
+        resolve(msg);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
 // convert | PDF

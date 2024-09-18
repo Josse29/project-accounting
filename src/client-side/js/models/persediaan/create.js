@@ -95,8 +95,13 @@ $(document).ready(function () {
         $("#persediaanCreateModal").modal("hide");
       } catch (error) {
         const errMsg = error || error.message;
-        uiFailedActionPersediaan(errMsg);
         console.error(errMsg);
+        uiFailedActionPersediaan(errMsg);
+        const modalBody = $("#persediaan-create-modal-body").get(0);
+        modalBody.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
       }
     });
 });

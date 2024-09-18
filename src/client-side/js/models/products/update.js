@@ -5,12 +5,14 @@ import { getProductRef, getProductsAgain } from "./read.js";
 import { successActionProduct, uiUpdateFailed } from "./ui.js";
 import { capitalizeWord } from "../../utils/formatCapitalize.js";
 import { disFormatRupiah1, formatRupiah1 } from "../../utils/formatRupiah.js";
+import { getImageBase64 } from "../../utils/loadImg.js";
 $(document).ready(function () {
   // upadte | event binding
   $(document)
     .off("click")
     .on("click", "#editProduct", function () {
       $("#product-update-failed").html("");
+      $("#edit-product-image-file").val("");
       // get value from params
       const product = this.dataset;
       const productName = product.productname;
@@ -20,6 +22,7 @@ $(document).ready(function () {
       const productCategoryId = parseInt(product.productcategoryid);
       const productSupplierId = parseInt(product.productsupplierid);
       const productInfo = product.productketerangan;
+      let cancelImg = false;
       listCategoryRefProductUpdate(productCategoryId);
       listSupplierRefProductUpdate(productSupplierId);
       // all-input-product
@@ -41,17 +44,36 @@ $(document).ready(function () {
       });
       // it doesn't exist productimage from params
       if (productImg === "null") {
-        $("#section-edit-product-img").hide();
-        $("#edit-product-cancel-image");
         $("img#edit-product-image").attr("src", "");
+        $("#section-edit-product-img").hide();
       }
       // it exist productimage from params
       if (productImg !== "null") {
-        $("#section-edit-product-img").show();
         $("img#edit-product-image").attr("src", product.productimage);
+        $("#section-edit-product-img").show();
       }
-      // cancel image
-      let cancelImg = false;
+      // preview-image-product on edit keselll
+      $("#edit-product-image-file")
+        .off("change")
+        .on("change", async (event) => {
+          try {
+            const files = event.target.files;
+            const validImageTypes = ["image/jpeg", "image/png", "image/gif"];
+            if (files.length > 0) {
+              if (validImageTypes.includes(files[0].type)) {
+                const imgbase64 = await getImageBase64(files[0]);
+                $("img#edit-product-image").attr("src", imgbase64);
+                $("#section-edit-product-img").show();
+              }
+              if (!validImageTypes.includes(files[0].type)) {
+                $("#section-edit-product-img").hide();
+              }
+              cancelImg = false;
+            }
+          } catch (error) {
+            console.error(error);
+          }
+        });
       // remove-image
       $("#edit-product-cancel-image")
         .off("click")
@@ -60,100 +82,93 @@ $(document).ready(function () {
           $("#section-edit-product-img").hide();
           cancelImg = true;
         });
+
       // function action to update product
       $("#edit-product-submit")
         .off("click")
-        .on("click", () => {
-          // all - input
-          const productId = parseInt(product.productid);
-          const productName = capitalizeWord($("#edit-product-name").val());
-          const productPriceBuy = disFormatRupiah1(
-            $("#edit-product-price-buy").val()
-          );
-          const productPriceSell = disFormatRupiah1(
-            $("#edit-product-price-sell").val()
-          );
-          const productInfo = $("#edit-product-keterangan").val();
-          let productCategoryId;
-          const productCategoryVal = $(
-            "select#product-refcategory-update"
-          ).val();
-          if (productCategoryVal !== null) {
-            productCategoryId = parseInt(
-              $("select#product-refcategory-update").val()
+        .on("click", async () => {
+          try {
+            // all - input
+            const productId = parseInt(product.productid);
+            const productName = capitalizeWord($("#edit-product-name").val());
+            const productPriceBuy = disFormatRupiah1(
+              $("#edit-product-price-buy").val()
             );
-          }
-          if (productCategoryVal === null || productCategoryVal === "null") {
-            productCategoryId = null;
-          }
-          let productSupplierId;
-          const productSupplierVal = $(
-            "select#product-refsupplier-update"
-          ).val();
-          if (productSupplierVal !== null) {
-            productSupplierId = parseInt(
-              $("select#product-refsupplier-update").val()
+            const productPriceSell = disFormatRupiah1(
+              $("#edit-product-price-sell").val()
             );
-          }
-          if (productSupplierVal === null || productSupplierVal === "null") {
-            productSupplierId = null;
-          }
-          const productImg = document.getElementById(
-            "edit-product-image-file"
-          ).files;
-          // with image
-          if (productImg.length >= 1) {
-            const reader = new FileReader();
-            reader.onload = function () {
-              const imgbase64 = reader.result;
-              callUpdateProduct(imgbase64);
-            };
-            if (productImg[0]) {
-              reader.readAsDataURL(productImg[0]);
+            const productInfo = $("#edit-product-keterangan").val();
+            let productCategoryId;
+            const productCategoryVal = $(
+              "select#product-refcategory-update"
+            ).val();
+            if (productCategoryVal !== null) {
+              productCategoryId = parseInt(
+                $("select#product-refcategory-update").val()
+              );
             }
-          }
-          // without image
-          if (productImg.length < 1) {
-            if (cancelImg) {
-              callUpdateProduct("null");
+            if (productCategoryVal === null || productCategoryVal === "null") {
+              productCategoryId = null;
             }
+            let productSupplierId;
+            const productSupplierVal = $(
+              "select#product-refsupplier-update"
+            ).val();
+            if (productSupplierVal !== null) {
+              productSupplierId = parseInt(
+                $("select#product-refsupplier-update").val()
+              );
+            }
+            if (productSupplierVal === null || productSupplierVal === "null") {
+              productSupplierId = null;
+            }
+            const productImgVal = document.getElementById(
+              "edit-product-image-file"
+            ).files;
+            let imgBase64 = ``;
+            const validImageTypes = ["image/jpeg", "image/png", "image/gif"];
             if (!cancelImg) {
-              callUpdateProduct(product.productimage);
+              if (
+                productImgVal.length > 0 &&
+                validImageTypes.includes(productImgVal[0].type)
+              ) {
+                imgBase64 = await getImageBase64(productImgVal[0]);
+              } else {
+                imgBase64 = productImg;
+              }
             }
-          }
-          function callUpdateProduct(imgbase64) {
-            updateProduct(
+            if (cancelImg) {
+              imgBase64 = "null";
+            }
+            const req = {
               productId,
               productName,
               productPriceBuy,
               productPriceSell,
-              imgbase64,
+              productImgVal,
               productCategoryId,
               productSupplierId,
               productInfo,
-              (status, response) => {
-                if (status) {
-                  $("#editProductModal").modal("hide");
-                  getProductsAgain();
-                  getProductRef();
-                  successActionProduct(response);
-                  $("#edit-product-image-file").val("");
-                }
-                if (!status) {
-                  console.error(response);
-                  uiUpdateFailed(response);
-                  const modalBody = document.getElementById(
-                    "product-update-modalBody"
-                  );
-                  if (modalBody) {
-                    modalBody.scrollTo({
-                      top: 0,
-                      behavior: "smooth",
-                    });
-                  }
-                }
-              }
+              imgBase64,
+            };
+            const response = await updateProduct(req);
+            $("#editProductModal").modal("hide");
+            getProductsAgain();
+            getProductRef();
+            successActionProduct(response);
+            $("#edit-product-image-file").val("");
+          } catch (error) {
+            const errMsg = error || error.message;
+            uiUpdateFailed(errMsg);
+            const modalBody = document.getElementById(
+              "product-update-modalBody"
             );
+            if (modalBody) {
+              modalBody.scrollTo({
+                top: 0,
+                behavior: "smooth",
+              });
+            }
           }
         });
     });

@@ -38,8 +38,8 @@ $(document).ready(function () {
       $("#persediaan-sum-section").show();
       $("#only-product").hide();
       $("span#persediaan-date-product").text("");
-      $("select#persediaan-refproduct-search").val("Produk");
-      $("select#persediaan-refcategory-search").val("Kategori");
+      $("select#persediaan-refproduct-search").val("Choose One Of Products");
+      $("select#persediaan-refcategory-search").val("Choose One Of Categories");
       $("#persediaan-pagination").addClass("d-none");
     } catch (error) {
       console.error(error);

@@ -84,7 +84,7 @@ export const successActionProduct = (res) => {
 export const uiTbodyZero = (searchVal) => {
   let search = `product empty....`;
   if (searchVal !== "") {
-    search = searchVal;
+    search = `${searchVal} - not found...`;
   }
   return `<tr>
               <td colspan="6" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">${search}</td>

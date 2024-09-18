@@ -6,6 +6,7 @@ $(document).ready(function () {
     .on("click", "#categoryDetailBtn", async function () {
       try {
         const category = this.dataset;
+        console.log(category);
         const categoryId = parseInt(category.categoryid);
         const categoryName = category.categorynama;
         const categoryInfo = category.categoryketerangan;

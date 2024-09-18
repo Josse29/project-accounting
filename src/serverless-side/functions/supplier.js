@@ -1,3 +1,4 @@
+import { validateImg, validateSupplierName } from "../etc/validation.js";
 import {
   queryDeleteSupplier,
   queryGetListSupplier,
@@ -8,26 +9,25 @@ import {
 } from "../querysql/supplier.js";
 
 // 1.CREATE
-export const createSupplier = (
-  supplierName,
-  supplierInfo,
-  supplierImg,
-  callback
-) => {
-  db.run(
-    queryInsertSupplier(supplierName, supplierInfo, supplierImg),
-    (err) => {
+export const createSupplier = (req) => {
+  const { supplierName, supplierInfo, supplierImg, imgBase64 } = req;
+  // 1.validate name
+  validateSupplierName(supplierName);
+  // 2. validateImg
+  validateImg(supplierImg);
+  // 3.execute
+  const query = queryInsertSupplier(supplierName, supplierInfo, imgBase64);
+  return new Promise((resolve, reject) => {
+    db.run(query, (err) => {
       if (!err) {
-        return callback(
-          true,
-          `Supplier <b class='text-capitalize'>${supplierName}</b> berhasil ditambahkan`
-        );
+        const msg = `Supplier <b class='text-capitalize'>${supplierName}</b> has been added`;
+        resolve(msg);
       }
       if (err) {
-        return callback(false, err);
+        reject(err);
       }
-    }
-  );
+    });
+  });
 };
 // 2.READ
 export const getSupplier = (req) => {
@@ -77,50 +77,56 @@ export const getSupplierInit = (req) => {
     });
   });
 };
-export const getListSupplier = (supplierSearch, callback) => {
-  db.all(queryGetListSupplier(supplierSearch), (err, res) => {
-    if (!err) {
-      return callback(true, res);
-    }
-    if (err) {
-      return callback(false, err);
-    }
+export const getListSupplier = (supplierSearch) => {
+  const query = queryGetListSupplier(supplierSearch);
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, res) => {
+      if (!err) {
+        resolve(res);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
 // 3.UPDATE
-export const updateSupplier = (
-  supplierId,
-  supplierName,
-  supplierInfo,
-  supplierImg,
-  callback
-) => {
-  db.run(
-    queryUpdateSupplier(supplierId, supplierName, supplierInfo, supplierImg),
-    (err) => {
+export const updateSupplier = (req) => {
+  const { supplierId, supplierName, supplierInfo, supplierImgVal, imgBase64 } =
+    req;
+  // 1.validate name
+  validateSupplierName(supplierName);
+  // 2. validateImg
+  validateImg(supplierImgVal);
+  const query = queryUpdateSupplier(
+    supplierId,
+    supplierName,
+    supplierInfo,
+    imgBase64
+  );
+  return new Promise((resolve, reject) => {
+    db.run(query, (err) => {
       if (!err) {
-        return callback(
-          true,
-          `Supplier <b>${supplierName}</b> berhasil diperbaharui`
-        );
+        const msg = `Supplier <b>${supplierName}</b> has been updated`;
+        resolve(msg);
       }
       if (err) {
-        return callback(false, err);
+        reject(err);
       }
-    }
-  );
+    });
+  });
 };
 // 4.DELETE
-export const deleteSupplier = (supplierId, supplierName, callback) => {
-  db.run(queryDeleteSupplier(supplierId), (err) => {
-    if (!err) {
-      return callback(
-        true,
-        `Supplier <b class= 'text-capitalize'>${supplierName}</b> berhasil dihapus`
-      );
-    }
-    if (err) {
-      return callback(false, err);
-    }
+export const deleteSupplier = (supplierId, supplierName) => {
+  return new Promise((resolve, reject) => {
+    db.run(queryDeleteSupplier(supplierId), (err) => {
+      if (!err) {
+        const msg = `Supplier <b class= 'text-capitalize'>${supplierName}</b> has been deleted`;
+        resolve(msg);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };

@@ -3,6 +3,7 @@ import {
   getPersediaanDateQtyProductId,
   getPersediaanDateSumProduct,
 } from "../../../../serverless-side/functions/persediaan.js";
+import { getProductPriceBuy } from "../../../../serverless-side/functions/product.js";
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import { formatWaktuIndo } from "../../utils/formatWaktu.js";
 import { reinitTooltip } from "../../utils/updateUi.js";
@@ -17,16 +18,19 @@ $("div#persediaan-date-all-search")
       const productId = parseInt($(this).val());
       const req = { startDateVal, endDateVal, productId };
       // caption
-      $("span#persediaan-date-product").text(
-        $(this).find("option:selected").text()
-      );
+      const selectedTxt = $(this).find("option:selected").text();
+      $("span#persediaan-date-product").text(selectedTxt);
+      // price buy
+      const priceBuy = await getProductPriceBuy(productId);
+      const priceBuyRp = formatRupiah2(priceBuy.ProductPriceBeli);
+      $("#rupiah-byid").text(priceBuyRp);
+      //   qty
+      const qty = await getPersediaanDateQtyProductId(req);
+      $("span#total-qty-byid").text(qty);
       //   sum rupiah
       const sumRupiah = await getPersediaanDateSumProduct(req);
       const rupiah = formatRupiah2(parseFloat(sumRupiah));
       $("span#total-rupiah-byid").text(rupiah);
-      //   qty
-      const qty = await getPersediaanDateQtyProductId(req);
-      $("span#total-qty-byid").text(qty);
       //   table
       const dateProduct = await getPersediaanDateProductId(req);
       const existed = dateProduct.length >= 1;
@@ -39,22 +43,16 @@ $("div#persediaan-date-all-search")
         reinitTooltip();
       }
       if (!existed) {
-        const tr = uiTbodyEmpty(` - ${$(this)
-          .find("option:selected")
-          .text()} :          
-                            ${formatWaktuIndo(startDateVal)}  -
-                             ${formatWaktuIndo(endDateVal)}`);
+        const start = `${formatWaktuIndo(startDateVal)}`;
+        const end = `${formatWaktuIndo(endDateVal)}`;
+        const empty = `${selectedTxt} : ${start}  - ${end}`;
+        const tr = uiTbodyEmpty(empty);
         $("#persediaan-table").html(tr);
       }
-      // price buy
-      const priceBuy = formatRupiah2(
-        parseFloat(dateProduct[0].ProductPriceBeli)
-      );
-      $("#rupiah-byid").text(priceBuy);
       //   references
       $("#only-product").show();
-      $("select#persediaan-date-category").val("Kategori");
-      $("select#persediaan-date-supplier").val("Supplier");
+      $("select#persediaan-date-category").val("Choose One Of Categories");
+      $("select#persediaan-date-supplier").val("Choose One Of Suppliers");
     } catch (error) {
       console.error(error);
     }

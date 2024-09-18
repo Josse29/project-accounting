@@ -20,16 +20,14 @@ const colSupplierInfo = `SupplierInfo`;
 const colSupplierImg = `SupplierImg`;
 const colSupplierProductId = `SupplierProductId`; // as JSON.STRINGIFY || SQLITE isn't exist array || ambigu
 // 1.CREATE
-export const queryInsertSupplier = (
-  supplierName,
-  supplierInfo,
-  supplierImg
-) => {
-  return `INSERT 
-          INTO ${tableName} 
-          (${colSupplierName}, ${colSupplierInfo}, ${colSupplierImg}) 
-          VALUES 
-          ('${supplierName}', '${supplierInfo}', '${supplierImg}')`;
+export const queryInsertSupplier = (supplierName, supplierInfo, imgbase64) => {
+  let query = `INSERT 
+               INTO ${tableName} 
+               (${colSupplierName}, ${colSupplierInfo}, ${colSupplierImg}) 
+               VALUES 
+               ('${supplierName}', '${supplierInfo}', '${imgbase64}')`;
+  console.log(query);
+  return query;
 };
 // 2.READ
 export const queryGetSupplier = (
@@ -84,16 +82,12 @@ export const queryUpdateSupplier = (
   supplierId,
   supplierName,
   supplierInfo,
-  supplierImg
+  imgBase64
 ) => {
   let query = `UPDATE ${tableName}
                SET ${colSupplierName} = '${supplierName}',
-                   ${colSupplierInfo} = '${supplierInfo}'`;
-  // with image
-  if (supplierImg !== "") {
-    query += `,
-              ${colSupplierImg}  = '${supplierImg}'`;
-  }
+                   ${colSupplierInfo} = '${supplierInfo}',
+                   ${colSupplierImg}  = '${imgBase64}' `;
   query += `WHERE ${colSupplierId} = ${supplierId}`;
   return query;
 };

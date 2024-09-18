@@ -100,6 +100,11 @@ $(document).ready(function () {
               const errMsg = error || error.message;
               console.error(errMsg);
               uiFailedUpdate(errMsg);
+              const modalBody = $("#persediaan-update-modal-body").get(0);
+              modalBody.scrollTo({
+                top: 0,
+                behavior: "smooth",
+              });
             }
           });
       } catch (error) {

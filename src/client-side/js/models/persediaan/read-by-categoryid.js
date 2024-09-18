@@ -38,8 +38,8 @@ $(document).ready(function () {
       $("#persediaan-sum-section").show();
       $("#only-product").hide();
       $("span#persediaan-date-product").text("");
-      $("select#persediaan-refproduct-search").val("Produk");
-      $("select#persediaan-refsupplier-search").val("Supplier");
+      $("select#persediaan-refproduct-search").val("Choose One Of Products");
+      $("select#persediaan-refsupplier-search").val("Choose One Of Suppliers");
       $("#persediaan-pagination").addClass("d-none");
     } catch (error) {
       console.error(error);

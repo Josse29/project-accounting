@@ -149,6 +149,7 @@ $(document).ready(function () {
 });
 // RE-Initial fetch and setup
 export function getProductsAgain() {
+  $("#product-search-input").val("");
   let searchVal = "";
   let limitVal = parseInt($("#product-limit").val());
   let offsetVal = 1;

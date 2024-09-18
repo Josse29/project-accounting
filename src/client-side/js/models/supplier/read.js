@@ -141,22 +141,11 @@ $(document).ready(function () {
   }
 });
 export const getSupplierAgain = () => {
+  $("#supplier-search-input").val("");
   let searchVal = "";
   let limitVal = parseInt($("#supplier-limit").val());
   let offsetVal = 1;
   getInit();
-  $("#supplier-search-input")
-    .off("keyup")
-    .on("keyup", function () {
-      searchVal = $(this).val();
-      getInit();
-    });
-  $("#supplier-limit")
-    .off("change")
-    .on("change", function () {
-      limitVal = parseInt($(this).val());
-      getInit();
-    });
   async function getInit() {
     try {
       const req = {

@@ -1,3 +1,4 @@
+import { validateCategoryName } from "../etc/validation.js";
 import {
   queryDeleteCategory,
   queryGetCategory,
@@ -8,17 +9,21 @@ import {
 } from "../querysql/categories.js";
 
 // 1.CREATE
-export const createCategory = (categoryName, categoryInfo, callback) => {
-  db.run(queryInsertCategory(categoryName, categoryInfo), (err) => {
-    if (!err) {
-      return callback(
-        true,
-        `Kategori <b class='text-capitalize'>${categoryName}</b> berhasil ditambahkan`
-      );
-    }
-    if (err) {
-      return callback(false, err);
-    }
+export const createCategory = (req) => {
+  const { categoryName, categoryInfo } = req;
+  // 1.validate name
+  validateCategoryName(categoryName);
+  const query = queryInsertCategory(categoryName, categoryInfo);
+  return new Promise((resolve, reject) => {
+    db.run(query, (err) => {
+      if (!err) {
+        const msg = `Category <b class='text-capitalize'>${categoryName}</b> has been added`;
+        resolve(msg);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
 // 2.READ
@@ -37,14 +42,17 @@ export const getCategory = (req) => {
     });
   });
 };
-export const getListCategory = (categorySearch, callback) => {
-  db.all(queryGetListCategory(categorySearch), (err, res) => {
-    if (!err) {
-      return callback(true, res);
-    }
-    if (err) {
-      return callback(false, err);
-    }
+export const getListCategory = (categorySearch) => {
+  const query = queryGetListCategory(categorySearch);
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, res) => {
+      if (!err) {
+        resolve(res);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
 export const getTotalRowCategory = (categorySearch, callback) => {
@@ -80,35 +88,35 @@ export const getCategoryInit = (req) => {
   });
 };
 // 3.UPDATE
-export const updateCategory = (
-  categoryId,
-  categoryName,
-  categoryInfo,
-  callback
-) => {
-  db.run(queryUpdateCategory(categoryId, categoryName, categoryInfo), (err) => {
-    if (!err) {
-      return callback(
-        true,
-        `Kategori <b>${categoryName}</b> berhasil diperbaharui`
-      );
-    }
-    if (err) {
-      return callback(false, err);
-    }
+export const updateCategory = (req) => {
+  const { categoryId, categoryName, categoryInfo } = req;
+  // category name required
+  validateCategoryName(categoryName);
+  // execute
+  const query = queryUpdateCategory(categoryId, categoryName, categoryInfo);
+  return new Promise((resolve, reject) => {
+    db.run(query, (err) => {
+      if (!err) {
+        const msg = `Category <b>${categoryName}</b> has been updated`;
+        resolve(msg);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
 // 4.DELETE
-export const deleteCategory = (categoryId, categoryName, callback) => {
-  db.run(queryDeleteCategory(categoryId), (err) => {
-    if (!err) {
-      return callback(
-        true,
-        `Kategori <b class='text-capitalize'>${categoryName}</b> berhasil dihapus`
-      );
-    }
-    if (err) {
-      return callback(false, err);
-    }
+export const deleteCategory = (categoryId, categoryName) => {
+  return new Promise((resolve, reject) => {
+    db.run(queryDeleteCategory(categoryId), (err) => {
+      if (!err) {
+        const msg = `Category <b class='text-capitalize'>${categoryName}</b> has been deleted`;
+        resolve(msg);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };

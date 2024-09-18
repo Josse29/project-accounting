@@ -5,14 +5,12 @@ import {
   uiTbody,
   uiTbodyEmpty,
 } from "./ui.js";
-import { addSpace } from "../../utils/formatSpace.js";
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import {
   getPersediaan,
   getPersediaanInit,
   getPersediaanRpSum,
 } from "../../../../serverless-side/functions/persediaan.js";
-import { formatWaktuIndo } from "../../utils/formatWaktu.js";
 import { reinitTooltip } from "../../utils/updateUi.js";
 $(document).ready(function () {
   let searchVal = $("input#persediaan-search").val();
@@ -23,9 +21,9 @@ $(document).ready(function () {
     .off("click")
     .on("click", function () {
       // reset all select
-      $("select#persediaan-refproduct-search").val("Produk");
-      $("select#persediaan-refsupplier-search").val("Supplier");
-      $("select#persediaan-refcategory-search").val("Kategori");
+      $("select#persediaan-refproduct-search").val("Choose One Of Products");
+      $("select#persediaan-refsupplier-search").val("Choose One Of Suppliers");
+      $("select#persediaan-refcategory-search").val("Choose One Of Categories");
       $("div#persediaan-date-all-search").html(``);
       searchVal = "";
       $("input#persediaan-search").val("");

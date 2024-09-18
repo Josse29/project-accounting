@@ -141,6 +141,7 @@ $(document).ready(function () {
   }
 });
 export const getCategoryAgain = () => {
+  $("#category-search-input").val("");
   let searchVal = "";
   let limitVal = $("#category-limit").val();
   let offsetVal = 1;

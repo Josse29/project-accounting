@@ -28,9 +28,9 @@ $(document).ready(function () {
           valPersediaanQty
         )}</span>`;
       }
-      const konfirmasiDelete = `Are you sure to delete ${txtPersediaanQty} ${valProductName} on <span class="fw-bold">Tanggal : ${formatWaktuIndo(
+      const konfirmasiDelete = `Are you sure to delete ${txtPersediaanQty} ${valProductName} on <span class="fw-bold">Date : ${formatWaktuIndo(
         persediaan.persediaanddmy
-      )} Waktu ${persediaan.persediaanhms} </span> ?`;
+      )} Hours : ${persediaan.persediaanhms} </span> ?`;
       $("#confirm-text").html(konfirmasiDelete);
       // action to delete
       $("#persediaan-delete-yes")
@@ -43,7 +43,6 @@ $(document).ready(function () {
               valPersediaanQty,
               valPersediaanProductId,
             };
-
             const response = await deletePersediaan(req);
             getPersediaanAgain();
             uiSuccessActionPersediaan(response);
@@ -52,6 +51,11 @@ $(document).ready(function () {
             const errMsg = error || error.message;
             uiFailedDelete(errMsg);
             console.error(errMsg);
+            const modalBody = $("#persediaan-delete-modal-body").get(0);
+            modalBody.scrollTo({
+              top: 0,
+              behavior: "smooth",
+            });
           }
         });
     });
