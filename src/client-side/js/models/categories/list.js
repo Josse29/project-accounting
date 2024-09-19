@@ -25,18 +25,20 @@ export const listCategoryRefProductUpdate = async (selected) => {
   try {
     const response = await getListCategory("");
     const existed = response.length >= 1;
+    let option = ``;
     if (existed) {
-      let option = `<option selected value=null>Choose One Of Categories</option>`;
+      option = `<option selected value=null>Choose One Of Categories</option>`;
       response.forEach((el) => {
         const isSelected =
           selected === parseInt(el.CategoryId) ? "selected" : "";
+        console.log(isSelected);
         option += `<option value=${el.CategoryId} ${isSelected}>${el.CategoryName}</option>`;
       });
     }
-    $("select#product-refcategory-update").html(option);
     if (!existed) {
       option = `<option selected disabled class="fst-italic">Category Empty</option>`;
     }
+    $("select#product-refcategory-update").html(option);
   } catch (error) {
     console.error(error);
   }

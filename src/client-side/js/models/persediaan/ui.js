@@ -175,12 +175,12 @@ export const uiActivePageButton = (activePage) => {
 };
 // when total row 0 being seaching
 export const uiTbodyEmpty = (searchVal) => {
-  let search = ``;
+  let search = `Product Empty...`;
   if (searchVal !== "") {
-    search = searchVal;
+    search = `Product - ${searchVal} Not Found ....`;
   }
   const html = `<tr>
-              <td colspan="10" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">Product ${search} empty....</td>
+              <td colspan="10" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">${search}</td>
             </tr>`;
   return html;
 };

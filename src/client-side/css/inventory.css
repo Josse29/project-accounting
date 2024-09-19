@@ -238,87 +238,6 @@ label#supplier-update-img-cancel {
   border: 2px solid #273eec;
   outline: none;
 }
-.product-refcategory-not-found {
-  padding: 0px 10px;
-  text-align: center;
-  font-style: italic;
-  text-transform: capitalize;
-}
-.product-refcategory-val-update {
-  padding: 0px 10px;
-  text-transform: capitalize;
-}
-.product-refcategory-val-update:hover {
-  cursor: pointer;
-  background-color: #007bff;
-  color: white;
-}
-.product-refcategory-not-found-update {
-  padding: 0px 10px;
-  text-align: center;
-  font-style: italic;
-  text-transform: capitalize;
-}
-div.product-refsupplier-list {
-  border: 1px solid black;
-  position: absolute;
-  background-color: white;
-  margin-top: -4px;
-  width: 100%;
-  z-index: 2;
-  max-height: 122px;
-  overflow-y: auto;
-}
-div.product-refsupplier-list::-webkit-scrollbar {
-  width: 7px;
-}
-div.product-refsupplier-list::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-div.product-refsupplier-list::-webkit-scrollbar-thumb {
-  background: #888;
-}
-div.product-refsupplier-list::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-.product-refsupplier-val {
-  padding: 0px 10px;
-  text-transform: capitalize;
-}
-.product-refsupplier-val:hover {
-  cursor: pointer;
-  background-color: #007bff;
-  color: white;
-}
-.product-refsupplier-not-found {
-  padding: 0px 10px;
-  text-align: center;
-  font-style: italic;
-  text-transform: capitalize;
-}
-.product-refsupplier-update-list {
-  border: 1px solid black;
-  position: absolute;
-  background-color: white;
-  margin-top: -4px;
-  width: 100%;
-  z-index: 2;
-}
-.product-refsupplier-val-update {
-  padding: 0px 10px;
-  text-transform: capitalize;
-}
-.product-refsupplier-val-update:hover {
-  cursor: pointer;
-  background-color: #007bff;
-  color: white;
-}
-.product-refsupplier-not-found-update {
-  padding: 0px 10px;
-  text-align: center;
-  font-style: italic;
-  text-transform: capitalize;
-}
 .category-btn-page {
   background-color: #fff;
   color: black;
@@ -434,42 +353,6 @@ input#persediaan-refproduct-create-qty::placeholder {
   color: black;
   opacity: 1; /* Firefox */
 }
-#persediaan-refproduct-update-list {
-  border: 1px solid black;
-  position: absolute;
-  background-color: white;
-  margin-top: -1px;
-  width: 100%;
-  z-index: 3;
-  max-height: 122px;
-  overflow-y: auto;
-}
-#persediaan-refproduct-update-list::-webkit-scrollbar {
-  width: 7px;
-}
-#persediaan-refproduct-update-list::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-#persediaan-refproduct-update-list::-webkit-scrollbar-thumb {
-  background: #adadad;
-}
-.persediaan-refproduct-update-val {
-  padding: 0px 10px;
-  text-transform: capitalize;
-}
-.persediaan-refproduct-update-val:hover {
-  cursor: pointer;
-}
-.persediaan-refproduct-update-val.active-list {
-  background-color: #007bff;
-  color: white;
-}
-.persediaan-refproduct-update-not-found {
-  padding: 0px 10px;
-  text-align: center;
-  font-style: italic;
-  text-transform: capitalize;
-}
 #persediaan-update-submit {
   background-color: #3b82f6;
 }
@@ -492,7 +375,6 @@ tbody#persediaan-table::-webkit-scrollbar-thumb:hover {
 }
 div#persediaan-scroll-byme {
   overflow: auto;
-  box-sizing: border-box;
 }
 div#persediaan-scroll-byme::-webkit-scrollbar {
   /* Width of the vertical scrollbar */
@@ -505,6 +387,40 @@ div#persediaan-scroll-byme::-webkit-scrollbar-thumb {
   background: #888;
 }
 div#persediaan-scroll-byme::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+/* product */
+div#product-scroll-byme {
+  overflow: auto;
+}
+div#product-scroll-byme::-webkit-scrollbar {
+  /* Width of the vertical scrollbar */
+  height: 8px;
+}
+div#product-scroll-byme::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+div#product-scroll-byme::-webkit-scrollbar-thumb {
+  background: #888;
+}
+div#product-scroll-byme::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+/* product */
+div#category-section {
+  overflow: auto;
+}
+div#category-section::-webkit-scrollbar {
+  /* Width of the vertical scrollbar */
+  height: 8px;
+}
+div#category-section::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+div#category-section::-webkit-scrollbar-thumb {
+  background: #888;
+}
+div#category-section::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
 /* tooltip bottom */
@@ -583,4 +499,34 @@ td:hover {
 }
 span:hover {
   text-wrap: wrap;
+}
+.animate-load {
+  background: #b3b2b2;
+  position: relative;
+  overflow: hidden;
+}
+
+.animate-load::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: -100%; /* Mulai dari luar elemen */
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(236, 236, 236, 0.6),
+    transparent
+  );
+  animation: skeleton-loading 1.5s infinite;
+}
+@keyframes skeleton-loading {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
 }

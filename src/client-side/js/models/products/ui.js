@@ -6,12 +6,12 @@ export const uiTbody = (el) => {
   const supplierName = el.SupplierName === null ? " - " : el.SupplierName;
   const categoryName = el.CategoryName === null ? " - " : el.CategoryName;
   return `<tr>
-            <td class="text-center align-content-center text-truncate" style="max-width: 100px">${el.ProductId}</td>
-            <td class="align-content-center text-capitalize text-truncate" style="max-width: 150px">${el.ProductName}</td>
-            <td class="align-content-center text-truncate" style="max-width: 120px">${productPriceRupiah}</td>
-            <td class="align-content-center text-capitalize text-truncate" style="max-width: 150px">${categoryName}</td>
-            <td class="align-content-center text-capitalize text-truncate" style="max-width: 150px">${supplierName}</td>
-            <td class="align-content-center" style="width:50px;">
+            <td class="text-center align-content-center text-truncate">${el.ProductId}</td>
+            <td class="align-content-center text-capitalize text-truncate pe-3">${el.ProductName}</td>
+            <td class="align-content-center text-truncate pe-3">${productPriceRupiah}</td>
+            <td class="align-content-center text-capitalize text-truncate pe-3">${categoryName}</td>
+            <td class="align-content-center text-capitalize text-truncate pe-3">${supplierName}</td>
+            <td class="align-content-center">
               <div class="d-flex justify-content-center gap-2" >
                 <button
                   id="productDetailBtn" 
@@ -82,9 +82,9 @@ export const successActionProduct = (res) => {
 };
 // when total product row 0 being seaching
 export const uiTbodyZero = (searchVal) => {
-  let search = `product empty....`;
+  let search = `Product Empty....`;
   if (searchVal !== "") {
-    search = `${searchVal} - not found...`;
+    search = `Product - ${searchVal} Not found...`;
   }
   return `<tr>
               <td colspan="6" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">${search}</td>

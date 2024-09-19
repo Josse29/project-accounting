@@ -58,17 +58,6 @@ export const insertProducts = (req) => {
   });
 };
 // 2.READ
-export const getTotalRowProduct = (productSearch, callback) => {
-  db.each(queryTotalRowProducts(productSearch), (err, res) => {
-    if (!err) {
-      const totalProduct = parseInt(res.TOTAL_ROW);
-      return callback(true, totalProduct);
-    }
-    if (err) {
-      return callback(false, err);
-    }
-  });
-};
 export const getProductInit = (req) => {
   const { searchVal, limitVal } = req;
   const query = queryTotalRowProducts(searchVal);
@@ -214,25 +203,29 @@ export const deleteProductId = (id, productName) => {
   });
 };
 // convert | PDF
-export const getProductPDF = (callback) => {
+export const getProductPDF = () => {
   const query = queryGetProductPDF();
-  db.all(query, (err, res) => {
-    if (!err) {
-      return callback(true, res);
-    }
-    if (err) {
-      return callback(true, err);
-    }
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, res) => {
+      if (!err) {
+        resolve(res);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
-export const getProductCSV = (callback) => {
+export const getProductCSV = () => {
   const query = queryGetProductCSV();
-  db.all(query, (err, res) => {
-    if (!err) {
-      return callback(true, res);
-    }
-    if (err) {
-      return callback(false, err);
-    }
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, res) => {
+      if (!err) {
+        resolve(res);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };

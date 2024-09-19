@@ -11,8 +11,11 @@ import {
   getPersediaanInit,
   getPersediaanRpSum,
 } from "../../../../serverless-side/functions/persediaan.js";
-import { reinitTooltip } from "../../utils/updateUi.js";
+import { reinitTooltip, uiLoad } from "../../utils/updateUi.js";
 $(document).ready(function () {
+  // loading
+  $("div#persediaan-loading").html(uiLoad());
+  $("div#persediaan-done").hide();
   let searchVal = $("input#persediaan-search").val();
   let limitVal = parseInt($("#persediaan-limit").val());
   let offsetVal = 1;
@@ -47,6 +50,7 @@ $(document).ready(function () {
       // sum rupiah persediaan
       const totalRupiah = await getPersediaanRpSum();
       $("#persediaan-detail-totalrp").text(formatRupiah2(totalRupiah));
+      // get total row and page
       const req = {
         searchVal,
         limitVal,
@@ -66,7 +70,10 @@ $(document).ready(function () {
         $("tbody#persediaan-table").html(uiTbodyEmpty(searchVal));
         $("#persediaan-pagination").addClass("d-none");
       }
+      // references and loading
       $("#persediaan-sum-section").hide();
+      $("div#persediaan-loading").html("");
+      $("div#persediaan-done").show();
     } catch (error) {
       console.error(error);
     }

@@ -2,7 +2,7 @@ import {
   getCategory,
   getCategoryInit,
 } from "../../../../serverless-side/functions/categories.js";
-import { reinitTooltip } from "../../utils/updateUi.js";
+import { reinitTooltip, uiLoad } from "../../utils/updateUi.js";
 import { uiActivePageButton, uiBtnPage, uiTrCategory, uiTrZero } from "./ui.js";
 import { getProductsAgain } from "./../products/read.js";
 import { getPersediaanAgain } from "../persediaan/read.js";
@@ -11,6 +11,8 @@ import {
   listCategoryRefPersediaanReadDate,
 } from "./list.js";
 $(document).ready(function () {
+  $("div#category-loading").html(uiLoad());
+  $("div#category-done").hide();
   let searchVal = $("#category-search-input").val();
   let limitVal = parseInt($("#category-limit").val());
   let offsetVal = 1;
@@ -48,6 +50,8 @@ $(document).ready(function () {
         $("#category-data").html(empty);
         $("div#category-pagination").addClass("d-none");
       }
+      $("div#category-loading").html("");
+      $("div#category-done").show();
     } catch (error) {
       console.error(error);
     }

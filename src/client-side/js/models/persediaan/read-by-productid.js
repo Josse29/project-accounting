@@ -46,6 +46,7 @@ $(document).ready(function () {
           $("#persediaan-table").html(tr);
         }
         // references
+        $("#persediaanLimitSearch").addClass("d-none");
         $("div#persediaan-sum-section").show();
         $("div#only-product").show();
         $("span#persediaan-date-product").text("");

@@ -127,7 +127,6 @@ $(document).ready(function () {
       console.error(error);
     }
   };
-
   $("#persediaan-export-pdf")
     .off("click")
     .on("click", async () => {

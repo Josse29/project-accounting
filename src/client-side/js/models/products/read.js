@@ -2,7 +2,7 @@ import {
   getProductInit,
   getProducts,
 } from "../../../../serverless-side/functions/product.js";
-import { reinitTooltip } from "../../utils/updateUi.js";
+import { reinitTooltip, uiLoad } from "../../utils/updateUi.js";
 import {
   btnProductPage,
   uiActivePageButton,
@@ -17,15 +17,18 @@ import {
 } from "./list.js";
 import { getCategoryAgain } from "../categories/read.js";
 $(document).ready(function () {
+  // loading
+  $("div#product-loading").html(uiLoad());
+  $("div#product-done").hide();
   let searchVal = $("#product-search-input").val();
   let limitVal = parseInt($("#product-limit").val());
   let offsetVal = 1;
-  getInit(searchVal);
+  getInit();
   $("#product-search-input")
     .off("keyup")
     .on("keyup", function () {
       searchVal = $(this).val();
-      getInit(searchVal);
+      getInit();
     });
   $("#product-limit")
     .off("change")
@@ -55,6 +58,9 @@ $(document).ready(function () {
         $("#product-table").html(empty);
         $("#product-pagination").addClass("d-none");
       }
+      // references and loading
+      $("div#product-loading").html("");
+      $("div#product-done").show();
     } catch (error) {
       console.error(error);
     }
