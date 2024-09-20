@@ -2,7 +2,7 @@ import {
   getSupplier,
   getSupplierInit,
 } from "../../../../serverless-side/functions/supplier.js";
-import { reinitTooltip } from "../../utils/updateUi.js";
+import { reinitTooltip, uiLoad } from "../../utils/updateUi.js";
 import { btnSupplierPage, uiActivePageBtn, uiTr, uiTrZero } from "./ui.js";
 import { getProductsAgain } from "./../products/read.js";
 import { getPersediaanAgain } from "../persediaan/read.js";
@@ -12,6 +12,8 @@ import {
   listSupplierRefPersediaanReadDate,
 } from "./list.js";
 $(document).ready(function () {
+  $("div#supplier-loading").html(uiLoad());
+  $("div#supplier-done").hide();
   let searchVal = $("#supplier-search-input").val();
   let limitVal = parseInt($("#supplier-limit").val());
   let offsetVal = 1;
@@ -43,11 +45,16 @@ $(document).ready(function () {
       if (totalRow >= 1) {
         await getSupplierPage(req);
         handlePagination(totalPage);
+        $("div#supplier-pagination").removeClass("d-none");
       }
       if (totalRow < 1) {
         const empty = uiTrZero(searchVal);
         $("#supplier-table").html(empty);
+        $("div#supplier-pagination").addClass("d-none");
       }
+      // loading-done
+      $("div#supplier-loading").html("");
+      $("div#supplier-done").show();
     } catch (error) {
       console.error(error);
     }
@@ -161,10 +168,12 @@ export const getSupplierAgain = () => {
       if (totalRow >= 1) {
         await getSupplierPage(req);
         handlePagination(totalPage);
+        $("div#supplier-pagination").removeClass("d-none");
       }
       if (totalRow < 1) {
         const empty = uiTrZero(searchVal);
         $("#supplier-table").html(empty);
+        $("div#supplier-pagination").addClass("d-none");
       }
     } catch (error) {
       console.error(error);

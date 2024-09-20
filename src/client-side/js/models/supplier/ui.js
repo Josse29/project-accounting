@@ -3,11 +3,9 @@ import { formatWaktuIndo } from "../../utils/formatWaktu.js";
 export const uiTr = (el) => {
   const splitDateTime = el.SupplierDate.split(" ");
   const dateSupplier = formatWaktuIndo(splitDateTime[0]);
-  // console.log(el.ProductList);
   return `<tr>
                 <td class="text-center align-middle">${el.SupplierId}</td>
-                <td class="align-content-center text-nowrap">${dateSupplier}</td>
-                <td class="align-content-center text-capitalize">${el.SupplierName}</td>
+                <td class="align-content-center text-capitalize text-truncate pe-2">${el.SupplierName}</td>
                 <td class="align-content-center">
                     <div class="d-flex w-100 justify-content-center gap-2">
                         <button 
@@ -19,6 +17,7 @@ export const uiTr = (el) => {
                             data-suppliername="${el.SupplierName}"
                             data-supplierinfo="${el.SupplierInfo}"
                             data-supplierimg="${el.SupplierImg}"
+                            data-supplierdate="${dateSupplier}"
                             >
                               <i class="fa-solid fa-eye"
                                  data-bs-toggle="tooltip" 

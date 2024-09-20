@@ -10,6 +10,10 @@ $(document).ready(function () {
         const supplierName = supplier.suppliername;
         const supplierInfo = supplier.supplierinfo;
         const supplierImg = supplier.supplierimg;
+        const supplierDate = supplier.supplierdate;
+        // supplierdate
+        $("p#supplier-date-detail").text(supplierDate);
+        // supplier name
         $("#supplierDetailModalLabel").text(supplierName);
         $("#supplier-detail-name").text(supplierName);
         $("#supplier-detail-info").text(supplierInfo);

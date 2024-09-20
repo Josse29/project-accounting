@@ -12,9 +12,6 @@ body {
 body::-webkit-scrollbar {
   display: none;
 }
-/* div#category-section::-webkit-scrollbar {
-  display: none;
-} */
 .top-navigation {
   position: fixed;
   left: 100px;
@@ -373,6 +370,24 @@ tbody#persediaan-table::-webkit-scrollbar-thumb {
 tbody#persediaan-table::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+/* persediaan-section */
+div#persediaan-section {
+  overflow: auto;
+}
+div#persediaan-section::-webkit-scrollbar {
+  /* Width of the vertical scrollbar */
+  height: 8px;
+}
+div#persediaan-section::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+div#persediaan-section::-webkit-scrollbar-thumb {
+  background: #888;
+}
+div#persediaan-section::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+/* persediaan-tables */
 div#persediaan-scroll-byme {
   overflow: auto;
 }
@@ -387,6 +402,23 @@ div#persediaan-scroll-byme::-webkit-scrollbar-thumb {
   background: #888;
 }
 div#persediaan-scroll-byme::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+/* product-section */
+div#product-section {
+  overflow: auto;
+}
+div#product-section::-webkit-scrollbar {
+  /* Width of the vertical scrollbar */
+  height: 8px;
+}
+div#product-section::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+div#product-section::-webkit-scrollbar-thumb {
+  background: #888;
+}
+div#product-section::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
 /* product */
@@ -406,7 +438,7 @@ div#product-scroll-byme::-webkit-scrollbar-thumb {
 div#product-scroll-byme::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
-/* product */
+/* category-section */
 div#category-section {
   overflow: auto;
 }
@@ -421,6 +453,57 @@ div#category-section::-webkit-scrollbar-thumb {
   background: #888;
 }
 div#category-section::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+/* category-table */
+div#category-table {
+  overflow: auto;
+}
+div#category-table::-webkit-scrollbar {
+  /* Width of the vertical scrollbar */
+  height: 8px;
+}
+div#category-table::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+div#category-table::-webkit-scrollbar-thumb {
+  background: #888;
+}
+div#category-table::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+/* supplier-section */
+div#supplier-section {
+  overflow: auto;
+}
+div#supplier-section::-webkit-scrollbar {
+  /* Width of the vertical scrollbar */
+  height: 8px;
+}
+div#supplier-section::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+div#supplier-section::-webkit-scrollbar-thumb {
+  background: #888;
+}
+div#supplier-section::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+/* supplier-section */
+div#supplier-table-container {
+  overflow: auto;
+}
+div#supplier-table-container::-webkit-scrollbar {
+  /* Width of the vertical scrollbar */
+  height: 8px;
+}
+div#supplier-table-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+div#supplier-table-container::-webkit-scrollbar-thumb {
+  background: #888;
+}
+div#supplier-table-container::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
 /* tooltip bottom */

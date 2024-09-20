@@ -168,15 +168,17 @@ export const queryGetPersediaanProductRow = (valPersediaanProductId) => {
   return query;
 };
 export const queryGetPersediaanProductId = (valPersediaanProductId) => {
-  return `SELECT
-          ${tableName}.${colPersediaanDDMY},
-          ${tableName}.${colPersediaanHMS},
-          ${tableName}.${colPersediaanRp},
-          ${tableName}.${colPersediaanQty}
-          FROM Persediaan
-          WHERE Persediaan.PersediaanProductId = ${valPersediaanProductId}
-          ORDER BY ${tableName}.${colPersediaanDDMY} DESC, ${tableName}.${colPersediaanHMS} DESC `;
+  const query = `SELECT
+                 ${tableName}.${colPersediaanDDMY},
+                 ${tableName}.${colPersediaanHMS},
+                 ${tableName}.${colPersediaanRp},
+                 ${tableName}.${colPersediaanQty}
+                 FROM Persediaan
+                 WHERE Persediaan.PersediaanProductId = ${valPersediaanProductId}
+                 ORDER BY ${tableName}.${colPersediaanDDMY} DESC, ${tableName}.${colPersediaanHMS} DESC `;
+  return query;
 };
+
 export const queryGetPersediaanProductId2 = (valPersediaanProductId) => {
   let query = `SELECT 
                Persediaan.PersediaanId,

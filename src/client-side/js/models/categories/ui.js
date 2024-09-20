@@ -1,10 +1,10 @@
 export const uiTrCategory = (el) => {
   return `<tr>
             <td class="text-center align-content-center">${el.CategoryId}</td>
-            <td class="text-nowrap align-content-center text-capitalize">
+            <td class="align-content-center text-capitalize text-truncate pe-2">
               ${el.CategoryName}
             </td>
-            <td>
+            <td class="align-content-center">
               <div class="d-flex w-100 justify-content-center gap-2">
                 <button 
                   class="btn btn-success text-white"

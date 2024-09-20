@@ -35,27 +35,28 @@ $(document).ready(function () {
         }
         // table stock
         const persediaanProduct = await getPersediaanProductId(productId);
+        // price
+        let txtPrice = ``;
+        let txtQty = ``;
+        let tr = ``;
         persediaanProduct.forEach((row) => {
-          let txtPrice = ``;
-          let txtQty = ``;
-          const persediaanRp = row.PersediaanRp.toString();
+          // price
+          const persediaanRp = row.PersediaanRp;
           if (persediaanRp < 1) {
-            txtPrice =
-              persediaanRp.slice(0, 1) +
-              " " +
-              formatRupiah2(persediaanRp.slice(1));
+            txtPrice = `${formatRupiah2(persediaanRp)}`;
           }
           if (persediaanRp >= 1) {
             txtPrice = "+ " + formatRupiah2(persediaanRp);
           }
-          const persediaanQty = row.PersediaanQty.toString();
+          // qty
+          const persediaanQty = row.PersediaanQty;
           if (persediaanQty < 1) {
-            txtQty = persediaanQty.slice(0, 1) + " " + persediaanQty.slice(1);
+            txtQty = `- ${persediaanQty}`;
           }
           if (persediaanQty >= 1) {
             txtQty = "+ " + persediaanQty;
           }
-          let tr = ``;
+          // table
           tr += `<tr>
                   <td class="fs-6 align-content-center">${formatWaktuIndo(
                     row.PersediaanDDMY
@@ -66,8 +67,8 @@ $(document).ready(function () {
                   <td class="fs-6 align-content-center">${txtQty}</td>
                   <td class="fs-6 align-content-center" id="product-detail-price">${txtPrice}</td>
                 </tr>`;
-          $("tbody#product-refpersediaan").html(tr);
         });
+        $("tbody#product-refpersediaan").html(tr);
         // sum rupiah
         const sumRp = await getPersediaanRpSumProductId(productId);
         $("#persediaan-detail-productid").text(formatRupiah2(sumRp));
