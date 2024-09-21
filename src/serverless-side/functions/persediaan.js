@@ -658,44 +658,44 @@ export const getPersediaanCategorySum = () => {
   });
 };
 // references order
-export const getPersediaanTotalRow1 = (valSearch, callback) => {
-  const query = queryGetPersediaanTotalRow1(valSearch);
-  db.each(query, (err, res) => {
-    if (!err) {
-      const totalProduct = parseInt(res.TotalRow);
-      let totalPage;
-      let limit = parseInt(3);
-      if (totalProduct % limit === 0) {
-        totalPage = parseInt(totalProduct / limit);
-      } else {
-        totalPage = parseInt(totalProduct / limit) + 1;
+export const getPersediaanTotalRow1 = (req) => {
+  const { searchVal, limitVal } = req;
+  const query = queryGetPersediaanTotalRow1(searchVal);
+  return new Promise((resolve, reject) => {
+    db.each(query, (err, res) => {
+      if (!err) {
+        let totalPage;
+        const totalRow = parseInt(res.TotalRow);
+        if (totalRow % limitVal === 0) {
+          totalPage = parseInt(totalRow / limitVal);
+        } else {
+          totalPage = parseInt(totalRow / limitVal) + 1;
+        }
+        resolve({ totalPage, totalRow });
       }
-      return callback(true, { totalProduct, totalPage });
-    }
-    if (err) {
-      return callback(false, err);
-    }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
-export const getPersediaanProductGroup1 = (
-  valSearch,
-  valLimit,
-  valOffset,
-  callback
-) => {
-  const valStartOffset = parseInt((valOffset - 1) * valLimit);
+export const getPersediaanProductGroup1 = (req) => {
+  const { searchVal, limitVal, offsetVal } = req;
+  const startOffsetVal = parseInt((offsetVal - 1) * limitVal);
   const query = queryGetPersediaanProductGroup1(
-    valSearch,
-    valLimit,
-    valStartOffset
+    searchVal,
+    limitVal,
+    startOffsetVal
   );
-  db.all(query, (err, res) => {
-    if (!err) {
-      return callback(true, res);
-    }
-    if (err) {
-      return callback(false, err);
-    }
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, res) => {
+      if (!err) {
+        resolve(res);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
 // 3.UPDATE

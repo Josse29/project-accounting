@@ -15,10 +15,12 @@ import { reinitTooltip, uiLoad } from "../../utils/updateUi.js";
 $(document).ready(function () {
   // loading
   $("div#persediaan-loading").html(uiLoad());
+  $("div#persediaan-done").hide();
   let searchVal = $("input#persediaan-search").val();
   let limitVal = parseInt($("#persediaan-limit").val());
   let offsetVal = 1;
   getInitAsync();
+  // refresh
   $("button#persediaan-refresh")
     .off("click")
     .on("click", function () {
@@ -32,12 +34,14 @@ $(document).ready(function () {
       getInitAsync();
       uiSumPersediaanDate2();
     });
+  // search
   $("input#persediaan-search")
     .off("keyup")
     .on("keyup", function () {
       searchVal = $(this).val();
       getInitAsync();
     });
+  // limit
   $("select#persediaan-limit")
     .off("change")
     .on("change", function () {
@@ -70,6 +74,8 @@ $(document).ready(function () {
         $("#persediaan-pagination").addClass("d-none");
       }
       // references and loading
+      $("div#persediaan-sum-section").html("");
+      $("div#persediaan-done").show();
       $("div#persediaan-loading").html("");
     } catch (error) {
       console.error(error);
@@ -165,6 +171,7 @@ $(document).ready(function () {
   }
 });
 export const getPersediaanAgain = () => {
+  $("input#persediaan-search").val("");
   let searchVal = "";
   let limitVal = parseInt($("#persediaan-limit").val());
   let offsetVal = 1;
@@ -193,7 +200,6 @@ export const getPersediaanAgain = () => {
         $("tbody#persediaan-table").html(uiTbodyEmpty(searchVal));
         $("#persediaan-pagination").addClass("d-none");
       }
-      $("#persediaan-sum-section").hide();
     } catch (error) {
       console.error(error);
     }

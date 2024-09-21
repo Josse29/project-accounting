@@ -15,13 +15,19 @@ $("div#persediaan-date-all-search")
       const endDateVal = $("input#persediaan-end-date").val();
       const supplierId = parseInt($(this).val());
       const req = { startDateVal, endDateVal, supplierId };
-      // caption
+      // caption-selected
+      const startDateTxt = formatWaktuIndo(startDateVal);
+      const endDateTxt = formatWaktuIndo(endDateVal);
+      const rangeDateTxt = `${startDateTxt} - ${endDateTxt}`;
       const selectedTxt = $(this).find("option:selected").text();
-      $("span#persediaan-date-product").text(selectedTxt);
       // sum
-      const sumRp = await getPersediaanDateRpSupplierId(req);
-      const result = formatRupiah2(sumRp);
-      $("span#total-rupiah-byid").text(result);
+      const sum = await getPersediaanDateRpSupplierId(req);
+      const sumRupiah = formatRupiah2(sum);
+      // insert - to - html sumpersediaan
+      const sumSectionHTML = `<p class="fs-5 ms-2 mb-1 text-capitalize fw-bold ms-2">
+                                ${selectedTxt} | ${rangeDateTxt}</p>
+                              <p class="fs-5 ms-4">Total Price : ${sumRupiah} </p>`;
+      $("div#persediaan-sum-section").html(sumSectionHTML);
       // table
       const dateSupplier = await getPersediaanDateSupplierId(req);
       const existed = dateSupplier.length >= 1;
@@ -34,14 +40,10 @@ $("div#persediaan-date-all-search")
         reinitTooltip();
       }
       if (!existed) {
-        const start = `${formatWaktuIndo(startDateVal)}`;
-        const end = `${formatWaktuIndo(endDateVal)}`;
-        const empty = `${selectedTxt} : ${start}  - ${end}`;
-        const tr = uiTbodyEmpty(empty);
+        const tr = uiTbodyEmpty(selectedTxt);
         $("#persediaan-table").html(tr);
       }
       // references
-      $("#only-product").hide();
       $("select#persediaan-date-product").val("Choose One Of Products");
       $("select#persediaan-date-category").val("Choose One Of Categories");
     } catch (error) {

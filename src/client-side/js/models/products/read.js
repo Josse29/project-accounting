@@ -24,12 +24,14 @@ $(document).ready(function () {
   let limitVal = parseInt($("#product-limit").val());
   let offsetVal = 1;
   getInit();
+  // search
   $("#product-search-input")
     .off("keyup")
     .on("keyup", function () {
       searchVal = $(this).val();
       getInit();
     });
+  // limit
   $("#product-limit")
     .off("change")
     .on("change", function () {
@@ -47,7 +49,7 @@ $(document).ready(function () {
       const totalPage = init.totalPage;
       // total Row
       const totalRow = init.totalRow;
-      $("#product-total-row").text(totalRow);
+      $("p#product-total-row").text(`Total : ${totalRow}`);
       if (totalRow >= 1) {
         await getProductPage(req);
         handlePagination(totalPage);
@@ -171,7 +173,7 @@ export function getProductsAgain() {
       const totalPage = init.totalPage;
       // total Row
       const totalRow = init.totalRow;
-      $("#product-total-row").text(totalRow);
+      $("p#product-total-row").text(`Total : ${totalRow}`);
       if (totalRow >= 1) {
         await getProductPage(req);
         handlePagination(totalPage);

@@ -15,21 +15,25 @@ $(document).ready(function () {
     .off("change")
     .on("change", async function () {
       try {
-        const selectedText = $(this).find("option:selected").text();
+        // req
         const selectedProductId = parseInt($(this).val());
-        // caption
-        $("span#persediaan-id").text(selectedText);
+        // caption-selected
+        const selectedProductName = $(this).find("option:selected").text();
         // price buy
         const priceBuy = await getProductPriceBuy(selectedProductId);
         const priceBuyRp = formatRupiah2(priceBuy.ProductPriceBeli);
-        $("#rupiah-byid").text(priceBuyRp);
         // sum qty
         const sumQty = await getPersediaanQty(selectedProductId);
-        $("span#total-qty-byid").text(sumQty);
         // sum rupiah
         const sumRp = await getPersediaanRpSumProductId(selectedProductId);
-        const rupiah = formatRupiah2(parseFloat(sumRp));
-        $("span#total-rupiah-byid").text(rupiah);
+        const sumRp1 = formatRupiah2(parseFloat(sumRp));
+        // insert - to - html sumpersediaan
+        const sumSectionHTML = `<p class="fs-5 ms-2 mb-1 text-capitalize fw-bold ms-2">
+                                  ${selectedProductName}</p>
+                                <p class="fs-5 ms-4 mb-1">Price : ${priceBuyRp} </p>
+                                <p class="fs-5 ms-4 mb-1">Total Qty : ${sumQty} </p>
+                                <p class="fs-5 ms-4">Total Price : ${sumRp1} </p>`;
+        $("div#persediaan-sum-section").html(sumSectionHTML);
         // tables
         const byProduct = await getPersediaanProductId2(selectedProductId);
         const existedProduct = byProduct.length >= 1;
@@ -42,14 +46,11 @@ $(document).ready(function () {
           reinitTooltip();
         }
         if (!existedProduct) {
-          const tr = uiTbodyEmpty(selectedText);
+          const tr = uiTbodyEmpty(selectedProductName);
           $("#persediaan-table").html(tr);
         }
         // references
         $("#persediaanLimitSearch").addClass("d-none");
-        $("div#persediaan-sum-section").show();
-        $("div#only-product").show();
-        $("span#persediaan-date-product").text("");
         $("select#persediaan-refsupplier-search").val(
           "Choose One Of Suppliers"
         );

@@ -20,15 +20,18 @@ $(document).ready(function () {
         if (startDate === "" || endDate === "" || endDate < startDate) {
           return;
         }
-        // caption
-        $("span#persediaan-date-product").text("All Product");
-        $("#persediaan-id").html(
-          ` ${formatWaktuIndo(startDate)}  - ${formatWaktuIndo(endDate)}`
-        );
+        // caption-selected
+        const startDateTxt = formatWaktuIndo(startDate);
+        const endDateTxt = formatWaktuIndo(endDate);
+        const rangeDateTxt = `${startDateTxt} - ${endDateTxt}`;
         // sum rupiah
         const sumRp = await getPersediaanDateSum(startDate, endDate);
-        const rupiah = formatRupiah2(parseFloat(sumRp));
-        $("span#total-rupiah-byid").text(rupiah);
+        const sumRupiah = formatRupiah2(parseFloat(sumRp));
+        // insert - to - html sumpersediaan
+        const sumSectionHTML = `<p class="fs-5 ms-2 mb-1 text-capitalize fw-bold ms-2">
+                                  All Product | ${rangeDateTxt} </p>
+                                <p class="fs-5 ms-4">Total Price : ${sumRupiah} </p>`;
+        $("div#persediaan-sum-section").html(sumSectionHTML);
         // table
         const byDate = await getPersediaanDate(startDate, endDate);
         const existed = byDate.length >= 1;
@@ -52,19 +55,13 @@ $(document).ready(function () {
                           <option value="test" class="fs-6">Kategori</option>
                         </select>`;
           $("div#persediaan-date-all-search").html(html);
-          $("#persediaan-date-all-search").show();
         }
         if (!existed) {
-          const tr = uiTbodyEmpty(
-            formatWaktuIndo(startDate) + " - " + formatWaktuIndo(endDate)
-          );
+          const tr = uiTbodyEmpty(rangeDateTxt);
           $("#persediaan-table").html(tr);
-          $("#persediaan-date-all-search").hide();
         }
         // references
         uiSumPersediaanDate();
-        $("#persediaan-sum-section").show();
-        $("#only-product").hide();
         $("#persediaan-pagination").addClass("d-none");
       } catch (error) {
         console.error(error);

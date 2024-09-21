@@ -157,12 +157,6 @@ button#persediaan-export-print {
 button#persediaan-export-print:hover {
   background-color: rgb(212, 54, 36);
 }
-button#btn-create-satuan {
-  background-color: #009ef7;
-}
-button#btn-create-satuan:hover {
-  background-color: #0396ea;
-}
 button#supplier-export-pdf {
   color: white;
   background-color: rgb(249, 97, 46);
@@ -248,81 +242,6 @@ label#supplier-update-img-cancel {
   color: white;
   border: 1px solid #007bff;
   outline: none;
-}
-.product-refsupplier-list {
-  border: 1px solid black;
-  position: absolute;
-  background-color: white;
-  margin-top: -4px;
-  width: 100%;
-  z-index: 2;
-}
-.product-refsupplier-val {
-  padding: 0px 10px;
-  text-transform: capitalize;
-}
-.product-refsupplier-not-found {
-  padding: 0px 10px;
-  text-align: center;
-  font-style: italic;
-  text-transform: capitalize;
-}
-.product-refsupplier-val:hover {
-  cursor: pointer;
-  background-color: #007bff;
-  color: white;
-}
-.satuan-btn-page {
-  background-color: #fff;
-  color: black;
-  font-size: 18px;
-  border: 2px solid #e1e1e1;
-  outline: none;
-  padding: 8px 12px;
-}
-.satuan-btn-page.satuan-active-page {
-  background-color: #009ef7;
-  color: white;
-  font-size: 18px;
-  border: 2px solid #009ef7;
-  outline: none;
-  padding: 8px 12px;
-}
-#persediaan-refproduct-create-list {
-  border: 1px solid black;
-  position: absolute;
-  background-color: white;
-  margin-top: -1px;
-  width: 100%;
-  z-index: 3;
-  max-height: 122px;
-  overflow-y: auto;
-}
-#persediaan-refproduct-create-list::-webkit-scrollbar {
-  width: 7px;
-}
-#persediaan-refproduct-create-list::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-#persediaan-refproduct-create-list::-webkit-scrollbar-thumb {
-  background: #adadad;
-}
-.persediaan-refproduct-create-val {
-  padding: 0px 10px;
-  text-transform: capitalize;
-}
-.persediaan-refproduct-create-val:hover {
-  cursor: pointer;
-}
-.persediaan-refproduct-create-val.active-list {
-  background-color: #007bff;
-  color: white;
-}
-.persediaan-refproduct-not-found {
-  padding: 0px 10px;
-  text-align: center;
-  font-style: italic;
-  text-transform: capitalize;
 }
 .persediaan-btn-page {
   background-color: #fff;
@@ -588,7 +507,6 @@ span:hover {
   position: relative;
   overflow: hidden;
 }
-
 .animate-load::before {
   content: "";
   display: block;

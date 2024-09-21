@@ -105,9 +105,9 @@ export const updateQty = () => {
       }
       // save to storage
       setStorageCart(cartArray);
-      // updating ui card only
+      // updating ui qty card only
       uiQty();
-      // updating list cart
+      // updating list cart for order temp
       listCart();
     });
 };
@@ -133,16 +133,14 @@ export const listCart = () => {
       listTd += uiTbody(rows, noTd);
       noTd++;
     });
-    $("div#order-list").addClass("overflow-y-auto");
   }
   if (cartArray.length < 1) {
-    listHTML = `<p class="fs-5 text-center fst-italic text-muted h-100     align-content-center">
-                          order is empty...
-                        </p>`;
+    listHTML = `<p class="fst-italic text-muted fs-4 text-center">
+                    order is empty...
+                </p>`;
     listTd = `<tr>
                 <td colspan="5" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">order is still empty....</td>
               </tr>`;
-    $("div#order-list").removeClass("overflow-y-auto");
   }
   // save to storage cartsum
   setStorageCartSum(totalRp);
@@ -150,10 +148,12 @@ export const listCart = () => {
   totalRp = Number(getStorageCartSum());
   let terbilang = terbilangIndonesia(totalRp);
   let numberRp = formatRupiah2(totalRp);
-  $("span#order-total-cart").text(formatRupiah1(totalRp));
+  // list cart
   $("h5#order-list-total").text(numberRp);
-  $("i#order-total-cart").text(numberRp);
   $("div#order-list").html(listHTML);
+  // table order
   $("tbody#orders-done").html(listTd);
+  $("span#order-total-cart").text(formatRupiah1(totalRp));
   $("span#order-terbilang").text(`${terbilang} rupiah`);
+  $("i#order-total-cart").text(numberRp);
 };

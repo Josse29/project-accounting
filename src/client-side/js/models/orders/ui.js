@@ -47,51 +47,10 @@ export const uiMenu = (rows) => {
 export const uiBtnPage = (number) => {
   return `<button 
             type="button" 
-            class="btn fs-4 order-page border border-2 ${
-              number === 1 ? "order-page-active" : ""
+            class="btn fs-4 product-ref-persediaan-page border border-2 ${
+              number === 1 ? "product-ref-persediaan-page-active" : ""
             }">${number}</button>`;
 };
-
-// export const uiOrderCard1 = (rows) => {
-//   const productId = parseInt(rows.PersediaanProductId);
-//   const productName = rows.ProductName;
-//   const priceJual = formatRupiah2(parseFloat(rows.ProductPriceJual));
-//   const productStock = parseInt(rows.TotalQty);
-//   const withNoImg = `<img
-//                       src="./../../../images/no-img.jpg"
-//                       class="card-img-top"/>`;
-//   const productImg = `<img
-//                     src=${rows.ProductImage || "./../../../images/no-img.jpg"}
-//                     class="card-img-top"/>`;
-//   return `<div class="card w-full shadow-sm">
-//             ${productImg}
-//             <div class="card-body">
-//                 <h4 class="fw-bold text-truncate" id="order-productname">${productName}</h4>
-//                 <h4 class="text-truncate" id="order-productprice">${priceJual}</h4>
-//                 <p class='fs-5'>Stocks : ${productStock}</p>
-//                 <div class="mt-3 d-flex justify-content-between align-items-center">
-//                   <div id="order-create-qty">
-//                   </div>
-//                   <div>
-//                     <button id="order-create-qty-plus" class="btn btn-success"
-//                             data-productid=${productId}
-//                             data-productname="${productName}"
-//                             data-productstock=${productStock}
-//                             data-productprice=${priceJual}>
-//                       <i class="fa-solid fa-plus" style="font-size: 18px"></i>
-//                     </button>
-//                     <button class="btn btn-danger" id="order-create-qty-minus"
-//                             data-productid=${productId}
-//                             data-productname="${productName}"
-//                             data-productstock=${productStock}
-//                             data-productprice=${priceJual}>
-//                       <i class="fa-solid fa-minus" style="font-size: 18px"></i>
-//                     </button>
-//                   </div>
-//               </div>
-//             </div>
-//           </div>`;
-// };
 // only loop to card menu
 export const uiQty = () => {
   const cartStorage = getStorageCart();
@@ -133,7 +92,7 @@ export const uiList = (rows) => {
             </div>
           </div>`;
 };
-// update ui to tbody card
+// update ui to tbody card for orderintg
 export const uiTbody = (rows, noTd) => {
   const productPrice = formatRupiah2(rows.ProductPrice);
   const productTotal = formatRupiah2(rows.ProductTotal);
@@ -146,4 +105,10 @@ export const uiTbody = (rows, noTd) => {
             <td>+ ${rows.ProductQty}</td>
             <td>${productTotal}</td>
           </tr>`;
+};
+// update ui Active
+export const uiActivePage = (pageNumber) => {
+  const btnPage = $("button.product-ref-persediaan-page");
+  btnPage.removeClass("product-ref-persediaan-page-active");
+  btnPage.eq(pageNumber - 1).addClass("product-ref-persediaan-page-active");
 };

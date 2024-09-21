@@ -39,9 +39,9 @@ $(document).ready(function () {
       };
       const init = await getSupplierInit(req);
       const totalPage = init.totalPage;
-      const totalRow = init.totalRow;
       // totalSupplier
-      $("span#supplier-total-row").text(totalRow);
+      const totalRow = init.totalRow;
+      $("p#supplier-total-row").text(`Total : ${totalRow}`);
       if (totalRow >= 1) {
         await getSupplierPage(req);
         handlePagination(totalPage);
@@ -97,7 +97,7 @@ $(document).ready(function () {
         let pageActive = parseInt($(".supplier-active-page").text().trim());
         let decrementPage = pageActive - 1;
         if (decrementPage < 1) {
-          decrementPage = supplierTotalPage;
+          decrementPage = totalPage;
         }
         const req = {
           searchVal,
@@ -162,9 +162,9 @@ export const getSupplierAgain = () => {
       };
       const init = await getSupplierInit(req);
       const totalPage = init.totalPage;
-      const totalRow = init.totalRow;
       // totalSupplier
-      $("span#supplier-total-row").text(totalRow);
+      const totalRow = init.totalRow;
+      $("p#supplier-total-row").text(`Total : ${totalRow}`);
       if (totalRow >= 1) {
         await getSupplierPage(req);
         handlePagination(totalPage);
@@ -217,7 +217,7 @@ export const getSupplierAgain = () => {
         let pageActive = parseInt($(".supplier-active-page").text().trim());
         let decrementPage = pageActive - 1;
         if (decrementPage < 1) {
-          decrementPage = supplierTotalPage;
+          decrementPage = totalPage;
         }
         const req = {
           searchVal,

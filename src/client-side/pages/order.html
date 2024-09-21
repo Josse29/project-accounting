@@ -114,7 +114,6 @@
         </div>
         <h4 class="hari-tanggal-tahun"></h4>
       </div>
-      <!-- <img src="./../images/no-img.jpg" alt="" /> -->
       <!-- section second menu & list-cart-->
       <div class="bg-white d-flex w-100 gap-4 rounded-3 shadow-sm p-4 mb-5">
         <!-- menu -->
@@ -130,41 +129,131 @@
               >Search</span
             >
           </div>
-          <div id="product-reforder-empty"></div>
           <!-- menu -->
-          <div class="container-by-me" id="product-reforder-card"></div>
+          <div class="container-by-me" id="product-refpersediaan-read">
+            <div class="card">
+              <div
+                class="animate-load"
+                style="width: 100%; height: 200px"
+              ></div>
+              <div class="card-body">
+                <div class="mb-4">
+                  <div
+                    class="animate-load mb-2 w-75"
+                    style="height: 30px"
+                  ></div>
+                  <div
+                    class="animate-load w-50 mb-2"
+                    style="height: 30px"
+                  ></div>
+                  <div class="animate-load w-25" style="height: 25px"></div>
+                </div>
+                <div class="d-flex justify-content-end gap-2">
+                  <div
+                    class="animate-load"
+                    style="height: 35px; width: 35px"
+                  ></div>
+                  <div
+                    class="animate-load"
+                    style="height: 35px; width: 35px"
+                  ></div>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div
+                class="animate-load"
+                style="width: 100%; height: 200px"
+              ></div>
+              <div class="card-body">
+                <div class="mb-4">
+                  <div
+                    class="animate-load mb-2 w-75"
+                    style="height: 30px"
+                  ></div>
+                  <div
+                    class="animate-load w-50 mb-2"
+                    style="height: 30px"
+                  ></div>
+                  <div class="animate-load w-25" style="height: 25px"></div>
+                </div>
+                <div class="d-flex justify-content-end gap-2">
+                  <div
+                    class="animate-load"
+                    style="height: 35px; width: 35px"
+                  ></div>
+                  <div
+                    class="animate-load"
+                    style="height: 35px; width: 35px"
+                  ></div>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div
+                class="animate-load"
+                style="width: 100%; height: 200px"
+              ></div>
+              <div class="card-body">
+                <div class="mb-4">
+                  <div
+                    class="animate-load mb-2 w-75"
+                    style="height: 30px"
+                  ></div>
+                  <div
+                    class="animate-load w-50 mb-2"
+                    style="height: 30px"
+                  ></div>
+                  <div class="animate-load w-25" style="height: 25px"></div>
+                </div>
+                <div class="d-flex justify-content-end gap-2">
+                  <div
+                    class="animate-load"
+                    style="height: 35px; width: 35px"
+                  ></div>
+                  <div
+                    class="animate-load"
+                    style="height: 35px; width: 35px"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
           <!-- pagination -->
           <div
-            class="w-100 d-flex justify-content-center"
-            id="order-pagination-section"
+            class="w-100 d-flex justify-content-center d-none"
+            id="product-refpersediaan-pagination"
           >
             <div class="btn-group">
               <button
                 type="button"
                 class="btn border border-2"
-                id="order-first-page"
+                id="product-ref-persediaan-first-page"
               >
                 <i class="fa-solid fa-backward-fast fs-6"></i>
               </button>
               <button
                 type="button"
                 class="btn border border-2"
-                id="order-prev-page"
+                id="product-ref-persediaan-prev-page"
               >
                 <i class="fa-solid fa-backward-step fs-6"></i>
               </button>
-              <div id="order-page-number" class="btn-group"></div>
+              <div
+                id="product-ref-persediaan-page-number"
+                class="btn-group"
+              ></div>
               <button
                 type="button"
                 class="btn border border-2"
-                id="order-next-page"
+                id="product-ref-persediaan-next-page"
               >
                 <i class="fa-solid fa-forward-step fs-6"></i>
               </button>
               <button
                 type="button"
                 class="btn border border-2"
-                id="order-last-page"
+                id="product-ref-persediaan-last-page"
               >
                 <i class="fa-solid fa-forward-fast fs-6"></i>
               </button>
@@ -180,10 +269,14 @@
               </div>
             </div>
             <div
-              class="card-body overflow-y-auto"
-              style="height: 400px"
+              class="card-body align-content-center overflow-y-auto"
+              style="max-height: 400px"
               id="order-list"
-            ></div>
+            >
+              <p class="fst-italic text-muted fs-4 text-center">
+                order empty...
+              </p>
+            </div>
             <div
               class="card-footer bg-white fw-bold w-100 text-end"
               data-bs-toggle="modal"

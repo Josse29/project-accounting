@@ -11,14 +11,18 @@ $(document).ready(function () {
   listCategoryRefPersediaanRead();
   $("select#persediaan-refcategory-search").on("change", async function () {
     try {
-      const selectedText = $(this).find("option:selected").text();
+      // req
       const selectedCategoryId = parseInt($(this).val());
-      // caption
-      $("span#persediaan-id").text(selectedText);
+      // selected
+      const selectedCategoryName = $(this).find("option:selected").text();
       // sum
       const sum = await getPersediaanRpSumCategoryId(selectedCategoryId);
-      const rupiah = formatRupiah2(parseFloat(sum));
-      $("span#total-rupiah-byid").text(rupiah);
+      const sumRupiah = formatRupiah2(parseFloat(sum));
+      // insert - to - html sumpersediaan
+      const sumSectionHTML = `<p class="fs-5 ms-2 mb-1 text-capitalize fw-bold ms-2">
+                                ${selectedCategoryName}</p>
+                              <p class="fs-5 ms-4">Total Price : ${sumRupiah} </p>`;
+      $("div#persediaan-sum-section").html(sumSectionHTML);
       // table
       const byCategoryId = await getPersediaanCategoryId(selectedCategoryId);
       const existedCategory = byCategoryId.length >= 1;
@@ -31,14 +35,11 @@ $(document).ready(function () {
         reinitTooltip();
       }
       if (!existedCategory) {
-        const tr = uiTbodyEmpty(selectedText);
+        const tr = uiTbodyEmpty(selectedCategoryName);
         $("#persediaan-table").html(tr);
       }
       // references
       $("#persediaanLimitSearch").addClass("d-none");
-      $("#persediaan-sum-section").show();
-      $("#only-product").hide();
-      $("span#persediaan-date-product").text("");
       $("select#persediaan-refproduct-search").val("Choose One Of Products");
       $("select#persediaan-refsupplier-search").val("Choose One Of Suppliers");
       $("#persediaan-pagination").addClass("d-none");

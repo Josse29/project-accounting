@@ -38,8 +38,9 @@ $(document).ready(function () {
       };
       const init = await getCategoryInit(req);
       const totalPage = init.totalPage;
+      // total-row
       const totalRow = init.totalRow;
-      $("div#categories-total-row").text(totalRow);
+      $("p#categories-total-row").text(`Total : ${totalRow}`);
       if (totalRow >= 1) {
         await getCategoryPage(req);
         handlePagination(totalPage);
@@ -159,8 +160,9 @@ export const getCategoryAgain = () => {
       };
       const init = await getCategoryInit(req);
       const totalPage = init.totalPage;
+      // total-row
       const totalRow = init.totalRow;
-      $("div#categories-total-row").text(totalRow);
+      $("p#categories-total-row").text(`Total : ${totalRow}`);
       if (totalRow >= 1) {
         await getCategoryPage(req);
         handlePagination(totalPage);

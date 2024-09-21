@@ -13,24 +13,31 @@ $("div#persediaan-date-all-search")
   .off("change", "select#persediaan-date-product")
   .on("change", "select#persediaan-date-product", async function () {
     try {
+      // req
       const startDateVal = $("input#persediaan-start-date").val();
       const endDateVal = $("input#persediaan-end-date").val();
       const productId = parseInt($(this).val());
       const req = { startDateVal, endDateVal, productId };
-      // caption
+      // caption-selected
+      const startDateTxt = formatWaktuIndo(startDateVal);
+      const endDateTxt = formatWaktuIndo(endDateVal);
+      const rangeDateTxt = `${startDateTxt} - ${endDateTxt}`;
       const selectedTxt = $(this).find("option:selected").text();
-      $("span#persediaan-date-product").text(selectedTxt);
       // price buy
       const priceBuy = await getProductPriceBuy(productId);
       const priceBuyRp = formatRupiah2(priceBuy.ProductPriceBeli);
-      $("#rupiah-byid").text(priceBuyRp);
       //   qty
       const qty = await getPersediaanDateQtyProductId(req);
-      $("span#total-qty-byid").text(qty);
       //   sum rupiah
-      const sumRupiah = await getPersediaanDateSumProduct(req);
-      const rupiah = formatRupiah2(parseFloat(sumRupiah));
-      $("span#total-rupiah-byid").text(rupiah);
+      const sum = await getPersediaanDateSumProduct(req);
+      const sumRupiah = formatRupiah2(parseFloat(sum));
+      // insert - to - html sumpersediaan
+      const sumSectionHTML = `<p class="fs-5 ms-2 mb-1 text-capitalize fw-bold ms-2">
+                                ${selectedTxt} | ${rangeDateTxt}</p>
+                              <p class="fs-5 ms-4 mb-1">Price : ${priceBuyRp} </p>
+                              <p class="fs-5 ms-4 mb-1">Total Qty : ${qty} </p>
+                              <p class="fs-5 ms-4">Total Price : ${sumRupiah} </p>`;
+      $("div#persediaan-sum-section").html(sumSectionHTML);
       //   table
       const dateProduct = await getPersediaanDateProductId(req);
       const existed = dateProduct.length >= 1;
@@ -43,16 +50,12 @@ $("div#persediaan-date-all-search")
         reinitTooltip();
       }
       if (!existed) {
-        const start = `${formatWaktuIndo(startDateVal)}`;
-        const end = `${formatWaktuIndo(endDateVal)}`;
-        const empty = `${selectedTxt} : ${start}  - ${end}`;
-        const tr = uiTbodyEmpty(empty);
+        const tr = uiTbodyEmpty(selectedTxt);
         $("#persediaan-table").html(tr);
       }
       //   references
-      $("#only-product").show();
-      $("select#persediaan-date-category").val("Choose One Of Categories");
       $("select#persediaan-date-supplier").val("Choose One Of Suppliers");
+      $("select#persediaan-date-category").val("Choose One Of Categories");
     } catch (error) {
       console.error(error);
     }
