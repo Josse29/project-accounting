@@ -42,18 +42,19 @@ export const queryInsertPersediaan = (
   return query;
 };
 export const queryInsertPersediaan1 = (
-  ProductYMDval,
-  ProductHMSval,
-  ProductIdval,
-  PersediaanQtyval,
-  PersediaanRpval,
-  PersonIdval
+  PersediaanYMDVal,
+  PersediaanHMSVal,
+  PersediaanQtyVal,
+  PersediaanTotalVal,
+  PersediaanInfoVal,
+  PersediaanProductIdVal,
+  PersediaanPersonIdVal
 ) => {
   let query = `INSERT 
-               INTO ${tableName} 
-               (${colPersediaanDDMY}, ${colPersediaanHMS}, ${colPersediaanProductId}, ${colPersediaanQty}, ${colPersediaanRp}, ${colPersediaanPersonId}) 
+               INTO Persediaan
+               (PersediaanDDMY, PersediaanHMS, PersediaanQty, PersediaanRp, PersediaanInfo, PersediaanProductId,PersediaanPersonId) 
                VALUES 
-               ('${ProductYMDval}', '${ProductHMSval}',${ProductIdval}, ${PersediaanQtyval}, ${PersediaanRpval}, ${PersonIdval})`;
+               ('${PersediaanYMDVal}', '${PersediaanHMSVal}',${PersediaanQtyVal}, ${PersediaanTotalVal}, '${PersediaanInfoVal}', ${PersediaanProductIdVal}, ${PersediaanPersonIdVal})`;
   return query;
 };
 // 2.READ

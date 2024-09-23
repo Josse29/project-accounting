@@ -12,13 +12,13 @@ import {
   removeStorageCartSUM,
 } from "../../utils/localStorage.js";
 import { getSalesAgain } from "../sales/read.js";
-import { listUserForRefOrder } from "../users/list.js";
+import { listUserRefSalesCreate } from "../users/list.js";
 import { listCart } from "./cart.js";
 import { getProductAgain } from "./read.js";
 
 $(document).ready(function () {
   // FOR LIST user ORDER
-  listUserForRefOrder();
+  listUserRefSalesCreate();
   // for change result
   $("input#order-payment")
     .off("input")
@@ -49,200 +49,128 @@ $(document).ready(function () {
   // insert to db ,updateui, remove storage and
   $("button#order-done")
     .off("click")
-    .on("click", function () {
-      const { formattedDDMY, formattedHMS } = getTimeNow();
-      const userSalesId = $("select#order-create-usersalesid").val();
-      const userSalesText = $("select#order-create-usersalesid")
-        .find("option:selected")
-        .text();
-      const customerId = $("select#order-create-usercustomerid").val();
-      const totalPaid = disFormatRupiah1($("input#order-payment").val());
-      const totalCart = Number(getStorageCartSum());
-      const storageCart = getStorageCart();
-      if (storageCart.length === 0 || totalCart === 0) {
-        return;
-      }
-      // for user-sales
-      if (userSalesId === null) {
-        $("select#order-create-usersalesid").addClass("is-invalid");
-        const modalBody = document.getElementById("order-create-modalBody");
-        if (modalBody) {
-          modalBody.scrollTo({
-            top: 0,
-            behavior: "smooth",
-          });
+    .on("click", async function () {
+      try {
+        const { formattedDDMY, formattedHMS } = getTimeNow();
+        const userSalesId = $("select#order-create-usersalesid").val();
+        const customerId = $("select#order-create-usercustomerid").val();
+        const totalPaid = disFormatRupiah1($("input#order-payment").val());
+        const totalCart = Number(getStorageCartSum());
+        const storageCart = getStorageCart();
+        if (storageCart.length === 0 || totalCart === 0) {
+          return;
         }
-        return;
-      }
-      if (userSalesId !== null) {
-        $("select#order-create-usersalesid").removeClass("is-invalid");
-      }
-      // for user-customer
-      if (customerId === null) {
-        $("select#order-create-usercustomerid").addClass("is-invalid");
-        const modalBody = document.getElementById("order-create-modalBody");
-        if (modalBody) {
-          modalBody.scrollTo({
-            top: 0,
-            behavior: "smooth",
-          });
+        // for user-sales
+        if (userSalesId === null) {
+          $("select#order-create-usersalesid").addClass("is-invalid");
+          const modalBody = document.getElementById("order-create-modalBody");
+          if (modalBody) {
+            modalBody.scrollTo({
+              top: 0,
+              behavior: "smooth",
+            });
+          }
+          return;
         }
-        return;
-      }
-      if (customerId !== null) {
-        $("select#order-create-usercustomerid").removeClass("is-invalid");
-      }
-      if (totalPaid >= totalCart) {
-        // SEND TO PERSEDIAAN
-        const insertPromise1 = () => {
-          const promises = storageCart.map((el) => {
-            return new Promise((resolve, reject) => {
-              const req = {
-                ProductYMD: formattedDDMY,
-                ProductHMS: formattedHMS,
-                ProductId: el.ProductId,
-                ProductQty: el.ProductQty * -1,
-                ProductTotal: el.ProductTotal * -1,
-                PersonSalesId: parseInt(userSalesId),
-              };
-              createPersediaan1(req, (status, response) => {
-                if (status) {
-                  console.log(response);
-                  resolve();
-                } else {
-                  console.error(response);
-                  reject(response);
-                }
-              });
+        if (userSalesId !== null) {
+          $("select#order-create-usersalesid").removeClass("is-invalid");
+        }
+        // for user-customer
+        if (customerId === null) {
+          $("select#order-create-usercustomerid").addClass("is-invalid");
+          const modalBody = document.getElementById("order-create-modalBody");
+          if (modalBody) {
+            modalBody.scrollTo({
+              top: 0,
+              behavior: "smooth",
             });
-          });
-          return Promise.all(promises);
-        };
-        // SEND TO SALES
-        const insertPromise2 = () => {
-          const promises = storageCart.map((el) => {
-            return new Promise((resolve, reject) => {
-              {
-                const req = {
-                  SalesYMDVal: formattedDDMY,
-                  SalesHMSVal: formattedHMS,
-                  SalesProductIdVal: el.ProductId,
-                  SalesProductQtyVal: el.ProductQty,
-                  SalesProductRpVal: el.ProductTotal,
-                  SalesPersonIdVal: parseInt(userSalesId),
-                  SalesCustomerIdVal: parseInt(customerId),
-                  SalesStatusVal: "PAID",
-                };
-                createSales(req, (status, response) => {
-                  if (status) {
-                    console.log("berhasil ");
-                    resolve();
-                  }
-                  if (!status) {
-                    console.error(response);
-                    reject();
-                  }
-                });
-              }
-            });
-          });
-          return Promise.all(promises);
-        };
-        // SEND TO CASH
-        const insertPromise3 = () => {
-          const promises = storageCart.map((el) => {
-            return new Promise((resolve, reject) => {
-              const req = {
-                CashYYYYMMDDVal: formattedDDMY,
-                CashHMSVal: formattedHMS,
-                CashNameVal: "Sales",
-                CashRpVal: el.ProductTotal,
-                CashInfoVal: `Sales | ${el.ProductId} - ${el.ProductName}, Total Qty : ${el.ProductQty}`,
-              };
-              insertCash(req, (status, response) => {
-                if (status) {
-                  console.log("Cash insertion successful: ", response);
-                  resolve();
-                } else {
-                  console.error("Cash insertion failed: ", response);
-                  reject(response);
-                }
-              });
-            });
-          });
-          return Promise.all(promises);
-        };
-        // send to db.accounting | huffttt
-        const insertPromise4 = () => {
-          const promises = storageCart.flatMap((row) => {
-            const debitEntry = {
+          }
+          return;
+        }
+        if (customerId !== null) {
+          $("select#order-create-usercustomerid").removeClass("is-invalid");
+        }
+        // request to db
+        if (totalPaid >= totalCart) {
+          for (const el of storageCart) {
+            // 1.send to sales
+            const reqSales = {
+              SalesYMDVal: formattedDDMY,
+              SalesHMSVal: formattedHMS,
+              SalesProductIdVal: el.ProductId,
+              SalesProductQtyVal: el.ProductQty,
+              SalesProductRpVal: el.ProductTotal,
+              SalesPersonIdVal: parseInt(userSalesId),
+              SalesCustomerIdVal: parseInt(customerId),
+              SalesStatusVal: "PAID",
+            };
+            await createSales(reqSales);
+            // 2.SEND TO PERSEDIAAN
+            const reqPersediaan = {
+              PersediaanYMDVal: formattedDDMY,
+              PersediaanHMSVal: formattedHMS,
+              PersediaanQtyVal: el.ProductQty * -1,
+              PersediaanTotalVal: el.ProductTotal * -1,
+              PersediaanInfoVal: `${el.ProductName} has been sold with qty ${el.ProductQty}`,
+              PersediaanProductIdVal: el.ProductId,
+              PersediaanPersonIdVal: parseInt(userSalesId),
+            };
+            await createPersediaan1(reqPersediaan);
+            // 3.SEND TO CASH
+            const reqCash = {
+              CashYYYYMMDDVal: formattedDDMY,
+              CashHMSVal: formattedHMS,
+              CashNameVal: `Sales Product - ${el.ProductName}`,
+              CashRpVal: el.ProductTotal,
+              CashInfoVal: `${el.ProductName} has been sold with qty ${el.ProductQty}`,
+            };
+            await insertCash(reqCash);
+            //4. send to accounting
+            const debtEntry = {
               accountingYMDVal: formattedDDMY,
               accountingHMSVal: formattedHMS,
               accountingRefVal: 111,
               accountingNameVal: "Cash",
               accountingPositionVal: "debt",
-              accountingRpVal: row.ProductPrice,
-              accountingInfoVal: `Sales | ${row.ProductId} - ${row.ProductName}, Total Qty : ${row.ProductQty}`,
+              accountingRpVal: el.ProductPrice,
+              accountingInfoVal: `${el.ProductName} has been sold with qty ${el.ProductQty}`,
             };
+            await createAccounting(debtEntry);
             const creditEntry = {
               accountingYMDVal: formattedDDMY,
               accountingHMSVal: formattedHMS,
               accountingRefVal: 411,
               accountingNameVal: "Sales",
               accountingPositionVal: "credit",
-              accountingRpVal: row.ProductPrice,
-              accountingInfoVal: `Sales : ${parseInt(
-                userSalesId
-              )} - ${userSalesText} | Product : ${row.ProductId} - ${
-                row.ProductName
-              }`,
+              accountingRpVal: el.ProductPrice,
+              accountingInfoVal: `${el.ProductName} has been sold with qty ${el.ProductQty}`,
             };
-            return [
-              processAccountingEntry(debitEntry),
-              processAccountingEntry(creditEntry),
-            ];
-          });
-          // Return a promise that resolves when all accounting entries have been processed
-          return Promise.all(promises);
-        };
-        function processAccountingEntry(entry) {
-          return new Promise((resolve, reject) => {
-            createAccounting(entry, (status, response) => {
-              if (status) {
-                resolve(response);
-              } else {
-                reject(new Error(response));
-              }
-            });
-          });
+            await createAccounting(creditEntry);
+          }
+          // send to db.piutang|| it credit comingsooon
+          // comingsoonn....
+          // get all ref from orders|sales
+          getProductAgain();
+          getSalesAgain();
+          // remove storage cart and sum storage card
+          removeStorageCart();
+          removeStorageCartSUM();
+          // change
+          $("span#order-change").text(0);
+          $("input#order-payment").val(0);
+          // update ui qty card
+          $(".card-body div#order-create-qty").html("");
+          $("button#order-create-qty-plus").removeClass("unsufficient");
+          $("button#order-create-qty-minus").removeClass("unsufficient");
+          $("select#order-create-usersalesid").val("Choose One Of Sales");
+          $("select#order-create-usercustomerid").val(
+            "Choose One Of Customers"
+          );
+          listCart();
+          $("#sales-create-modal").modal("hide");
         }
-        Promise.all([
-          insertPromise1(),
-          insertPromise2(),
-          insertPromise3(),
-          insertPromise4(),
-        ])
-          .then(() => {
-            getProductAgain();
-            getSalesAgain();
-          })
-          .catch((err) => {
-            console.error(err);
-          });
-        $("#printModal").modal("hide");
-        // send to db.piutang|| it credit
-        // remove storage cart and sum storage card
-        removeStorageCart();
-        removeStorageCartSUM();
-        $("span#order-change").text(0);
-        $("input#order-payment").val(0);
-        $(".card-body div#order-create-qty").html("");
-        $("button#order-create-qty-plus").removeClass("unsufficient");
-        $("button#order-create-qty-minus").removeClass("unsufficient");
-        $("select#order-create-usersalesid").val("Choose One Of Sales");
-        $("select#order-create-usercustomerid").val("Choose One Of Customers");
-        listCart();
-        $("#printModal").modal("hide");
+      } catch (error) {
+        console.error(error);
       }
     });
 });

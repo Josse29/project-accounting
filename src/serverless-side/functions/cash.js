@@ -7,7 +7,7 @@ import {
   queryUpdateCash,
 } from "../querysql/cash.js";
 // create
-export const insertCash = (req, res) => {
+export const insertCash = (req) => {
   const { CashYYYYMMDDVal, CashHMSVal, CashNameVal, CashRpVal, CashInfoVal } =
     req;
   const query = queryInsertCash(
@@ -17,13 +17,15 @@ export const insertCash = (req, res) => {
     CashRpVal,
     CashInfoVal
   );
-  db.run(query, (err) => {
-    if (!err) {
-      return res(true, "berhasil");
-    }
-    if (err) {
-      return res(false, err);
-    }
+  return new Promise((resolve, reject) => {
+    db.run(query, (err) => {
+      if (!err) {
+        resolve();
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
 export const insertCash1 = (req) => {

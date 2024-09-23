@@ -34,26 +34,30 @@ export const getUsers = (callback) => {
   });
 };
 // only customer
-export const getCustomer = (callback) => {
+export const getCustomer = () => {
   const query = queryGetCustomer();
-  db.all(query, (err, res) => {
-    if (!err) {
-      return callback(true, res);
-    }
-    if (err) {
-      return callback(false, err);
-    }
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, res) => {
+      if (!err) {
+        resolve(res);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
 // only sales
-export const getSales = (callback) => {
+export const getSales = () => {
   const query = queryGetSales();
-  db.all(query, (err, res) => {
-    if (!err) {
-      return callback(true, res);
-    }
-    if (err) {
-      return callback(false, err);
-    }
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, res) => {
+      if (!err) {
+        resolve(res);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };

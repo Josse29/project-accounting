@@ -6,7 +6,7 @@ export const uiTbody = (el) => {
   const supplierName = el.SupplierName === null ? " - " : el.SupplierName;
   const categoryName = el.CategoryName === null ? " - " : el.CategoryName;
   return `<tr>
-            <td class="text-center align-content-center text-truncate">${el.ProductId}</td>
+            <td class="text-center align-content-center text-truncate pe-2">${el.ProductId}</td>
             <td class="align-content-center text-capitalize text-truncate pe-3">${el.ProductName}</td>
             <td class="align-content-center text-truncate pe-3">${productPriceRupiah}</td>
             <td class="align-content-center text-capitalize text-truncate pe-3">${categoryName}</td>

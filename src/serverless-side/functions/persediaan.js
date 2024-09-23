@@ -82,30 +82,36 @@ export const createPersediaan = async (req) => {
     });
   });
 };
-export const createPersediaan1 = (request, response) => {
+// while selling , it's effect the stock
+export const createPersediaan1 = (request) => {
   const {
-    ProductYMD,
-    ProductHMS,
-    ProductId,
-    ProductQty,
-    ProductTotal,
-    PersonSalesId,
+    PersediaanYMDVal,
+    PersediaanHMSVal,
+    PersediaanQtyVal,
+    PersediaanTotalVal,
+    PersediaanInfoVal,
+    PersediaanProductIdVal,
+    PersediaanPersonIdVal,
   } = request;
   const query = queryInsertPersediaan1(
-    ProductYMD,
-    ProductHMS,
-    ProductId,
-    ProductQty,
-    ProductTotal,
-    PersonSalesId
+    PersediaanYMDVal,
+    PersediaanHMSVal,
+    PersediaanQtyVal,
+    PersediaanTotalVal,
+    PersediaanInfoVal,
+    PersediaanProductIdVal,
+    PersediaanPersonIdVal
   );
-  db.run(query, (err) => {
-    if (!err) {
-      return response(true);
-    }
-    if (err) {
-      return response(false, err);
-    }
+  return new Promise((resolve, reject) => {
+    db.run(query, (err) => {
+      if (!err) {
+        const msg = "berhasil";
+        resolve(msg);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
 // 2.READ
@@ -878,7 +884,7 @@ export const deletePersediaanAll = () => {
   return new Promise((resolve, reject) => {
     db.all(query, (err) => {
       if (!err) {
-        const msg = "Seluruh Stok berhasil dihapus";
+        const msg = "All Stock Has been Deleted ";
         resolve(msg);
       }
       if (err) {

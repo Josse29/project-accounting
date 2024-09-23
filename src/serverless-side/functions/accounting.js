@@ -9,7 +9,7 @@ import {
   queryUpdateAccounting,
 } from "../querysql/accounting.js";
 
-export const createAccounting = (req, res) => {
+export const createAccounting = (req) => {
   const {
     accountingYMDVal,
     accountingHMSVal,
@@ -28,13 +28,15 @@ export const createAccounting = (req, res) => {
     accountingRpVal,
     accountingInfoVal
   );
-  db.run(query, (err) => {
-    if (!err) {
-      return res(true, "berhasil ");
-    }
-    if (err) {
-      return res(false, err);
-    }
+  return new Promise((resolve, reject) => {
+    db.run(query, (err) => {
+      if (!err) {
+        resolve();
+      }
+      if (err) {
+        reject();
+      }
+    });
   });
 };
 // general-entries

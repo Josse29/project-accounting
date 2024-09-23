@@ -148,10 +148,10 @@ $(document).ready(function () {
   }
 });
 export const getSupplierAgain = () => {
-  $("#supplier-search-input").val("");
   let searchVal = "";
   let limitVal = parseInt($("#supplier-limit").val());
   let offsetVal = 1;
+  $("#supplier-search-input").val("");
   getInit();
   async function getInit() {
     try {

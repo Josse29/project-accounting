@@ -4,7 +4,7 @@ export const uiTr = (el) => {
   const splitDateTime = el.SupplierDate.split(" ");
   const dateSupplier = formatWaktuIndo(splitDateTime[0]);
   return `<tr>
-                <td class="text-center align-middle">${el.SupplierId}</td>
+                <td class="text-center align-content-center text-truncate pe-2">${el.SupplierId}</td>
                 <td class="align-content-center text-capitalize text-truncate pe-2">${el.SupplierName}</td>
                 <td class="align-content-center">
                     <div class="d-flex w-100 justify-content-center gap-2">

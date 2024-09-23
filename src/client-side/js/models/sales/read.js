@@ -12,12 +12,14 @@ $(document).ready(function () {
   let limitVal = parseInt($("select#sales-read-limit").val());
   let offsetVal = 1;
   getInit();
+  // limit
   $("select#sales-read-limit")
     .off("change")
     .on("change", function () {
       limitVal = parseInt($(this).val());
       getInit();
     });
+  // search
   $("input#sales-read-search")
     .off("keyup")
     .on("keyup", function () {
@@ -29,55 +31,62 @@ $(document).ready(function () {
     .on("click", function () {
       getInit();
     });
+  // reset
   $("button#sales-read-reset")
     .off("click")
     .on("click", function () {
       getInit();
     });
-  function getInit() {
-    $("div#summary").html(``);
-    $("div#sales-byDate").addClass("d-none");
-    $("div#sales-limit-search").removeClass("d-none");
-    $("div#sales-date").removeClass("d-none");
-    $("div#read-select-container").removeClass("d-none");
-    $("select#sales-read-productid").val("Choose One Of Products");
-    $("select#sales-read-personid").val("Choose One Of Sales");
-    $("select#sales-read-customerid").val("Choose One Of Customers");
-    listProductRefSalesRead();
-    listUserRefSalesRead();
-    getSalesSum((status, response) => {
-      if (status) {
-        const currency = formatRupiah2(response);
-        $("div#sales-total-sum").text(currency);
+  async function getInit() {
+    try {
+      const req = {
+        searchVal,
+        limitVal,
+        offsetVal,
+      };
+      // total sum
+      const totalSales = await getSalesSum();
+      const currency = formatRupiah2(totalSales);
+      $("div#sales-total-sum").text(currency);
+      // row page
+      const init = await getSalesRowPage(req);
+      const totalPage = init.totalPage;
+      const totalRow = init.totalRow;
+      if (totalRow >= 1) {
       }
-      if (!status) {
-        console.error(response);
+      if (totalRow < 1) {
       }
-    });
-    const req = {
-      searchVal,
-      limitVal,
-      offsetVal,
-    };
-    getSalesRowPage(req, (status, response) => {
-      if (status) {
-        const totalPage = response.totalPage;
-        const totalSales = response.totalSales;
-        if (totalSales >= 1) {
-          getPage(req);
-          pageButton(totalPage);
-          handlePage();
-          $("div#sales-page-container").removeClass("d-none");
+      return;
+      getSalesRowPage(req, (status, response) => {
+        if (status) {
+          if (totalSales >= 1) {
+            getPage(req);
+            pageButton(totalPage);
+            handlePage();
+            $("div#sales-page-container").removeClass("d-none");
+          }
+          if (totalSales < 1) {
+            $("div#sales-page-container").addClass("d-none");
+            $("div#sales-read-table").html(uiTableEmpty(searchVal));
+          }
         }
-        if (totalSales < 1) {
-          $("div#sales-page-container").addClass("d-none");
-          $("div#sales-read-table").html(uiTableEmpty(searchVal));
+        if (!status) {
+          console.error(response);
         }
-      }
-      if (!status) {
-        console.error(response);
-      }
-    });
+      });
+      $("div#summary").html(``);
+      $("div#sales-byDate").addClass("d-none");
+      $("div#sales-limit-search").removeClass("d-none");
+      $("div#sales-date").removeClass("d-none");
+      $("div#read-select-container").removeClass("d-none");
+      $("select#sales-read-productid").val("Choose One Of Products");
+      $("select#sales-read-personid").val("Choose One Of Sales");
+      $("select#sales-read-customerid").val("Choose One Of Customers");
+      listProductRefSalesRead();
+      listUserRefSalesRead();
+    } catch (error) {
+      console.error(error);
+    }
   }
   function pageButton(totalPage) {
     let btn = ``;

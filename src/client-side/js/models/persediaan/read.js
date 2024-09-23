@@ -171,10 +171,10 @@ $(document).ready(function () {
   }
 });
 export const getPersediaanAgain = () => {
-  $("input#persediaan-search").val("");
   let searchVal = "";
   let limitVal = parseInt($("#persediaan-limit").val());
   let offsetVal = 1;
+  $("input#persediaan-search").val("");
   getInitAsync();
   async function getInitAsync() {
     try {

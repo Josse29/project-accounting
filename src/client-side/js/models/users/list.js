@@ -3,63 +3,63 @@ import {
   getSales,
 } from "../../../../serverless-side/functions/users.js";
 
-export const listUserForRefOrder = () => {
-  getSales((status, response) => {
-    if (status) {
-      let option = `<option selected disabled>Choose One Of Sales</option>`;
-      response.forEach((el) => {
-        option += `<option value=${el.UserId} class="text-capitalize p-0">${el.UserFullname}</option>`;
-      });
-      $("select#order-create-usersalesid").html(option);
-    }
-  });
-  getCustomer((status, response) => {
-    if (status) {
-      let option = `<option selected disabled>Choose One Of Customers</option>`;
-      response.forEach((el) => {
-        option += `<option value=${el.UserId} class="text-capitalize p-0">${el.UserFullname}</option>`;
-      });
-      $("select#order-create-usercustomerid").html(option);
-    }
-  });
+export const listUserRefSalesCreate = async () => {
+  try {
+    // for user sales
+    const userSales = await getSales();
+    let option1 = `<option selected disabled>Choose One Of Sales</option>`;
+    userSales.forEach((el) => {
+      option1 += `<option value=${el.UserId} class="text-capitalize p-0">${el.UserFullname}</option>`;
+    });
+    $("select#order-create-usersalesid").html(option1);
+    // for user customer
+    const userCustomer = await getCustomer();
+    let option2 = `<option selected disabled>Choose One Of Customers</option>`;
+    userCustomer.forEach((el) => {
+      option2 += `<option value=${el.UserId} class="text-capitalize p-0">${el.UserFullname}</option>`;
+    });
+    $("select#order-create-usercustomerid").html(option2);
+  } catch (error) {
+    console.error(error);
+  }
 };
-export const listUserRefSalesRead = () => {
-  getSales((status, response) => {
-    if (status) {
-      let option = `<option selected disabled>Choose One Of Sales</option>`;
-      response.forEach((el) => {
-        option += `<option value=${el.UserId} class="text-capitalize p-0">${el.UserFullname}</option>`;
-      });
-      $("select#sales-read-personid").html(option);
-    }
-  });
-  getCustomer((status, response) => {
-    if (status) {
-      let option = `<option selected disabled>Choose One Of Customers</option>`;
-      response.forEach((el) => {
-        option += `<option value=${el.UserId} class="text-capitalize p-0">${el.UserFullname}</option>`;
-      });
-      $("select#sales-read-customerid").html(option);
-    }
-  });
+export const listUserRefSalesRead = async () => {
+  try {
+    // user sales
+    const userSales = await getSales();
+    let option1 = `<option selected disabled>Choose One Of Sales</option>`;
+    userSales.forEach((el) => {
+      option1 += `<option value=${el.UserId} class="text-capitalize p-0">${el.UserFullname}</option>`;
+    });
+    $("select#sales-read-personid").html(option1);
+    // user customer id
+    const userCustomer = await getCustomer();
+    let option2 = `<option selected disabled>Choose One Of Customers</option>`;
+    userCustomer.forEach((el) => {
+      option2 += `<option value=${el.UserId} class="text-capitalize p-0">${el.UserFullname}</option>`;
+    });
+    $("select#sales-read-customerid").html(option2);
+  } catch (error) {
+    console.error(error);
+  }
 };
-export const listUserRefSalesReadDate = () => {
-  getSales((status, response) => {
-    if (status) {
-      let option = `<option selected disabled>Choose One Of Sales</option>`;
-      response.forEach((el) => {
-        option += `<option value=${el.UserId} class="text-capitalize p-0">${el.UserFullname}</option>`;
-      });
-      $("select#sales-read-personid-date").html(option);
-    }
-  });
-  getCustomer((status, response) => {
-    if (status) {
-      let option = `<option selected disabled>Choose One Of Customers</option>`;
-      response.forEach((el) => {
-        option += `<option value=${el.UserId} class="text-capitalize p-0">${el.UserFullname}</option>`;
-      });
-      $("select#sales-read-customerid-date").html(option);
-    }
-  });
+export const listUserRefSalesReadDate = async () => {
+  try {
+    // user sales
+    const userSales = await getSales();
+    let option1 = `<option selected disabled>Choose One Of Sales</option>`;
+    userSales.forEach((el) => {
+      option1 += `<option value=${el.UserId} class="text-capitalize p-0">${el.UserFullname}</option>`;
+    });
+    $("select#sales-read-personid-date").html(option1);
+    // user customer id
+    const userCustomer = await getCustomer();
+    let option2 = `<option selected disabled>Choose One Of Customers</option>`;
+    userCustomer.forEach((el) => {
+      option2 += `<option value=${el.UserId} class="text-capitalize p-0">${el.UserFullname}</option>`;
+    });
+    $("select#sales-read-customerid-date").html(option2);
+  } catch (error) {
+    console.error(error);
+  }
 };

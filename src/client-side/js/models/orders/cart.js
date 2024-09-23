@@ -16,7 +16,7 @@ export const updateQty = () => {
   // only loop to card menu
   uiQty();
   // for update ++
-  $(document)
+  $(".card-body")
     .off("click", "button#order-create-qty-plus")
     .on("click", "button#order-create-qty-plus", function () {
       const cartArray = getStorageCart();
@@ -70,7 +70,7 @@ export const updateQty = () => {
       listCart();
     });
   // for update --
-  $(document)
+  $(".card-body")
     .off("click", "button#order-create-qty-minus")
     .on("click", "button#order-create-qty-minus", function () {
       const cartArray = getStorageCart();
@@ -135,16 +135,17 @@ export const listCart = () => {
     });
   }
   if (cartArray.length < 1) {
-    listHTML = `<p class="fst-italic text-muted fs-4 text-center">
-                    order is empty...
-                </p>`;
+    listHTML = `<div class="d-flex justify-content-center align-items-center h-100"
+                    style="height: 500px">
+                  <p class="fst-italic text-muted fs-4">orders empty...</p>
+                </div>`;
     listTd = `<tr>
                 <td colspan="5" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">order is still empty....</td>
               </tr>`;
   }
   // save to storage cartsum
   setStorageCartSum(totalRp);
-  // get storage cartsum
+  // get storage cartsum and  terbilang
   totalRp = Number(getStorageCartSum());
   let terbilang = terbilangIndonesia(totalRp);
   let numberRp = formatRupiah2(totalRp);

@@ -39,34 +39,44 @@ $(document).ready(function () {
         let txtPrice = ``;
         let txtQty = ``;
         let tr = ``;
+        let list = ``;
         persediaanProduct.forEach((row) => {
-          // price
+          const persediaanYMD = row.PersediaanDDMY;
+          const persediaanHMS = row.PersediaanHMS;
           const persediaanRp = row.PersediaanRp;
-          if (persediaanRp < 1) {
-            txtPrice = `${formatRupiah2(persediaanRp)}`;
-          }
-          if (persediaanRp >= 1) {
-            txtPrice = "+ " + formatRupiah2(persediaanRp);
-          }
-          // qty
           const persediaanQty = row.PersediaanQty;
-          if (persediaanQty < 1) {
-            txtQty = `- ${persediaanQty}`;
-          }
-          if (persediaanQty >= 1) {
-            txtQty = "+ " + persediaanQty;
-          }
+          // price
+          const txtPrice =
+            persediaanRp < 1
+              ? `- ${formatRupiah2(Math.abs(persediaanRp))}`
+              : `+ ${formatRupiah2(persediaanRp)}`;
+          // qty
+          const txtQty =
+            persediaanQty > 1 ? `- ${persediaanQty}` : `+ ${persediaanQty}`;
           // table
           tr += `<tr>
                   <td class="fs-6 align-content-center">${formatWaktuIndo(
-                    row.PersediaanDDMY
+                    persediaanYMD
                   )}</td>
-                  <td class="fs-6 align-content-center">${
-                    row.PersediaanHMS
-                  }</td>
+                  <td class="fs-6 align-content-center">${persediaanHMS}</td>
                   <td class="fs-6 align-content-center">${txtQty}</td>
                   <td class="fs-6 align-content-center" id="product-detail-price">${txtPrice}</td>
                 </tr>`;
+          list += `<div class="mt-2 ms-2">
+                      <div
+                        class="mb-1 d-flex justify-content-between align-items-center"
+                      >
+                        <p class="fs-5 mb-0">Date</p>
+                        <p class="fs-6 mb-0">Hour</p>
+                      </div>
+                      <div class="ms-2">
+                        <p class="mb-2 fs-5">
+                          Product Name
+                          <span class="badge text-bg-success ms-2">1</span>
+                        </p>
+                        <p class="fs-5">Total : sdfsdfsdfsdfsdfsdfsdfsdf</p>
+                      </div>
+                    </div>`;
         });
         $("tbody#product-refpersediaan").html(tr);
         // sum rupiah

@@ -1,110 +1,113 @@
-import { addSpace } from "../../utils/formatSpace.js";
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import { formatWaktuIndo } from "../../utils/formatWaktu.js";
 // ui tr inventory from db
 export const uiTbody = (el) => {
-  let PersediaanQty = ``;
-  let PersediaanRp = ``;
-  const formattedQty = addSpace(el.PersediaanQty);
   // qty
-  if (el.PersediaanQty >= 1) {
-    PersediaanQty = `<span class="badge text-bg-success fs-6 text-truncate"  style="max-width:100%"> + ${el.PersediaanQty}</span>`;
-  } else {
-    PersediaanQty = `<span class="badge text-bg-danger fs-6 text-truncate"  style="max-width:100%">${formattedQty}</span>`;
-  }
+  const persediaanQty = el.PersediaanQty;
+  const spanQty =
+    persediaanQty >= 1
+      ? `<span class="badge text-bg-success fs-6 text-truncate" style="max-width:100%">+ ${persediaanQty}</span>`
+      : `<span class="badge text-bg-danger fs-6 text-truncate" style="max-width:100%">- ${Math.abs(
+          persediaanQty
+        )}</span>`;
   // rupiah
-  if (el.PersediaanRp >= 1) {
-    PersediaanRp = `<span class="badge text-bg-success fs-6 text-truncate"  style="max-width: 100%"> + ${formatRupiah2(
-      el.PersediaanRp
-    )}</span>`;
-  } else {
-    PersediaanRp = `<span class="badge text-bg-danger fs-6 text-truncate"  style="max-width: 100%">- ${formatRupiah2(
-      Math.abs(el.PersediaanRp)
-    )}</span>`;
-  }
-  return `<tr>
-            <td class="align-content-center text-center pe-3 text-truncate">${
-              el.PersediaanId
-            } </td>
-            <td class="align-content-center text-truncate pe-3">${formatWaktuIndo(
-              el.PersediaanDDMY
-            )}</td>
-            <td class="align-content-center pe-3 text-truncate">${
-              el.PersediaanHMS
-            }</td>
-            <td class="align-content-center text-truncate text-capitalize pe-3">${
-              el.ProductName
-            }</td>
-            <td class="align-content-center text-truncate text-capitalize pe-3">${
-              el.CategoryName === null ? "-" : el.CategoryName
-            } </td>
-            <td class="align-content-center text-truncate text-capitalize pe-3">
-              ${el.SupplierName === null ? "-" : el.SupplierName}
-            </td>
-            <td class="text-truncate align-content-center text-center">
-              ${PersediaanQty}
-            </td>
-            <td class="text-truncate align-content-center text-center">
-              ${PersediaanRp}
-            </td>
-            <td class="align-content-center" style="width:217px">
-              <div class="d-flex w-100 justify-content-center gap-2">
-                <button id="persediaanDetail"
-                  class="btn btn-success text-white"                      
-                  data-bs-toggle="modal" 
-                  data-bs-target="#persediaanDetailModal"
-                  data-productname="${el.ProductName}"
-                  data-productpricebuy=${el.ProductPriceBeli} 
-                  data-persediaanddmy="${el.PersediaanDDMY}" 
-                  data-persediaanHMS="${el.PersediaanHMS}"
-                  data-persediaanrp=${el.PersediaanRp}
-                  data-persediaanqty=${el.PersediaanQty}
-                  data-persediaaninfo="${el.PersediaanInfo}">
-                    <i class="fa-solid fa-eye"
-                      data-bs-toggle="tooltip" 
-                      data-bs-html="true"
-                      data-bs-title="<span>See-${el.ProductName}</span>" 
-                      data-bs-placement="bottom">
-                    </i>
-                </button>
-                <button id="persediaan-update-btn"
-                        class="btn btn-primary text-white"
-                        data-bs-toggle="modal"
-                        data-bs-target="#persediaanUpdateModal"
-                        data-persediaanid=${el.PersediaanId}
-                        data-persediaanddmy="${el.PersediaanDDMY}" 
-                        data-persediaanHMS="${el.PersediaanHMS}"
-                        data-persediaanqty=${el.PersediaanQty}
-                        data-persediaaninfo="${el.PersediaanInfo}"
-                        data-productid=${el.ProductId} 
+  const persediaanRp = el.PersediaanRp;
+  const spanRp =
+    persediaanRp >= 1
+      ? `<span class="badge text-bg-success fs-6 text-truncate" style="max-width: 100%">+ ${formatRupiah2(
+          persediaanRp
+        )}</span>`
+      : `<span class="badge text-bg-danger fs-6 text-truncate" style="max-width: 100%">- ${formatRupiah2(
+          Math.abs(persediaanRp)
+        )}</span>`;
+  const html = `<tr>
+                  <td class="align-content-center text-center pe-3 text-truncate">${
+                    el.PersediaanId
+                  } </td>
+                  <td class="align-content-center pe-3 text-truncate">${formatWaktuIndo(
+                    el.PersediaanDDMY
+                  )}</td>
+                  <td class="align-content-center pe-3 text-truncate">${
+                    el.PersediaanHMS
+                  }</td>
+                  <td class="align-content-center text-truncate text-capitalize pe-3">${
+                    el.ProductName
+                  }</td>
+                  <td class="align-content-center text-truncate text-capitalize pe-3">${
+                    el.CategoryName === null ? "-" : el.CategoryName
+                  } </td>
+                  <td class="align-content-center text-truncate text-capitalize pe-3">
+                    ${el.SupplierName === null ? "-" : el.SupplierName}
+                  </td>
+                  <td class="text-truncate align-content-center text-center">
+                    ${spanQty}
+                  </td>
+                  <td class="text-truncate align-content-center text-center">
+                    ${spanRp}
+                  </td>
+                  <td class="align-content-center" style="width:217px">
+                    <div class="d-flex w-100 justify-content-center gap-2">
+                      <button id="persediaanDetail"
+                        class="btn btn-success text-white"                      
+                        data-bs-toggle="modal" 
+                        data-bs-target="#persediaanDetailModal"
+                        data-productname="${el.ProductName}"
                         data-productpricebuy=${el.ProductPriceBeli} 
-                        data-productname="${el.ProductName}">
-                    <i class="fa-solid fa-pencil"
-                        data-bs-toggle="tooltip" 
-                        data-bs-html="true"
-                        data-bs-title="<span>Update-${el.ProductName}</span>" 
-                        data-bs-placement="bottom">
-                    </i>
-                </button>
-                <button id="persediaan-delete-btn"
-                        class="btn btn-danger text-white"
-                        data-bs-toggle="modal"
-                        data-bs-target="#persediaanDeleteModal"
-                        data-persediaanid=${el.PersediaanId}
                         data-persediaanddmy="${el.PersediaanDDMY}" 
                         data-persediaanHMS="${el.PersediaanHMS}"
+                        data-persediaanrp=${el.PersediaanRp}
                         data-persediaanqty=${el.PersediaanQty}
-                        data-productid=${el.ProductId}
-                        data-productname="${el.ProductName}">
-                    <i class="fa-solid fa-trash-can"
-                       data-bs-toggle="tooltip" 
-                       data-bs-html="true"
-                       data-bs-title="<span>Delete-${el.ProductName}</span>" 
-                      data-bs-placement="bottom"></i>
-                </button>
-              </div>
-            </td>
-          </tr>`;
+                        data-persediaaninfo="${el.PersediaanInfo}">
+                          <i class="fa-solid fa-eye"
+                            data-bs-toggle="tooltip" 
+                            data-bs-html="true"
+                            data-bs-title="<span>See-${el.ProductName}</span>" 
+                            data-bs-placement="bottom">
+                          </i>
+                      </button>
+                      <button id="persediaan-update-btn"
+                              class="btn btn-primary text-white"
+                              data-bs-toggle="modal"
+                              data-bs-target="#persediaanUpdateModal"
+                              data-persediaanid=${el.PersediaanId}
+                              data-persediaanddmy="${el.PersediaanDDMY}" 
+                              data-persediaanHMS="${el.PersediaanHMS}"
+                              data-persediaanqty=${el.PersediaanQty}
+                              data-persediaaninfo="${el.PersediaanInfo}"
+                              data-productid=${el.ProductId} 
+                              data-productpricebuy=${el.ProductPriceBeli} 
+                              data-productname="${el.ProductName}">
+                          <i class="fa-solid fa-pencil"
+                              data-bs-toggle="tooltip" 
+                              data-bs-html="true"
+                              data-bs-title="<span>Update-${
+                                el.ProductName
+                              }</span>" 
+                              data-bs-placement="bottom">
+                          </i>
+                      </button>
+                      <button id="persediaan-delete-btn"
+                              class="btn btn-danger text-white"
+                              data-bs-toggle="modal"
+                              data-bs-target="#persediaanDeleteModal"
+                              data-persediaanid=${el.PersediaanId}
+                              data-persediaanddmy="${el.PersediaanDDMY}" 
+                              data-persediaanHMS="${el.PersediaanHMS}"
+                              data-persediaanqty=${el.PersediaanQty}
+                              data-productid=${el.ProductId}
+                              data-productname="${el.ProductName}">
+                          <i class="fa-solid fa-trash-can"
+                            data-bs-toggle="tooltip" 
+                            data-bs-html="true"
+                            data-bs-title="<span>Delete-${
+                              el.ProductName
+                            }</span>" 
+                            data-bs-placement="bottom"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>`;
+  return html;
 };
 // make alert success after action crud
 export const uiSuccessActionPersediaan = (res) => {

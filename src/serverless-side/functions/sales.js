@@ -22,7 +22,7 @@ import {
   queryUpdateSales,
 } from "../querysql/sales.js";
 // create
-export const createSales = (req, res) => {
+export const createSales = (req) => {
   const {
     SalesYMDVal,
     SalesHMSVal,
@@ -43,35 +43,38 @@ export const createSales = (req, res) => {
     SalesCustomerIdVal,
     SalesStatusVal
   );
-  db.run(query, (err) => {
-    if (!err) {
-      return res(true, "berhasil ");
-    }
-    if (err) {
-      return res(false, "gagal");
-    }
+  return new Promise((resolve, reject) => {
+    db.run(query, (err) => {
+      if (!err) {
+        resolve();
+      }
+      if (err) {
+        reject();
+      }
+    });
   });
 };
 // read
-export const getSalesRowPage = (req, res) => {
+export const getSalesRowPage = (req) => {
   const { searchVal, limitVal } = req;
   const query = queryGetSalesRowPage(searchVal);
-  db.each(query, (err, result) => {
-    if (!err) {
-      const limitINT = parseInt(limitVal);
-      const totalSales = parseInt(result.TOTAL_ROW);
-      let totalPage = ``;
-      if (totalSales % limitINT === 0) {
-        totalPage = parseInt(totalSales / limitINT);
+  return new Promise((resolve, reject) => {
+    db.each(query, (err, result) => {
+      if (!err) {
+        const totalRow = parseInt(result.TOTAL_ROW);
+        let totalPage = ``;
+        if (totalRow % limitVal === 0) {
+          totalPage = parseInt(totalRow / limitVal);
+        }
+        if (totalRow % limitVal !== 0) {
+          totalPage = parseInt(totalRow / limitVal) + 1;
+        }
+        resolve({ totalRow, totalPage });
       }
-      if (totalSales % limitINT !== 0) {
-        totalPage = parseInt(totalSales / limitINT) + 1;
+      if (err) {
+        reject(err);
       }
-      return res(true, { totalPage, totalSales });
-    }
-    if (err) {
-      return res(false, err);
-    }
+    });
   });
 };
 export const readSales = (req, res) => {
@@ -98,16 +101,24 @@ export const getReportSales = (res) => {
     }
   });
 };
-export const getSalesSum = (res) => {
+export const getSalesSum = () => {
   const query = queryGetSalesSum();
-  db.each(query, (err, result) => {
-    if (!err) {
-      const sum = parseInt(result.Total_Rp);
-      return res(true, sum);
-    }
-    if (err) {
-      return res(false, err);
-    }
+  return new Promise((resolve, reject) => {
+    db.each(query, (err, result) => {
+      if (!err) {
+        let total = 0;
+        const response = result.Total_Rp;
+        if (response !== null) {
+          total = parseInt(response);
+        } else {
+          total = 0;
+        }
+        resolve(total);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
 // product
