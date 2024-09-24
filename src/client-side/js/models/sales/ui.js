@@ -5,25 +5,25 @@ export const uiTable = (rows) => {
   const rupiahProduct = formatRupiah2(rows.ProductPriceJual);
   const rupiahTotal = formatRupiah2(rows.SalesProductRp);
   const html = `<tr>
-                    <td class="text-center text-truncate pe-3">
+                    <td class="text-center text-truncate pe-3 align-content-center">
                       ${rows.SalesId}
                     </td>
-                    <td class="text-truncate pe-3">
+                    <td class="text-truncate pe-3 align-content-center">
                       ${YMD}
                     </td>
-                    <td class="text-truncate pe-3">${rows.SalesHMS}</td>
-                    <td class="text-truncate pe-3">${rows.SalesPersonName}</td>
-                    <td class="text-truncate pe-3">
+                    <td class="text-truncate pe-3 align-content-center">${rows.SalesHMS}</td>
+                    <td class="text-truncate pe-3 align-content-center">${rows.SalesPersonName}</td>
+                    <td class="text-truncate pe-3 align-content-center">
                       ${rows.ProductName}
                     </td>
-                    <td class="text-truncate pe-3">${rows.SalesProductQty}</td>
-                    <td class="text-truncate pe-3">${rupiahProduct}</td>
-                    <td class="text-truncate pe-3">${rupiahTotal}</td>
-                    <td class="text-truncate pe-3">
+                    <td class="text-truncate pe-3 align-content-center">${rupiahProduct}</td>
+                    <td class="text-truncate pe-3 align-content-center">${rows.SalesProductQty}</td>
+                    <td class="text-truncate pe-3 align-content-center">${rupiahTotal}</td>
+                    <td class="text-truncate pe-3 align-content-center">
                       ${rows.SalesCustomerName}
                     </td>
-                    <td class="text-truncate pe-3">${rows.SalesStatus}</td>
-                    <td class="text-truncate pe-3" style="width: 220px">
+                    <td class="text-truncate pe-3 align-content-center">${rows.SalesStatus}</td>
+                    <td class="text-truncate pe-3 align-content-center" style="width: 220px">
                       <div class="d-flex gap-1 justify-content-center align-items-center w-100 h-100">
                         <button class="btn btn-success">
                           <i class="fa-solid fa-eye fs-6"></i>
@@ -50,7 +50,13 @@ export const uiBtnPage = (i) => {
   return btnHTML;
 };
 export const uiTableEmpty = (searchVal) => {
-  const html = `<div class="flex-shrink-0 text-center px-2 py-2 fst-italic fw-bold" style="background-color:#f2f2f2; width:1490px;">${searchVal} - not found</div>`;
+  let search = `sales empty....`;
+  if (searchVal !== "") {
+    search = `${searchVal} - not found`;
+  }
+  const html = `<tr>
+                  <td class="text-center fst-italic" colspan="11">${search}</td>
+                </tr>`;
   return html;
 };
 export const uiSuccess = (res) => {
@@ -61,3 +67,8 @@ export const uiSuccess = (res) => {
   }, 20000);
 };
 export const uiReset = () => {};
+export const uiPageActive = (pageNumber) => {
+  const btnPage = $("button.sales-page");
+  btnPage.removeClass("sales-active-page");
+  btnPage.eq(pageNumber - 1).addClass("sales-active-page");
+};

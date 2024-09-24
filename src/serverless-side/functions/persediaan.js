@@ -29,8 +29,6 @@ import {
   queryGetPersediaanReport,
   queryGetPersediaanRpSum,
   queryGetPersediaanRpSumCategoryId,
-  queryGetPersediaanRpSumProductId,
-  queryGetPersediaanRpSumSupplierId,
   queryGetPersediaanSupplierGroup,
   queryGetPersediaanSupplierId,
   queryGetPersediaanSupplierSum,
@@ -263,57 +261,6 @@ export const getPersediaanRpSumCategoryId = (valPersediaanCategoryId) => {
         reject(err);
       }
     });
-  });
-};
-export const getPersediaanRpSumProductId = (valPersediaanProductId) => {
-  const query = queryGetPersediaanRpSumProductId(valPersediaanProductId);
-  return new Promise((resolve, reject) => {
-    db.each(query, (err, res) => {
-      if (!err) {
-        let totalRp = ``;
-        if (res.TotalRp !== null) {
-          totalRp = parseFloat(res.TotalRp);
-        }
-        if (res.TotalRp === null) {
-          totalRp = 0;
-        }
-        resolve(totalRp);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
-};
-export const getPersediaanRpSumSupplierId = (valPersediaanSupplierId) => {
-  const query = queryGetPersediaanRpSumSupplierId(valPersediaanSupplierId);
-  return new Promise((resolve, reject) => {
-    db.each(query, (err, res) => {
-      if (!err) {
-        let totalRp = ``;
-        if (res.TotalRp !== null) {
-          totalRp = parseFloat(res.TotalRp);
-        }
-        if (res.TotalRp === null) {
-          totalRp = 0;
-        }
-        resolve(totalRp);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
-};
-export const getPersediaanTotalRow = (valPersediaanSearch, callback) => {
-  db.each(queryGetPersediaanTotalRow(valPersediaanSearch), (err, res) => {
-    if (!err) {
-      const persediaanTotalRow = parseInt(res.TOTAL_ROW);
-      return callback(true, persediaanTotalRow);
-    }
-    if (err) {
-      return callback(false, err);
-    }
   });
 };
 export const getPersediaanProductId = (valPersediaanProductId) => {
@@ -799,7 +746,7 @@ export const validateStock1 = (
         }
       }
       if (err) {
-        return callback(false, err);
+        reject(err);
       }
     });
   });
@@ -893,8 +840,21 @@ export const deletePersediaanAll = () => {
     });
   });
 };
-export const deletePersediaanProductId = (valProductId, callback) => {
+export const deletePersediaanProductId = (valProductId) => {
   const query = queryDeletePersediaanProductId(valProductId);
+  return new Promise((resolve, reject) => {
+    db.run(query, (err) => {
+      if (!err) {
+        resolve();
+      }
+      if (err) {
+        reject(err);
+      }
+    });
+  });
+};
+export const deletePersediaanCategoryId = (categoryId) => {
+  const query = queryDeletePersediaanProductId(categoryId);
   return new Promise((resolve, reject) => {
     db.run(query, (err) => {
       if (!err) {

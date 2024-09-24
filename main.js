@@ -337,6 +337,7 @@ ipcMain.on("pdf:sales", (event, tbodySales, file_path) => {
       });
   });
 });
+// read-apps
 app.whenReady().then(() => {
   createLoginPage();
   app.on("activate", () => {

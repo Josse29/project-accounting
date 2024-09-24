@@ -1,9 +1,7 @@
 import {
   getPersediaanProductId2,
   getPersediaanQty,
-  getPersediaanRpSumProductId,
 } from "../../../../serverless-side/functions/persediaan.js";
-import { getProductPriceBuy } from "../../../../serverless-side/functions/product.js";
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import { reinitTooltip } from "../../utils/updateUi.js";
 import { listProductRefPersediaanRead } from "../products/list.js";
@@ -16,20 +14,21 @@ $(document).ready(function () {
     .on("change", async function () {
       try {
         // req
+        const selectedOption = $(this).find("option:selected");
         const selectedProductId = parseInt($(this).val());
         // caption-selected
-        const selectedProductName = $(this).find("option:selected").text();
+        const productName = selectedOption.text();
         // price buy
-        const priceBuy = await getProductPriceBuy(selectedProductId);
-        const priceBuyRp = formatRupiah2(priceBuy.ProductPriceBeli);
+        const priceBuy = selectedOption.data("pricebuy");
+        const priceBuyRp = formatRupiah2(priceBuy);
         // sum qty
         const sumQty = await getPersediaanQty(selectedProductId);
         // sum rupiah
-        const sumRp = await getPersediaanRpSumProductId(selectedProductId);
+        const sumRp = priceBuy * sumQty;
         const sumRp1 = formatRupiah2(parseFloat(sumRp));
         // insert - to - html sumpersediaan
         const sumSectionHTML = `<p class="fs-5 ms-2 mb-1 text-capitalize fw-bold ms-2">
-                                  ${selectedProductName}</p>
+                                  ${productName}</p>
                                 <p class="fs-5 ms-4 mb-1">Price : ${priceBuyRp} </p>
                                 <p class="fs-5 ms-4 mb-1">Total Qty : ${sumQty} </p>
                                 <p class="fs-5 ms-4">Total Price : ${sumRp1} </p>`;
@@ -46,7 +45,7 @@ $(document).ready(function () {
           reinitTooltip();
         }
         if (!existedProduct) {
-          const tr = uiTbodyEmpty(selectedProductName);
+          const tr = uiTbodyEmpty(productName);
           $("#persediaan-table").html(tr);
         }
         // references

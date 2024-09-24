@@ -335,3 +335,6 @@ span#sales-search {
     left: 100%;
   }
 }
+td:hover {
+  text-wrap: wrap;
+}

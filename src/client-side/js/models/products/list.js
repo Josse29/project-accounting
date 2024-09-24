@@ -27,7 +27,7 @@ export const listProductRefPersediaanRead = async () => {
     if (existed) {
       option = `<option selected disabled>Choose One Of Products</option>`;
       response.forEach((row) => {
-        option += `<option value=${row.ProductId}>${row.ProductName}</option>`;
+        option += `<option value=${row.ProductId} data-pricebuy=${row.ProductPriceBeli}>${row.ProductName}</option>`;
       });
     }
     if (!existed) {
@@ -65,7 +65,7 @@ export const listProductRefSalesRead = async () => {
     if (existed) {
       option = `<option selected disabled>Choose One Of Products</option>`;
       response.forEach((row) => {
-        option += `<option value=${row.ProductId}>${row.ProductName}</option>`;
+        option += `<option value=${row.ProductId} data-pricesell=${row.ProductPriceJual}>${row.ProductName}</option>`;
       });
     }
     if (!existed) {

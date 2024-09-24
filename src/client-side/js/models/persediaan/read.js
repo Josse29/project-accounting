@@ -1,7 +1,7 @@
 import {
-  uiActivePageButton,
-  uiBtnPersediaanPage,
-  uiSumPersediaanDate2,
+  uiBtnPageActive,
+  uiBtnPage,
+  uiInit,
   uiTbody,
   uiTbodyEmpty,
 } from "./ui.js";
@@ -24,15 +24,9 @@ $(document).ready(function () {
   $("button#persediaan-refresh")
     .off("click")
     .on("click", function () {
-      // reset all select
-      $("select#persediaan-refproduct-search").val("Choose One Of Products");
-      $("select#persediaan-refsupplier-search").val("Choose One Of Suppliers");
-      $("select#persediaan-refcategory-search").val("Choose One Of Categories");
-      $("div#persediaan-date-all-search").html(``);
       searchVal = "";
-      $("input#persediaan-search").val("");
       getInitAsync();
-      uiSumPersediaanDate2();
+      uiInit();
     });
   // search
   $("input#persediaan-search")
@@ -74,7 +68,6 @@ $(document).ready(function () {
         $("#persediaan-pagination").addClass("d-none");
       }
       // references and loading
-      $("div#persediaan-sum-section").html("");
       $("div#persediaan-done").show();
       $("div#persediaan-loading").html("");
     } catch (error) {
@@ -89,7 +82,7 @@ $(document).ready(function () {
         tr += uiTbody(element);
       });
       $("tbody#persediaan-table").html(tr);
-      uiActivePageButton(req.offsetVal);
+      uiBtnPageActive(req.offsetVal);
       reinitTooltip();
     } catch (error) {
       console.error(error);
@@ -99,7 +92,7 @@ $(document).ready(function () {
     // for pagination
     let uiBtnPaginate = "";
     for (let i = 1; i <= totalPage; i++) {
-      uiBtnPaginate += uiBtnPersediaanPage(i);
+      uiBtnPaginate += uiBtnPage(i);
     }
     $("#persediaan-number-page").html(uiBtnPaginate);
     // first page
@@ -174,8 +167,8 @@ export const getPersediaanAgain = () => {
   let searchVal = "";
   let limitVal = parseInt($("#persediaan-limit").val());
   let offsetVal = 1;
-  $("input#persediaan-search").val("");
   getInitAsync();
+  uiInit();
   async function getInitAsync() {
     try {
       // sum rupiah persediaan
@@ -212,7 +205,7 @@ export const getPersediaanAgain = () => {
         tr += uiTbody(element);
       });
       $("tbody#persediaan-table").html(tr);
-      uiActivePageButton(req.offsetVal);
+      uiBtnPageActive(req.offsetVal);
       reinitTooltip();
     } catch (error) {
       console.error(error);
@@ -222,7 +215,7 @@ export const getPersediaanAgain = () => {
     // for pagination
     let uiBtnPaginate = "";
     for (let i = 1; i <= totalPage; i++) {
-      uiBtnPaginate += uiBtnPersediaanPage(i);
+      uiBtnPaginate += uiBtnPage(i);
     }
     $("#persediaan-number-page").html(uiBtnPaginate);
     // first page

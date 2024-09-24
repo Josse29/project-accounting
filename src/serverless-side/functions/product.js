@@ -9,7 +9,6 @@ import {
   queryGetProductCSV,
   queryGetProductCategoryId,
   queryGetProductPDF,
-  queryGetProductPriceBuy,
   queryGetProductSupplierId,
   queryGetProducts,
   queryTotalRowProducts,
@@ -87,19 +86,6 @@ export const getProducts = (req) => {
     db.all(query, (err, res) => {
       if (!err) {
         resolve(res);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
-};
-export const getProductPriceBuy = (productId) => {
-  const query = queryGetProductPriceBuy(productId);
-  return new Promise((resolve, reject) => {
-    db.each(query, (err, result) => {
-      if (!err) {
-        resolve(result);
       }
       if (err) {
         reject(err);

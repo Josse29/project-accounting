@@ -108,8 +108,10 @@ export const queryGetSalesProductId = (productIdVal) => {
   query += `WHERE Product.ProductId = ${productIdVal} `;
   // with order
   query += `ORDER BY Sales.SalesYMD DESC, Sales.SalesHMS DESC `;
+  console.log(query);
   return query;
 };
+
 export const queryGetSalesSumProductId = (productIdVal) => {
   let query = `SELECT 
                SUM(Sales.SalesProductRp) AS Total_Rp,
@@ -218,7 +220,6 @@ export const queryGetSalesSumDate = (startDateVal, endDateVal) => {
                SUM(Sales.SalesProductRp) AS Total_Rp
                FROM Sales `;
   query += `WHERE Sales.SalesYMD BETWEEN '${startDateVal}' AND '${endDateVal}' `;
-  console.log(query);
   return query;
 };
 export const queryGetSalesDateProductId = (
@@ -263,7 +264,6 @@ export const queryGetSalesSumDateProductId = (
   query += `LEFT JOIN Product ON Sales.SalesProductId = Product.ProductId `;
   query += `WHERE Sales.SalesYMD BETWEEN '${startDateVal}' AND '${endDateVal}' 
             AND Product.ProductId = ${selectedProductId}`;
-  console.log(query);
   return query;
 };
 export const queryGetSalesPersonIdDate = (
@@ -401,22 +401,3 @@ export const queryDeleteSales = (req) => {
   let query = `DELETE FROM Sales WHERE SalesId = ${salesIdVal}`;
   return query;
 };
-// SELECT
-// Sales.SalesId,
-// Sales.SalesYMD,
-// Sales.SalesHMS,
-// Sales.SalesProductQty,
-// Sales.SalesProductRp,
-// Sales.SalesStatus,
-// Product.ProductId,
-// Product.ProductName,
-// Product.ProductPriceJual,
-// SalesPerson.UserId AS SalesPersonId,
-// SalesPerson.UserFullname AS SalesPersonName,
-// SalesCustomer.UserId AS SalesCustomerId,
-// SalesCustomer.UserFullname AS SalesCustomerName
-// FROM Sales
-// LEFT JOIN Product ON Sales.SalesProductId = Product.ProductId
-// LEFT JOIN User AS SalesPerson ON Sales.SalesPersonId = SalesPerson.UserId
-// LEFT JOIN User AS SalesCustomer ON Sales.SalesCustomerId = SalesCustomer.UserId
-// WHERE User.UserId = 2 ORDER BY Sales.SalesYMD DESC, Sales.SalesHMS DESC

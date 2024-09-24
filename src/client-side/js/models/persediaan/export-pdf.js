@@ -18,13 +18,14 @@ import {
 
 // export pdf persediaan
 $(document).ready(function () {
+  // product
   const getPersediaanProductReportAsync = async () => {
     try {
       const response = await getPersediaanProductReport();
       let no = 1;
       let tbodyProduct = ``;
       response.forEach((rows) => {
-        tbodyProduct += uiTrPDF(rows, no);
+        tbodyProduct += uiTrPDF(rows);
         no++;
       });
       return tbodyProduct;
@@ -46,6 +47,7 @@ $(document).ready(function () {
       console.error(error);
     }
   };
+  // supplier
   const getPersediaanSupplierGroupAsync = async () => {
     try {
       const response = await getPersediaanSupplierGroup();
@@ -77,25 +79,25 @@ $(document).ready(function () {
       console.error(error);
     }
   };
+  // category
   const getPersediaanCategoryIdGroupAsync = async () => {
     try {
       const response = await getPersediaanCategoryIdGroup();
       const existedCategory = response.length >= 1;
+      let tbody = ``;
       if (existedCategory) {
         let no = 1;
-        let tbody = ``;
-        if (existedCategory) {
-          response.forEach((el) => {
-            tbody += uiTrCategorySum(el, no);
-            no++;
-          });
-        }
+        response.forEach((el) => {
+          tbody += uiTrCategorySum(el, no);
+          no++;
+        });
       }
       if (!existedCategory) {
         tbody += `<tr>
                     <td class="text-center text-nowrap align-content-center" colspan="3">category empty....</td>
                   </tr>`;
       }
+      console.log(tbody);
       return tbody;
     } catch (error) {
       console.error(error);
@@ -110,6 +112,7 @@ $(document).ready(function () {
       console.error(error);
     }
   };
+  // sum-qty
   const getPersediaanQtySumAsync = async () => {
     try {
       const response = await getPersediaanQty("");
@@ -118,6 +121,7 @@ $(document).ready(function () {
       console.error(error);
     }
   };
+  // sum-rp
   const getPersediaanRpSumAsync = async () => {
     try {
       const response = await getPersediaanRpSum();

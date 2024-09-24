@@ -99,7 +99,7 @@ $(document).ready(function () {
               SalesHMSVal: formattedHMS,
               SalesProductIdVal: el.ProductId,
               SalesProductQtyVal: el.ProductQty,
-              SalesProductRpVal: el.ProductTotal,
+              SalesProductRpVal: el.ProductPriceSell * el.ProductQty,
               SalesPersonIdVal: parseInt(userSalesId),
               SalesCustomerIdVal: parseInt(customerId),
               SalesStatusVal: "PAID",
@@ -110,7 +110,7 @@ $(document).ready(function () {
               PersediaanYMDVal: formattedDDMY,
               PersediaanHMSVal: formattedHMS,
               PersediaanQtyVal: el.ProductQty * -1,
-              PersediaanTotalVal: el.ProductTotal * -1,
+              PersediaanTotalVal: el.ProductPriceBuy * -1,
               PersediaanInfoVal: `${el.ProductName} has been sold with qty ${el.ProductQty}`,
               PersediaanProductIdVal: el.ProductId,
               PersediaanPersonIdVal: parseInt(userSalesId),
@@ -121,7 +121,7 @@ $(document).ready(function () {
               CashYYYYMMDDVal: formattedDDMY,
               CashHMSVal: formattedHMS,
               CashNameVal: `Sales Product - ${el.ProductName}`,
-              CashRpVal: el.ProductTotal,
+              CashRpVal: el.ProductPriceSell * el.ProductQty,
               CashInfoVal: `${el.ProductName} has been sold with qty ${el.ProductQty}`,
             };
             await insertCash(reqCash);
@@ -132,7 +132,7 @@ $(document).ready(function () {
               accountingRefVal: 111,
               accountingNameVal: "Cash",
               accountingPositionVal: "debt",
-              accountingRpVal: el.ProductPrice,
+              accountingRpVal: el.ProductPriceSell * el.ProductQty,
               accountingInfoVal: `${el.ProductName} has been sold with qty ${el.ProductQty}`,
             };
             await createAccounting(debtEntry);
@@ -142,7 +142,7 @@ $(document).ready(function () {
               accountingRefVal: 411,
               accountingNameVal: "Sales",
               accountingPositionVal: "credit",
-              accountingRpVal: el.ProductPrice,
+              accountingRpVal: el.ProductPriceSell * el.ProductQty,
               accountingInfoVal: `${el.ProductName} has been sold with qty ${el.ProductQty}`,
             };
             await createAccounting(creditEntry);

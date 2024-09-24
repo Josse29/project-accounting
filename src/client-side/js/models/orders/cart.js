@@ -24,7 +24,10 @@ export const updateQty = () => {
       const productId = $(this).data("productid");
       const productName = $(this).data("productname");
       const productStock = $(this).data("productstock");
-      const productPrice = disFormatRupiah1($(this).data("productprice"));
+      const productPriceSell = disFormatRupiah1(
+        $(this).data("productpricesell")
+      );
+      const productPriceBuy = disFormatRupiah1($(this).data("productpricebuy"));
       const productCard = $(`button[data-productid=${productId}]`).closest(
         ".card-body"
       );
@@ -43,18 +46,15 @@ export const updateQty = () => {
         if (cartArray[productIndex].ProductQty >= productStock) {
           btnPlus.addClass("unsufficient");
         }
-        cartArray[productIndex].ProductTotal =
-          cartArray[productIndex].ProductQty *
-          cartArray[productIndex].ProductPrice;
       }
       // if it isn't already exist in storage, push to storage
       if (productIndex === -1) {
         const newObject = {
           ProductId: productId,
           ProductName: productName,
-          ProductPrice: productPrice,
+          ProductPriceBuy: productPriceBuy,
+          ProductPriceSell: productPriceSell,
           ProductQty: 1,
-          ProductTotal: productPrice,
         };
         // push to array
         cartArray.push(newObject);

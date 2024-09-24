@@ -5,7 +5,7 @@ import { successActionProduct } from "./ui.js";
 
 $(document).ready(function () {
   // Delete Product event binding mckkkk
-  $(document)
+  $("tbody#product-table")
     .off("click", "#deleteProduct")
     .on("click", "#deleteProduct", function () {
       const product = this.dataset;

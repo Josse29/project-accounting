@@ -18,7 +18,7 @@ export const uiTbody = (el) => {
                   class="btn btn-success text-white"
                   data-bs-toggle="modal" 
                   data-bs-target="#productDetailModal" 
-                  data-productid="${el.ProductId}"  
+                  data-productid=${el.ProductId}  
                   data-productname="${el.ProductName}" 
                   data-productpricebeli=${el.ProductPriceBeli} 
                   data-productpricejual=${el.ProductPriceJual} 

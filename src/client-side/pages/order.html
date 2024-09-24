@@ -312,7 +312,7 @@
           <div class="card-body overflow-auto" id="sales-card-body">
             <div id="sales-success-container"></div>
             <!-- download excel search category and waiter -->
-            <div class="d-flex gap-2 mb-2">
+            <div class="d-flex gap-2 mb-3">
               <button class="btn btn-success" id="sales-convert-csv">
                 <i class="fa-solid fa-file-excel fs-5 me-1"></i>
                 <span>Excel</span>
@@ -331,7 +331,7 @@
               </button>
             </div>
             <!-- limit, search-->
-            <div class="d-flex gap-2 mb-2" id="sales-limit-search">
+            <div class="d-flex gap-2 mb-3" id="sales-limit-search">
               <!-- limit   -->
               <select
                 class="form-select"
@@ -361,7 +361,7 @@
             </div>
             <!-- date -->
             <div
-              class="input-group mb-2"
+              class="input-group mb-3"
               style="width: max-content"
               id="sales-date"
             >
@@ -386,43 +386,49 @@
               </button>
             </div>
             <!-- product & sales & customer -->
-            <div class="d-flex w-100 gap-2 mb-2" id="read-select-container">
-              <select
-                id="persediaan-refproduct-search"
-                class="form-select w-auto py-2"
-              >
-                <option>Choose One Of Products</option>
-              </select>
+            <div class="d-flex w-100 gap-2 mb-3" id="read-select-container">
               <!-- product  -->
-              <select
-                class="form-select w-auto text-capitalize"
-                id="sales-read-productid"
-              >
+              <select id="sales-read-productid" class="form-select w-auto py-2">
                 <option>Choose One Of Products</option>
               </select>
-              <!-- sales person -->
+              <!-- sales  -->
               <select
                 class="form-select w-auto text-capitalize"
                 id="sales-read-personid"
               >
-                <option>loading...</option>
+                <option>Choose One Of Sales</option>
+              </select>
+              <!-- customers -->
+              <select
+                class="form-select w-auto text-capitalize"
+                id="sales-read-customerid"
+              >
+                <option>Choose One Of Customers</option>
               </select>
             </div>
             <!-- select-date -->
-            <div id="sales-byDate" class="d-flex gap-2 mb-2">
-              <select
-                class="form-select w-auto text-capitalize"
-                id="sales-read-productid-date"
-              ></select>
-              <select
-                class="form-select w-auto text-capitalize"
-                id="sales-read-personid-date"
-              ></select>
-              <select
-                class="form-select w-auto text-capitalize"
-                id="sales-read-customerid-date"
-              ></select>
-            </div>
+            <!-- <div id="sales-byDate">
+              <div class="d-flex mb-3 gap-2">
+                <select
+                  class="form-select w-auto text-capitalize"
+                  id="sales-read-productid-date"
+                >
+                  <option>Chosse One Of Products</option>
+                </select>
+                <select
+                  class="form-select w-auto text-capitalize"
+                  id="sales-read-personid-date"
+                >
+                  <option>Chosse One Of Sales</option>
+                </select>
+                <select
+                  class="form-select w-auto text-capitalize"
+                  id="sales-read-customerid-date"
+                >
+                  <option>Chosse One Of Customers</option>
+                </select>
+              </div>
+            </div> -->
             <!-- summary -->
             <div id="summary" class="ms-3 my-2"></div>
             <!-- tabel sales hufft -->
@@ -438,22 +444,37 @@
                     <th class="text-nowrap" style="width: 220px">
                       Date / Date
                     </th>
+                    <!-- hours -->
                     <th class="text-nowrap" style="width: 120px">Hours</th>
+                    <!-- sales name -->
                     <th class="text-nowrap" style="width: 190px">Sales Name</th>
+                    <!-- product name -->
                     <th class="text-nowrap" style="width: 190px">
                       Product Name
                     </th>
+                    <!-- price -->
                     <th class="text-nowrap" style="width: 170px">Price</th>
+                    <!-- qty -->
                     <th class="text-nowrap" style="width: 150px">Qty</th>
+                    <!-- total -->
                     <th class="text-nowrap" style="width: 190px">Total</th>
+                    <!-- customer name -->
                     <th class="text-nowrap" style="width: 190px">
                       Customer Name
                     </th>
+                    <!-- status -->
                     <th class="text-nowrap" style="width: 150px">Status</th>
+                    <!-- action -->
                     <th class="text-nowrap" style="width: 220px">Action</th>
                   </tr>
                 </thead>
-                <tbody id="sales-read-table"></tbody>
+                <tbody id="sales-read-table">
+                  <tr>
+                    <td colspan="11" class="text-center fst-italic">
+                      loading....
+                    </td>
+                  </tr>
+                </tbody>
               </table>
             </div>
             <!-- pagination menu -->

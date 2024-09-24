@@ -7,46 +7,46 @@ import { uiTable, uiTableEmpty } from "./ui.js";
 $(document).ready(function () {
   $("select#sales-read-productid")
     .off("change")
-    .on("change", function () {
-      $("select#sales-read-personid").val("Choose One Of Sales");
-      $("select#sales-read-customerid").val("Choose One Of Customers");
-      $("div#sales-limit-search").addClass("d-none");
-      $("div#sales-date").addClass("d-none");
-      const seletedProductId = parseInt($(this).val());
-      const selectedText = $(this).find("option:selected").text();
-      getSalesSumProductId(seletedProductId, (status, response) => {
-        if (status) {
-          const rupiah = formatRupiah2(response.rupiah);
-          const qty = response.qty;
-          const ui = `<p class="fs-4 mb-1 fw-bold text-capitalize">${selectedText}</p>
-                      <p class="fs-5 ms-1 mb-1">Qty : ${qty}</p>
-                      <p class="fs-5 ms-1 mb-1">Total : ${rupiah}</p> `;
-          $("div#summary").html(ui);
+    .on("change", async function () {
+      try {
+        const seletedProductId = parseInt($(this).val());
+        const selectedOption = $(this).find("option:selected");
+        // name
+        const productName = selectedOption.text();
+        // product sell
+        const priceSell = selectedOption.data("pricesell");
+        const priceSellRp = formatRupiah2(priceSell);
+        // summary
+        const resSum = await getSalesSumProductId(seletedProductId);
+        const rupiah = formatRupiah2(resSum.rupiah);
+        const qty = resSum.qty;
+        const summary = `<p class="fs-4 mb-1 fw-bold text-capitalize">${productName}</p>
+                         <p class="fs-5 ms-1 mb-1">Price Sell : ${priceSellRp}</p>
+                         <p class="fs-5 ms-1 mb-1">Qty : ${qty}</p>
+                         <p class="fs-5 ms-1 mb-1">Total : ${rupiah}</p> `;
+        $("div#summary").html(summary);
+        // table
+        const resTable = await getSalesProductId(seletedProductId);
+        const existed = resTable.length >= 1;
+        if (existed) {
+          let table = ``;
+          resTable.forEach((rows) => {
+            table += uiTable(rows);
+          });
+          $("tbody#sales-read-table").html(table);
         }
-        if (!status) {
-          console.log(response);
+        if (!existed) {
+          const empty = uiTableEmpty(productName);
+          $("tbody#sales-read-table").html(empty);
         }
-      });
-      getSalesProductId(seletedProductId, (status, response) => {
-        if (status) {
-          const existed = response.length >= 1;
-          if (existed) {
-            let table = ``;
-            let index = 1;
-            response.forEach((rows) => {
-              table += uiTable(rows, index);
-              index++;
-            });
-            $("div#sales-read-table").html(table);
-          }
-          if (!existed) {
-            $("div#sales-read-table").html(uiTableEmpty(selectedText));
-          }
-          $("div#sales-page-container").addClass("d-none");
-        }
-        if (!status) {
-          console.error(response);
-        }
-      });
+        // references callback ui
+        $("div#sales-page-container").addClass("d-none");
+        $("select#sales-read-personid").val("Choose One Of Sales");
+        $("select#sales-read-customerid").val("Choose One Of Customers");
+        $("div#sales-limit-search").addClass("d-none");
+        $("div#sales-date").addClass("d-none");
+      } catch (error) {
+        console.error(error);
+      }
     });
 });

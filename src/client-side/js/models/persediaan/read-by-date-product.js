@@ -3,7 +3,6 @@ import {
   getPersediaanDateQtyProductId,
   getPersediaanDateSumProduct,
 } from "../../../../serverless-side/functions/persediaan.js";
-import { getProductPriceBuy } from "../../../../serverless-side/functions/product.js";
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import { formatWaktuIndo } from "../../utils/formatWaktu.js";
 import { reinitTooltip } from "../../utils/updateUi.js";

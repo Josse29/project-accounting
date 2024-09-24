@@ -77,28 +77,32 @@ export const getSalesRowPage = (req) => {
     });
   });
 };
-export const readSales = (req, res) => {
+export const readSales = (req) => {
   const { searchVal, limitVal, offsetVal } = req;
   const startOffsetVal = parseInt(parseInt(offsetVal - 1) * parseInt(limitVal));
   const query = queryGetSales(searchVal, limitVal, startOffsetVal);
-  db.all(query, (error, response) => {
-    if (!error) {
-      return res(true, response);
-    }
-    if (error) {
-      return res(false, error);
-    }
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, res) => {
+      if (!err) {
+        resolve(res);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
-export const getReportSales = (res) => {
+export const getReportSales = () => {
   const query = queryGetReportSales();
-  db.all(query, (err, rows) => {
-    if (!err) {
-      return res(true, rows);
-    }
-    if (err) {
-      return res(false, err);
-    }
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, rows) => {
+      if (!err) {
+        resolve(rows);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
 export const getSalesSum = () => {
@@ -122,30 +126,34 @@ export const getSalesSum = () => {
   });
 };
 // product
-export const getSalesSumProductId = (req, res) => {
+export const getSalesSumProductId = (req) => {
   const query = queryGetSalesSumProductId(req);
-  db.each(query, (err, rows) => {
-    if (!err) {
-      const result1 = rows.Total_Rp ? rows.Total_Rp : 0;
-      const rupiah = parseInt(result1);
-      const result2 = rows.Total_Qty ? rows.Total_Qty : 0;
-      const qty = parseInt(result2);
-      return res(true, { rupiah, qty });
-    }
-    if (err) {
-      return res(false, err);
-    }
+  return new Promise((resolve, reject) => {
+    db.each(query, (err, rows) => {
+      if (!err) {
+        const result1 = rows.Total_Rp ? rows.Total_Rp : 0;
+        const rupiah = parseInt(result1);
+        const result2 = rows.Total_Qty ? rows.Total_Qty : 0;
+        const qty = parseInt(result2);
+        resolve({ rupiah, qty });
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
-export const getSalesProductId = (req, res) => {
+export const getSalesProductId = (req) => {
   const query = queryGetSalesProductId(req);
-  db.all(query, (err, rows) => {
-    if (!err) {
-      return res(true, rows);
-    }
-    if (err) {
-      return res(false, err);
-    }
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, rows) => {
+      if (!err) {
+        resolve(rows);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
 // person
@@ -175,25 +183,30 @@ export const getSalesSumPersonId = (req, res) => {
 // customer
 export const getSalesCustomerId = (req, res) => {
   const query = queryGetSalesCustomerId(req);
-  db.all(query, (err, rows) => {
-    if (!err) {
-      return res(true, rows);
-    }
-    if (err) {
-      return res(false, rows);
-    }
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, rows) => {
+      if (!err) {
+        resolve(rows);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
 export const getSalesSumCustomerId = (req, res) => {
   const query = queryGetSalesSumCustomerId(req);
-  db.each(query, (err, result) => {
-    if (!err) {
-      const total = result.Total_Rp ? parseInt(result.Total_Rp) : 0;
-      return res(true, total);
-    }
-    if (err) {
-      console.log(err);
-    }
+  return new Promise((resolve, reject) => {
+    db.each(query, (err, result) => {
+      if (!err) {
+        const response = result.Total_Rp;
+        const total = response ? parseInt(response) : 0;
+        resolve(total);
+      }
+      if (err) {
+        console.log(err);
+      }
+    });
   });
 };
 // date

@@ -3,7 +3,8 @@ import { getStorageCart } from "../../utils/localStorage.js";
 export const uiMenu = (rows) => {
   const productId = parseInt(rows.PersediaanProductId);
   const productName = rows.ProductName;
-  const priceJual = formatRupiah2(parseFloat(rows.ProductPriceJual));
+  const priceBuy = formatRupiah2(parseFloat(rows.PriceBuy));
+  const priceSell = formatRupiah2(parseFloat(rows.PriceSell));
   const productStock = parseInt(rows.TotalQty);
   let imgSrc = ``;
   if (rows.ProductImage !== "null") {
@@ -12,14 +13,14 @@ export const uiMenu = (rows) => {
     imgSrc = "./../images/no-img.jpg";
   }
   const productImg = `<img
-                    src=${imgSrc}
-                    class="card-img-top"
-                    alt="..."/>`;
+                        src=${imgSrc}
+                        class="card-img-top"
+                        alt="..."/>`;
   const html = `<div class="card w-full shadow-sm">
                 ${productImg}
                 <div class="card-body">
                     <h4 class="fw-bold text-truncate" id="order-productname">${productName}</h4>
-                    <h4 class="text-truncate" id="order-productprice">${priceJual}</h4>
+                    <h4 class="text-truncate" id="order-productprice">${priceSell}</h4>
                     <p class='fs-5'>Stock : ${productStock}</p>
                     <div class="mt-3 d-flex justify-content-between align-items-center">
                       <div id="order-create-qty">
@@ -29,14 +30,16 @@ export const uiMenu = (rows) => {
                                 data-productid=${productId}
                                 data-productname="${productName}"
                                 data-productstock=${productStock}
-                                data-productprice=${priceJual}>
+                                data-productpricesell=${priceSell}
+                                data-productpricebuy=${priceBuy}>
                           <i class="fa-solid fa-plus" style="font-size: 18px"></i>
                         </button>
                         <button class="btn btn-danger" id="order-create-qty-minus"
                                 data-productid=${productId}
                                 data-productname="${productName}"
                                 data-productstock=${productStock}
-                                data-productprice=${priceJual}>
+                                data-productpricesell=${priceSell}
+                                data-productpricebuy=${priceBuy}>
                           <i class="fa-solid fa-minus" style="font-size: 18px"></i>
                         </button>
                       </div>
@@ -52,7 +55,7 @@ export const uiBtnPage = (number) => {
               number === 1 ? "product-ref-persediaan-page-active" : ""
             }">${number}</button>`;
 };
-// only loop to card menu
+// loop to card menu and update ui qty
 export const uiQty = () => {
   const cartStorage = getStorageCart();
   for (const item of cartStorage) {

@@ -172,7 +172,6 @@ export const queryGetPersediaanProductId = (valPersediaanProductId) => {
   const query = `SELECT
                  ${tableName}.${colPersediaanDDMY},
                  ${tableName}.${colPersediaanHMS},
-                 ${tableName}.${colPersediaanRp},
                  ${tableName}.${colPersediaanQty}
                  FROM Persediaan
                  WHERE Persediaan.PersediaanProductId = ${valPersediaanProductId}
@@ -286,14 +285,16 @@ export const queryGetPersediaanCategoryId = (valCategoryId) => {
   return query;
 };
 export const queryGetPersediaanCategoryGroup = () => {
-  return `SELECT
-          Category.CategoryId,
-          Category.CategoryName,
-          SUM(Persediaan.PersediaanRp) AS TotalRp
-          FROM Persediaan
-          LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
-          LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
-          GROUP BY Category.CategoryId`;
+  let query = `SELECT
+               Category.CategoryId,
+               Category.CategoryName,
+               SUM(Persediaan.PersediaanRp) AS TotalRp
+               FROM Persediaan
+               LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
+               LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
+               WHERE  Category.CategoryId IS NOT NULL
+               GROUP BY Category.CategoryId`;
+  return query;
 };
 export const queryGetPersediaanDateCategoryId = (
   valStartDate,
@@ -468,13 +469,6 @@ export const queryGetPersediaanRpSum = () => {
                FROM Persediaan `;
   return query;
 };
-export const queryGetPersediaanRpSumProductId = (valPersediaanProductId) => {
-  let query = `SELECT 
-               SUM(PersediaanRp) AS TotalRp
-               FROM Persediaan `;
-  query += `WHERE PersediaanProductId = ${valPersediaanProductId} `;
-  return query;
-};
 export const queryGetPersediaanRpSumCategoryId = (valCategoryId) => {
   let query = `SELECT
                SUM(Persediaan.PersediaanRp) AS TotalRp
@@ -482,14 +476,6 @@ export const queryGetPersediaanRpSumCategoryId = (valCategoryId) => {
                LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
                LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId `;
   query += `WHERE Category.CategoryId = ${valCategoryId}`;
-  return query;
-};
-export const queryGetPersediaanRpSumSupplierId = (valSupplierId) => {
-  let query = `SELECT
-               SUM(Persediaan.PersediaanRp) AS TotalRp
-               FROM Persediaan 
-               LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId `;
-  query += `WHERE Product.ProductSupplierId = ${valSupplierId}`;
   return query;
 };
 export const queryGetPersediaanCategorySum = () => {
@@ -555,8 +541,9 @@ export const queryGetPersediaanProductGroup1 = (
   let query = `SELECT
                Persediaan.PersediaanProductId,
                Product.ProductName,
-               Product.ProductPriceJual,
                Product.ProductImage,
+               Product.ProductPriceBeli AS PriceBuy,
+               Product.ProductPriceJual AS PriceSell,
                SUM(Persediaan.PersediaanQty) AS TotalQty
                FROM Persediaan `;
   // left join, group, order
@@ -610,4 +597,18 @@ export const queryDeletePersediaanProductId = (valProductId) => {
   return `DELETE
           FROM Persediaan
           WHERE Persediaan.PersediaanProductId = ${valProductId}`;
+};
+// const tableName = `Persediaan`;
+// const colPersediaanId = `PersediaanId`;
+// const colPersediaanDDMY = `PersediaanDDMY`;
+// const colPersediaanHMS = `PersediaanHMS`;
+// const colPersediaanProductId = `PersediaanProductId`;
+// const colPersediaanQty = `PersediaanQty`;
+// const colPersediaanRp = `PersediaanRp`;
+// const colPersediaanPersonId = `PersediaanPersonId`;
+// const colPersediaanInfo = `PersediaanInfo`;
+export const queryDeletePersediaanCategoryId = (categoryId) => {
+  return `DELETE
+          FROM Persediaan
+          WHERE Persediaan.PersediaanProductId = ${categoryId}`;
 };

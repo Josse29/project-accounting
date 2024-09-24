@@ -160,7 +160,7 @@ export const uiSucceedUpdate = (res) => {
   }, 20000);
 };
 // button pagination
-export const uiBtnPersediaanPage = (i) => {
+export const uiBtnPage = (i) => {
   return `<button type = "button" 
                   class="persediaan-btn-page ${
                     i === 1 ? "persediaan-active-page" : ""
@@ -169,7 +169,7 @@ export const uiBtnPersediaanPage = (i) => {
           </button>`;
 };
 // Function to update active page button
-export const uiActivePageButton = (activePage) => {
+export const uiBtnPageActive = (activePage) => {
   const btnPage = $("button.persediaan-btn-page");
   $(btnPage).removeClass("persediaan-active-page");
   $(btnPage)
@@ -195,31 +195,51 @@ export const uiBlankValue = () => {
   $("input#persediaan-create-qty").val(0);
   $("textarea#persediaan-create-info").val("");
 };
+export const uiSumPersediaanDate = () => {
+  $("#persediaanLimitSearch").addClass("d-none");
+  $("#persediaanList").addClass("d-none");
+};
+export const uiInit = () => {
+  $("input#persediaan-search").val("");
+  $("#persediaanLimitSearch").removeClass("d-none");
+  // reset all select
+  $("select#persediaan-refproduct-search").val("Choose One Of Products");
+  $("select#persediaan-refsupplier-search").val("Choose One Of Suppliers");
+  $("select#persediaan-refcategory-search").val("Choose One Of Categories");
+  $("#persediaanList").removeClass("d-none");
+  //remove mode date
+  $("div#persediaan-date-all-search").html(``);
+  // remove mode summary
+  $("div#persediaan-sum-section").html("");
+};
+// for - report
 export const uiTrPDF = (rows, no) => {
   const totalQty = rows.PersediaanQty;
   const totalRp = rows.PersediaanRp;
-  let totalQtyTxt = totalQty >= 1 ? `+ ${totalQty}` : `- ${Math.abs(totalQty)}`;
-  let totalRpTxt =
+  const totalQtyTxt =
+    totalQty >= 1 ? `+ ${totalQty}` : `- ${Math.abs(totalQty)}`;
+  const totalRpTxt =
     totalRp >= 1
       ? `+ ${formatRupiah2(totalRp)}`
       : `- ${formatRupiah2(Math.abs(totalRp))}`;
-  return `<tr>
-            <td class="text-center text-nowrap align-content-center">${no}</td>
-            <td class="text-nowrap align-content-center">${formatWaktuIndo(
-              rows.PersediaanDDMY
-            )}</td>
-            <td class="text-nowrap align-content-center">${
-              rows.PersediaanHMS
-            }</td>
-            <td class="text-nowrap align-content-center">${
-              rows.ProductName
-            }</td>
-            <td class="text-nowrap align-content-center">${formatRupiah2(
-              rows.HargaBeli
-            )}</td>
-            <td class="text-nowrap align-content-center">${totalQtyTxt}</td>
-            <td class="text-nowrap align-content-center">${totalRpTxt}</td>
-          </tr>`;
+  const html = `<tr>
+                  <td class="text-center text-nowrap align-content-center">${no}</td>
+                  <td class="text-nowrap align-content-center">${formatWaktuIndo(
+                    rows.PersediaanDDMY
+                  )}</td>
+                  <td class="text-nowrap align-content-center">${
+                    rows.PersediaanHMS
+                  }</td>
+                  <td class="text-nowrap align-content-center">${
+                    rows.ProductName
+                  }</td>
+                  <td class="text-nowrap align-content-center">${formatRupiah2(
+                    rows.HargaBeli
+                  )}</td>
+                  <td class="text-nowrap align-content-center">${totalQtyTxt}</td>
+                  <td class="text-nowrap align-content-center">${totalRpTxt}</td>
+                </tr>`;
+  return html;
 };
 export const uiTrProductSum = (rows, no) => {
   const totalQty = rows.TotalQty;
@@ -275,6 +295,9 @@ export const uiTrSupplierSum = (rows, no) => {
           </tr>`;
 };
 export const uiTrCategorySum = (rows, no) => {
+  // category name
+  const categoryName = rows.CategoryName;
+  // total rupiah
   const totalRp = rows.TotalRp;
   let totalRpTxt = ``;
   if (totalRp === 0) {
@@ -286,20 +309,12 @@ export const uiTrCategorySum = (rows, no) => {
   if (totalRp < 0) {
     totalRpTxt = `- ${formatRupiah2(Math.abs(totalRp))}`;
   }
-  return `<tr>
-            <td class="text-center text-nowrap align-content-center">${no}</td>
-            <td class="text-nowrap align-content-center">${rows.CategoryName}</td>
-            <td class="text-nowrap align-content-center">${totalRpTxt}</td>
-          </tr>`;
-};
-export const uiSumPersediaanDate = () => {
-  $("#persediaanLimitSearch").addClass("d-none");
-  $("#persediaanList").addClass("d-none");
-};
-// for show
-export const uiSumPersediaanDate2 = () => {
-  $("#persediaanLimitSearch").removeClass("d-none");
-  $("#persediaanList").removeClass("d-none");
+  const html = `<tr>
+                  <td class="text-center text-nowrap align-content-center">${no}</td>
+                  <td class="text-nowrap align-content-center">${categoryName}</td>
+                  <td class="text-nowrap align-content-center">${totalRpTxt}</td>
+                </tr>`;
+  return html;
 };
 // for ipc section success:pdf-persediaan
 ipcRenderer.on("success:pdf-persediaan", (e, file_path) => {
