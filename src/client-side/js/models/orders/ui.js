@@ -73,7 +73,7 @@ export const uiQty = () => {
 };
 // update ui to list cart order
 export const uiList = (rows) => {
-  const rupiahTotal = formatRupiah2(rows.ProductTotal);
+  const rupiahTotal = formatRupiah2(rows.ProductPriceSell * rows.ProductQty);
   const html = `<div class="py-2 px-1">
                   <h5 class="fw-bold text-truncate w-100" id="order-list-name">
                     ${rows.ProductName} 

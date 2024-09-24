@@ -1,9 +1,5 @@
 import { uiList, uiQty, uiTbody } from "./ui.js";
-import {
-  disFormatRupiah1,
-  formatRupiah1,
-  formatRupiah2,
-} from "../../utils/formatRupiah.js";
+import { disFormatRupiah1, formatRupiah2 } from "../../utils/formatRupiah.js";
 import {
   getStorageCart,
   getStorageCartSum,
@@ -129,7 +125,7 @@ export const listCart = () => {
   if (cartArray.length >= 1) {
     cartArray.forEach((rows) => {
       listHTML += uiList(rows);
-      totalRp += rows.ProductTotal;
+      totalRp += rows.ProductPriceSell * rows.ProductQty;
       listTd += uiTbody(rows, noTd);
       noTd++;
     });
@@ -146,7 +142,7 @@ export const listCart = () => {
   // save to storage cartsum
   setStorageCartSum(totalRp);
   // get storage cartsum and  terbilang
-  totalRp = Number(getStorageCartSum());
+  totalRp = getStorageCartSum();
   let terbilang = terbilangIndonesia(totalRp);
   let numberRp = formatRupiah2(totalRp);
   // list cart
@@ -154,7 +150,7 @@ export const listCart = () => {
   $("div#order-list").html(listHTML);
   // table order
   $("tbody#orders-done").html(listTd);
-  $("span#order-total-cart").text(formatRupiah1(totalRp));
+  $("span#order-total-cart").text(formatRupiah2(totalRp));
   $("span#order-terbilang").text(`${terbilang} rupiah`);
   $("i#order-total-cart").text(numberRp);
 };
