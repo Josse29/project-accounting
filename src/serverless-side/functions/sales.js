@@ -157,27 +157,31 @@ export const getSalesProductId = (req) => {
   });
 };
 // person
-export const getSalesPersonId = (req, res) => {
+export const getSalesPersonId = (req) => {
   const query = queryGetSalesPersonId(req);
-  db.all(query, (err, rows) => {
-    if (!err) {
-      return res(true, rows);
-    }
-    if (err) {
-      return res(false, err);
-    }
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, rows) => {
+      if (!err) {
+        resolve(rows);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
-export const getSalesSumPersonId = (req, res) => {
+export const getSalesSumPersonId = (req) => {
   const query = queryGetSalesSumPersonId(req);
-  db.each(query, (err, result) => {
-    if (!err) {
-      const total = result.Total_Rp ? parseInt(result.Total_Rp) : 0;
-      return res(true, total);
-    }
-    if (err) {
-      return res(false, err);
-    }
+  return new Promise((resolve, reject) => {
+    db.each(query, (err, result) => {
+      if (!err) {
+        const total = result.Total_Rp ? parseInt(result.Total_Rp) : 0;
+        resolve(total);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
 // customer

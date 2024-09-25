@@ -1,10 +1,6 @@
 import { createCategory } from "../../../../serverless-side/functions/categories.js";
 import { getCategoryAgain, getCategoryRef } from "./read.js";
-import {
-  createBlankValue,
-  successActionCategory,
-  uiCreateFailed,
-} from "./ui.js";
+import { uiAlertFailCreate, uiAlertSuccess, uiBlankVal } from "./ui.js";
 import { capitalizeWord } from "../../utils/formatCapitalize.js";
 
 $(document).ready(function () {
@@ -27,12 +23,12 @@ $(document).ready(function () {
         const response = await createCategory(req);
         getCategoryAgain();
         getCategoryRef();
-        successActionCategory(response);
-        createBlankValue();
+        uiAlertSuccess(response);
+        uiBlankVal();
         $("#categoryModal").modal("hide");
       } catch (error) {
         const errMsg = error || error.message;
-        uiCreateFailed(errMsg);
+        uiAlertFailCreate(errMsg);
         console.error(errMsg);
         const modalBody = $("#category-create-modal-body").get(0);
         modalBody.scrollTo({

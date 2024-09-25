@@ -1,4 +1,4 @@
-export const uiTrCategory = (el) => {
+export const uiTr = (el) => {
   return `<tr>
             <td class="text-center align-content-center text-truncate pe-2">${el.CategoryId}</td>
             <td class="align-content-center text-capitalize text-truncate pe-2">
@@ -54,19 +54,6 @@ export const uiTrCategory = (el) => {
             </td>
           </tr> `;
 };
-export const successActionCategory = (res) => {
-  const alertSuccessMe = `<div class="alert alert-success" role="alert">
-                            ${res}
-                          </div>`;
-  $("#sectionSuccessActionCategory").html(alertSuccessMe);
-  setTimeout(() => {
-    $("#sectionSuccessActionCategory").html("");
-  }, 15000);
-};
-export const createBlankValue = () => {
-  $("#category-nama").val("");
-  $("#category-keterangan").val("");
-};
 // when total category row 0 being seaching
 export const uiTrZero = (searchVal) => {
   let search = `Category is empty....`;
@@ -78,6 +65,10 @@ export const uiTrZero = (searchVal) => {
               class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">${search}</td>
           </tr>`;
 };
+export const uiBlankVal = () => {
+  $("#category-nama").val("");
+  $("#category-keterangan").val("");
+};
 // button pagination
 export const uiBtnPage = (i) => {
   return `<button 
@@ -87,26 +78,27 @@ export const uiBtnPage = (i) => {
           </button>`;
 };
 // Function to update active page button
-export const uiActivePageButton = (pageActive) => {
+export const uiBtnPageActive = (pageActive) => {
   $("button.category-btn-page").removeClass("category-active-page");
   $("button.category-btn-page")
     .eq(pageActive - 1)
     .addClass("category-active-page");
 };
-export const uiListRefProductUpdate = (categoryList) => {
-  let option = "";
-  categoryList.forEach((el) => {
-    option += `<div class='product-refcategory-val-update fs-6' value='${el.CategoryId}'>${el.CategoryName}</div>`;
-  });
-  $(".product-refcategory-update-list").html(option);
+// alert
+export const uiAlertSuccess = (res) => {
+  const alertSuccessMe = `<div class="alert alert-success alert-dismissible fade show text-start" role="alert">
+                            <strong class="text-capitalize">${res}</strong> 
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                          </div>`;
+  $("#sectionSuccessActionCategory").html(alertSuccessMe);
 };
-export const uiCreateFailed = (res) => {
-  const alertFail = `<div class="alert alert-danger fs-6" role="alert">
+export const uiAlertFailCreate = (res) => {
+  const alert = `<div class="alert alert-danger fs-6" role="alert">
                       <i class="fa-solid fa-triangle-exclamation me-1"></i> ${res}
                     </div>`;
-  $("#category-create-failed").html(alertFail);
+  $("#category-create-failed").html(alert);
 };
-export const uiUpdateFailed = (res) => {
+export const uiAlertFailUpdate = (res) => {
   const alertFail = `<div class="alert alert-danger fs-6" role="alert">
                       <i class="fa-solid fa-triangle-exclamation me-1"></i> ${res}
                     </div>`;

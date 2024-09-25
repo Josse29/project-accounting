@@ -3,11 +3,7 @@ import {
   createPersediaan,
   getPersediaanQty,
 } from "../../../../serverless-side/functions/persediaan.js";
-import {
-  uiBlankValue,
-  uiFailedActionPersediaan,
-  uiSuccessActionPersediaan,
-} from "./ui.js";
+import { uiBlankValue, uiAlertFailCreate, uiAlertSuccess } from "./ui.js";
 import { listProductRefPersediaanCreate } from "../products/list.js";
 import { getPersediaanAgain } from "./read.js";
 
@@ -89,14 +85,13 @@ $(document).ready(function () {
         };
         const response = await createPersediaan(req);
         getPersediaanAgain();
-        uiSuccessActionPersediaan(response);
+        uiAlertSuccess(response);
         uiBlankValue();
         persediaanCreateQty = 0; //hufft
         $("#persediaanCreateModal").modal("hide");
       } catch (error) {
         const errMsg = error || error.message;
-        console.error(errMsg);
-        uiFailedActionPersediaan(errMsg);
+        uiAlertFailCreate(errMsg);
         const modalBody = $("#persediaan-create-modal-body").get(0);
         modalBody.scrollTo({
           top: 0,

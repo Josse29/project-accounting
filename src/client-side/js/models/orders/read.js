@@ -3,7 +3,7 @@ import {
   getPersediaanTotalRow1,
 } from "../../../../serverless-side/functions/persediaan.js";
 import { listCart, updateQty } from "./cart.js";
-import { uiActivePage, uiBtnPage, uiMenu } from "./ui.js";
+import { uiBtnPage, uiBtnPageActive, uiMenu } from "./ui.js";
 $(document).ready(function () {
   let searchVal = $("input#order-search").val();
   let limitVal = 3;
@@ -60,7 +60,7 @@ $(document).ready(function () {
       // update qty to list cart and save to storage
       listCart();
       // update active page
-      uiActivePage(req.offsetVal);
+      uiBtnPageActive(req.offsetVal);
     } catch (error) {
       console.error(error);
     }
@@ -195,7 +195,7 @@ export const getProductAgain = () => {
       // update qty to list cart and save to storage
       listCart();
       // update active page
-      uiActivePage(req.offsetVal);
+      uiBtnPageActive(req.offsetVal);
     } catch (error) {
       console.error(error);
     }

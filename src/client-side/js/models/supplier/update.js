@@ -1,10 +1,10 @@
 import { updateSupplier } from "../../../../serverless-side/functions/supplier.js";
 import { getSupplierAgain, getSupplierRef } from "./read.js";
-import { successActionSupplier, uiUpdateFailed } from "./ui.js";
+import { uiAlertFailUpdate, uiAlertSuccess } from "./ui.js";
 import { capitalizeWord } from "../../utils/formatCapitalize.js";
 import { getImageBase64 } from "../../utils/loadImg.js";
 $(document).ready(function () {
-  $(document)
+  $("#supplier-table")
     .off("click", "#supplierUpdate")
     .on("click", "#supplierUpdate", function () {
       $("input#supplier-update-img").val("");
@@ -15,10 +15,11 @@ $(document).ready(function () {
       const supplierInfo = supplier.supplierinfo;
       const supplierImg = supplier.supplierimg;
       let cancelImg = false;
-      // get vallue from params
+      //name
       $("#supplierUpdateModalLabel").text(supplierName);
       $("#supplier-update-name").val(supplierName);
-      $("#supplier-update-info").val(supplierInfo);
+      console.log(supplier);
+      console.log(supplierImg);
       // with image
       if (supplierImg !== "null") {
         $("#supplier-update-img-preview").attr("src", supplierImg);
@@ -29,6 +30,8 @@ $(document).ready(function () {
         $("#supplier-update-img-preview").attr("src", "");
         $("#supplier-update-img-section").hide();
       }
+      // information
+      $("#supplier-update-info").val(supplierInfo);
       // update preview image
       $("#supplier-update-img")
         .off("change")
@@ -98,11 +101,11 @@ $(document).ready(function () {
             const response = await updateSupplier(req);
             getSupplierAgain();
             getSupplierRef();
-            successActionSupplier(response);
+            uiAlertSuccess(response);
             $("#supplierUpdateModal").modal("hide");
           } catch (error) {
             const errMsg = error || error.message;
-            uiUpdateFailed(errMsg);
+            uiAlertFailUpdate(errMsg);
             console.error(error);
             const modalBody = $("#supplier-update-modalBody").get(0);
             modalBody.scrollTo({

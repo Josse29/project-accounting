@@ -55,6 +55,12 @@ export const uiBtnPage = (number) => {
               number === 1 ? "product-ref-persediaan-page-active" : ""
             }">${number}</button>`;
 };
+// update ui Active
+export const uiBtnPageActive = (pageNumber) => {
+  const btnPage = $("button.product-ref-persediaan-page");
+  btnPage.removeClass("product-ref-persediaan-page-active");
+  btnPage.eq(pageNumber - 1).addClass("product-ref-persediaan-page-active");
+};
 // loop to card menu and update ui qty
 export const uiQty = () => {
   const cartStorage = getStorageCart();
@@ -86,21 +92,15 @@ export const uiList = (rows) => {
 };
 // update ui to tbody card for orderintg
 export const uiTbody = (rows, noTd) => {
-  const productPrice = formatRupiah2(rows.ProductPrice);
-  const productTotal = formatRupiah2(rows.ProductTotal);
+  const priceSellRp = formatRupiah2(rows.ProductPriceSell);
+  const productTotal = formatRupiah2(rows.ProductPriceSell * rows.ProductQty);
   return `<tr>
-            <td class="text-center">${noTd++}</td>
+            <td class="text-center">${noTd}</td>
             <td>${rows.ProductName}</td>
             <td>
-                ${productPrice}
+                ${priceSellRp}
             </td>
             <td>+ ${rows.ProductQty}</td>
             <td>${productTotal}</td>
           </tr>`;
-};
-// update ui Active
-export const uiActivePage = (pageNumber) => {
-  const btnPage = $("button.product-ref-persediaan-page");
-  btnPage.removeClass("product-ref-persediaan-page-active");
-  btnPage.eq(pageNumber - 1).addClass("product-ref-persediaan-page-active");
 };

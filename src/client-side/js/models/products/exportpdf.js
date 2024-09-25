@@ -1,6 +1,6 @@
 import { getProductPDF } from "../../../../serverless-side/functions/product.js";
-import { uiFailedPDF, uiTrPDf } from "./ui.js";
-
+import { uiAlertFail, uiAlertSuccess, uiTrPDf } from "./ui.js";
+//
 // export pdf product
 $("#product-export-pdf")
   .off("click")
@@ -8,6 +8,7 @@ $("#product-export-pdf")
     try {
       const response = await getProductPDF();
       const existed = response.length >= 1;
+      console.log(existed);
       if (existed) {
         let file_path = dialog.showSaveDialogSync({
           title: "Export Data",
@@ -22,9 +23,12 @@ $("#product-export-pdf")
             no++;
           });
           ipcRenderer.send("pdf:product", tbody, file_path);
+          ipcRenderer.on("success:pdf-product", (e, file_path) => {
+            uiAlertSuccess(`File PDF tersimpan di ${file_path}`);
+          });
         }
       } else {
-        uiFailedPDF("upppps Product is still empty...");
+        uiAlertFail("upppps Product is still empty...");
       }
     } catch (error) {
       console.error(error);

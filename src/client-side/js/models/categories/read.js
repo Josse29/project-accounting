@@ -3,7 +3,7 @@ import {
   getCategoryInit,
 } from "../../../../serverless-side/functions/categories.js";
 import { reinitTooltip, uiLoad } from "../../utils/updateUi.js";
-import { uiActivePageButton, uiBtnPage, uiTrCategory, uiTrZero } from "./ui.js";
+import { uiBtnPage, uiBtnPageActive, uiTr } from "./ui.js";
 import { getProductsAgain } from "./../products/read.js";
 import { getPersediaanAgain } from "../persediaan/read.js";
 import {
@@ -62,11 +62,11 @@ $(document).ready(function () {
       const response = await getCategory(req);
       let tr = "";
       response.forEach((element) => {
-        tr += uiTrCategory(element);
+        tr += uiTr(element);
       });
       $("#category-data").html(tr);
       reinitTooltip();
-      uiActivePageButton(req.offsetVal);
+      uiBtnPageActive(req.offsetVal);
     } catch (error) {
       console.error(error);
     }
@@ -182,11 +182,11 @@ export const getCategoryAgain = () => {
       const response = await getCategory(req);
       let tr = "";
       response.forEach((element) => {
-        tr += uiTrCategory(element);
+        tr += uiTr(element);
       });
       $("#category-data").html(tr);
       reinitTooltip();
-      uiActivePageButton(req.offsetVal);
+      uiBtnPageActive(req.offsetVal);
     } catch (error) {
       console.error(error);
     }

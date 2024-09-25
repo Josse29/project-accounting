@@ -3,7 +3,7 @@ import {
   getSalesSumProductId,
 } from "../../../../serverless-side/functions/sales.js";
 import { formatRupiah2 } from "./../../utils/formatRupiah.js";
-import { uiTable, uiTableEmpty } from "./ui.js";
+import { uiTr, uiTrEmpty } from "./ui.js";
 $(document).ready(function () {
   $("select#sales-read-productid")
     .off("change")
@@ -31,12 +31,12 @@ $(document).ready(function () {
         if (existed) {
           let table = ``;
           resTable.forEach((rows) => {
-            table += uiTable(rows);
+            table += uiTr(rows);
           });
           $("tbody#sales-read-table").html(table);
         }
         if (!existed) {
-          const empty = uiTableEmpty(productName);
+          const empty = uiTrEmpty(productName);
           $("tbody#sales-read-table").html(empty);
         }
         // references callback ui

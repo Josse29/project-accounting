@@ -1,5 +1,5 @@
 import { getProductCSV } from "../../../../serverless-side/functions/product.js";
-import { successActionProduct } from "./ui.js";
+import { uiAlertFail, uiAlertSuccess } from "./ui.js";
 
 $(document).ready(function () {
   // export excel product
@@ -25,7 +25,7 @@ $(document).ready(function () {
               .join("\r\n");
             fs.writeFile(file_path, csvString, (err) => {
               if (!err) {
-                successActionProduct(`File Excel tersimpan di ${file_path}`);
+                uiAlertSuccess(`File Save On ${file_path}`);
               }
               if (err) {
                 console.error(err);
@@ -34,7 +34,7 @@ $(document).ready(function () {
             });
           }
         } else {
-          uiFailedPDF("upppps Product is still empty...");
+          uiAlertFail("upppps Product is still empty...");
         }
       } catch (error) {
         console.error(error);

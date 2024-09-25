@@ -1,6 +1,6 @@
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import { formatWaktuIndo } from "../../utils/formatWaktu.js";
-export const uiTable = (rows) => {
+export const uiTr = (rows) => {
   const YMD = formatWaktuIndo(rows.SalesYMD);
   const rupiahProduct = formatRupiah2(rows.ProductPriceJual);
   const rupiahTotal = formatRupiah2(rows.SalesProductRp);
@@ -39,6 +39,16 @@ export const uiTable = (rows) => {
                   </tr>`;
   return html;
 };
+export const uiTrEmpty = (searchVal) => {
+  let search = `sales empty....`;
+  if (searchVal !== "") {
+    search = `${searchVal} - not found`;
+  }
+  const html = `<tr>
+                  <td class="text-center fst-italic" colspan="11">${search}</td>
+                </tr>`;
+  return html;
+};
 export const uiBtnPage = (i) => {
   const btnHTML = `<button
                       type="button"
@@ -49,16 +59,12 @@ export const uiBtnPage = (i) => {
                    </button>`;
   return btnHTML;
 };
-export const uiTableEmpty = (searchVal) => {
-  let search = `sales empty....`;
-  if (searchVal !== "") {
-    search = `${searchVal} - not found`;
-  }
-  const html = `<tr>
-                  <td class="text-center fst-italic" colspan="11">${search}</td>
-                </tr>`;
-  return html;
+export const uiBtnPageActive = (pageNumber) => {
+  const btnPage = $("button.sales-page");
+  btnPage.removeClass("sales-active-page");
+  btnPage.eq(pageNumber - 1).addClass("sales-active-page");
 };
+
 export const uiSuccess = (res) => {
   let alert = `<div class="alert alert-success" role="alert">${res}</div>`;
   $("div#sales-success-container").html(alert);
@@ -67,8 +73,3 @@ export const uiSuccess = (res) => {
   }, 20000);
 };
 export const uiReset = () => {};
-export const uiPageActive = (pageNumber) => {
-  const btnPage = $("button.sales-page");
-  btnPage.removeClass("sales-active-page");
-  btnPage.eq(pageNumber - 1).addClass("sales-active-page");
-};

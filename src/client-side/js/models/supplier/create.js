@@ -1,10 +1,6 @@
 import { createSupplier } from "../../../../serverless-side/functions/supplier.js";
 import { getSupplierAgain, getSupplierRef } from "./read.js";
-import {
-  successActionSupplier,
-  supplierCreateBlank,
-  uiCreateFailed,
-} from "./ui.js";
+import { uiAlertFailCreate, uiAlertSuccess, uiBlankVal } from "./ui.js";
 import { capitalizeWord } from "../../utils/formatCapitalize.js";
 import { getImageBase64 } from "../../utils/loadImg.js";
 // supplier-create-name
@@ -75,13 +71,12 @@ $(document).ready(function () {
         const response = await createSupplier(req);
         getSupplierAgain();
         getSupplierRef();
-        successActionSupplier(response);
-        supplierCreateBlank();
+        uiAlertSuccess(response);
+        uiBlankVal();
         $("#supplierCreate").modal("hide");
       } catch (error) {
         const errMsg = error || error.message;
-        console.error(errMsg);
-        uiCreateFailed(errMsg);
+        uiAlertFailCreate(errMsg);
         const modalBody = $("#supplier-create-modalBody").get(0);
         modalBody.scrollTo({
           top: 0,

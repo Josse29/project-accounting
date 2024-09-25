@@ -1,5 +1,5 @@
 import { getPersediaanReport } from "../../../../serverless-side/functions/persediaan.js";
-import { uiFailedActionPersediaan1, uiSuccessActionPersediaan } from "./ui.js";
+import { uiAlertFail, uiAlertSuccess } from "./ui.js";
 
 $(document).ready(function () {
   $("button#persediaan-export-excel")
@@ -25,9 +25,7 @@ $(document).ready(function () {
               .join("\r\n");
             fs.writeFile(file_path, csvString, (err) => {
               if (!err) {
-                uiSuccessActionPersediaan(
-                  `File Excel tersimpan di ${file_path}`
-                );
+                uiAlertSuccess(`File Save On ${file_path}`);
               }
               if (err) {
                 console.error(err);
@@ -37,7 +35,7 @@ $(document).ready(function () {
           }
         }
         if (!existed) {
-          uiFailedActionPersediaan1("uuppsss , sorry stock is still empty...");
+          uiAlertFail("uuppsss , sorry stock is still empty...");
         }
       } catch (error) {
         console.error(error);

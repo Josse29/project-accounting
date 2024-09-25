@@ -1,10 +1,6 @@
 import { insertProducts } from "../../../../serverless-side/functions/product.js";
 import { getProductRef, getProductsAgain } from "./read.js";
-import {
-  createBlankValue,
-  successActionProduct,
-  uiCreateFailed,
-} from "./ui.js";
+import { uiAlertFailCreate, uiAlertSuccess, uiBlankVal } from "./ui.js";
 import { listCategoryRefProductCreate } from "./../categories/list.js";
 import { listSupplierRefProductCreate } from "../supplier/list.js";
 import { disFormatRupiah1, formatRupiah1 } from "../../utils/formatRupiah.js";
@@ -98,15 +94,15 @@ $(document).ready(function () {
           imgBase64,
         };
         const response = await insertProducts(req);
-        successActionProduct(response);
+        uiAlertSuccess(response);
         getProductsAgain();
         getProductRef();
-        createBlankValue();
+        uiBlankVal();
         listProductRefPersediaanCreate();
         $("#productCreateModal").modal("hide");
       } catch (error) {
         const errMsg = error || error.message;
-        uiCreateFailed(errMsg);
+        uiAlertFailCreate(errMsg);
         const modalBody = $("#productCreate-modal-body").get(0);
         modalBody.scrollTo({
           top: 0,

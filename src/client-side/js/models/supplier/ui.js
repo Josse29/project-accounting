@@ -58,16 +58,7 @@ export const uiTr = (el) => {
                 </td>
             </tr>`;
 };
-// make alert success after action crud
-export const successActionSupplier = (res) => {
-  const alertSuccessMe = `<div class="alert alert-success" role="alert">
-                              ${res}
-                            </div>`;
-  $("#sectionSuccessActionSupply").html(alertSuccessMe);
-  setTimeout(() => {
-    $("#sectionSuccessActionSupply").html("");
-  }, 20000);
-};
+
 // it doesn't exist supplier while  event search
 export const uiTrZero = (searchVal) => {
   let search = `Supplier Empty ......`;
@@ -94,7 +85,7 @@ export function uiActivePageBtn(pageNumber) {
     .addClass("supplier-active-page");
 }
 // create blank after success event
-export const supplierCreateBlank = () => {
+export const uiBlankVal = () => {
   $("#supplier-create-name").val("");
   $("#supplier-create-img").val("");
   $("#supplier-create-info").val("");
@@ -103,28 +94,21 @@ export const supplierCreateBlank = () => {
 export const uiOption = (element) => {
   return `<option value="${element.SupplierId}" class="text-capitalize">${element.SupplierName}</option>`;
 };
-export const uiListProductCreate = (supplierList) => {
-  // get only list supplier
-  let option = "";
-  supplierList.forEach((el) => {
-    option += `<div class='product-refsupplier-val fs-6' value='${el.SupplierId}'>${el.SupplierName}</div>`;
-  });
-  $(".product-refsupplier-list").html(option);
+// make alert success after action crud
+export const uiAlertSuccess = (res) => {
+  const alertSuccessMe = `<div class="alert alert-success alert-dismissible fade show text-start" role="alert">
+                            <strong class="text-capitalize">${res}</strong> 
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                          </div>`;
+  $("#sectionSuccessActionSupply").html(alertSuccessMe);
 };
-export const uiListProductUpdate = (supplierList) => {
-  let option = "";
-  supplierList.forEach((el) => {
-    option += `<div class='product-refsupplier-val-update fs-6' value='${el.SupplierId}'>${el.SupplierName}</div>`;
-  });
-  $(".product-refsupplier-update-list").html(option);
-};
-export const uiCreateFailed = (res) => {
+export const uiAlertFailCreate = (res) => {
   const alert = `<div class="alert alert-danger" role="alert">
                     <i class="fa-solid fa-triangle-exclamation me-1"></i> ${res}
                  </div>`;
   $("#supplier-create-failed").html(alert);
 };
-export const uiUpdateFailed = (res) => {
+export const uiAlertFailUpdate = (res) => {
   const alert = `<div class="alert alert-danger" role="alert">
                     <i class="fa-solid fa-triangle-exclamation me-1"></i> ${res}
                  </div>`;

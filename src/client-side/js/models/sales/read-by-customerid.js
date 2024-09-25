@@ -3,7 +3,7 @@ import {
   getSalesSumCustomerId,
 } from "../../../../serverless-side/functions/sales.js";
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
-import { uiTable, uiTableEmpty } from "./ui.js";
+import { uiTr, uiTrEmpty } from "./ui.js";
 
 $(document).ready(function () {
   $("select#sales-read-customerid")
@@ -23,14 +23,14 @@ $(document).ready(function () {
         const existed = resTable.length >= 1;
         if (existed) {
           let table = ``;
-          let index = 1;
           resTable.forEach((rows) => {
-            table += uiTable(rows);
+            table += uiTr(rows);
           });
           $("tbody#sales-read-table").html(table);
         }
         if (!existed) {
-          $("tbody#sales-read-table").html(uiTableEmpty(selectedText));
+          const empty = uiTrEmpty(selectedText);
+          $("tbody#sales-read-table").html(empty);
         }
         $("div#sales-page-container").addClass("d-none");
         // references ui

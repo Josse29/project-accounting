@@ -1,7 +1,7 @@
 import { deletePersediaanProductId } from "../../../../serverless-side/functions/persediaan.js";
 import { deleteProductId } from "../../../../serverless-side/functions/product.js";
 import { getProductRef, getProductsAgain } from "./read.js";
-import { successActionProduct } from "./ui.js";
+import { uiAlertSuccess } from "./ui.js";
 
 $(document).ready(function () {
   // Delete Product event binding mckkkk
@@ -20,10 +20,10 @@ $(document).ready(function () {
         .on("click", async () => {
           try {
             await deletePersediaanProductId(productid);
-            await deleteProductId(productid, productName);
+            const response = await deleteProductId(productid, productName);
             getProductsAgain();
             getProductRef();
-            successActionProduct(response);
+            uiAlertSuccess(response);
           } catch (error) {
             console.error(error);
           }

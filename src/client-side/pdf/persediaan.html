@@ -44,9 +44,6 @@
                 <h6 class="menit">r</h6>
                 <h6 class="detik">s</h6>
               </div>
-              <h4 class="text-center fst-italic" id="product-noexist">
-                Barang Kosong ...
-              </h4>
               <div id="product-exist">
                 <table class="table table-striped">
                   <thead>
@@ -182,14 +179,6 @@
           txtPersediaanRpSum,
           filePath
         ) => {
-          if (txtPersediaanQtySum === 0) {
-            $("#product-exist").hide();
-            $("#product-noexist").show();
-          }
-          if (txtPersediaanQtySum >= 1) {
-            $("#product-exist").show();
-            $("#product-noexist").hide();
-          }
           $("#tbodyProduct").html(tbodyProduct);
           $("#tbodyCategoryGroup").html(tbodyCategoryGroup);
           $("#tbodyProductGroup").html(tbodyProductGroup);

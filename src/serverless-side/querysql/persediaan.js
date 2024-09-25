@@ -121,20 +121,21 @@ export const queryListPersediaan = (valPersediaanSearch) => {
   return query;
 };
 export const queryGetPersediaanReport = () => {
-  return `SELECT
-          Persediaan.PersediaanDDMY AS Tanggal,
-          Persediaan.PersediaanHMS AS Waktu, 
-          Product.ProductName AS NamaProduk,
-          Category.CategoryName AS Kategori, 
-          Product.ProductPriceBeli AS HargaBeli,
-          Supplier.SupplierName AS Supplier,  
-          Persediaan.PersediaanQty AS TotalQty,
-          Persediaan.PersediaanRp AS TotalRupiah
-          FROM Persediaan
-          LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
-          LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
-          LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId
-          ORDER BY Persediaan.PersediaanDDMY DESC,Persediaan.PersediaanHMS DESC `;
+  const query = `SELECT
+                 Persediaan.PersediaanDDMY AS Tanggal,
+                 Persediaan.PersediaanHMS AS Waktu, 
+                 Product.ProductName AS NamaProduk,
+                 Category.CategoryName AS Kategori, 
+                 Product.ProductPriceBeli AS HargaBeli,
+                 Supplier.SupplierName AS Supplier,  
+                 Persediaan.PersediaanQty AS TotalQty,
+                 Persediaan.PersediaanRp AS TotalRupiah
+                 FROM Persediaan
+                 LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
+                 LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
+                 LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId
+                 ORDER BY Persediaan.PersediaanDDMY DESC,Persediaan.PersediaanHMS DESC `;
+  return query;
 };
 export const queryGetPersediaanDate = (startDate, endDate) => {
   let query = `SELECT 
@@ -163,7 +164,7 @@ export const queryGetPersediaanDate = (startDate, endDate) => {
 // reference product
 export const queryGetPersediaanProductRow = (valPersediaanProductId) => {
   let query = `SELECT
-               COUNT(Persediaan.PersediaanProductId) AS TotalProduct
+               COUNT(Persediaan.PersediaanProductId) AS TotalRow
                FROM Persediaan
                WHERE Persediaan.PersediaanProductId = ${valPersediaanProductId} `;
   return query;
@@ -237,16 +238,17 @@ export const queryGetPersediaanDateProductId = (
   return query;
 };
 export const queryGetPersediaanProductReport = () => {
-  return `SELECT
-          Persediaan.PersediaanDDMY,
-          Persediaan.PersediaanHMS, 
-          Product.ProductName, 
-          Product.ProductPriceBeli AS HargaBeli,
-          Persediaan.PersediaanQty,
-          Persediaan.PersediaanRp
-          FROM Persediaan
-          LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
-          ORDER BY Persediaan.PersediaanDDMY DESC, Persediaan.PersediaanHMS DESC`;
+  const query = `SELECT
+                 Persediaan.PersediaanDDMY,
+                 Persediaan.PersediaanHMS, 
+                 Product.ProductName, 
+                 Product.ProductPriceBeli AS HargaBeli,
+                 Persediaan.PersediaanQty,
+                 Persediaan.PersediaanRp
+                 FROM Persediaan
+                 LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
+                 ORDER BY Persediaan.PersediaanDDMY DESC, Persediaan.PersediaanHMS DESC`;
+  return query;
 };
 export const queryGetPersediaanProductGroup = () => {
   return `SELECT

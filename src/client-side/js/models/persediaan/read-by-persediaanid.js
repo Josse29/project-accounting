@@ -1,7 +1,7 @@
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import { formatWaktuIndo } from "../../utils/formatWaktu.js";
 $(document).ready(function () {
-  $(document)
+  $("tbody#persediaan-table")
     .off("click", "#persediaanDetail")
     .on("click", "#persediaanDetail", function () {
       const persediaan = this.dataset;

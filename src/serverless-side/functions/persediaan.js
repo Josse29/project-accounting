@@ -665,14 +665,21 @@ export const updatePersediaan = async (req) => {
   } = req;
   // 1.validate numeric on valPersediaanQty
   validateQty(valPersediaanQty);
-  // assure more than 1 row
-  await validateStock(valPersediaanProductId, valPersediaanQty);
-  // 3. validate available stock value must-be positive
-  await validateStock1(
-    valPersediaanId,
-    valPersediaanProductId,
-    valPersediaanQty
-  );
+  // check product row and product qty, suit the condition
+  const productRow = await checkProductRow(valPersediaanProductId);
+  // count all product except  the product that will be deleted, make sure positive stock
+  if (productRow > 1) {
+    await validateStock1(
+      valPersediaanId,
+      valPersediaanProductId,
+      valPersediaanQty
+    );
+  }
+  // if only one product row and stock value < 1 it doesn't allow
+  if ((productRow === 1) & (valPersediaanQty < 1)) {
+    const msg = "Please Update Qty with postive value";
+    throw new Error(msg);
+  }
   // execute update
   const valPersediaanTotalRp = valPersediaanQty * valPersediaanRp;
   const query = queryUpdatePersediaan(
@@ -698,32 +705,6 @@ export const updatePersediaan = async (req) => {
     });
   });
 };
-export const validateStock = (valPersediaanProductId, valPersediaanQty) => {
-  const query = queryGetPersediaanProductRow(valPersediaanProductId);
-  return new Promise((resolve, reject) => {
-    db.each(query, (err, response) => {
-      if (!err) {
-        const stock = parseFloat(response.TotalProduct);
-        // only one stock value
-        if (stock === 1) {
-          if (valPersediaanQty >= 1) {
-            resolve();
-          }
-          if (valPersediaanQty < 1) {
-            const msg = `Failed to update, If Succeed to update, The total stock is ${valPersediaanQty}`;
-            reject(msg);
-          }
-        }
-        if (stock > 1) {
-          resolve();
-        }
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
-};
 export const validateStock1 = (
   valPersediaanId,
   valPersediaanProductId,
@@ -731,17 +712,17 @@ export const validateStock1 = (
 ) => {
   const query = queryGetPersediaanQty2(valPersediaanId, valPersediaanProductId);
   return new Promise((resolve, reject) => {
-    db.all(query, (err, rows) => {
+    db.each(query, (err, rows) => {
       if (!err) {
-        const response = parseFloat(rows[0].TotalQty);
-        const stock = response + valPersediaanQty >= 0;
-        if (stock) {
+        const response = parseFloat(rows.TotalQty);
+        const totalStockUpdated = response + valPersediaanQty;
+        const positiveStock = totalStockUpdated >= 0;
+        if (positiveStock) {
           resolve();
         }
-        if (!stock) {
-          const totalQty = valPersediaanQty + response;
+        if (!positiveStock) {
           const msg = `Failed to Update, If Succeed to Update, The Total Stock is : 
-          ${totalQty}`;
+          ${totalStockUpdated}`;
           reject(msg);
         }
       }
@@ -759,11 +740,12 @@ export const deletePersediaan = async (req) => {
     valPersediaanQty,
     valPersediaanProductId,
   } = req;
-  console.log(valPersediaanProductId);
-  // sure conditionally with rows
-  await validateStock2(valPersediaanProductId, valPersediaanQty);
-  // validate stock must be postiive
-  await validateStock3(valPersediaanId, valPersediaanProductId);
+  // check product row and product qty, suit the condition
+  const productRow = await checkProductRow(valPersediaanProductId);
+  // count all product except  the product that will be deleted, make sure positive stock
+  if (productRow > 1) {
+    await validateStock3(valPersediaanId, valPersediaanProductId);
+  }
   // 3. execute delete
   return new Promise((resolve, reject) => {
     db.run(queryDeletePersediaan(valPersediaanId), (err) => {
@@ -779,25 +761,13 @@ export const deletePersediaan = async (req) => {
     });
   });
 };
-export const validateStock2 = (valPersediaanProductId, valPersediaanQty) => {
-  console.log(valPersediaanProductId);
+export const checkProductRow = (valPersediaanProductId) => {
   const query = queryGetPersediaanProductRow(valPersediaanProductId);
   return new Promise((resolve, reject) => {
     db.each(query, (err, response) => {
       if (!err) {
-        const stock = parseFloat(response.TotalProduct);
-        if (stock === 1) {
-          if (valPersediaanQty >= 1) {
-            resolve();
-          }
-          if (valPersediaanQty < 1) {
-            const msg = `If Succeed to Delete,The Stock total is : ${valPersediaanQty}`;
-            reject(msg);
-          }
-        }
-        if (stock > 1) {
-          resolve();
-        }
+        const totalRow = parseFloat(response.TotalRow);
+        resolve(totalRow);
       }
       if (err) {
         reject(err);
@@ -808,14 +778,14 @@ export const validateStock2 = (valPersediaanProductId, valPersediaanQty) => {
 export const validateStock3 = (valPersediaanId, valPersediaanProductId) => {
   const query = queryGetPersediaanQty2(valPersediaanId, valPersediaanProductId);
   return new Promise((resolve, reject) => {
-    db.all(query, (err, rows) => {
+    db.each(query, (err, rows) => {
       if (!err) {
-        const response = parseFloat(rows[0].TotalQty);
-        const stock = response >= 0;
-        if (stock) {
+        const response = parseFloat(rows.TotalQty);
+        const positiveStock = response >= 0;
+        if (positiveStock) {
           resolve();
         }
-        if (!stock) {
+        if (!positiveStock) {
           const msg = `Failed to delete, If Succeed to delete, The total Stock is : ${response}`;
           reject(msg);
         }

@@ -291,13 +291,13 @@ tbody#persediaan-table::-webkit-scrollbar-thumb:hover {
 }
 /* #persediaan-detial-stock*/
 ul#product-detail-stock::-webkit-scrollbar {
-  width: 7px;
+  width: 5px;
 }
 ul#product-detail-stock::-webkit-scrollbar-track {
-  background: #c6c3c3;
+  background: #d4d0d0;
 }
 ul#product-detail-stock::-webkit-scrollbar-thumb {
-  background: #a4a2a2;
+  background: #959494;
 }
 ul#product-detail-stock::-webkit-scrollbar-thumb:hover {
   background: #555;

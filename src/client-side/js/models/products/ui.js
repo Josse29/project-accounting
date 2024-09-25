@@ -70,16 +70,6 @@ export const uiTbody = (el) => {
             </td>
           </tr>`;
 };
-// make alert success after action crud
-export const successActionProduct = (res) => {
-  const alertSuccessMe = `<div class="alert alert-success" role="alert">
-                            ${res}
-                          </div>`;
-  $("#sectionSuccessActionProduct").html(alertSuccessMe);
-  setTimeout(() => {
-    $("#sectionSuccessActionProduct").html("");
-  }, 20000);
-};
 // when total product row 0 being seaching
 export const uiTbodyZero = (searchVal) => {
   let search = `Product Empty....`;
@@ -91,7 +81,7 @@ export const uiTbodyZero = (searchVal) => {
             </tr>`;
 };
 // blank value after submit action
-export const createBlankValue = () => {
+export const uiBlankVal = () => {
   $("#product-name").val("");
   $("#product-refcategory-create").val("");
   $("#product-refsupplier-create").val("");
@@ -115,26 +105,28 @@ export const uiActivePageButton = (numberPage) => {
   btnPage.removeClass("product-active-page");
   btnPage.eq(numberPage - 1).addClass("product-active-page");
 };
-export const uiCreateFailed = (res) => {
+// make alert success after action crud
+export const uiAlertSuccess = (res) => {
+  const alertSuccessMe = `<div class="alert alert-success alert-dismissible fade show text-start" role="alert">
+                            <strong class="text-capitalize">${res}</strong> 
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                          </div>`;
+  $("#sectionSuccessActionProduct").html(alertSuccessMe);
+};
+export const uiAlertFail = (res) => {
+  const alert = `<div class="alert alert-danger alert-dismissible fade show text-start" role="alert">
+                    <strong class="text-capitalize">${res}</strong> 
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                 </div>`;
+  $("#sectionSuccessActionProduct").html(alert);
+};
+export const uiAlertFailCreate = (res) => {
   const alert = `<div class="alert alert-danger" role="alert">
                   <i class="fa-solid fa-triangle-exclamation me-1"></i> ${res}
                 </div>`;
   $("div#productCreateFailed").html(alert);
 };
-export const uiFailedPDF = (res) => {
-  const alert = `<div class="alert alert-danger" role="alert">
-                  <i class="fa-solid fa-triangle-exclamation me-1"></i> ${res}
-                </div>`;
-  $("div#product-pdf-failed").html(alert);
-};
-export const uiListRefPersediaanCreate = (productList) => {
-  let option = "";
-  productList.forEach((el) => {
-    option += `<div class='persediaan-refproduct-create-val fs-6' valueid=${el.ProductId} valueprice=${el.ProductPriceBeli}>${el.ProductId} - ${el.ProductName}</div>`;
-  });
-  $("#persediaan-refproduct-create-list").html(option);
-};
-export const uiUpdateFailed = (res) => {
+export const uiAlertFailUpdate = (res) => {
   const alertFail = `<div class="alert alert-danger fs-6" role="alert">
                       <i class="fa-solid fa-triangle-exclamation me-1"></i> ${res}
                     </div>`;
@@ -155,6 +147,3 @@ export const uiTrPDf = (no, row) => {
             <td class="text-nowrap align-content-center">${productInfo}</td>
           </tr>`;
 };
-ipcRenderer.on("success:pdf-product", (e, file_path) => {
-  successActionProduct(`File PDF tersimpan di ${file_path}`);
-});

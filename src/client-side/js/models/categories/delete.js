@@ -1,9 +1,9 @@
 import { deleteCategory } from "../../../../serverless-side/functions/categories.js";
 import { getCategoryAgain, getCategoryRef } from "./read.js";
-import { successActionCategory } from "./ui.js";
+import { uiAlertSuccess } from "./ui.js";
 
 $(document).ready(function () {
-  $(document)
+  $("tbody#category-data")
     .off("click", "#deleteCategory")
     .on("click", "#deleteCategory", function () {
       const category = this.dataset;
@@ -21,7 +21,7 @@ $(document).ready(function () {
             const response = await deleteCategory(categoryId, categoryName);
             getCategoryAgain();
             getCategoryRef();
-            successActionCategory(response);
+            uiAlertSuccess(response);
           } catch (error) {
             console.error(error);
           }

@@ -110,54 +110,40 @@ export const uiTbody = (el) => {
   return html;
 };
 // make alert success after action crud
-export const uiSuccessActionPersediaan = (res) => {
-  const alertSuccessMe = `<div class="alert alert-success" role="alert">
-                              ${res}
-                            </div>`;
-  $("#sectionSuccessActionPersediaan").html(alertSuccessMe);
-  $("#sectionFailedActionPersediaan").html("");
-  setTimeout(() => {
-    $("#sectionSuccessActionPersediaan").html("");
-  }, 20000);
-};
-// make alert failed after action crud
-export const uiFailedActionPersediaan = (res) => {
-  const alertFailedMe = `<div class="alert alert-danger" role="alert">
-                            <i class="fa-solid fa-triangle-exclamation me-1"></i>
-                            ${res}
-                          </div>`;
-  $("#sectionFailedActionPersediaan").html(alertFailedMe);
-};
-export const uiFailedActionPersediaan1 = (res) => {
-  const alertFailedMe = `<div class="alert alert-danger" role="alert">
-                            <i class="fa-solid fa-triangle-exclamation me-1"></i>
-                            ${res}
-                          </div>`;
-  $("#sectionSuccessActionPersediaan").html(alertFailedMe);
-};
-// make alert failed after update
-export const uiFailedUpdate = (res) => {
-  const divFailed = `<div class="alert alert-danger mt-2" role="alert">
-                      <i class="fa-solid fa-triangle-exclamation me-1"></i>
-                        ${res}
-                    </div>`;
-  $("#persediaan-update-failed").html(divFailed);
-};
-export const uiFailedDelete = (res) => {
-  const divFailed = `<div class="alert alert-danger mt-2 text-start" role="alert">
-                        ${res}
-                    </div>`;
-  $("#persediaan-delete-failed").html(divFailed);
-};
-export const uiSucceedUpdate = (res) => {
-  const alertSuccessMe = `<div class="alert alert-success" role="alert">
-                            ${res}
+export const uiAlertSuccess = (res) => {
+  const alertSuccess = `<div class="alert alert-success alert-dismissible fade show text-start" role="alert">
+                            <strong class="text-capitalize">${res}</strong>
+                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>`;
-  $("#sectionSuccessActionPersediaan").html(alertSuccessMe);
-  $("#persediaan-update-failed").html("");
-  setTimeout(() => {
-    $("#sectionSuccessActionPersediaan").html("");
-  }, 20000);
+  $("#section-alert").html(alertSuccess);
+};
+export const uiAlertFail = (res) => {
+  const alertFailedMe = `<div class="alert alert-danger alert-dismissible fade show text-start" role="alert">
+                            <strong class="text-capitalize">${res}</strong>
+                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>`;
+  $("#section-alert").html(alertFailedMe);
+};
+export const uiAlertFailCreate = (res) => {
+  const alertFailed = `<div class="alert alert-danger alert-dismissible fade show text-start" role="alert">
+                            <strong class="text-capitalize">${res}</strong>
+                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>`;
+  $("#sectionFailedActionPersediaan").html(alertFailed);
+};
+export const uiAlertFailUpdate = (res) => {
+  const alertFailed = `<div class="alert alert-danger alert-dismissible fade show text-start my-2" role="alert">
+                            <strong class="text-capitalize">${res}</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                      </div>`;
+  $("#persediaan-update-failed").html(alertFailed);
+};
+export const uiAlertFailDelete = (res) => {
+  const alertFailed = `<div class="alert alert-danger alert-dismissible fade show text-start" role="alert">
+                            <strong class="text-capitalize">${res}</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                      </div>`;
+  $("#persediaan-delete-failed").html(alertFailed);
 };
 // button pagination
 export const uiBtnPage = (i) => {
@@ -316,7 +302,3 @@ export const uiTrCategorySum = (rows, no) => {
                 </tr>`;
   return html;
 };
-// for ipc section success:pdf-persediaan
-ipcRenderer.on("success:pdf-persediaan", (e, file_path) => {
-  uiSuccessActionPersediaan(`File PDF tersimpan di ${file_path}`);
-});

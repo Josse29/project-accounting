@@ -10,6 +10,7 @@ import {
 } from "../../../../serverless-side/functions/persediaan.js";
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import {
+  uiAlertSuccess,
   uiTrCategorySum,
   uiTrPDF,
   uiTrProductSum,
@@ -19,20 +20,6 @@ import {
 // export pdf persediaan
 $(document).ready(function () {
   // product
-  const getPersediaanProductReportAsync = async () => {
-    try {
-      const response = await getPersediaanProductReport();
-      let no = 1;
-      let tbodyProduct = ``;
-      response.forEach((rows) => {
-        tbodyProduct += uiTrPDF(rows);
-        no++;
-      });
-      return tbodyProduct;
-    } catch (error) {
-      console.error(error);
-    }
-  };
   const getPersediaanProductGroupAsync = async () => {
     try {
       const response = await getPersediaanProductGroup();
@@ -97,7 +84,6 @@ $(document).ready(function () {
                     <td class="text-center text-nowrap align-content-center" colspan="3">category empty....</td>
                   </tr>`;
       }
-      console.log(tbody);
       return tbody;
     } catch (error) {
       console.error(error);
@@ -131,17 +117,20 @@ $(document).ready(function () {
       console.error(error);
     }
   };
+  // actions
   $("#persediaan-export-pdf")
     .off("click")
     .on("click", async () => {
-      let file_path = dialog.showSaveDialogSync({
-        title: "Export Data",
-        filters: [{ name: "pdf", extensions: ["pdf"] }],
-      });
-      if (file_path) {
-        file_path = file_path.replace(/\\/g, "/");
-        try {
-          const tbodyProduct = await getPersediaanProductReportAsync();
+      try {
+        const response = await getPersediaanProductReport();
+        const existed = response.length >= 1;
+        if (existed) {
+          let no = 1;
+          let tbodyProduct = ``;
+          response.forEach((rows) => {
+            tbodyProduct += uiTrPDF(rows, no);
+            no++;
+          });
           const tbodyProductGroup = await getPersediaanProductGroupAsync();
           const tbodySupplierGroup = await getPersediaanSupplierGroupAsync();
           const txtSumSupplier = await getPersediaanSupplierSumAsync();
@@ -149,21 +138,31 @@ $(document).ready(function () {
           const txtSumCategory = await getPersediaanCategorySumAsync();
           const txtPersediaanQtySum = await getPersediaanQtySumAsync();
           const txtPersediaanRpSum = await getPersediaanRpSumAsync();
-          ipcRenderer.send(
-            "pdf:persediaan",
-            tbodyProduct,
-            tbodyCategoryGroup,
-            txtSumCategory,
-            tbodyProductGroup,
-            tbodySupplierGroup,
-            txtSumSupplier,
-            txtPersediaanQtySum,
-            txtPersediaanRpSum,
-            file_path
-          );
-        } catch (error) {
-          console.error("Error fetching data: ", error);
+          let file_path = dialog.showSaveDialogSync({
+            title: "Export Data",
+            filters: [{ name: "pdf", extensions: ["pdf"] }],
+          });
+          if (file_path) {
+            file_path = file_path.replace(/\\/g, "/");
+            ipcRenderer.send(
+              "pdf:persediaan",
+              tbodyProduct,
+              tbodyCategoryGroup,
+              txtSumCategory,
+              tbodyProductGroup,
+              tbodySupplierGroup,
+              txtSumSupplier,
+              txtPersediaanQtySum,
+              txtPersediaanRpSum,
+              file_path
+            );
+            ipcRenderer.on("success:pdf-persediaan", (e, file_path) => {
+              uiAlertSuccess(`File Save On ${file_path}`);
+            });
+          }
         }
+      } catch (error) {
+        console.error(error);
       }
     });
 });

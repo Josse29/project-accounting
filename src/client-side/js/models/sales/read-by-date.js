@@ -12,7 +12,7 @@ import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import { formatWaktuIndo } from "../../utils/formatWaktu.js";
 import { listProductRefSalesReadDate } from "../products/list.js";
 import { listUserRefSalesReadDate } from "../users/list.js";
-import { uiTable, uiTableEmpty } from "./ui.js";
+import { uiTr, uiTrEmpty } from "./ui.js";
 
 $(document).ready(function () {
   $("button#read-sales-date")
@@ -54,13 +54,14 @@ $(document).ready(function () {
               let table = ``;
               let index = 1;
               response.forEach((rows) => {
-                table += uiTable(rows, index);
+                table += uiTr(rows);
                 index++;
               });
               $("div#sales-read-table").html(table);
             }
             if (!existed) {
-              $("div#sales-read-table").html(uiTableEmpty(date));
+              const empty = uiTrEmpty(date);
+              $("div#sales-read-table").html(empty);
             }
             $("div#sales-page-container").addClass("d-none");
           }
@@ -104,7 +105,7 @@ $(document).ready(function () {
                   let table = ``;
                   let index = 1;
                   response.forEach((rows) => {
-                    table += uiTable(rows, index);
+                    table += uiTr(rows);
                     index++;
                   });
                   $("div#sales-read-table").html(table);

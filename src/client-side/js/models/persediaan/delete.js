@@ -5,11 +5,11 @@ import {
 import { addSpace } from "../../utils/formatSpace.js";
 import { formatWaktuIndo } from "../../utils/formatWaktu.js";
 import { getPersediaanAgain } from "./read.js";
-import { uiFailedDelete, uiSuccessActionPersediaan } from "./ui.js";
+import { uiAlertFailDelete, uiAlertSuccess } from "./ui.js";
 
 $(document).ready(function () {
   // delete by-id
-  $(document)
+  $("tbody#persediaan-table")
     .off("click", "#persediaan-delete-btn")
     .on("click", "#persediaan-delete-btn", function () {
       $("#persediaan-delete-failed").html(``);
@@ -45,12 +45,11 @@ $(document).ready(function () {
             };
             const response = await deletePersediaan(req);
             getPersediaanAgain();
-            uiSuccessActionPersediaan(response);
+            uiAlertSuccess(response);
             $("#persediaanDeleteModal").modal("hide");
           } catch (error) {
             const errMsg = error || error.message;
-            uiFailedDelete(errMsg);
-            console.error(errMsg);
+            uiAlertFailDelete(errMsg);
             const modalBody = $("#persediaan-delete-modal-body").get(0);
             modalBody.scrollTo({
               top: 0,

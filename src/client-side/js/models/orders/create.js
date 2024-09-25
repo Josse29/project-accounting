@@ -1,5 +1,5 @@
 import { createAccounting } from "../../../../serverless-side/functions/accounting.js";
-import { insertCash } from "../../../../serverless-side/functions/cash.js";
+import { createCash } from "../../../../serverless-side/functions/cash.js";
 import { createPersediaan1 } from "../../../../serverless-side/functions/persediaan.js";
 import { createSales } from "../../../../serverless-side/functions/sales.js";
 import { disFormatRupiah1, formatRupiah1 } from "../../utils/formatRupiah.js";
@@ -124,7 +124,7 @@ $(document).ready(function () {
               CashRpVal: el.ProductPriceSell * el.ProductQty,
               CashInfoVal: `${el.ProductName} has been sold with qty ${el.ProductQty}`,
             };
-            await insertCash(reqCash);
+            await createCash(reqCash);
             //4. send to accounting
             const debtEntry = {
               accountingYMDVal: formattedDDMY,

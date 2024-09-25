@@ -1,9 +1,9 @@
 import { updateCategory } from "../../../../serverless-side/functions/categories.js";
 import { getCategoryAgain, getCategoryRef } from "./read.js";
-import { successActionCategory, uiUpdateFailed } from "./ui.js";
+import { uiAlertFailUpdate, uiAlertSuccess } from "./ui.js";
 import { capitalizeWord } from "../../utils/formatCapitalize.js";
 $(document).ready(function () {
-  $(document)
+  $("tbody#category-data")
     .off("click", "#editCategory")
     .on("click", "#editCategory", function () {
       const category = this.dataset;
@@ -25,11 +25,11 @@ $(document).ready(function () {
           const response = await updateCategory(req);
           getCategoryAgain();
           getCategoryRef();
-          successActionCategory(response);
+          uiAlertSuccess(response);
           $("#categoryModalEdit").modal("hide");
         } catch (error) {
           const errMsg = error || error.message;
-          uiUpdateFailed(errMsg);
+          uiAlertFailUpdate(errMsg);
           console.error(errMsg);
           const modalBody = $("#category-update-modal-body").get(0);
           modalBody.scrollTo({

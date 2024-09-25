@@ -7,7 +7,7 @@ import {
   queryUpdateCash,
 } from "../querysql/cash.js";
 // create
-export const insertCash = (req) => {
+export const createCash = (req) => {
   const { CashYYYYMMDDVal, CashHMSVal, CashNameVal, CashRpVal, CashInfoVal } =
     req;
   const query = queryInsertCash(

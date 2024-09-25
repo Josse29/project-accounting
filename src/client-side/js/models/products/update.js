@@ -2,13 +2,13 @@ import { updateProduct } from "../../../../serverless-side/functions/product.js"
 import { listCategoryRefProductUpdate } from "../categories/list.js";
 import { listSupplierRefProductUpdate } from "../supplier/list.js";
 import { getProductRef, getProductsAgain } from "./read.js";
-import { successActionProduct, uiUpdateFailed } from "./ui.js";
+import { uiAlertSuccess, uiAlertFailUpdate } from "./ui.js";
 import { capitalizeWord } from "../../utils/formatCapitalize.js";
 import { disFormatRupiah1, formatRupiah1 } from "../../utils/formatRupiah.js";
 import { getImageBase64 } from "../../utils/loadImg.js";
 $(document).ready(function () {
   // upadte | event binding
-  $(document)
+  $("tbody#product-table")
     .off("click")
     .on("click", "#editProduct", function () {
       $("#product-update-failed").html("");
@@ -155,11 +155,11 @@ $(document).ready(function () {
             $("#editProductModal").modal("hide");
             getProductsAgain();
             getProductRef();
-            successActionProduct(response);
+            uiAlertSuccess(response);
             $("#edit-product-image-file").val("");
           } catch (error) {
             const errMsg = error || error.message;
-            uiUpdateFailed(errMsg);
+            uiAlertFailUpdate(errMsg);
             const modalBody = document.getElementById(
               "product-update-modalBody"
             );
