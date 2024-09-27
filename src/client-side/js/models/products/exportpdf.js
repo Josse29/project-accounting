@@ -8,7 +8,6 @@ $("#product-export-pdf")
     try {
       const response = await getProductPDF();
       const existed = response.length >= 1;
-      console.log(existed);
       if (existed) {
         let file_path = dialog.showSaveDialogSync({
           title: "Export Data",

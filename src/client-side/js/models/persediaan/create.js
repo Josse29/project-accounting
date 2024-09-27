@@ -8,6 +8,7 @@ import { listProductRefPersediaanCreate } from "../products/list.js";
 import { getPersediaanAgain } from "./read.js";
 
 $(document).ready(function () {
+  // 1.init-ui-modal-create
   $("button#btnpersediaanModal")
     .off("click")
     .on("click", function () {
@@ -17,7 +18,7 @@ $(document).ready(function () {
       persediaanCreateQty = 0;
       $("div#persediaan-create-stock").addClass("d-none");
     });
-  // function create increse or decrease qty
+  // 2.function-increase-decrease-qty
   let persediaanCreateQty = $("input#persediaan-create-qty").val();
   $("button#persediaan-create-decrease")
     .off("click")
@@ -36,7 +37,7 @@ $(document).ready(function () {
       persediaanCreateQty++;
       $("input#persediaan-create-qty").val(persediaanCreateQty);
     });
-  // id, productname, pricebuy, qty, rupiah selected
+  // 3.get product id, product Name, price buy, qty from select list product
   $("select#persediaan-refproduct-search-name")
     .off("change")
     .on("change", async function () {
@@ -55,7 +56,7 @@ $(document).ready(function () {
         console.error(error);
       }
     });
-  // function action to create persediaan
+  // req-to-db
   $("#persediaan-create-submit")
     .off("click")
     .on("click", async () => {

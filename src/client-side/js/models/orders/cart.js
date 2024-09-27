@@ -9,6 +9,7 @@ import {
 import { terbilangIndonesia } from "../../utils/formatTerbilang.js";
 // update qty ++ and -- for card and update to storage
 export const updateQty = () => {
+  return;
   // only loop to card menu
   uiQty();
   // for update ++

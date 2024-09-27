@@ -46,11 +46,12 @@ $(document).ready(function () {
         }
       }
     });
-  // insert to db ,updateui, remove storage and
+  // req-to-db
   $("button#order-done")
     .off("click")
     .on("click", async function () {
       try {
+        console.log("test");
         const { formattedDDMY, formattedHMS } = getTimeNow();
         const userSalesId = $("select#order-create-usersalesid").val();
         const customerId = $("select#order-create-usercustomerid").val();
@@ -90,10 +91,10 @@ $(document).ready(function () {
         if (customerId !== null) {
           $("select#order-create-usercustomerid").removeClass("is-invalid");
         }
-        // request to db
+        // req-to-db
         if (totalPaid >= totalCart) {
           for (const el of storageCart) {
-            // 1.send to sales
+            // 1. req-to-db-sales
             const reqSales = {
               SalesYMDVal: formattedDDMY,
               SalesHMSVal: formattedHMS,
@@ -105,18 +106,18 @@ $(document).ready(function () {
               SalesStatusVal: "PAID",
             };
             await createSales(reqSales);
-            // 2.SEND TO PERSEDIAAN
+            // 2. req-to-db-persediaan
             const reqPersediaan = {
               PersediaanYMDVal: formattedDDMY,
               PersediaanHMSVal: formattedHMS,
               PersediaanQtyVal: el.ProductQty * -1,
-              PersediaanTotalVal: el.ProductPriceBuy * -1,
+              PersediaanTotalVal: el.ProductPriceBuy * el.ProductQty * -1,
               PersediaanInfoVal: `${el.ProductName} has been sold with qty ${el.ProductQty}`,
               PersediaanProductIdVal: el.ProductId,
               PersediaanPersonIdVal: parseInt(userSalesId),
             };
             await createPersediaan1(reqPersediaan);
-            // 3.SEND TO CASH
+            // 3. req-to-db-cash
             const reqCash = {
               CashYYYYMMDDVal: formattedDDMY,
               CashHMSVal: formattedHMS,
@@ -125,7 +126,7 @@ $(document).ready(function () {
               CashInfoVal: `${el.ProductName} has been sold with qty ${el.ProductQty}`,
             };
             await createCash(reqCash);
-            //4. send to accounting
+            //4. req-to-db-accounting
             const debtEntry = {
               accountingYMDVal: formattedDDMY,
               accountingHMSVal: formattedHMS,

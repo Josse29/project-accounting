@@ -3,12 +3,7 @@ import {
   getProducts,
 } from "../../../../serverless-side/functions/product.js";
 import { reinitTooltip, uiLoad } from "../../utils/updateUi.js";
-import {
-  btnProductPage,
-  uiActivePageButton,
-  uiTbody,
-  uiTbodyZero,
-} from "./ui.js";
+import { uiBtnPage, uiBtnPageActive, uiTr, uiTrEmpty } from "./ui.js";
 import { getPersediaanAgain } from "../persediaan/read.js";
 import {
   listProductRefPersediaanRead,
@@ -56,7 +51,7 @@ $(document).ready(function () {
         $("#product-pagination").removeClass("d-none");
       }
       if (totalRow < 1) {
-        const empty = uiTbodyZero(searchVal);
+        const empty = uiTrEmpty(searchVal);
         $("#product-table").html(empty);
         $("#product-pagination").addClass("d-none");
       }
@@ -72,19 +67,19 @@ $(document).ready(function () {
       const response = await getProducts(req);
       let tr = "";
       response.forEach((element) => {
-        tr += uiTbody(element);
+        tr += uiTr(element);
       });
       $("#product-table").html(tr);
       reinitTooltip();
-      uiActivePageButton(req.offsetVal);
+      uiBtnPageActive(req.offsetVal);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
   function handlePagination(totalPage) {
     let uiBtnPaginate = "";
     for (let i = 1; i <= totalPage; i++) {
-      uiBtnPaginate += btnProductPage(i);
+      uiBtnPaginate += uiBtnPage(i);
     }
     $("#product-number-page").html(uiBtnPaginate);
     // first page
@@ -180,7 +175,7 @@ export function getProductsAgain() {
         $("#product-pagination").removeClass("d-none");
       }
       if (totalRow < 1) {
-        const empty = uiTbodyZero(searchVal);
+        const empty = uiTrEmpty(searchVal);
         $("#product-table").html(empty);
         $("#product-pagination").addClass("d-none");
       }
@@ -193,19 +188,19 @@ export function getProductsAgain() {
       const response = await getProducts(req);
       let tr = "";
       response.forEach((element) => {
-        tr += uiTbody(element);
+        tr += uiTr(element);
       });
       $("#product-table").html(tr);
       reinitTooltip();
-      uiActivePageButton(req.offsetVal);
+      uiBtnPageActive(req.offsetVal);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
   function handlePagination(totalPage) {
     let uiBtnPaginate = "";
     for (let i = 1; i <= totalPage; i++) {
-      uiBtnPaginate += btnProductPage(i);
+      uiBtnPaginate += uiBtnPage(i);
     }
     $("#product-number-page").html(uiBtnPaginate);
     // first page

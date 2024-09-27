@@ -57,7 +57,7 @@ $(document).ready(function () {
           persediaanUpdateQty++;
           $("input#persediaan-refproduct-update-qty").val(persediaanUpdateQty);
         });
-      // function action to update persediaan
+      // req-to-db
       $("button#persediaan-update-submit")
         .off("click")
         .on("click", async function () {

@@ -2,9 +2,11 @@ import {
   getSalesProductId,
   getSalesSumProductId,
 } from "../../../../serverless-side/functions/sales.js";
+import { listProductRefSalesRead } from "../products/list.js";
 import { formatRupiah2 } from "./../../utils/formatRupiah.js";
 import { uiTr, uiTrEmpty } from "./ui.js";
 $(document).ready(function () {
+  listProductRefSalesRead();
   $("select#sales-read-productid")
     .off("change")
     .on("change", async function () {
@@ -16,7 +18,7 @@ $(document).ready(function () {
         // product sell
         const priceSell = selectedOption.data("pricesell");
         const priceSellRp = formatRupiah2(priceSell);
-        // summary
+        // summary and insert html
         const resSum = await getSalesSumProductId(seletedProductId);
         const rupiah = formatRupiah2(resSum.rupiah);
         const qty = resSum.qty;

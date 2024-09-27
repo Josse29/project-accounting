@@ -29,6 +29,7 @@ import {
   queryGetPersediaanReport,
   queryGetPersediaanRpSum,
   queryGetPersediaanRpSumCategoryId,
+  queryGetPersediaanRpSupplier,
   queryGetPersediaanSupplierGroup,
   queryGetPersediaanSupplierId,
   queryGetPersediaanSupplierSum,
@@ -469,7 +470,6 @@ export const getPersediaanDateSumProduct = (req) => {
     });
   });
 };
-
 export const getPersediaanDateSupplierId = (req) => {
   const { startDateVal, endDateVal, supplierId } = req;
   const query = queryGetPersediaanDateSupplierId(
@@ -572,6 +572,26 @@ export const getPersediaanCategoryIdGroup = () => {
 };
 export const getPersediaanSupplierSum = () => {
   const query = queryGetPersediaanSupplierSum();
+  return new Promise((resolve, reject) => {
+    db.each(query, (err, res) => {
+      if (!err) {
+        let totalRp = ``;
+        if (res.TotalRp !== null) {
+          totalRp = parseFloat(res.TotalRp);
+        }
+        if (res.TotalRp === null) {
+          totalRp = 0;
+        }
+        resolve(totalRp);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
+  });
+};
+export const getPersediaanRpSupplierid = (supplierId) => {
+  const query = queryGetPersediaanRpSupplier(supplierId);
   return new Promise((resolve, reject) => {
     db.each(query, (err, res) => {
       if (!err) {

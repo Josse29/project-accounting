@@ -19,7 +19,7 @@ $(document).ready(function () {
                     <p class="fs-5 ms-1 mb-1">Total : ${rupiah}</p> `;
         $("div#summary").html(ui);
         // table
-        const resTable = await getSalesCustomerId(salesPersonId);
+        const resTable = await getSalesCustomerId(seletedPersonId);
         const existed = resTable.length >= 1;
         if (existed) {
           let table = ``;

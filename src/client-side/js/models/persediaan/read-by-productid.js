@@ -18,20 +18,21 @@ $(document).ready(function () {
         const selectedProductId = parseInt($(this).val());
         // caption-selected
         const productName = selectedOption.text();
+        const productNameP = `<p class="fs-5 ms-2 mb-1 text-capitalize fw-bold ms-2">
+                                  ${productName}</p>`;
         // price buy
         const priceBuy = selectedOption.data("pricebuy");
         const priceBuyRp = formatRupiah2(priceBuy);
+        const priceBuyP = `<p class="fs-5 ms-4 mb-1">Price : ${priceBuyRp} </p>`;
         // sum qty
         const sumQty = await getPersediaanQty(selectedProductId);
+        const sumQtyP = `<p class="fs-5 ms-4 mb-1">Total Qty : ${sumQty} </p>`;
         // sum rupiah
         const sumRp = priceBuy * sumQty;
         const sumRp1 = formatRupiah2(parseFloat(sumRp));
+        const sumRpP = `<p class="fs-5 ms-4">Total Price : ${sumRp1} </p>`;
         // insert - to - html sumpersediaan
-        const sumSectionHTML = `<p class="fs-5 ms-2 mb-1 text-capitalize fw-bold ms-2">
-                                  ${productName}</p>
-                                <p class="fs-5 ms-4 mb-1">Price : ${priceBuyRp} </p>
-                                <p class="fs-5 ms-4 mb-1">Total Qty : ${sumQty} </p>
-                                <p class="fs-5 ms-4">Total Price : ${sumRp1} </p>`;
+        const sumSectionHTML = `${productNameP} ${sumQtyP} ${priceBuyP} ${sumRpP}`;
         $("div#persediaan-sum-section").html(sumSectionHTML);
         // tables
         const byProduct = await getPersediaanProductId2(selectedProductId);

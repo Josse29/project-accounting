@@ -1,6 +1,6 @@
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import { getStorageCart } from "../../utils/localStorage.js";
-export const uiMenu = (rows) => {
+export const uiCard = (rows) => {
   const productId = parseInt(rows.PersediaanProductId);
   const productName = rows.ProductName;
   const priceBuy = formatRupiah2(parseFloat(rows.PriceBuy));
@@ -48,6 +48,14 @@ export const uiMenu = (rows) => {
                 </div>`;
   return html;
 };
+export const uiCardEmpty = (searchVal) => {
+  let search = `stock empty...`;
+  if (searchVal !== "") {
+    search = `${searchVal} - not found....`;
+  }
+  const emptyP = `<p class="d-block fs-4 fst-italic text-center">${search}</p>`;
+  return emptyP;
+};
 export const uiBtnPage = (number) => {
   return `<button 
             type="button" 
@@ -65,7 +73,6 @@ export const uiBtnPageActive = (pageNumber) => {
 export const uiQty = () => {
   const cartStorage = getStorageCart();
   for (const item of cartStorage) {
-    // uiQtyId(item.ProductId);
     const productCard = $(`button[data-productid=${item.ProductId}]`).closest(
       ".card-body"
     );

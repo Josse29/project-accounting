@@ -251,15 +251,16 @@ export const queryGetPersediaanProductReport = () => {
   return query;
 };
 export const queryGetPersediaanProductGroup = () => {
-  return `SELECT
-          Product.ProductName,
-          Product.ProductPriceBeli,
-          SUM(Persediaan.PersediaanQty) AS TotalQty,
-          SUM(Persediaan.PersediaanRp) AS TotalRp
-          FROM Persediaan
-          LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
-          GROUP BY Persediaan.PersediaanProductId
-          ORDER BY Product.ProductName ASC`;
+  const query = `SELECT
+                 Product.ProductName,
+                 Product.ProductPriceBeli,
+                 SUM(Persediaan.PersediaanQty) AS TotalQty,
+                 SUM(Persediaan.PersediaanRp) AS TotalRp
+                 FROM Persediaan
+                 LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
+                 GROUP BY Persediaan.PersediaanProductId
+                 ORDER BY Product.ProductName ASC`;
+  return query;
 };
 
 // reference category
@@ -287,7 +288,7 @@ export const queryGetPersediaanCategoryId = (valCategoryId) => {
   return query;
 };
 export const queryGetPersediaanCategoryGroup = () => {
-  let query = `SELECT
+  const query = `SELECT
                Category.CategoryId,
                Category.CategoryName,
                SUM(Persediaan.PersediaanRp) AS TotalRp
@@ -347,15 +348,16 @@ export const queryGetPersediaanDateRpCategoryId = (
 
 // reference suppliers
 export const queryGetPersediaanSupplierGroup = () => {
-  return `SELECT
-          Supplier.SupplierName,
-          SUM(Persediaan.PersediaanQty) AS TotalQty,
-          SUM(Persediaan.PersediaanRp) AS TotalRp
-          FROM Persediaan
-          LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
-          LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId
-          WHERE Supplier.SupplierId IS NOT NULL
-          GROUP BY Supplier.SupplierId`;
+  const query = `SELECT
+                 Supplier.SupplierName,
+                 SUM(Persediaan.PersediaanQty) AS TotalQty,
+                 SUM(Persediaan.PersediaanRp) AS TotalRp
+                 FROM Persediaan
+                 LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
+                 LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId
+                 WHERE Supplier.SupplierId IS NOT NULL
+                 GROUP BY Supplier.SupplierId`;
+  return query;
 };
 export const queryGetPersediaanDateSupplierId = (
   valStartDate,
@@ -419,7 +421,7 @@ export const queryGetPersediaanSupplierId = (valSupplierId) => {
                LEFT JOIN Product ON ${tableName}.${colPersediaanProductId} = Product.ProductId
                LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
                LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId `;
-  //  with valCategoryId
+  //  with supplier id
   query += `WHERE Supplier.SupplierId = ${valSupplierId} `;
   // with order
   query += `ORDER BY Persediaan.PersediaanDDMY DESC, Persediaan.PersediaanHMS DESC `;
@@ -481,20 +483,32 @@ export const queryGetPersediaanRpSumCategoryId = (valCategoryId) => {
   return query;
 };
 export const queryGetPersediaanCategorySum = () => {
-  return `SELECT
-          SUM(Persediaan.PersediaanRp) AS TotalRp
-          FROM Persediaan
-          LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
-          LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
-          WHERE Category.CategoryId IS NOT NULL `;
+  const query = `SELECT
+                 SUM(Persediaan.PersediaanRp) AS TotalRp
+                 FROM Persediaan
+                 LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
+                 LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
+                 WHERE Category.CategoryId IS NOT NULL `;
+  return query;
 };
 export const queryGetPersediaanSupplierSum = () => {
-  return `SELECT
-          SUM(Persediaan.PersediaanRp) AS TotalRp
-          FROM Persediaan
-          LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
-          LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId
-          WHERE Supplier.SupplierId IS NOT NULL `;
+  const query = `SELECT
+                 SUM(Persediaan.PersediaanRp) AS TotalRp
+                 FROM Persediaan
+                 LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
+                 LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId
+                 WHERE Supplier.SupplierId IS NOT NULL `;
+  return query;
+};
+export const queryGetPersediaanRpSupplier = (supplierIdVal) => {
+  const query = `SELECT
+                 SUM(Persediaan.PersediaanRp) AS TotalRp
+                 FROM Persediaan
+                 LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
+                 LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId
+                 WHERE Supplier.SupplierId IS NOT NULL 
+                       AND Supplier.SupplierId = ${supplierIdVal}`;
+  return query;
 };
 export const queryGetPersediaanDateSumProduct = (
   startDate,

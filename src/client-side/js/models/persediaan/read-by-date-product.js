@@ -23,8 +23,9 @@ $("div#persediaan-date-all-search")
       const rangeDateTxt = `${startDateTxt} - ${endDateTxt}`;
       const selectedTxt = $(this).find("option:selected").text();
       // price buy
-      const priceBuy = await getProductPriceBuy(productId);
-      const priceBuyRp = formatRupiah2(priceBuy.ProductPriceBeli);
+      const selectedOption = $(this).find("option:selected");
+      const priceBuy = selectedOption.data("pricebuy");
+      const priceBuyRp = formatRupiah2(priceBuy);
       //   qty
       const qty = await getPersediaanDateQtyProductId(req);
       //   sum rupiah

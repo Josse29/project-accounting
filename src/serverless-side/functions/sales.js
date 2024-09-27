@@ -185,7 +185,7 @@ export const getSalesSumPersonId = (req) => {
   });
 };
 // customer
-export const getSalesCustomerId = (req, res) => {
+export const getSalesCustomerId = (req) => {
   const query = queryGetSalesCustomerId(req);
   return new Promise((resolve, reject) => {
     db.all(query, (err, rows) => {

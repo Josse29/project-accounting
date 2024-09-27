@@ -4,7 +4,9 @@ import {
 } from "../../../../serverless-side/functions/sales.js";
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import { uiTr, uiTrEmpty } from "./ui.js";
+import { listUserRefSalesRead } from "./../users/list.js";
 $(document).ready(function () {
+  listUserRefSalesRead();
   $("select#sales-read-personid")
     .off("change")
     .on("change", async function () {
@@ -27,15 +29,15 @@ $(document).ready(function () {
         if (existed) {
           let table = ``;
           let index = 1;
-          response.forEach((rows) => {
+          tableSales.forEach((rows) => {
             table += uiTr(rows);
             index++;
           });
-          $("div#sales-read-table").html(table);
+          $("tbody#sales-read-table").html(table);
         }
         if (!existed) {
           const empty = uiTrEmpty(selectedText);
-          $("div#sales-read-table").html(empty);
+          $("tbody#sales-read-table").html(empty);
         }
         $("div#sales-page-container").addClass("d-none");
       } catch (error) {

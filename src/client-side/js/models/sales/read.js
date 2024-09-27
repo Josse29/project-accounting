@@ -4,9 +4,8 @@ import {
   readSales,
 } from "../../../../serverless-side/functions/sales.js";
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
-import { listProductRefSalesRead } from "../products/list.js";
 import { uiBtnPage, uiBtnPageActive, uiTr, uiTrEmpty } from "./ui.js";
-import { listUserRefSalesRead } from "./../users/list.js";
+
 $(document).ready(function () {
   let searchVal = $("input#sales-read-search").val();
   let limitVal = parseInt($("select#sales-read-limit").val());
@@ -62,8 +61,6 @@ $(document).ready(function () {
         $("tbody#sales-read-table").html(empty);
         $("div#sales-page-container").addClass("d-none");
       }
-      listProductRefSalesRead();
-      listUserRefSalesRead();
       return;
       getSalesRowPage(req, (status, response) => {
         if (status) {

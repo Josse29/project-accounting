@@ -208,7 +208,7 @@ export const uiTrPDF = (rows, no) => {
     totalRp >= 1
       ? `+ ${formatRupiah2(totalRp)}`
       : `- ${formatRupiah2(Math.abs(totalRp))}`;
-  const html = `<tr>
+  const tr = `<tr>
                   <td class="text-center text-nowrap align-content-center">${no}</td>
                   <td class="text-nowrap align-content-center">${formatWaktuIndo(
                     rows.PersediaanDDMY
@@ -225,7 +225,7 @@ export const uiTrPDF = (rows, no) => {
                   <td class="text-nowrap align-content-center">${totalQtyTxt}</td>
                   <td class="text-nowrap align-content-center">${totalRpTxt}</td>
                 </tr>`;
-  return html;
+  return tr;
 };
 export const uiTrProductSum = (rows, no) => {
   const totalQty = rows.TotalQty;

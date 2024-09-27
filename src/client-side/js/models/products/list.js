@@ -41,12 +41,13 @@ export const listProductRefPersediaanRead = async () => {
 export const listProductRefPersediaanReadDate = async () => {
   try {
     const response = await getListProduct("");
+    console.log(response);
     const existed = response.length >= 1;
     let option = ``;
     if (existed) {
       option = `<option selected disabled>Choose One Of Products</option>`;
       response.forEach((row) => {
-        option += `<option value=${row.ProductId}>${row.ProductName}</option>`;
+        option += `<option value=${row.ProductId} data-pricebuy=${row.ProductPriceBeli}>${row.ProductName}</option>`;
       });
     }
     if (!existed) {

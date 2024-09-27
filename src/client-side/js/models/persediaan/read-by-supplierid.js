@@ -1,4 +1,8 @@
-import { getPersediaanSupplierId } from "../../../../serverless-side/functions/persediaan.js";
+import {
+  getPersediaanRpSupplierid,
+  getPersediaanSupplierId,
+} from "../../../../serverless-side/functions/persediaan.js";
+import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import { reinitTooltip } from "../../utils/updateUi.js";
 import { listSupplierRefPersediaanRead } from "../supplier/list.js";
 import { uiTbody, uiTbodyEmpty } from "./ui.js";
@@ -13,9 +17,15 @@ $(document).ready(function () {
         const selectedSupplierId = parseInt($(this).val());
         // caption-selected
         const selectedSupplierName = $(this).find("option:selected").text();
-        const caption = `<p class="fs-5 ms-2 mb-1 text-capitalize fw-bold ms-2">
+        const supplierNameP = `<p class="fs-5 ms-2 mb-1 text-capitalize fw-bold ms-2">
                                   ${selectedSupplierName}</p>`;
-        $("div#persediaan-sum-section").html(caption);
+        // sum rp
+        const resSum = await getPersediaanRpSupplierid(selectedSupplierId);
+        const resSumRp = formatRupiah2(resSum);
+        const sumP = `<p class="fs-5 ms-4 mb-1 text-capitalize">Total : ${resSumRp}</p>`;
+        // insertohtml
+        const sectionSum = `${supplierNameP} ${sumP}`;
+        $("div#persediaan-sum-section").html(sectionSum);
         // table
         const bySupplierId = await getPersediaanSupplierId(selectedSupplierId);
         const existedSupplier = bySupplierId.length >= 1;

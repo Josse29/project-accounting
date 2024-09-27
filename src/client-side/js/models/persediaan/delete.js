@@ -13,26 +13,28 @@ $(document).ready(function () {
     .off("click", "#persediaan-delete-btn")
     .on("click", "#persediaan-delete-btn", function () {
       $("#persediaan-delete-failed").html(``);
+      // get data from attr button
       const persediaan = this.dataset;
+      const valPersediaanYMD = formatWaktuIndo(persediaan.persediaanddmy);
+      const valPersediaanHMS = persediaan.persediaanhms;
       const valPersediaanId = parseInt(persediaan.persediaanid);
       const valPersediaanProductId = parseInt(persediaan.productid);
       const valProductName = persediaan.productname;
       const valPersediaanQty = parseInt(persediaan.persediaanqty);
-      $("#persediaan-delete-name").text();
-      let txtPersediaanQty = ``;
-      if (valPersediaanQty >= 1) {
-        txtPersediaanQty = `<span class="badge text-bg-success">+ ${valPersediaanQty}</span>`;
-      }
-      if (valPersediaanQty < 0) {
-        txtPersediaanQty = `<span class="badge text-bg-danger">${addSpace(
-          valPersediaanQty
-        )}</span>`;
-      }
-      const konfirmasiDelete = `Are you sure to delete ${txtPersediaanQty} ${valProductName} on <span class="fw-bold">Date : ${formatWaktuIndo(
-        persediaan.persediaanddmy
-      )} Hours : ${persediaan.persediaanhms} </span> ?`;
-      $("#confirm-text").html(konfirmasiDelete);
-      // action to delete
+      // name
+      $("#persediaan-delete-name").text(valProductName);
+      // qty
+      let txtQty =
+        valPersediaanQty >= 1
+          ? `+ ${valPersediaanQty}`
+          : `- ${Math.abs(valPersediaanQty)}`;
+      const spanQty = `<span class="badge ${
+        valPersediaanQty >= 1 ? "text-bg-success" : "text-bg-danger"
+      }">${txtQty}</span>`;
+      // confirm delete section
+      const divConfirmDelete = `Are you sure to delete ${spanQty} ${valProductName} on <span class="fw-bold">Date : ${valPersediaanYMD} Hours : ${valPersediaanHMS} </span> ?`;
+      $("#confirm-text").html(divConfirmDelete);
+      // req-to-db
       $("#persediaan-delete-yes")
         .off("click")
         .on("click", async function () {
@@ -59,6 +61,7 @@ $(document).ready(function () {
         });
     });
   // delete all
+  // req-to-db
   $("button#persediaan-delete-all-yes")
     .off("click")
     .on("click", async function () {

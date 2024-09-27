@@ -12,14 +12,14 @@ export const uiTr = (rows) => {
                       ${YMD}
                     </td>
                     <td class="text-truncate pe-3 align-content-center">${rows.SalesHMS}</td>
-                    <td class="text-truncate pe-3 align-content-center">${rows.SalesPersonName}</td>
-                    <td class="text-truncate pe-3 align-content-center">
+                    <td class="text-truncate pe-3 align-content-center text-capitalize">${rows.SalesPersonName}</td>
+                    <td class="text-truncate pe-3 align-content-center text-capitalize">
                       ${rows.ProductName}
                     </td>
                     <td class="text-truncate pe-3 align-content-center">${rupiahProduct}</td>
                     <td class="text-truncate pe-3 align-content-center">${rows.SalesProductQty}</td>
                     <td class="text-truncate pe-3 align-content-center">${rupiahTotal}</td>
-                    <td class="text-truncate pe-3 align-content-center">
+                    <td class="text-truncate pe-3 align-content-center text-capitalize">
                       ${rows.SalesCustomerName}
                     </td>
                     <td class="text-truncate pe-3 align-content-center">${rows.SalesStatus}</td>

@@ -23,14 +23,14 @@ $(document).ready(function () {
         // caption-selected
         const startDateTxt = formatWaktuIndo(startDate);
         const endDateTxt = formatWaktuIndo(endDate);
-        const rangeDateTxt = `${startDateTxt} - ${endDateTxt}`;
+        const rangeDateTxt = `<p class="fs-5 ms-2 mb-1 text-capitalize fw-bold ms-2">
+                                All Product | ${startDateTxt} - ${endDateTxt} </p>`;
         // sum rupiah
         const sumRp = await getPersediaanDateSum(startDate, endDate);
         const sumRupiah = formatRupiah2(parseFloat(sumRp));
+        const sumTxt = `<p class="fs-5 ms-4">Total Price : ${sumRupiah} </p>`;
         // insert - to - html sumpersediaan
-        const sumSectionHTML = `<p class="fs-5 ms-2 mb-1 text-capitalize fw-bold ms-2">
-                                  All Product | ${rangeDateTxt} </p>
-                                <p class="fs-5 ms-4">Total Price : ${sumRupiah} </p>`;
+        const sumSectionHTML = `${rangeDateTxt} ${sumTxt}`;
         $("div#persediaan-sum-section").html(sumSectionHTML);
         // table
         const byDate = await getPersediaanDate(startDate, endDate);
@@ -42,10 +42,11 @@ $(document).ready(function () {
           });
           $("#persediaan-table").html(tr);
           reinitTooltip();
+          // list with date
           listProductRefPersediaanReadDate();
           listSupplierRefPersediaanReadDate();
           listCategoryRefPersediaanReadDate();
-          const html = `<select class="form-control w-auto mb-3" id="persediaan-date-product">
+          const select = `<select class="form-control w-auto mb-3" id="persediaan-date-product">
                           <option value="test" class="fs-6">Product</option>
                         </select>
                         <select class="form-control w-auto mb-3" id="persediaan-date-supplier">
@@ -54,7 +55,7 @@ $(document).ready(function () {
                         <select class="form-control w-auto mb-3" id="persediaan-date-category">
                           <option value="test" class="fs-6">Kategori</option>
                         </select>`;
-          $("div#persediaan-date-all-search").html(html);
+          $("div#persediaan-date-all-search").html(select);
         }
         if (!existed) {
           const tr = uiTbodyEmpty(rangeDateTxt);

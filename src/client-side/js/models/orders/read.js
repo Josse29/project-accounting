@@ -3,7 +3,7 @@ import {
   getPersediaanTotalRow1,
 } from "../../../../serverless-side/functions/persediaan.js";
 import { listCart, updateQty } from "./cart.js";
-import { uiBtnPage, uiBtnPageActive, uiMenu } from "./ui.js";
+import { uiBtnPage, uiBtnPageActive, uiCard, uiCardEmpty } from "./ui.js";
 $(document).ready(function () {
   let searchVal = $("input#order-search").val();
   let limitVal = 3;
@@ -33,12 +33,8 @@ $(document).ready(function () {
         $("div#product-refpersediaan-pagination").removeClass("d-none");
       }
       if (totalRow < 1) {
-        let search = `stock empty...`;
-        if (searchVal !== "") {
-          search = `${searchVal} - not found...`;
-        }
-        const notFound = `<p class="d-block fs-4 fst-italic text-center">${search}</p>`;
-        $("div#product-refpersediaan-read").html(notFound);
+        const empty = uiCardEmpty(searchVal);
+        $("div#product-refpersediaan-read").html(empty);
         $("div#product-refpersediaan-pagination").addClass("d-none");
       }
     } catch (error) {
@@ -49,12 +45,12 @@ $(document).ready(function () {
   async function getPage(req) {
     try {
       const response = await getPersediaanProductGroup1(req);
-      let menu = ``;
+      let card = ``;
       response.forEach((rows) => {
-        menu += uiMenu(rows);
+        card += uiCard(rows);
       });
-      const uiMenu1 = `<div class="container-by-me">${menu}</div>`;
-      $("div#product-refpersediaan-read").html(uiMenu1);
+      const parentCard = `<div class="container-by-me">${card}</div>`;
+      $("div#product-refpersediaan-read").html(parentCard);
       // update qty to card menu and save to storage
       updateQty();
       // update qty to list cart and save to storage
@@ -168,12 +164,8 @@ export const getProductAgain = () => {
         $("div#product-refpersediaan-pagination").removeClass("d-none");
       }
       if (totalRow < 1) {
-        let search = `product empty...`;
-        if (searchVal !== "") {
-          search = `${searchVal} - not found...`;
-        }
-        const notFound = `<p class="d-block w-100 fs-4 fst-italic">${search}</p>`;
-        $("div#product-refpersediaan-read").html(notFound);
+        const empty = uiCardEmpty(searchVal);
+        $("div#product-refpersediaan-read").html(empty);
         $("div#product-refpersediaan-pagination").addClass("d-none");
       }
     } catch (error) {
@@ -184,12 +176,12 @@ export const getProductAgain = () => {
   async function getPage(req) {
     try {
       const response = await getPersediaanProductGroup1(req);
-      let menu = ``;
+      let card = ``;
       response.forEach((rows) => {
-        menu += uiMenu(rows);
+        card += uiCard(rows);
       });
-      const uiMenu1 = `<div class="container-by-me">${menu}</div>`;
-      $("div#product-refpersediaan-read").html(uiMenu1);
+      const parentCard = `<div class="container-by-me">${card}</div>`;
+      $("div#product-refpersediaan-read").html(parentCard);
       // update qty to card menu and save to storage
       updateQty();
       // update qty to list cart and save to storage
