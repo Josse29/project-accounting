@@ -2,6 +2,7 @@ import { createAccounting } from "../../../../serverless-side/functions/accounti
 import { createCash } from "../../../../serverless-side/functions/cash.js";
 import { createPersediaan1 } from "../../../../serverless-side/functions/persediaan.js";
 import { createSales } from "../../../../serverless-side/functions/sales.js";
+import { table } from "../../component/table/index.js";
 import { disFormatRupiah1, formatRupiah1 } from "../../utils/formatRupiah.js";
 import { terbilangIndonesia } from "../../utils/formatTerbilang.js";
 import { getTimeNow } from "../../utils/formatWaktu.js";
@@ -13,12 +14,17 @@ import {
 } from "../../utils/localStorage.js";
 import { getSalesAgain } from "../sales/read.js";
 import { listUserRefSalesCreate } from "../users/list.js";
-import { listCart } from "./cart.js";
 import { getProductAgain } from "./read.js";
 
 $(document).ready(function () {
-  // FOR LIST user ORDER
-  listUserRefSalesCreate();
+  // init table order
+  $(".card-footer ")
+    .off("click")
+    .on("click", function () {
+      table();
+      listUserRefSalesCreate();
+    });
+
   // for change result
   $("input#order-payment")
     .off("input")
@@ -167,7 +173,6 @@ $(document).ready(function () {
           $("select#order-create-usercustomerid").val(
             "Choose One Of Customers"
           );
-          listCart();
           $("#sales-create-modal").modal("hide");
         }
       } catch (error) {

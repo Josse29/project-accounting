@@ -1,4 +1,4 @@
-// CartStorage
+// 1.cart-storage
 export const getStorageCart = () => {
   let storage = localStorage.getItem("cartStorage");
   if (storage) {
@@ -15,8 +15,13 @@ export const setStorageCart = (arr) => {
 export const removeStorageCart = () => {
   localStorage.removeItem("cartStorage");
 };
-
-// CartStorageSUM
+export const filterStorage1 = (cartArray) => {
+  const cartArray1 = cartArray.filter((e) => {
+    return e.ProductQty >= 1;
+  });
+  setStorageCart(cartArray1);
+};
+// 2.sum-storage
 export const getStorageCartSum = () => {
   let storage = localStorage.getItem("cartStorageSum");
   if (storage) {

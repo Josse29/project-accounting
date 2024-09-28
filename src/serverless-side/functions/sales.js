@@ -131,10 +131,12 @@ export const getSalesSumProductId = (req) => {
   return new Promise((resolve, reject) => {
     db.each(query, (err, rows) => {
       if (!err) {
-        const result1 = rows.Total_Rp ? rows.Total_Rp : 0;
-        const rupiah = parseInt(result1);
-        const result2 = rows.Total_Qty ? rows.Total_Qty : 0;
-        const qty = parseInt(result2);
+        // total rp
+        const result1 = rows.Total_Rp;
+        const rupiah = result1 ? result1 : 0;
+        // total qty
+        const result2 = rows.Total_Qty;
+        const qty = result2 ? result2 : 0;
         resolve({ rupiah, qty });
       }
       if (err) {
@@ -198,9 +200,9 @@ export const getSalesCustomerId = (req) => {
     });
   });
 };
-export const getSalesSumCustomerId = (req, res) => {
+export const getSalesSumCustomerId = (req) => {
   const query = queryGetSalesSumCustomerId(req);
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     db.each(query, (err, result) => {
       if (!err) {
         const response = result.Total_Rp;
@@ -208,35 +210,40 @@ export const getSalesSumCustomerId = (req, res) => {
         resolve(total);
       }
       if (err) {
-        console.log(err);
+        reject(err);
       }
     });
   });
 };
 // date
-export const getSalesDate = (req, res) => {
+export const getSalesDate = (req) => {
   const { startDateVal, endDateVal } = req;
   const query = queryGetSalesDate(startDateVal, endDateVal);
-  db.all(query, (err, rows) => {
-    if (!err) {
-      return res(true, rows);
-    }
-    if (err) {
-      return res(false, err);
-    }
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, rows) => {
+      if (!err) {
+        resolve(rows);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
-export const getSalesSumDate = (req, res) => {
+export const getSalesSumDate = (req) => {
   const { startDateVal, endDateVal } = req;
   const query = queryGetSalesSumDate(startDateVal, endDateVal);
-  db.each(query, (err, result) => {
-    if (!err) {
-      const rupiah = result.Total_Rp ? result.Total_Rp : 0;
-      return res(true, parseInt(rupiah));
-    }
-    if (err) {
-      return res(false, err);
-    }
+  return new Promise((resolve, reject) => {
+    db.each(query, (err, result) => {
+      if (!err) {
+        const res = result.Total_Rp;
+        const totalRp = res ? res : 0;
+        resolve(totalRp);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
 export const getSalesDateProductId = (req, res) => {

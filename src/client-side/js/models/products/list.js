@@ -77,22 +77,3 @@ export const listProductRefSalesRead = async () => {
     console.error(error);
   }
 };
-export const listProductRefSalesReadDate = async () => {
-  try {
-    const response = await getListProduct("");
-    const existed = response.length >= 1;
-    let option = ``;
-    if (existed) {
-      option = `<option selected disabled>Choose One Of Products</option>`;
-      response.forEach((row) => {
-        option += `<option value=${row.ProductId}>${row.ProductName}</option>`;
-      });
-    }
-    if (!existed) {
-      option = `<option selected disabled class="fst-italic">Product Empty</option>`;
-    }
-    $("select#sales-read-productid-date").html(option);
-  } catch (error) {
-    console.error(error);
-  }
-};

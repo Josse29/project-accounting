@@ -1,5 +1,4 @@
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
-import { getStorageCart } from "../../utils/localStorage.js";
 export const uiCard = (rows) => {
   const productId = parseInt(rows.PersediaanProductId);
   const productName = rows.ProductName;
@@ -57,57 +56,16 @@ export const uiCardEmpty = (searchVal) => {
   return emptyP;
 };
 export const uiBtnPage = (number) => {
-  return `<button 
-            type="button" 
-            class="btn fs-4 product-ref-persediaan-page border border-2 ${
-              number === 1 ? "product-ref-persediaan-page-active" : ""
-            }">${number}</button>`;
+  const btn = `<button 
+                type="button" 
+                class="btn fs-4 product-ref-persediaan-page border border-2 ${
+                  number === 1 ? "product-ref-persediaan-page-active" : ""
+                }">${number}</button>`;
+  return btn;
 };
 // update ui Active
 export const uiBtnPageActive = (pageNumber) => {
   const btnPage = $("button.product-ref-persediaan-page");
   btnPage.removeClass("product-ref-persediaan-page-active");
   btnPage.eq(pageNumber - 1).addClass("product-ref-persediaan-page-active");
-};
-// loop to card menu and update ui qty
-export const uiQty = () => {
-  const cartStorage = getStorageCart();
-  for (const item of cartStorage) {
-    const productCard = $(`button[data-productid=${item.ProductId}]`).closest(
-      ".card-body"
-    );
-    const qtyElement = productCard.find("#order-create-qty");
-    let qtyHtml = ``;
-    if (item.ProductQty >= 1) {
-      qtyHtml = `<div class='custome-qty-me ms-2'>${item.ProductQty}</div>`;
-    }
-    qtyElement.html(qtyHtml);
-  }
-};
-// update ui to list cart order
-export const uiList = (rows) => {
-  const rupiahTotal = formatRupiah2(rows.ProductPriceSell * rows.ProductQty);
-  const html = `<div class="py-2 px-1">
-                  <h5 class="fw-bold text-truncate w-100" id="order-list-name">
-                    ${rows.ProductName} 
-                  </h5>
-                  <h6 class="text-muted text-truncate" id="order-list-price">${rupiahTotal}</h6>
-                  <div class="text-muted ms-2">Qty : <span>${rows.ProductQty}</span>
-                  </div>
-                </div>`;
-  return html;
-};
-// update ui to tbody card for orderintg
-export const uiTbody = (rows, noTd) => {
-  const priceSellRp = formatRupiah2(rows.ProductPriceSell);
-  const productTotal = formatRupiah2(rows.ProductPriceSell * rows.ProductQty);
-  return `<tr>
-            <td class="text-center">${noTd}</td>
-            <td>${rows.ProductName}</td>
-            <td>
-                ${priceSellRp}
-            </td>
-            <td>+ ${rows.ProductQty}</td>
-            <td>${productTotal}</td>
-          </tr>`;
 };

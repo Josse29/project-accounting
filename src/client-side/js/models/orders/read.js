@@ -2,7 +2,8 @@ import {
   getPersediaanProductGroup1,
   getPersediaanTotalRow1,
 } from "../../../../serverless-side/functions/persediaan.js";
-import { listCart, updateQty } from "./cart.js";
+import { uiQty } from "../../component/card/qty.js";
+import { list } from "../../component/list/index.js";
 import { uiBtnPage, uiBtnPageActive, uiCard, uiCardEmpty } from "./ui.js";
 $(document).ready(function () {
   let searchVal = $("input#order-search").val();
@@ -51,10 +52,10 @@ $(document).ready(function () {
       });
       const parentCard = `<div class="container-by-me">${card}</div>`;
       $("div#product-refpersediaan-read").html(parentCard);
-      // update qty to card menu and save to storage
-      updateQty();
-      // update qty to list cart and save to storage
-      listCart();
+      // update qty to card menu as well as btn plus/min triggered
+      uiQty();
+      // update list cart menu as well as btn plus/min triggered
+      list();
       // update active page
       uiBtnPageActive(req.offsetVal);
     } catch (error) {

@@ -108,17 +108,15 @@ export const queryGetSalesProductId = (productIdVal) => {
   query += `WHERE Product.ProductId = ${productIdVal} `;
   // with order
   query += `ORDER BY Sales.SalesYMD DESC, Sales.SalesHMS DESC `;
-  console.log(query);
   return query;
 };
 
 export const queryGetSalesSumProductId = (productIdVal) => {
   let query = `SELECT 
-               SUM(Sales.SalesProductRp) AS Total_Rp,
-               SUM(Sales.SalesProductQty) AS Total_Qty
+               SUM(SalesProductRp) AS Total_Rp,
+               SUM(SalesProductQty) AS Total_Qty
                FROM Sales `;
-  query += `LEFT JOIN Product ON Sales.SalesProductId = Product.ProductId `;
-  query += `WHERE Product.ProductId = ${productIdVal}`;
+  query += `WHERE SalesProductId = ${productIdVal}`;
   return query;
 };
 // by personid
@@ -149,10 +147,9 @@ export const queryGetSalesPersonId = (personIdVal) => {
 };
 export const queryGetSalesSumPersonId = (personIdVal) => {
   let query = `SELECT 
-               SUM(Sales.SalesProductRp) AS Total_Rp
+               SUM(SalesProductRp) AS Total_Rp
                FROM Sales `;
-  query += `LEFT JOIN User ON Sales.SalesPersonId = User.UserId `;
-  query += `WHERE User.UserId = ${personIdVal}`;
+  query += `WHERE SalesPersonId = ${personIdVal}`;
   return query;
 };
 // by customerid
@@ -183,10 +180,9 @@ export const queryGetSalesCustomerId = (customerIdVal) => {
 };
 export const queryGetSalesSumCustomerId = (customerIdVal) => {
   let query = `SELECT 
-               SUM(Sales.SalesProductRp) AS Total_Rp
+               SUM(SalesProductRp) AS Total_Rp
                FROM Sales `;
-  query += `LEFT JOIN User ON Sales.SalesCustomerId = User.UserId `;
-  query += `WHERE User.UserId = ${customerIdVal}`;
+  query += `WHERE SalesCustomerId = ${customerIdVal}`;
   return query;
 };
 // by date

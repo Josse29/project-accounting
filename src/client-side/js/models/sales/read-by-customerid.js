@@ -15,9 +15,9 @@ $(document).ready(function () {
         // sum
         const resSum = await getSalesSumCustomerId(seletedPersonId);
         const rupiah = formatRupiah2(resSum);
-        const ui = `<p class="fs-4 mb-1 fw-bold text-capitalize">${selectedText}</p>
-                    <p class="fs-5 ms-1 mb-1">Total : ${rupiah}</p> `;
-        $("div#summary").html(ui);
+        const p = `<p class="fs-4 mb-1 fw-bold text-capitalize">${selectedText}</p>
+                   <p class="fs-5 ms-1 mb-1">Total : ${rupiah}</p> `;
+        $("div#summary").html(p);
         // table
         const resTable = await getSalesCustomerId(seletedPersonId);
         const existed = resTable.length >= 1;
@@ -32,12 +32,14 @@ $(document).ready(function () {
           const empty = uiTrEmpty(selectedText);
           $("tbody#sales-read-table").html(empty);
         }
-        $("div#sales-page-container").addClass("d-none");
         // references ui
+        // 1.limit-search
+        $("div#sales-limit-search").addClass("d-none");
+        // 2.select-adjacent
         $("select#sales-read-productid").val("Choose One Of Products");
         $("select#sales-read-personid").val("Choose One Of Sales");
-        $("div#sales-limit-search").addClass("d-none");
-        $("div#sales-date").addClass("d-none");
+        // 3.pagination
+        $("div#sales-page-container").addClass("d-none");
       } catch (error) {
         console.error(error);
       }
