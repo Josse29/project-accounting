@@ -5,11 +5,14 @@ import {
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import { uiTr, uiTrEmpty } from "./ui.js";
 import { listUserRefSalesRead } from "./../users/list.js";
+import { animateFade } from "../../utils/updateUi.js";
 listUserRefSalesRead();
 $("select#sales-read-personid")
   .off("change")
   .on("change", async function () {
     try {
+      // animate
+      animateFade("#sales-card-body");
       const seletedPersonId = parseInt($(this).val());
       // name
       const selectedText = $(this).find("option:selected").text();

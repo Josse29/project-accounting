@@ -5,13 +5,14 @@ import {
 } from "../../../../serverless-side/functions/persediaan.js";
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import { formatWaktuIndo } from "../../utils/formatWaktu.js";
-import { reinitTooltip } from "../../utils/updateUi.js";
+import { animateFade, reinitTooltip } from "../../utils/updateUi.js";
 import { uiTbody, uiTbodyEmpty } from "./ui.js";
 // get persediaan date and product
 $("div#persediaan-date-all-search")
   .off("change", "select#persediaan-date-product")
   .on("change", "select#persediaan-date-product", async function () {
     try {
+      animateFade("#persediaan-section");
       // req
       const startDateVal = $("input#persediaan-start-date").val();
       const endDateVal = $("input#persediaan-end-date").val();

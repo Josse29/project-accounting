@@ -97,3 +97,9 @@ export const uiLoad = () => {
                 </div>`;
   return html;
 };
+export const animateFade = (el) => {
+  $(el).addClass("opacityMe");
+  setTimeout(() => {
+    $(el).removeClass("opacityMe");
+  }, 1000);
+};

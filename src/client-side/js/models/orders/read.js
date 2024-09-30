@@ -183,10 +183,6 @@ export const getProductAgain = () => {
       });
       const parentCard = `<div class="container-by-me">${card}</div>`;
       $("div#product-refpersediaan-read").html(parentCard);
-      // update qty to card menu and save to storage
-      updateQty();
-      // update qty to list cart and save to storage
-      listCart();
       // update active page
       uiBtnPageActive(req.offsetVal);
     } catch (error) {

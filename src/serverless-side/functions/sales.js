@@ -246,104 +246,118 @@ export const getSalesSumDate = (req) => {
     });
   });
 };
-export const getSalesDateProductId = (req, res) => {
+export const getSalesDateProductId = (req) => {
   const { startDateVal, endDateVal, selectedProductId } = req;
   const query = queryGetSalesDateProductId(
     startDateVal,
     endDateVal,
     selectedProductId
   );
-  db.all(query, (err, rows) => {
-    if (!err) {
-      return res(true, rows);
-    }
-    if (err) {
-      return res(false, err);
-    }
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, rows) => {
+      if (!err) {
+        resolve(rows);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
-export const getSalesSumDateProductId = (req, res) => {
+export const getSalesSumDateProductId = (req) => {
   const { startDateVal, endDateVal, selectedProductId } = req;
   const query = queryGetSalesSumDateProductId(
     startDateVal,
     endDateVal,
     selectedProductId
   );
-  db.each(query, (err, result) => {
-    if (!err) {
-      const rupiah = result.Total_Rp ? result.Total_Rp : 0;
-      const qty = result.Total_Qty ? result.Total_Qty : 0;
-      return res(true, { rupiah: parseInt(rupiah), qty: parseInt(qty) });
-    }
-    if (err) {
-      return res(false, err);
-    }
+  return new Promise((resolve, reject) => {
+    db.each(query, (err, result) => {
+      if (!err) {
+        const rupiah = result.Total_Rp ? result.Total_Rp : 0;
+        const qty = result.Total_Qty ? result.Total_Qty : 0;
+        resolve({ rupiah: parseInt(rupiah), qty: parseInt(qty) });
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
-export const getSalesPersonIdDate = (req, res) => {
+export const getSalesPersonIdDate = (req) => {
   const { startDateVal, endDateVal, selectedPersonId } = req;
   const query = queryGetSalesPersonIdDate(
     startDateVal,
     endDateVal,
     selectedPersonId
   );
-  db.all(query, (err, rows) => {
-    if (!err) {
-      return res(true, rows);
-    }
-    if (err) {
-      return res(false, err);
-    }
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, rows) => {
+      if (!err) {
+        resolve(rows);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
-export const getSalesSumPersonIdDate = (req, res) => {
+export const getSalesSumPersonIdDate = (req) => {
   const { startDateVal, endDateVal, selectedPersonId } = req;
   const query = queryGetSalesSumPersonIdDate(
     startDateVal,
     endDateVal,
     selectedPersonId
   );
-  db.each(query, (err, result) => {
-    if (!err) {
-      const total = result.Total_Rp ? parseInt(result.Total_Rp) : 0;
-      return res(true, total);
-    }
-    if (err) {
-      return res(false, err);
-    }
+  return new Promise((resolve, reject) => {
+    db.each(query, (err, result) => {
+      if (!err) {
+        const response = result.Total_Rp;
+        const total = response ? response : 0;
+        resolve(total);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
-export const getSalesCustomerIdDate = (req, res) => {
+export const getSalesCustomerIdDate = (req) => {
   const { startDateVal, endDateVal, selectedPersonId } = req;
   const query = queryGetSalesCustomerIdDate(
     startDateVal,
     endDateVal,
     selectedPersonId
   );
-  db.all(query, (err, rows) => {
-    if (!err) {
-      return res(true, rows);
-    }
-    if (err) {
-      return res(false, err);
-    }
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, rows) => {
+      if (!err) {
+        resolve(rows);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
-export const getSalesSumCustomerIdDate = (req, res) => {
+export const getSalesSumCustomerIdDate = (req) => {
   const { startDateVal, endDateVal, selectedPersonId } = req;
   const query = queryGetSalesSumCustomerIdDate(
     startDateVal,
     endDateVal,
     selectedPersonId
   );
-  db.each(query, (err, result) => {
-    if (!err) {
-      const total = result.Total_Rp ? parseInt(result.Total_Rp) : 0;
-      return res(true, total);
-    }
-    if (err) {
-      return res(false, err);
-    }
+  return new Promise((resolve, reject) => {
+    db.each(query, (err, result) => {
+      if (!err) {
+        const response = result.Total_Rp;
+        const total = response ? response : 0;
+        resolve(total);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
 // update

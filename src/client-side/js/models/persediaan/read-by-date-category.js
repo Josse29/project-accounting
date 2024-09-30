@@ -4,12 +4,14 @@ import {
 } from "../../../../serverless-side/functions/persediaan.js";
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import { formatWaktuIndo } from "../../utils/formatWaktu.js";
+import { animateFade } from "../../utils/updateUi.js";
 import { uiTbody, uiTbodyEmpty } from "./ui.js";
 // get persediaan date and category
 $("div#persediaan-date-all-search")
   .off("change", "select#persediaan-date-category")
   .on("change", "select#persediaan-date-category", async function () {
     try {
+      animateFade("#persediaan-section");
       const startDateVal = $("input#persediaan-start-date").val();
       const endDateVal = $("input#persediaan-end-date").val();
       const categoryId = parseInt($(this).val());

@@ -74,7 +74,7 @@ export const uiSuccess = (res) => {
 export const uiReset = () => {
   // summary
   $("div#summary").html(``);
-  // limi-search
+  // limit-search
   $("div#sales-limit-search").removeClass("d-none");
   // input date
   $("div#sales-date").removeClass("d-none");
@@ -82,7 +82,7 @@ export const uiReset = () => {
   $("select#sales-read-productid").val("Choose One Of Products");
   $("select#sales-read-personid").val("Choose One Of Sales");
   $("select#sales-read-customerid").val("Choose One Of Customers");
-  $("div#read-select-container").removeClass("d-none");
+  $("div#sales-select").removeClass("d-none");
   // select with date
-  $("div#sales-byDate").addClass("d-none");
+  $("div#sales-select-date").addClass("d-none");
 };

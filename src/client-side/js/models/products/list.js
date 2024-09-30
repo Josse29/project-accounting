@@ -41,7 +41,6 @@ export const listProductRefPersediaanRead = async () => {
 export const listProductRefPersediaanReadDate = async () => {
   try {
     const response = await getListProduct("");
-    console.log(response);
     const existed = response.length >= 1;
     let option = ``;
     if (existed) {
@@ -62,17 +61,34 @@ export const listProductRefSalesRead = async () => {
   try {
     const response = await getListProduct("");
     const existed = response.length >= 1;
-    let option = ``;
+    let option = `<option selected disabled>Choose One Of Products</option>`;
     if (existed) {
-      option = `<option selected disabled>Choose One Of Products</option>`;
       response.forEach((row) => {
         option += `<option value=${row.ProductId} data-pricesell=${row.ProductPriceJual}>${row.ProductName}</option>`;
       });
     }
     if (!existed) {
-      option = `<option selected disabled class="fst-italic">Product Empty</option>`;
+      option += `<option disabled class="fst-italic text-center">Product Empty....</option>`;
     }
     $("select#sales-read-productid").html(option);
+  } catch (error) {
+    console.error(error);
+  }
+};
+export const listProductRefSalesReadDate = async () => {
+  try {
+    const response = await getListProduct("");
+    const existed = response.length >= 1;
+    let option = `<option selected disabled>Choose One Of Products</option>`;
+    if (existed) {
+      response.forEach((row) => {
+        option += `<option value=${row.ProductId} data-pricesell=${row.ProductPriceJual}>${row.ProductName}</option>`;
+      });
+    }
+    if (!existed) {
+      option += `<option selected disabled class="fst-italic">Product Empty</option>`;
+    }
+    $("select#sales-read-productid-date").html(option);
   } catch (error) {
     console.error(error);
   }

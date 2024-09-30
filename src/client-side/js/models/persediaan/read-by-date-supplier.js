@@ -4,13 +4,14 @@ import {
 } from "../../../../serverless-side/functions/persediaan.js";
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import { formatWaktuIndo } from "../../utils/formatWaktu.js";
-import { reinitTooltip } from "../../utils/updateUi.js";
+import { animateFade, reinitTooltip } from "../../utils/updateUi.js";
 import { uiTbody, uiTbodyEmpty } from "./ui.js";
 // get persediaan date and supplier
 $("div#persediaan-date-all-search")
   .off("change", "select#persediaan-date-supplier")
   .on("change", "select#persediaan-date-supplier", async function () {
     try {
+      animateFade("#persediaan-section");
       const startDateVal = $("input#persediaan-start-date").val();
       const endDateVal = $("input#persediaan-end-date").val();
       const supplierId = parseInt($(this).val());

@@ -3,7 +3,7 @@ import {
   getPersediaanSupplierId,
 } from "../../../../serverless-side/functions/persediaan.js";
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
-import { reinitTooltip } from "../../utils/updateUi.js";
+import { animateFade, reinitTooltip } from "../../utils/updateUi.js";
 import { listSupplierRefPersediaanRead } from "../supplier/list.js";
 import { uiTbody, uiTbodyEmpty } from "./ui.js";
 
@@ -13,6 +13,7 @@ $(document).ready(function () {
     .off("change")
     .on("change", async function () {
       try {
+        animateFade("#persediaan-section");
         // req
         const selectedSupplierId = parseInt($(this).val());
         // caption-selected

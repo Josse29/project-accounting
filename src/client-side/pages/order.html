@@ -386,9 +386,12 @@
               </button>
             </div>
             <!-- product & sales & customer -->
-            <div class="d-flex w-100 gap-2 mb-3" id="read-select-container">
+            <div class="d-flex w-100 gap-2 mb-3" id="sales-select">
               <!-- product  -->
-              <select id="sales-read-productid" class="form-select w-auto py-2">
+              <select
+                id="sales-read-productid"
+                class="form-select w-auto text-capitalize"
+              >
                 <option>Choose One Of Products</option>
               </select>
               <!-- sales  -->
@@ -407,28 +410,29 @@
               </select>
             </div>
             <!-- select-date -->
-            <!-- <div id="sales-byDate">
-              <div class="d-flex mb-3 gap-2">
-                <select
-                  class="form-select w-auto text-capitalize"
-                  id="sales-read-productid-date"
-                >
-                  <option>Chosse One Of Products</option>
-                </select>
-                <select
-                  class="form-select w-auto text-capitalize"
-                  id="sales-read-personid-date"
-                >
-                  <option>Chosse One Of Sales</option>
-                </select>
-                <select
-                  class="form-select w-auto text-capitalize"
-                  id="sales-read-customerid-date"
-                >
-                  <option>Chosse One Of Customers</option>
-                </select>
-              </div>
-            </div> -->
+            <div class="d-flex mb-3 gap-2 d-none" id="sales-select-date">
+              <!-- product -->
+              <select
+                class="form-select w-auto text-capitalize"
+                id="sales-read-productid-date"
+              >
+                <option>Chosse One Of Products</option>
+              </select>
+              <!-- sales -->
+              <select
+                class="form-select w-auto text-capitalize"
+                id="sales-read-personid-date"
+              >
+                <option>Chosse One Of Sales</option>
+              </select>
+              <!-- customer -->
+              <select
+                class="form-select w-auto text-capitalize"
+                id="sales-read-customerid-date"
+              >
+                <option>Chosse One Of Customers</option>
+              </select>
+            </div>
             <!-- summary -->
             <div id="summary" class="ms-3 my-2"></div>
             <!-- tabel sales hufft -->
