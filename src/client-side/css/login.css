@@ -8,6 +8,9 @@
 body::-webkit-scrollbar {
   display: none;
 }
+#dragWin {
+  -webkit-app-region: drag; /* Allow dragging the window */
+}
 div.icon-me {
   display: flex;
   justify-content: center;

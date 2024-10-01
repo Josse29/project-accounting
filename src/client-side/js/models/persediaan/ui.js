@@ -4,23 +4,15 @@ import { formatWaktuIndo } from "../../utils/formatWaktu.js";
 export const uiTbody = (el) => {
   // qty
   const persediaanQty = el.PersediaanQty;
-  const spanQty =
-    persediaanQty >= 1
-      ? `<span class="badge text-bg-success fs-6 text-truncate" style="max-width:100%">+ ${persediaanQty}</span>`
-      : `<span class="badge text-bg-danger fs-6 text-truncate" style="max-width:100%">- ${Math.abs(
-          persediaanQty
-        )}</span>`;
+  const qtyTxt =
+    persediaanQty >= 1 ? `+ ${persediaanQty}` : `- ${Math.abs(persediaanQty)}`;
   // rupiah
-  const persediaanRp = el.PersediaanRp;
-  const spanRp =
+  const persediaanRp = el.ProductPriceBeli * persediaanQty;
+  const rpTxt =
     persediaanRp >= 1
-      ? `<span class="badge text-bg-success fs-6 text-truncate" style="max-width: 100%">+ ${formatRupiah2(
-          persediaanRp
-        )}</span>`
-      : `<span class="badge text-bg-danger fs-6 text-truncate" style="max-width: 100%">- ${formatRupiah2(
-          Math.abs(persediaanRp)
-        )}</span>`;
-  const html = `<tr>
+      ? `+ ${formatRupiah2(persediaanRp)}`
+      : `- ${formatRupiah2(Math.abs(persediaanRp))}`;
+  const tr = `<tr>
                   <td class="align-content-center text-center pe-3 text-truncate">${
                     el.PersediaanId
                   } </td>
@@ -40,10 +32,14 @@ export const uiTbody = (el) => {
                     ${el.SupplierName === null ? "-" : el.SupplierName}
                   </td>
                   <td class="text-truncate align-content-center text-center">
-                    ${spanQty}
+                    <span class="badge fs-6 text-truncate ${
+                      persediaanQty >= 1 ? "text-bg-success" : "text-bg-danger"
+                    }" style="max-width:100%">${qtyTxt}</span>
                   </td>
                   <td class="text-truncate align-content-center text-center">
-                    ${spanRp}
+                    <span class="badge fs-6 text-truncate ${
+                      persediaanQty >= 1 ? "text-bg-success" : "text-bg-danger"
+                    }"" style="max-width: 100%">${rpTxt}</span>
                   </td>
                   <td class="align-content-center" style="width:217px">
                     <div class="d-flex w-100 justify-content-center gap-2">
@@ -106,8 +102,8 @@ export const uiTbody = (el) => {
                       </button>
                     </div>
                   </td>
-                </tr>`;
-  return html;
+              </tr>`;
+  return tr;
 };
 // make alert success after action crud
 export const uiAlertSuccess = (res) => {

@@ -67,12 +67,13 @@ $("#persediaan-create-submit")
       const valPersediaanProductId = parseInt(
         $("input#persediaan-refproduct-create-id").val()
       );
-      const valPersediaanRp = parseFloat(
+      const valProductIdPrice = parseFloat(
         $("input#persediaan-refproduct-create-rp").val()
       );
       const valPersediaanQty = parseFloat(
         $("input#persediaan-create-qty").val()
       );
+      const valPersediaanTotalRp = valPersediaanQty * valProductIdPrice;
       const valPersediaanInfo = $("#persediaan-create-info").val();
       const req = {
         valProductName,
@@ -80,7 +81,7 @@ $("#persediaan-create-submit")
         valPersediaanHMS,
         valPersediaanProductId,
         valPersediaanQty,
-        valPersediaanRp,
+        valPersediaanTotalRp,
         valPersediaanInfo,
       };
       const response = await createPersediaan(req);

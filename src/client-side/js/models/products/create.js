@@ -9,11 +9,13 @@ import { listProductRefPersediaanCreate } from "./list.js";
 import { getImageBase64 } from "../../utils/loadImg.js";
 
 $(document).ready(function () {
-  $("button#product-create").on("click", function () {
-    $("div#productCreateFailed").html("");
-    listCategoryRefProductCreate();
-    listSupplierRefProductCreate();
-  });
+  $("button#product-create")
+    .off("click")
+    .on("click", function () {
+      $("div#productCreateFailed").html("");
+      listCategoryRefProductCreate();
+      listSupplierRefProductCreate();
+    });
   // Format as Rupiah when input
   $("input#product-price-beli")
     .off("input")

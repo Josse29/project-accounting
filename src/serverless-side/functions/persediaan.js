@@ -48,7 +48,7 @@ export const createPersediaan = async (req) => {
     valPersediaanHMS,
     valPersediaanProductId,
     valPersediaanQty,
-    valPersediaanRp,
+    valPersediaanTotalRp,
     valPersediaanInfo,
   } = req;
   // 1.validate product exist
@@ -58,7 +58,6 @@ export const createPersediaan = async (req) => {
   // 3.validate qty product
   await getPersediaanQtyValidate(req);
   // execute insert
-  const valPersediaanTotalRp = valPersediaanQty * valPersediaanRp;
   const query = queryInsertPersediaan(
     valPersediaanDDMY,
     valPersediaanHMS,
@@ -679,7 +678,7 @@ export const updatePersediaan = async (req) => {
     valPersediaanHMS,
     valPersediaanProductId,
     valPersediaanQty,
-    valPersediaanRp,
+    valPersediaanTotalRp,
     valPersediaanInfo,
     valProductName,
   } = req;
@@ -687,7 +686,7 @@ export const updatePersediaan = async (req) => {
   validateQty(valPersediaanQty);
   // check product row and product qty, suit the condition
   const productRow = await checkProductRow(valPersediaanProductId);
-  // count all product except  the product that will be deleted, make sure positive stock
+  // count all product except the product that will be deleted, make sure positive stock
   if (productRow > 1) {
     await validateStock1(
       valPersediaanId,
@@ -701,7 +700,6 @@ export const updatePersediaan = async (req) => {
     throw new Error(msg);
   }
   // execute update
-  const valPersediaanTotalRp = valPersediaanQty * valPersediaanRp;
   const query = queryUpdatePersediaan(
     valPersediaanId,
     valPersediaanDDMY,

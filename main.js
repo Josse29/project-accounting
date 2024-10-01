@@ -29,11 +29,13 @@ const createLoginPage = () => {
   db.serialize(() => {
     console.log("terhubung ke sqlite3...");
   });
-  ipcMain.on("minimize-maximize-window:login-page", () => {
+  ipcMain.on("restore-window:login-page", () => {
     if (loginPage.isMaximized()) {
       loginPage.unmaximize();
+      console.log("unmaximed:login-page");
     } else {
       loginPage.maximize();
+      console.log("maximize:loginpage");
     }
   });
   ipcMain.on("minimize-window:login-page", () => {
@@ -65,20 +67,37 @@ ipcMain.on("load:dashboard-page", () => {
       nodeIntegration: true,
       contextIsolation: false,
     },
-    autoHideMenuBar: true,
+    width: 1200,
+    height: 800,
+    frame: false,
   });
   dashboardPage.loadFile("./src/client-side/pages/dashboard.html");
+  dashboardPage.unmaximize();
+  console.log(dashboardPage.isMaximized());
+  console.log(dashboardPage.isVisible());
   dashboardPage.webContents.on("did-finish-load", () => {
     loginPage.hide();
   });
   remote.enable(dashboardPage.webContents);
-  dashboardPage.setFullScreen(true);
+  // hide page
   ipcMain.on("hide-window:dashboard-page", () => {
     dashboardPage.hide();
   });
+  // minimize page
   ipcMain.on("minimize-window:dashboard-page", () => {
     dashboardPage.minimize();
   });
+  // restore page
+  ipcMain.on("restore-window:dashboard-page", () => {
+    if (dashboardPage.isMaximized()) {
+      dashboardPage.unmaximize();
+      console.log("unmax");
+    } else {
+      dashboardPage.maximize();
+      console.log("max");
+    }
+  });
+  // close page
   ipcMain.on("close-window:dashboard-page", () => {
     dashboardPage.hide();
     loginPage.show();
@@ -91,18 +110,29 @@ ipcMain.on("load:order-page", () => {
       nodeIntegration: true,
       contextIsolation: false,
     },
-    // frame: false,
-    autoHideMenuBar: true,
+    width: 1200,
+    height: 800,
+    frame: false,
   });
-  orderPage.setFullScreen(true);
   orderPage.loadFile("./src/client-side/pages/order.html");
   remote.enable(orderPage.webContents);
-  ipcMain.on("minimize-window:order-page", () => {
-    orderPage.minimize();
-  });
+  // hide
   ipcMain.on("hide-window:order-page", () => {
     orderPage.hide();
   });
+  // minimize
+  ipcMain.on("minimize-window:order-page", () => {
+    orderPage.minimize();
+  });
+  // restore page
+  ipcMain.on("restore-window:order-page", () => {
+    if (orderPage.isMaximized()) {
+      orderPage.unmaximize();
+    } else {
+      orderPage.maximize();
+    }
+  });
+  // close
   ipcMain.on("close-window:order-page", () => {
     orderPage.hide();
     loginPage.show();

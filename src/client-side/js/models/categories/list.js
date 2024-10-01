@@ -5,15 +5,14 @@ export const listCategoryRefProductCreate = async () => {
   try {
     const response = await getListCategory("");
     const existed = response.length >= 1;
-    let option = ``;
+    let option = `<option selected value=null>Choose One Of Categories</option>`;
     if (existed) {
-      option = `<option selected value=null>Choose One Of Categories</option>`;
       response.forEach((el) => {
         option += `<option value=${el.CategoryId}>${el.CategoryName}</option>`;
       });
     }
     if (!existed) {
-      option = `<option selected disabled class="fst-italic">Category Empty</option>`;
+      option += `<option disabled class="fst-italic text-center">Category Empty........</option>`;
     }
     $("select#product-refcategory-create").html(option);
   } catch (error) {
@@ -25,18 +24,16 @@ export const listCategoryRefProductUpdate = async (selected) => {
   try {
     const response = await getListCategory("");
     const existed = response.length >= 1;
-    let option = ``;
+    let option = `<option value=null>Choose One Of Categories</option>`;
     if (existed) {
-      option = `<option selected value=null>Choose One Of Categories</option>`;
       response.forEach((el) => {
         const isSelected =
           selected === parseInt(el.CategoryId) ? "selected" : "";
-        console.log(isSelected);
         option += `<option value=${el.CategoryId} ${isSelected}>${el.CategoryName}</option>`;
       });
     }
     if (!existed) {
-      option = `<option selected disabled class="fst-italic">Category Empty</option>`;
+      option += `<option disabled class="fst-italic text-center">Category Empty........</option>`;
     }
     $("select#product-refcategory-update").html(option);
   } catch (error) {
@@ -47,15 +44,14 @@ export const listCategoryRefPersediaanRead = async () => {
   try {
     const response = await getListCategory("");
     const existed = response.length >= 1;
-    let option = ``;
+    let option = `<option selected disabled>Choose One Of Categories</option>`;
     if (existed) {
-      option = `<option selected disabled>Choose One Of Categories</option>`;
       response.forEach((el) => {
         option += `<option value=${el.CategoryId}>${el.CategoryName}</option>`;
       });
     }
     if (!existed) {
-      option = `<option selected disabled class="fst-italic">Category Empty</option>`;
+      option += `<option disabled class="fst-italic text-center">Category Empty........</option>`;
     }
     $("select#persediaan-refcategory-search").html(option);
   } catch (error) {
@@ -66,15 +62,14 @@ export const listCategoryRefPersediaanReadDate = async () => {
   try {
     const response = await getListCategory("");
     const existed = response.length >= 1;
-    let option = ``;
+    let option = `<option selected disabled>Choose One Of Categories</option>`;
     if (existed) {
-      option = `<option selected disabled>Choose One Of Categories</option>`;
       response.forEach((el) => {
         option += `<option value=${el.CategoryId}>${el.CategoryName}</option>`;
       });
     }
     if (!existed) {
-      option = `<option selected disabled class="fst-italic">Category Empty</option>`;
+      option += `<option disabled class="fst-italic text-center">Category Empty........</option>`;
     }
     $("select#persediaan-date-category").html(option);
   } catch (error) {

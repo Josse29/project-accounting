@@ -352,3 +352,6 @@ td:hover {
     opacity: 1;
   }
 }
+#dragWin {
+  -webkit-app-region: drag; /* Allow dragging the window */
+}

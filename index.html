@@ -7,7 +7,7 @@
     <!-- css bootstrap -->
     <link
       rel="stylesheet"
-      href="./src/client-side/third-party/bootstrap.min.css"
+      href="./src/client-side/third-party/bootstrap/bootstrap.min.css"
     />
     <!-- font awesome -->
     <link
@@ -22,13 +22,14 @@
     <div
       class="position-fixed bg-black d-flex w-100 justify-content-between py-2 px-3"
     >
-      <div class="d-flex align-items-center gap-3">
+      <!-- logo -->
+      <div class="d-flex align-items-center gap-3 border-white" id="dragWin">
         <img
           src="./src/client-side/images/import.png"
           alt=""
           class="custome-me"
         />
-        <span class="text-white">My-Cashier</span>
+        <span class="text-white" id="title">Accounting - Stock </span>
       </div>
       <div class="d-flex align-items-center gap-2">
         <!-- time -->
@@ -39,15 +40,15 @@
           <span class="detik"></span>
         </div>
         <!-- minimize window -->
-        <div class="bg-primary rounded icon-me" id="minimize-login">
+        <div class="bg-primary rounded icon-me" id="minimize-window">
           <i class="fa-solid fa-minus text-white"></i>
         </div>
         <!-- maximize window -->
-        <div class="bg-secondary rounded icon-me" id="min-max-login">
+        <div class="bg-secondary rounded icon-me" id="restore-window">
           <i class="fa-regular fa-window-maximize text-white"></i>
         </div>
         <!-- close app -->
-        <div class="bg-danger rounded icon-me" id="close-login">
+        <div class="bg-danger rounded icon-me" id="close-window">
           <i class="fa-solid fa-power-off text-white"></i>
         </div>
       </div>
@@ -113,7 +114,7 @@
       </div>
     </div>
     <!-- js bootstrap -->
-    <script src="./src/client-side/third-party/bootstrap.bundle.min.js"></script>
+    <script src="./src/client-side/third-party/bootstrap/bootstrap.bundle.min.js"></script>
     <!-- jquery -->
     <script>
       if (typeof module === "object") {
@@ -131,7 +132,10 @@
     </script>
     <!-- my script  -->
     <!-- <script src="./src/client-side/require/index.js"></script> -->
-    <script type="module" src="./src/client-side/js/utils/ipc.js"></script>
+    <script
+      type="module"
+      src="./src/client-side/js/navigation/login.js"
+    ></script>
     <script
       type="module"
       src="./src/client-side/js/models/users/login.js"

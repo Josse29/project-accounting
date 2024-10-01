@@ -47,14 +47,14 @@ $("button#persediaan-date-search")
         listSupplierRefPersediaanReadDate();
         listCategoryRefPersediaanReadDate();
         const select = `<select class="form-control w-auto mb-3" id="persediaan-date-product">
-                      <option value="test" class="fs-6">Product</option>
-                    </select>
-                    <select class="form-control w-auto mb-3" id="persediaan-date-supplier">
-                      <option value="test" class="fs-6">Supplier</option>
-                    </select>
-                    <select class="form-control w-auto mb-3" id="persediaan-date-category">
-                      <option value="test" class="fs-6">Kategori</option>
-                    </select>`;
+                          <option value="test" class="fs-6">Product</option>
+                        </select>
+                        <select class="form-control w-auto mb-3" id="persediaan-date-supplier">
+                          <option value="test" class="fs-6">Supplier</option>
+                        </select>
+                        <select class="form-control w-auto mb-3" id="persediaan-date-category">
+                          <option value="test" class="fs-6">Kategori</option>
+                        </select>`;
         $("div#persediaan-date-all-search").html(select);
       }
       if (!existed) {

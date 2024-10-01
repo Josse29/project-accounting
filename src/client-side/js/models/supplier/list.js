@@ -4,14 +4,13 @@ export const listSupplierRefProductCreate = async () => {
   try {
     const response = await getListSupplier("");
     const existed = response.length >= 1;
-    let option = ``;
+    let option = `<option selected value=null>Choose One Of Suppliers</option>`;
     if (existed) {
-      option = `<option selected value=null>Choose One Of Suppliers</option>`;
       response.forEach((el) => {
         option += `<option value=${el.SupplierId}>${el.SupplierName}</option>`;
       });
     } else {
-      option = `<option selected disabled class="fst-italic">Supplier Empty</option>`;
+      option += `<option disabled class="fst-italic text-center">Supplier Empty.....</option>`;
     }
     $("select#product-refsupplier-create").html(option);
   } catch (error) {
@@ -23,16 +22,15 @@ export const listSupplierRefProductUpdate = async (selected) => {
   try {
     const response = await getListSupplier("");
     const existed = response.length >= 1;
-    let option = ``;
+    let option = `<option value=null>Choose One Of Suppliers</option>`;
     if (existed) {
-      option = `<option selected value=null>Choose One Of Suppliers</option>`;
       response.forEach((el) => {
         const isSelected =
           selected === parseInt(el.SupplierId) ? "selected" : "";
         option += `<option value=${el.SupplierId} ${isSelected}>${el.SupplierName}</option>`;
       });
     } else {
-      option = `<option selected disabled class="fst-italic">Supplier Empty</option>`;
+      option += `<option disabled class="fst-italic text-center">Supplier Empty.....</option>`;
     }
     $("select#product-refsupplier-update").html(option);
   } catch (error) {
@@ -44,14 +42,13 @@ export const listSupplierRefPersediaanRead = async () => {
   try {
     const response = await getListSupplier("");
     const existed = response.length >= 1;
-    let option = ``;
+    let option = `<option selected disabled>Choose One Of Suppliers</option>`;
     if (existed) {
-      option = `<option selected disabled>Choose One Of Suppliers</option>`;
       response.forEach((row) => {
         option += `<option value=${row.SupplierId}>${row.SupplierName}</option>`;
       });
     } else {
-      option = `<option selected disabled class="fst-italic">Supplier Empty</option>`;
+      option += `<option disabled class="fst-italic text-center">Supplier Empty.....</option>`;
     }
     $("select#persediaan-refsupplier-search").html(option);
   } catch (error) {
@@ -63,14 +60,13 @@ export const listSupplierRefPersediaanReadDate = async () => {
   try {
     const response = await getListSupplier("");
     const existed = response.length >= 1;
-    let option = ``;
+    let option = `<option selected disabled>Choose One Of Suppliers</option>`;
     if (existed) {
-      option = `<option selected disabled>Choose One Of Suppliers</option>`;
       response.forEach((row) => {
         option += `<option value=${row.SupplierId}>${row.SupplierName}</option>`;
       });
     } else {
-      option = `<option selected disabled class="fst-italic">Supplier Empty</option>`;
+      option += `<option disabled class="fst-italic text-center">Supplier Empty.....</option>`;
     }
     $("select#persediaan-date-supplier").html(option);
   } catch (error) {
