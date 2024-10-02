@@ -27,93 +27,88 @@
           <h5>Josse Surya Pinem</h5>
         </div>
         <div class="d-flex gap-2">
+          <!--minimize  -->
           <i
-            class="fa-regular fa-window-restore custome-me"
-            id="minimize-about"
-            data-bs-toggle="tooltip"
-            data-bs-html="true"
-            data-bs-title="<h6>Minimize</h6>"
-          ></i>
+            id="minimize-window"
+            class="fa-solid fa-minus text-white custome-me tooltip-bottom-container"
+          >
+            <p class="tooltip-bottom-text fs-5 p-2">Minimize</p>
+          </i>
+          <!-- restore window -->
           <i
-            class="fa-solid fa-right-from-bracket custome-me"
-            id="close-about"
-            data-bs-toggle="tooltip"
-            data-bs-html="true"
-            data-bs-title="<h6>Quit</h6>"
-          ></i>
+            class="fa-regular fa-window-restore custome-me tooltip-bottom-container"
+            id="restore-window"
+          >
+            <p class="tooltip-bottom-text fs-5 p-2">Minimize</p>
+          </i>
+          <!-- close -->
+          <i
+            class="fa-solid fa-right-from-bracket custome-me tooltip-bottom-container"
+            id="close-window"
+          >
+            <p class="tooltip-bottom-text fs-5 p-2">Minimize</p>
+          </i>
         </div>
       </div>
     </div>
     <div class="side-navigation">
-      <div class="logo">
-        <img src="./../images/logo.png" alt="" />
+      <div class="logo" id="dragWin">
+        <img src="./../images/import.png" alt="" />
       </div>
       <!-- links -->
       <div class="text-white mt-5">
         <!-- dashboard -->
         <div
-          class="text-center mb-5 custome-me"
-          data-bs-toggle="tooltip"
-          data-bs-placement="right"
-          data-bs-html="true"
-          data-bs-title="<h4>Home</h4>"
+          class="text-center mb-5 custome-me tooltip-right-container"
           id="dashboardWindowAbout"
         >
-          <i class="fa-solid fa-house fs-3"></i>
+          <i class="fa-solid fa-house fs-3">
+            <div class="tooltip-right-text fs-4 p-2 px-3">Dashboard</div>
+          </i>
         </div>
         <!-- order -->
         <div
-          class="text-center mb-5 custome-me"
-          data-bs-toggle="tooltip"
-          data-bs-placement="right"
-          data-bs-html="true"
-          data-bs-title="<h4>Order</h4>"
+          class="text-center mb-5 custome-me tooltip-right-container"
           id="orderWindowAbout"
         >
-          <i class="fa-solid fa-utensils fs-3"></i>
+          <i class="fa-solid fa-utensils fs-3">
+            <div class="tooltip-right-text fs-4 p-2 px-3">Order</div>
+          </i>
         </div>
         <!-- inventory -->
         <div
-          class="text-center mb-5 custome-me"
-          data-bs-toggle="tooltip"
-          data-bs-placement="right"
-          data-bs-html="true"
-          data-bs-title="<h4>Inventory</h4>"
+          class="text-center mb-5 custome-me tooltip-right-container"
           id="inventoryWindowAbout"
         >
-          <i class="fa-solid fa-file-circle-plus fs-3"></i>
+          <i class="fa-solid fa-file-circle-plus fs-3">
+            <div class="tooltip-right-text fs-4 p-2 px-3">Inventory</div>
+          </i>
         </div>
         <!-- transaksi -->
         <div
-          class="text-center mb-5 custome-me"
-          data-bs-toggle="tooltip"
-          data-bs-placement="right"
-          data-bs-html="true"
-          data-bs-title="<h4>Transaksi</h4>"
+          class="text-center mb-5 custome-me tooltip-right-container"
           id="transaksiWindowAbout"
         >
-          <i class="fa-solid fa-chart-simple fs-3"></i>
+          <i class="fa-solid fa-chart-simple fs-3">
+            <div class="tooltip-right-text fs-4 p-2 px-3">Transaction</div>
+          </i>
         </div>
         <!-- users -->
         <div
-          class="text-center mb-5 custome-me"
-          data-bs-toggle="tooltip"
-          data-bs-placement="right"
-          data-bs-html="true"
-          data-bs-title="<h4>Users</h4>"
+          class="text-center mb-5 custome-me tooltip-right-container"
           id="usersWindowAbout"
         >
-          <i class="fa-solid fa-users fs-3"></i>
+          <i class="fa-solid fa-users fs-3">
+            <div class="tooltip-right-text fs-4 p-2 px-3">Users</div>
+          </i>
         </div>
         <!-- about -->
-        <div
-          class="text-center mb-5 custome-me"
-          data-bs-toggle="tooltip"
-          data-bs-placement="left"
-          data-bs-html="true"
-          data-bs-title="<h4>About-us</h4>"
-        >
-          <i class="fa-solid fa-city fs-3 custome-me-active"></i>
+        <div class="text-center mb-5 custome-me tooltip-right-container">
+          <i class="fa-solid fa-city fs-3 custome-me-active">
+            <div class="tooltip-right-text fs-4 p-2 px-3" style="top: 32px">
+              About
+            </div>
+          </i>
         </div>
       </div>
     </div>
@@ -191,9 +186,6 @@
                 style="width: 300px; height: 400px"
               />
               <div>
-                <h3 class="text-end">
-                  Josse Surya Pinem - Javascript Interested !
-                </h3>
                 <ul class="fs-6">
                   <li class="list-unstyled">Name : Josse Surya Pinem</li>
                   <li class="list-unstyled">Address : Medan</li>
@@ -213,8 +205,8 @@
                   </li>
                   <li class="list-unstyled">Skills :</li>
                   <li class="list-unstyled ms-3">
-                    HTML, CSS, Javascript, PHP, React.js, Electron, MYSQL,
-                    Mongodb, Tailwind, Next.js, pyhton
+                    HTML, CSS, Javascript, PHP, React.js, React Native,
+                    Electron, MYSQL, Mongodb, Tailwind, Next.js, Pyhton
                   </li>
                   <li class="list-unstyled ms-3">
                     Ms.word, Ms.Excel, Ms.Power-point
@@ -262,17 +254,9 @@
     <script>
       if (window.module) module = window.module;
     </script>
-    <!-- reinit-tooltip -->
-    <!-- <script>
-        const tooltipTriggerList = document.querySelectorAll(
-            '[data-bs-toggle="tooltip"]'
-        );
-        const tooltipList = [...tooltipTriggerList].map(
-            (tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl)
-        );
-    </script> -->
     <!-- myscript -->
     <script src="./../require/index.js"></script>
     <script type="module" src="./../js/utils/ipc.js"></script>
+    <script type="module" src="./../js/navigation/about.js"></script>
   </body>
 </html>

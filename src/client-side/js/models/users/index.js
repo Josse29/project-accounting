@@ -1,1 +1,2 @@
-import "./register.js"
+import "./register.js";
+import "./read.js";

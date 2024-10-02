@@ -15,105 +15,99 @@
       href="./../third-party/fontawesome-web/css/all.min.css"
     />
     <!-- my css -->
-    <link rel="stylesheet" href="./../css/about.css" />
+    <link rel="stylesheet" href="./../css/users.css" />
   </head>
 
   <body>
     <div class="top-navigation">
-      <h2 class="ms-3">Accouting Software</h2>
+      <h2 class="ms-3">Accounting Software</h2>
       <div class="d-flex gap-2">
         <div class="d-flex me-4">
           <i class="fa-solid fa-user custome-me"></i>
           <h5>Josse Surya Pinem</h5>
         </div>
         <div class="d-flex gap-2">
+          <!-- minimize -->
           <i
-            class="fa-regular fa-window-restore custome-me"
-            id="minimize-users"
-            data-bs-toggle="tooltip"
-            data-bs-html="true"
-            data-bs-title="<h6>Minimize</h6>"
-          ></i>
+            id="minimize-window"
+            class="fa-solid fa-minus custome-me tooltip-bottom-container"
+          >
+            <p class="tooltip-bottom-text fs-5 p-2">Minimze</p>
+          </i>
+          <!-- restore -->
           <i
-            class="fa-solid fa-right-from-bracket custome-me"
-            id="close-users"
-            data-bs-toggle="tooltip"
-            data-bs-html="true"
-            data-bs-title="<h6>Quit</h6>"
-          ></i>
+            class="fa-regular fa-window-restore custome-me tooltip-bottom-container"
+            id="restore-window"
+          >
+            <p class="tooltip-bottom-text fs-5 p-2">Restore</p>
+          </i>
+          <i
+            class="fa-solid fa-right-from-bracket custome-me tooltip-bottom-container"
+            id="close-window"
+          >
+            <p class="tooltip-bottom-text fs-5 p-2">Close</p>
+          </i>
         </div>
       </div>
     </div>
     <div class="side-navigation">
-      <div class="logo">
-        <img src="./../images/logo.png" alt="" />
+      <div class="logo" id="dragWin">
+        <img src="./../images/import.png" alt="" />
       </div>
       <!-- links -->
       <div class="text-white mt-5">
         <!-- dashboard -->
         <div
-          class="text-center mb-5 custome-me"
-          data-bs-toggle="tooltip"
-          data-bs-placement="right"
-          data-bs-html="true"
-          data-bs-title="<h4>Home</h4>"
+          class="text-center mb-5 custome-me tooltip-right-container"
           id="dashboardWindowUsers"
         >
-          <i class="fa-solid fa-house fs-3"></i>
+          <i class="fa-solid fa-house fs-3">
+            <div class="tooltip-right-text fs-4 p-2 px-3">Dashboard</div>
+          </i>
         </div>
         <!-- order -->
         <div
-          class="text-center mb-5 custome-me"
-          data-bs-toggle="tooltip"
-          data-bs-placement="right"
-          data-bs-html="true"
-          data-bs-title="<h4>Order</h4>"
+          class="text-center mb-5 custome-me tooltip-right-container"
           id="orderWindowUsers"
         >
-          <i class="fa-solid fa-utensils fs-3"></i>
+          <i class="fa-solid fa-utensils fs-3">
+            <div class="tooltip-right-text fs-4 p-2 px-3">Order</div>
+          </i>
         </div>
         <!-- inventory -->
         <div
-          class="text-center mb-5 custome-me"
-          data-bs-toggle="tooltip"
-          data-bs-placement="right"
-          data-bs-html="true"
-          data-bs-title="<h4>Inventory</h4>"
+          class="text-center mb-5 custome-me tooltip-right-container"
           id="inventoryWindowUsers"
         >
-          <i class="fa-solid fa-file-circle-plus fs-3"></i>
+          <i class="fa-solid fa-file-circle-plus fs-3">
+            <div class="tooltip-right-text fs-4 p-2 px-3">Inventory</div>
+          </i>
         </div>
         <!-- transaksi -->
         <div
-          class="text-center mb-5 custome-me"
-          data-bs-toggle="tooltip"
-          data-bs-placement="right"
-          data-bs-html="true"
-          data-bs-title="<h4>Transaksi</h4>"
+          class="text-center mb-5 custome-me tooltip-right-container"
           id="transaksiWindowUsers"
         >
-          <i class="fa-solid fa-chart-simple fs-3"></i>
+          <i class="fa-solid fa-chart-simple fs-3">
+            <div class="tooltip-right-text fs-4 p-2 px-3">Transaction</div>
+          </i>
         </div>
         <!-- users -->
-        <div
-          class="text-center mb-5 custome-me"
-          data-bs-toggle="tooltip"
-          data-bs-placement="right"
-          data-bs-html="true"
-          data-bs-title="<h4>Users</h4>"
-        >
-          <i class="fa-solid fa-users fs-3 custome-me-active"></i>
+        <div class="text-center mb-5 custome-me tooltip-right-container">
+          <i class="fa-solid fa-users fs-3 custome-me-active">
+            <div class="tooltip-right-text fs-4 p-2 px-3" style="top: 32px">
+              User
+            </div>
+          </i>
         </div>
         <!-- about -->
         <div
-          class="text-center mb-5 custome-me"
-          data-bs-toggle="tooltip"
-          data-bs-placement="left"
-          data-bs-html="true"
-          data-bs-title="<h4>About-us</h4>"
+          class="text-center mb-5 custome-me tooltip-right-container"
           id="aboutWindowUsers"
         >
-          <i class="fa-solid fa-city fs-3"></i>
+          <i class="fa-solid fa-city fs-3">
+            <div class="tooltip-right-text fs-4 p-2 px-3">About</div>
+          </i>
         </div>
       </div>
     </div>
@@ -139,22 +133,36 @@
             <h2>Users</h2>
           </div>
           <div class="card-body">
-            <div class="d-flex gap-1 justify-content-between mb-3">
+            <!-- create -->
+            <button
+              class="btn d-flex gap-2 text-white align-items-center mb-3"
+              style="background-color: #4338ca"
+              data-bs-toggle="modal"
+              data-bs-target="#user-create"
+            >
+              <i class="fa-solid fa-square-plus fs-5"></i>
+              <span>Add User</span>
+            </button>
+            <!-- limit - search -->
+            <div class="d-flex gap-2 mb-3">
+              <!-- limit -->
               <select
                 class="form-select me-3"
                 aria-label="Default select example"
                 style="width: auto"
+                id="user-limit"
               >
-                <option selected>10</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+                <option value="2">5</option>
+                <option value="5">Two</option>
+                <option value="20">Three</option>
               </select>
-              <div class="input-group w-50">
+              <!-- search -->
+              <div class="input-group" style="width: 580px">
                 <input
                   type="text"
                   class="form-control focus-by-me"
                   placeholder="masukkan keyword menu..."
+                  id="user-search"
                 />
                 <span
                   class="input-group-text hover-by-me"
@@ -162,94 +170,30 @@
                   >Search</span
                 >
               </div>
-              <div class="d-flex gap-2 me-3">
-                <button class="btn btn-success d-flex gap-2">
-                  <i class="fa-solid fa-file-excel fs-4"></i>
-                  <span>Excel</span>
-                </button>
-                <button class="btn btn-secondary d-flex gap-2">
-                  <i class="fa-solid fa-file-pdf fs-4"></i>
-                  <span>PDF</span>
-                </button>
-                <button class="btn btn-danger d-flex gap-2">
-                  <i class="fa-solid fa-trash fs-4"></i>
-                  <span>Delete</span>
-                </button>
-              </div>
-              <button
-                class="btn d-flex gap-2 text-white cash-in"
-                style="background-color: #4338ca"
-                data-bs-toggle="modal"
-                data-bs-target="#usersModal"
-              >
-                <i class="fa-solid fa-square-plus fs-4"></i>
-                <span class="">Tambah User</span>
-              </button>
             </div>
             <!-- tabel transaksi -->
-            <div style="max-height: 270px; overflow: auto">
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th class="text-center">No</th>
-                    <th>Nama</th>
-                    <th>Photo</th>
-                    <th>Position</th>
-                    <th>Email</th>
-                    <th class="text-center">Aksi</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td class="text-center align-content-center">1</td>
-                    <td class="text-nowrap align-content-center">
-                      Sandhika Galih
-                    </td>
-                    <td class="text-nowrap align-content-center">image-1</td>
-                    <td class="text-nowrap align-content-center">Admin</td>
-                    <td class="text-nowrap align-content-center">
-                      sandhikagalih@gmail.com
-                    </td>
-                    <td>
-                      <div class="d-flex w-100 justify-content-center gap-2">
-                        <button class="btn btn-success text-white">
-                          <i class="fa-solid fa-eye"></i>
-                        </button>
-                        <button class="btn btn-primary text-white">
-                          <i class="fa-solid fa-pencil"></i>
-                        </button>
-                        <button class="btn btn-danger text-white">
-                          <i class="fa-solid fa-trash-can"></i>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+            <table class="table table-striped" style="table-layout: fixed">
+              <thead>
+                <tr>
+                  <th class="text-center text-nowrap" style="width: 90px">#</th>
+                  <th style="width: 180px" class="text-nowrap">Full Name</th>
+                  <th style="width: 180px" class="text-nowrap">Email</th>
+                  <th style="width: 180px">Position</th>
+                  <th class="text-center" style="width: 220px">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="user"></tbody>
+            </table>
             <!-- pagination menu -->
             <div class="w-100 d-flex justify-content-center">
-              <div class="btn-group gap-2">
+              <div class="btn-group">
                 <button type="button" class="btn border border-2">
                   <i class="fa-solid fa-backward-fast fs-6"></i>
                 </button>
                 <button type="button" class="btn border border-2">
                   <i class="fa-solid fa-backward-step fs-6"></i>
                 </button>
-                <button type="button" class="btn border border-2 fs-6">
-                  1
-                </button>
-                <button
-                  type="button"
-                  class="btn fs-6"
-                  style="
-                    background-color: #273eec;
-                    color: white;
-                    border: 4px solid #99a4f9;
-                  "
-                >
-                  2
-                </button>
+                <div id="user-page-number" class="btn-group"></div>
                 <button type="button" class="btn border border-2">
                   <i class="fa-solid fa-forward-step fs-6"></i>
                 </button>
@@ -263,20 +207,11 @@
       </div>
     </div>
     <!-- Modal Users-->
-    <div
-      class="modal fade"
-      id="usersModal"
-      tabindex="-1"
-      aria-labelledby="usersModalLabel"
-      aria-hidden="true"
-    >
+    <div class="modal fade" id="user-create" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
         <div class="modal-content">
-          <div
-            class="modal-header text-white"
-            style="background-color: #4338ca"
-          >
-            <h1 class="modal-title fs-2" id="usersModal">Users</h1>
+          <div class="modal-header" style="background-color: #4338ca">
+            <h1 class="modal-title fs-2 text-white">Users</h1>
           </div>
           <div class="modal-body">
             <div class="mb-3">
@@ -353,6 +288,8 @@
     </script>
     <!-- myscript -->
     <script src="./../require/index.js"></script>
+    <script type="module" src="./../js/navigation/user.js"></script>
+    <script type="module" src="./../js/models/users/index.js"></script>
     <script type="module" src="./../js/utils/ipc.js"></script>
     <script type="module" src="./../js/utils/updateUi.js"></script>
   </body>

@@ -27,15 +27,24 @@
           <h5>Josse Surya Pinem</h5>
         </div>
         <div class="d-flex gap-2">
+          <!-- minimize -->
+          <i
+            id="minimize-window"
+            class="fa-solid fa-minus custome-me tooltip-bottom-container"
+          >
+            <p class="tooltip-bottom-text fs-5 p-2">Minimze</p>
+          </i>
+          <!-- restore -->
           <i
             class="fa-regular fa-window-restore custome-me tooltip-bottom-container"
-            id="minimize-transaction"
+            id="restore-window"
           >
-            <div class="tooltip-bottom-text fs-5 p-2">Minimize</div></i
+            <div class="tooltip-bottom-text fs-5 p-2">Restore</div></i
           >
+
           <i
             class="fa-solid fa-right-from-bracket custome-me tooltip-bottom-container"
-            id="close-transaction"
+            id="close-window"
           >
             <div class="tooltip-bottom-text fs-5 p-2">Quit</div></i
           >
@@ -43,7 +52,7 @@
       </div>
     </div>
     <div class="side-navigation">
-      <div class="logo">
+      <div class="logo" id="dragWin">
         <img src="./../images/import.png" alt="" />
       </div>
       <!-- links -->
@@ -78,7 +87,9 @@
         <!-- transaksi -->
         <div class="text-center mb-5 custome-me tooltip-right-container">
           <i class="fa-solid fa-chart-simple fs-3 custome-me-active">
-            <div class="tooltip-right-text fs-4 p-2 px-3">Transaction</div>
+            <div class="tooltip-right-text fs-4 p-2 px-3" style="top: 32px">
+              Transaction
+            </div>
           </i>
         </div>
         <!-- users -->
@@ -845,7 +856,7 @@
     </script>
     <!-- myscript -->
     <script src="./../require/index.js"></script>
-    <script type="module" src="./../js/utils/ipc.js"></script>
+    <script type="module" src="./../js/navigation/transaction.js"></script>
     <script type="module" src="./../js/utils/updateUi.js"></script>
     <script type="module" src="./../js/models/cash/index.js"></script>
     <script type="module" src="./../js/models/accounting/index.js"></script>

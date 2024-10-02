@@ -41,7 +41,7 @@ export const uiTbody = (el) => {
                       persediaanQty >= 1 ? "text-bg-success" : "text-bg-danger"
                     }"" style="max-width: 100%">${rpTxt}</span>
                   </td>
-                  <td class="align-content-center" style="width:217px">
+                  <td class="align-content-center">
                     <div class="d-flex w-100 justify-content-center gap-2">
                       <button id="persediaanDetail"
                         class="btn btn-success text-white"                      

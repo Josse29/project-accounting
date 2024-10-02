@@ -18,10 +18,6 @@ export const reinitTooltip = () => {
   // Inisialisasi ulang tooltip setelah konten baru di-load
   $('[data-bs-toggle="tooltip"]').tooltip();
 };
-export const reinitializeTooltips = () => {
-  // Inisialisasi ulang tooltip setelah konten baru di-load
-  $('[data-bs-toggle="tooltip"]').tooltip();
-};
 export const uiLoad = () => {
   const html = `<div class="loading">
                 <div class="d-flex gap-2">

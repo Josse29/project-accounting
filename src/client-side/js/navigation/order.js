@@ -4,7 +4,7 @@ import {
   sendIpcLoadDashboard,
   sendIpcLoadInventory,
   sendIpcLoadTransaksi,
-  sendIpcLoadUsers,
+  sendIpcLoadUser,
 } from "../utils/ipc.js";
 
 $("#minimize-window")
@@ -43,7 +43,7 @@ $("#transaksiWindowOrder")
 $("#usersWindowOrder")
   .off("click")
   .on("click", () => {
-    sendIpcLoadUsers();
+    sendIpcLoadUser();
     sendIpcHideOrder();
   });
 $("#aboutWindowOrder")

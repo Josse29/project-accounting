@@ -1,26 +1,55 @@
-$("#minimize-transaction").on("click", () => {
-  sendIpcMinimizeWindowTransaction();
-});
-$("#close-transaction").on("click", () => {
-  sendIpcCloseWindowTransaction();
-});
-$("#dashboardWindowTransaction").on("click", () => {
-  sendIpcLoadDashboard();
-  sendIpcHideTransaction();
-});
-$("#orderWindowTransaction").on("click", () => {
-  sendIpcLoadOrder();
-  sendIpcHideTransaction();
-});
-$("#inventoryWindowTransaction").on("click", () => {
-  sendIpcLoadInventory();
-  sendIpcHideTransaction();
-});
-$("#usersWindowTransaction").on("click", () => {
-  sendIpcLoadUsers();
-  sendIpcHideTransaction();
-});
-$("#aboutWindowTransaction").on("click", () => {
-  sendIpcLoadAbout();
-  sendIpcHideTransaction();
-});
+import {
+  sendIpcLoadDashboard,
+  sendIpcHideTransaction,
+  sendIpcLoadOrder,
+  sendIpcLoadInventory,
+  sendIpcLoadUser,
+  sendIpcLoadAbout,
+} from "../utils/ipc.js";
+
+$("#minimize-window")
+  .off("click")
+  .on("click", () => {
+    ipcRenderer.send("minimize-window:transaksi-page");
+  });
+$("#restore-window")
+  .off("click")
+  .on("click", () => {
+    console.log("restore-from-client");
+    ipcRenderer.send("restore-window:transkasi-page");
+  });
+$("#close-window")
+  .off("click")
+  .on("click", () => {
+    ipcRenderer.send("close-window:transaksi-page");
+  });
+$("#dashboardWindowTransaction")
+  .off("click")
+  .on("click", () => {
+    sendIpcLoadDashboard();
+    sendIpcHideTransaction();
+  });
+$("#orderWindowTransaction")
+  .off("click")
+  .on("click", () => {
+    sendIpcLoadOrder();
+    sendIpcHideTransaction();
+  });
+$("#inventoryWindowTransaction")
+  .off("click")
+  .on("click", () => {
+    sendIpcLoadInventory();
+    sendIpcHideTransaction();
+  });
+$("#usersWindowTransaction")
+  .off("click")
+  .on("click", () => {
+    sendIpcLoadUser();
+    sendIpcHideTransaction();
+  });
+$("#aboutWindowTransaction")
+  .off("click")
+  .on("click", () => {
+    sendIpcLoadAbout();
+    sendIpcHideTransaction();
+  });

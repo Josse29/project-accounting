@@ -25,22 +25,25 @@
           <i class="fa-solid fa-user custome-me"></i>
           <h5>Josse Surya Pinem</h5>
         </div>
-        <div class="d-flex gap-2">
+        <div>
+          <!-- minimize -->
           <i
             class="fa-solid fa-minus custome-me tooltip-bottom-container"
-            id="minimize-window-inventory"
+            id="minimize-window"
           >
             <div class="tooltip-bottom-text fs-5 p-2">Minimize</div>
           </i>
+          <!-- restore -->
           <i
             class="fa-regular fa-window-restore custome-me tooltip-bottom-container"
-            id="minimize-maximize-window-inventory"
+            id="restore-window"
           >
             <div class="tooltip-bottom-text fs-5 p-2">Restore Down</div>
           </i>
+          <!-- close -->
           <i
             class="fa-solid fa-right-from-bracket custome-me tooltip-bottom-container"
-            id="close-window-inventory"
+            id="close-window"
           >
             <div class="tooltip-bottom-text fs-5 p-2">Exit</div>
           </i>
@@ -48,7 +51,7 @@
       </div>
     </div>
     <div class="side-navigation">
-      <div class="logo">
+      <div class="logo" id="dragWin">
         <img src="./../images/import.png" alt="" />
       </div>
       <!-- links -->
@@ -2089,7 +2092,7 @@
     <!-- bootstrap js  -->
     <script src="./../third-party/bootstrap/bootstrap.bundle.min.js"></script>
     <script src="./../require/index.js"></script>
-    <script type="module" src="./../js/utils/ipc.js"></script>
+    <script src="./../js/navigation/inventory.js" type="module"></script>
     <script type="module" src="./../js/utils/updateUi.js"></script>
     <script type="module" src="./../js/models/products/index.js"></script>
     <script type="module" src="./../js/models/categories/index.js"></script>

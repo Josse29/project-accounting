@@ -151,3 +151,6 @@ button.general-entries-page-active {
   color: white !important;
   border: 4px solid #99a4f9 !important;
 }
+#dragWin {
+  -webkit-app-region: drag; /* Allow dragging the window */
+}

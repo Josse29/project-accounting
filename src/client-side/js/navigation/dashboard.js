@@ -4,9 +4,9 @@ import {
   sendIpcLoadInventory,
   sendIpcLoadOrder,
   sendIpcLoadTransaksi,
-  sendIpcLoadUsers,
+  sendIpcLoadUser,
 } from "../utils/ipc.js";
-console.log("test");
+
 // top
 $("#restore-window")
   .off("click")
@@ -46,7 +46,7 @@ $("#transaksiWindow")
 $("#usersWindow")
   .off("click")
   .on("click", () => {
-    sendIpcLoadUsers();
+    sendIpcLoadUser();
     sendIpcHideDash();
   });
 $("#aboutWindow")
