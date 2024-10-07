@@ -41,6 +41,7 @@
           >
             <p class="tooltip-bottom-text fs-5 p-2">Restore</p>
           </i>
+          <!-- close -->
           <i
             class="fa-solid fa-right-from-bracket custome-me tooltip-bottom-container"
             id="close-window"
@@ -117,7 +118,7 @@
         class="bg-white d-flex justify-content-between align-items-center rounded-3 shadow-sm px-4 py-3 mb-4 border-l-custome-me"
       >
         <div class="d-flex gap-3 align-items-center">
-          <i class="fa-solid fa-chart-simple fs-1"></i>
+          <i class="fa-solid fa-users fs-1"></i>
           <h1>User</h1>
         </div>
         <h4 class="hari-tanggal-tahun"></h4>
@@ -126,23 +127,28 @@
       <div class="bg-white d-flex flex-column rounded-3 shadow-sm px-4 py-4">
         <!-- section users -->
         <div class="card w-100 mb-4">
-          <div
-            class="card-header text-white d-flex justify-content-between align-items-center"
-            style="background-color: #4338ca"
-          >
+          <div class="card-header text-white" style="background-color: #4338ca">
             <h2>Users</h2>
           </div>
           <div class="card-body">
-            <!-- create -->
-            <button
-              class="btn d-flex gap-2 text-white align-items-center mb-3"
-              style="background-color: #4338ca"
-              data-bs-toggle="modal"
-              data-bs-target="#user-create"
-            >
-              <i class="fa-solid fa-square-plus fs-5"></i>
-              <span>Add User</span>
-            </button>
+            <!-- create and total row -->
+            <div class="d-flex justify-content-between mb-3">
+              <!-- create -->
+              <button
+                class="btn d-flex gap-2 text-white align-items-center"
+                style="background-color: #4338ca"
+                data-bs-toggle="modal"
+                data-bs-target="#user-create"
+              >
+                <i class="fa-solid fa-square-plus fs-5"></i>
+                <span>Add User</span>
+              </button>
+              <!-- total row -->
+              <div class="fs-4 me-3">
+                <span>Total : </span>
+                <span id="user-total-row">0</span>
+              </div>
+            </div>
             <!-- limit - search -->
             <div class="d-flex gap-2 mb-3">
               <!-- limit -->
@@ -171,33 +177,64 @@
                 >
               </div>
             </div>
-            <!-- tabel transaksi -->
-            <table class="table table-striped" style="table-layout: fixed">
-              <thead>
-                <tr>
-                  <th class="text-center text-nowrap" style="width: 90px">#</th>
-                  <th style="width: 180px" class="text-nowrap">Full Name</th>
-                  <th style="width: 180px" class="text-nowrap">Email</th>
-                  <th style="width: 180px">Position</th>
-                  <th class="text-center" style="width: 220px">Aksi</th>
-                </tr>
-              </thead>
-              <tbody id="user"></tbody>
-            </table>
-            <!-- pagination menu -->
-            <div class="w-100 d-flex justify-content-center">
+            <!-- tabel user -->
+            <div id="user-scroll" class="overflow-x-auto my-3">
+              <table class="table table-striped" style="table-layout: fixed">
+                <thead>
+                  <tr>
+                    <th class="text-center text-nowrap" style="width: 90px">
+                      #
+                    </th>
+                    <th style="width: 180px" class="text-nowrap">Full Name</th>
+                    <th style="width: 180px" class="text-nowrap">Email</th>
+                    <th style="width: 180px">Position</th>
+                    <th class="text-center" style="width: 220px">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="user">
+                  <tr>
+                    <td colspan="5" class="fst-italic text-center">
+                      loading....
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- pagination user -->
+            <div
+              class="w-100 d-flex justify-content-center d-none"
+              id="user-pagination"
+            >
               <div class="btn-group">
-                <button type="button" class="btn border border-2">
+                <!-- first page -->
+                <button
+                  type="button"
+                  class="btn border border-2"
+                  id="user-first-page"
+                >
                   <i class="fa-solid fa-backward-fast fs-6"></i>
                 </button>
-                <button type="button" class="btn border border-2">
+                <!-- prev page -->
+                <button
+                  type="button"
+                  class="btn border border-2"
+                  id="user-prev-page"
+                >
                   <i class="fa-solid fa-backward-step fs-6"></i>
                 </button>
                 <div id="user-page-number" class="btn-group"></div>
-                <button type="button" class="btn border border-2">
+                <button
+                  type="button"
+                  class="btn border border-2"
+                  id="user-next-page"
+                >
                   <i class="fa-solid fa-forward-step fs-6"></i>
                 </button>
-                <button type="button" class="btn border border-2">
+                <button
+                  type="button"
+                  class="btn border border-2"
+                  id="user-last-page"
+                >
                   <i class="fa-solid fa-forward-fast fs-6"></i>
                 </button>
               </div>
@@ -214,43 +251,90 @@
             <h1 class="modal-title fs-2 text-white">Users</h1>
           </div>
           <div class="modal-body">
+            <!-- alert-danger -->
+            <div id="failed"></div>
+            <!-- fullname -->
             <div class="mb-3">
-              <label for="nama" class="form-label fs-4">Nama</label>
+              <label for="userfullname" class="form-label fs-4">Fullname</label>
               <input
                 type="text"
                 class="form-control"
-                id="nama"
+                id="userfullname"
                 placeholder="ex : John doe"
               />
             </div>
+            <!-- email -->
             <div class="mb-3">
-              <label for="nama" class="form-label fs-4">Email</label>
+              <label for="useremail" class="form-label fs-4">Email</label>
               <input
                 type="text"
                 class="form-control"
-                id="nama"
-                placeholder="ex : John doe"
+                id="useremail"
+                placeholder="ex : jhondeo@gmail.com"
               />
             </div>
+            <!-- position -->
             <div class="mb-3">
-              <label class="form-label fs-4">Position</label>
-              <select class="form-select" aria-label="Default select example">
-                <option selected>Open this select menu</option>
-                <option value="cash">Tunai</option>
-                <option value="2">Kredit</option>
+              <label class="form-label fs-4" for="userposition">Position</label>
+              <select class="form-select" id="userposition">
+                <option selected disabled>Open this select position</option>
+                <option value="admin">Admin</option>
+                <option value="sales">Sales</option>
+                <option value="customer">Customer</option>
               </select>
             </div>
+            <!-- photo -->
             <div class="mb-3">
-              <label for="photo" class="form-label fs-4">Photo</label>
-              <input class="form-control" type="file" id="photo" />
+              <label for="userimg" class="form-label fs-4">Photo</label>
+              <div class="position-relative d-none" id="section-img">
+                <!-- cancel -->
+                <i
+                  class="fa-solid fa-circle-xmark text-danger"
+                  id="cancel-image"
+                ></i>
+                <img
+                  src="./../images/josse.jpg"
+                  class="w-100 h-auto mb-3"
+                  id="preview-img"
+                />
+              </div>
+              <input class="form-control" type="file" id="userimg" />
             </div>
+            <!-- password -->
             <div class="mb-3">
-              <label for="keterangan" class="form-label fs-4">Keterangan</label>
+              <!-- toggle password -->
+              <div class="d-flex justify-content-between align-items-center">
+                <label for="userpassword" class="form-label fs-4"
+                  >Password</label
+                >
+                <label class="fa-solid fa-eye me-2 show-password fs-5"></label>
+                <label
+                  class="fa-solid fa-eye-slash me-2 hide-password fs-5 d-none"
+                ></label>
+              </div>
               <input
-                type="text"
+                type="password"
                 class="form-control"
-                id="keterangan"
-                placeholder="40,000,00 ,-"
+                id="userpassword"
+                placeholder="*******"
+              />
+            </div>
+            <!-- confirmation - password -->
+            <div class="mb-3">
+              <div class="d-flex justify-content-between align-items-center">
+                <label for="userpassword1" class="form-label fs-4"
+                  >Confirmation Password</label
+                >
+                <label class="fa-solid fa-eye me-2 show-password1 fs-5"></label>
+                <label
+                  class="fa-solid fa-eye-slash me-2 hide-password1 fs-5 d-none"
+                ></label>
+              </div>
+              <input
+                type="password"
+                class="form-control"
+                id="userpassword1"
+                placeholder="*******"
               />
             </div>
           </div>
@@ -266,6 +350,7 @@
               type="button"
               class="btn text-white"
               style="background-color: #4338ca"
+              id="send-to-db"
             >
               Save changes
             </button>

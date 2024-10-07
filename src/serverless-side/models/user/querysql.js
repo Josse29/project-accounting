@@ -1,36 +1,37 @@
 export const queryRegister = (
-  emailVal,
-  fullnameVal,
-  passwordVal,
-  positionVal
+  UserEmailVal,
+  UserFullnameVal,
+  UserPasswordVal,
+  imgBase64,
+  UserPositionVal
 ) => {
   let query = `INSERT 
-                 INTO User 
-                 (UserEmail, UserFullname, UserPassword, UserPosition) 
-                 VALUES 
-                 ('${emailVal}', '${fullnameVal}', '${passwordVal}','${positionVal}') `;
+               INTO Userx 
+               (UserEmail, UserFullname, UserPassword, UserImg, UserPosition) 
+               VALUES 
+               ('${UserEmailVal}', '${UserFullnameVal}', '${UserPasswordVal}', '${imgBase64}', ${UserPositionVal}') `;
   return query;
 };
 // total-row
-export const queryGetTotal = () => {
+export const queryGetTotal = (searchVal) => {
   let query = `SELECT COUNT(*) AS Total_Row FROM User `;
+  if (searchVal !== "") {
+    query += ` WHERE User.UserFullname LIKE '%${searchVal}%' `;
+  }
   return query;
 };
 // get-all-user
 export const queryGet = (searchVal, limitVal, offsetVal) => {
   let query = `SELECT * FROM User `;
-  if (searchVal !== "") {
-  }
-  query += `LIMI `;
   //  with search value
-  if (categorySearch !== "") {
-    query += `WHERE ${colCategoryName} LIKE '%${categorySearch}%' ESCAPE '!' OR 
-                        ${colCategoryInfo} LIKE '%${categorySearch}%' ESCAPE '!' `;
+  if (searchVal !== "") {
+    query += `WHERE User.UserFullname LIKE '%${searchVal}%' ESCAPE '!' OR 
+                    User.UserEmail LIKE '%${searchVal}%' ESCAPE '!' `;
   }
   //  with limit, offset, order
-  query += `ORDER BY ${colCategoryName} ASC
-                LIMIT ${categoryLimit} 
-                OFFSET ${categoryStartOffset}`;
+  query += `ORDER BY User.UserFullname ASC
+            LIMIT ${limitVal} 
+            OFFSET ${offsetVal}`;
   return query;
 };
 // for customer

@@ -29,11 +29,18 @@ export const uiTr = (el) => {
   return tr;
 };
 export const uiBtnPage = (i) => {
-  let actived = `${i === 1 ? "page-active" : ""}`;
+  let actived = `${i === 1 ? "user-page-active" : ""}`;
   const btn = `<button type="button" class="btn border border-2 fs-6 ${actived}">
                  ${i}
                </button> `;
   return btn;
+};
+export const uiBtnPageActive = (page) => {
+  const btnPage = $("#user-page-number button");
+  $(btnPage).removeClass("user-page-active");
+  $(btnPage)
+    .eq(page - 1)
+    .addClass("user-page-active");
 };
 export const listUser = (el) => {
   return `<li data-id=${el.id}>${el.fullname}</li>`;
@@ -61,4 +68,17 @@ export const uiHidePasswordConfirm = () => {
             for="toggle-confirm-password"
             class="fa-solid fa-eye me-2 hide-password">
         </label>`;
+};
+export const uiAlertFail = (res) => {
+  const alert = `<div class="alert alert-danger alert-dismissible fade show text-start"
+                      role="alert">
+                  <strong class="text-capitalize">${res}</strong>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"
+                  ></button>
+                </div>`;
+  return alert;
 };

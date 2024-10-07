@@ -1,5 +1,4 @@
 import { formatQty1 } from "../../client-side/js/utils/formatQty.js";
-import { isNumeric } from "../etc/regex.js";
 import { validateProductAdd, validateQty } from "../etc/validation.js";
 import {
   queryDeletePersediaan,

@@ -25,7 +25,7 @@ $("div#product-refpersediaan-read")
     const btnPlus = productCard.find("button#order-create-qty-plus");
     // if it already exist in storage, justupdate qty--
     if (productIndex !== -1) {
-      const cartProductI = cartArray[productIndex];
+      let cartProductI = cartArray[productIndex];
       if (cartProductI.ProductQty > 0) {
         cartProductI.ProductQty--;
         btnPlus.removeClass("unsufficient");

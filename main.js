@@ -39,23 +39,7 @@ const createLoginPage = () => {
     app.quit();
   });
 };
-// 2 register page
-let registerPage;
-ipcMain.on("load:register-page", () => {
-  registerPage = new BrowserWindow({
-    webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
-    },
-    title: "Register - page",
-    width: 450,
-    height: 720,
-    autoHideMenuBar: true,
-  });
-  registerPage.loadFile("./src/client-side/pages/register.html");
-  remote.enable(registerPage.webContents);
-});
-// 3 dashboard page
+// 2 dashboard page
 let dashboardPage;
 let isDashboardListenerSet = false; // Flag untuk listener dashboard
 ipcMain.on("load:dashboard-page", () => {
@@ -98,7 +82,7 @@ ipcMain.on("load:dashboard-page", () => {
     isDashboardListenerSet = true;
   }
 });
-// 4 order page
+// 3 order page
 let orderPage;
 let isOrderListenerSet = false;
 ipcMain.on("load:order-page", () => {
@@ -138,7 +122,7 @@ ipcMain.on("load:order-page", () => {
     isOrderListenerSet = true;
   }
 });
-// 5 inventory page
+// 4 inventory page
 let inventoryPage;
 let isInventoryListenerSet = false;
 ipcMain.on("load:inventory-page", () => {
@@ -179,7 +163,7 @@ ipcMain.on("load:inventory-page", () => {
     isInventoryListenerSet = true;
   }
 });
-// 6 transaksi page
+// 5 transaksi page
 let transaksiPage;
 let isTransactionListenerSet = false;
 ipcMain.on("load:transaksi-page", () => {
@@ -219,7 +203,7 @@ ipcMain.on("load:transaksi-page", () => {
     isTransactionListenerSet = true;
   }
 });
-// 7 users pages
+// 6 users pages
 let userPage;
 let isUserListenerSet = false;
 ipcMain.on("load:users-page", () => {

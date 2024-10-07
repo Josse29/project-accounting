@@ -55,7 +55,6 @@ $("button#order-done")
   .off("click")
   .on("click", async function () {
     try {
-      console.log("test");
       const { formattedDDMY, formattedHMS } = getTimeNow();
       const userSalesId = $("select#order-create-usersalesid").val();
       const customerId = $("select#order-create-usercustomerid").val();

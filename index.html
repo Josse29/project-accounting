@@ -57,59 +57,54 @@
     <div class="sections">
       <div class="section-first"></div>
       <div class="section-second">
-        <h1>Login Here</h1>
-        <h5>Welcome back you’ve been missed !</h5>
-        <form>
-          <!-- email -->
-          <div class="mb-3">
-            <label for="email" class="form-label custome-me"
-              >Email address</label
-            >
-            <input
-              type="email"
-              class="form-control custome-me"
-              id="email"
-              placeholder="input your email..."
-            />
-          </div>
-          <!-- password -->
-          <div class="mb-3">
-            <div
-              class="d-flex justify-content-between align-items-center w-100"
-            >
-              <label for="password" class="form-label custome-me"
-                >Password</label
+        <div class="d-flex flex-column w-100">
+          <h1>Login Here</h1>
+          <h5>Welcome back you’ve been missed !</h5>
+          <form>
+            <!-- email -->
+            <div class="mb-3">
+              <label for="email" class="form-label custome-me"
+                >Email address</label
               >
-              <div class="toggle-password">
-                <label
-                  class="fa-solid fa-eye me-2 hide-password"
-                  for="toggle-password"
-                ></label>
-              </div>
-              <input type="checkbox" id="toggle-password" class="d-none" />
+              <input
+                type="email"
+                class="form-control custome-me"
+                id="email"
+                placeholder="input your email..."
+              />
             </div>
-            <input
-              type="password"
-              class="form-control custome-me"
-              id="password"
-              placeholder="********"
-            />
-            <h5 class="forgot-password">forgot password ?</h5>
-          </div>
-          <!-- submit -->
-          <button
-            type="submit"
-            class="btn w-100 text-white custome-me"
-            id="login"
-          >
-            Submit
-          </button>
-        </form>
-        <div class="d-flex gap-2 my-3 w-100 register">
-          <p>haven't an account ?</p>
-          <p class="fw-bold" style="cursor: pointer">
-            <i class="fa-regular fa-hand-point-right"></i> Register here !
-          </p>
+            <!-- password -->
+            <div class="mb-3">
+              <div
+                class="d-flex justify-content-between align-items-center w-100"
+              >
+                <label for="password" class="form-label custome-me"
+                  >Password</label
+                >
+                <div class="toggle-password">
+                  <label
+                    class="fa-solid fa-eye me-2 hide-password"
+                    for="toggle-password"
+                  ></label>
+                </div>
+                <input type="checkbox" id="toggle-password" class="d-none" />
+              </div>
+              <input
+                type="password"
+                class="form-control custome-me"
+                id="password"
+                placeholder="********"
+              />
+            </div>
+            <!-- submit -->
+            <button
+              type="submit"
+              class="btn w-100 text-white custome-me"
+              id="login"
+            >
+              Submit
+            </button>
+          </form>
         </div>
       </div>
     </div>
