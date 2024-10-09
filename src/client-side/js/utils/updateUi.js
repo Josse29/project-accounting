@@ -19,7 +19,7 @@ export const reinitTooltip = () => {
   $('[data-bs-toggle="tooltip"]').tooltip();
 };
 export const uiLoad = () => {
-  const html = `<div class="loading">
+  const html = `<div>
                 <div class="d-flex gap-2">
                   <p
                     class="animate-load"

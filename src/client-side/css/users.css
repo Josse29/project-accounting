@@ -145,17 +145,17 @@ td:hover {
   color: white !important;
   border: 4px solid #99a4f9 !important;
 }
-div#user-scroll::-webkit-scrollbar {
+div#section-user div::-webkit-scrollbar {
   height: 8px;
   width: 8px;
 }
-div#user-scroll::-webkit-scrollbar-track {
+div#section-user div::-webkit-scrollbar-track {
   background: #f1f1f1;
 }
-div#user-scroll::-webkit-scrollbar-thumb {
+div#section-user div::-webkit-scrollbar-thumb {
   background: #888;
 }
-div#user-scroll::-webkit-scrollbar-thumb:hover {
+div#section-user div::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
 i#cancel-image {
@@ -166,5 +166,49 @@ i#cancel-image {
   cursor: pointer;
 }
 label#toggle-password {
+  cursor: pointer;
+}
+.animate-load {
+  background: #b3b2b2;
+  position: relative;
+  overflow: hidden;
+}
+.animate-load::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: -100%; /* Mulai dari luar elemen */
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(236, 236, 236, 0.6),
+    transparent
+  );
+  animation: skeleton-loading 1.5s infinite;
+}
+@keyframes skeleton-loading {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+.opacityMe {
+  animation: myopacity 1s ease-in-out;
+}
+label.show-password {
+  cursor: pointer;
+}
+label.hide-password {
+  cursor: pointer;
+}
+label.show-password1 {
+  cursor: pointer;
+}
+label.hide-password1 {
   cursor: pointer;
 }

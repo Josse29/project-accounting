@@ -6,7 +6,8 @@ import {
 
 // 1. endpoint : api/user?limit=${limitVal}&offset=${offsetVal}
 // method : get
-// return all user with search, limit, offset
+// payload : searchVal, limitVal, offsetVal,
+// return : all users with search, limit, offset
 export const fetchLimitOffset = async (req, res) => {
   try {
     // payload
@@ -23,7 +24,8 @@ export const fetchLimitOffset = async (req, res) => {
 };
 // 2. endpoint : api/user/get-page-row
 // method : get
-// return page and row
+// payload : searchVal, limitVal
+// return : total page and row
 export const fetchRowPage = async (req, res) => {
   try {
     // payload
@@ -39,6 +41,8 @@ export const fetchRowPage = async (req, res) => {
 };
 // 3. endpoint : api/user/register
 // method : post
+// payload  : UserEmailVal, UserFullnameVal, UserPasswordVal, UserPassword1Val, UserPositionVal, UserImgVal
+// return message has been registered
 export const addUser = async (req, res) => {
   try {
     // payload
@@ -54,5 +58,24 @@ export const addUser = async (req, res) => {
     return res(true, res1);
   } catch (error) {
     return res(false, error);
+  }
+};
+
+export const fetchMany = async (res) => {
+  try {
+    const response = await fetch("https://fakestoreapi.com/products");
+    const json = await response.json();
+    res(true, json);
+  } catch (error) {
+    res(false, error);
+  }
+};
+export const fetchSingle = async (res) => {
+  try {
+    const response = await fetch("https://fakestoreapi.com/products/1");
+    const json = await response.json();
+    res(true, json);
+  } catch (error) {
+    res(false, error);
   }
 };

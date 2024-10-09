@@ -9,29 +9,38 @@ export const queryRegister = (
                INTO Userx 
                (UserEmail, UserFullname, UserPassword, UserImg, UserPosition) 
                VALUES 
-               ('${UserEmailVal}', '${UserFullnameVal}', '${UserPasswordVal}', '${imgBase64}', ${UserPositionVal}') `;
+               ('${UserEmailVal}', '${UserFullnameVal}', '${UserPasswordVal}', '${imgBase64}', '${UserPositionVal}') `;
   return query;
 };
 // total-row
 export const queryGetTotal = (searchVal) => {
   let query = `SELECT COUNT(*) AS Total_Row FROM User `;
   if (searchVal !== "") {
-    query += ` WHERE User.UserFullname LIKE '%${searchVal}%' `;
+    query += `WHERE User.UserFullname LIKE '%${searchVal}%' ESCAPE '!' OR 
+                    User.UserEmail LIKE '%${searchVal}%' ESCAPE '!' OR  
+                    User.UserPosition LIKE '%${searchVal}%' ESCAPE '!'`;
   }
   return query;
 };
 // get-all-user
 export const queryGet = (searchVal, limitVal, offsetVal) => {
-  let query = `SELECT * FROM User `;
+  let query = `SELECT
+               User.UserId, 
+               User.UserFullname,
+               User.UserEmail,
+               User.UserPosition
+               FROM User `;
   //  with search value
   if (searchVal !== "") {
     query += `WHERE User.UserFullname LIKE '%${searchVal}%' ESCAPE '!' OR 
-                    User.UserEmail LIKE '%${searchVal}%' ESCAPE '!' `;
+                    User.UserEmail LIKE '%${searchVal}%' ESCAPE '!' OR  
+                    User.UserPosition LIKE '%${searchVal}%' ESCAPE '!' `;
   }
   //  with limit, offset, order
   query += `ORDER BY User.UserFullname ASC
             LIMIT ${limitVal} 
             OFFSET ${offsetVal}`;
+  console.log(query);
   return query;
 };
 // for customer

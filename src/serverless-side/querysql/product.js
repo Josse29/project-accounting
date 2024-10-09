@@ -34,11 +34,12 @@ export const queryinsertProducts = (
   productSupplierId,
   imgBase64
 ) => {
-  return `INSERT 
-          INTO ${tableName} 
-          (${colProductName}, ${colProductPriceBeli}, ${colProductPriceJual}, ${colProductInfo}, ${colProductImg}, ${colProductCategoryId}, ${colProductSupplierId}) 
-          VALUES 
-          ('${productName}', ${productPriceBuy}, ${productPriceSell}, '${productInfo}', '${imgBase64}', ${productCategoryId}, ${productSupplierId})`;
+  let query = `INSERT 
+               INTO ${tableName} 
+               (${colProductName}, ${colProductPriceBeli}, ${colProductPriceJual}, ${colProductInfo}, ${colProductImg}, ${colProductCategoryId}, ${colProductSupplierId}) 
+               VALUES 
+               ('${productName}', ${productPriceBuy}, ${productPriceSell}, '${productInfo}', '${imgBase64}', ${productCategoryId}, ${productSupplierId})`;
+  return query;
 };
 // 2.READ
 export const queryGetProducts = (

@@ -21,8 +21,8 @@ export const validateProductName = (productName) => {
   }
 };
 export const validatePrice = (buy, sell) => {
-  const validatePrice = buy < sell;
-  if (!validatePrice) {
+  const priceBuyLesser = buy < sell;
+  if (!priceBuyLesser) {
     const msg = "Price Buy must be lesser than Price Sell";
     throw new Error(msg);
   }

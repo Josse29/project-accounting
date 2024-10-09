@@ -126,7 +126,7 @@
       <!-- section second -->
       <div class="bg-white d-flex flex-column rounded-3 shadow-sm px-4 py-4">
         <!-- section users -->
-        <div class="card w-100 mb-4">
+        <div class="card w-100 mb-4" id="section-user">
           <div class="card-header text-white" style="background-color: #4338ca">
             <h2>Users</h2>
           </div>
@@ -136,6 +136,7 @@
               <!-- create -->
               <button
                 class="btn d-flex gap-2 text-white align-items-center"
+                id="create"
                 style="background-color: #4338ca"
                 data-bs-toggle="modal"
                 data-bs-target="#user-create"
@@ -178,16 +179,21 @@
               </div>
             </div>
             <!-- tabel user -->
-            <div id="user-scroll" class="overflow-x-auto my-3">
+            <div class="overflow-x-auto my-3">
               <table class="table table-striped" style="table-layout: fixed">
                 <thead>
                   <tr>
+                    <!-- id -->
                     <th class="text-center text-nowrap" style="width: 90px">
                       #
                     </th>
+                    <!-- fullname -->
                     <th style="width: 180px" class="text-nowrap">Full Name</th>
+                    <!-- email -->
                     <th style="width: 180px" class="text-nowrap">Email</th>
+                    <!-- position -->
                     <th style="width: 180px">Position</th>
+                    <!-- action -->
                     <th class="text-center" style="width: 220px">Action</th>
                   </tr>
                 </thead>
@@ -292,11 +298,7 @@
                   class="fa-solid fa-circle-xmark text-danger"
                   id="cancel-image"
                 ></i>
-                <img
-                  src="./../images/josse.jpg"
-                  class="w-100 h-auto mb-3"
-                  id="preview-img"
-                />
+                <img src="" class="w-100 h-auto mb-3" id="preview-img" />
               </div>
               <input class="form-control" type="file" id="userimg" />
             </div>

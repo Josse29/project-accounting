@@ -1,6 +1,12 @@
 import { previewLoadImg } from "../../utils/loadImg.js";
 import { addUser } from "./services.js";
 import { uiAlertFail } from "./ui.js";
+// init ui
+$("#section-user button#create")
+  .off("click")
+  .on("click", function () {
+    $("#user-create #failed").html("");
+  });
 // password
 $("#user-create label.show-password")
   .off("click")
@@ -31,6 +37,13 @@ $("#user-create label.hide-password1")
     $(".hide-password1").addClass("d-none");
     $("#user-create input#userpassword1").attr("type", "password");
   });
+// cancelimg
+$("i#cancel-image")
+  .off("click")
+  .on("click", function () {
+    $("#user-create input#userimg").val("");
+    $("#user-create #section-img").addClass("d-none");
+  });
 // preview-image
 const args = {
   inputImg: $("#user-create input#userimg"),
@@ -47,7 +60,7 @@ $("#user-create button#send-to-db")
     const userPositionVal = $("#user-create #userposition").val();
     const userPasswordVal = $("#user-create #userpassword").val();
     const userPassword1Val = $("#user-create #userpassword1").val();
-    const userImgVal = $("#user-create input#userimg").get(0).files;
+    const userImgVal = $("#user-create input#userimg")[0].files;
     const req = {
       UserEmailVal: userEmailVal,
       UserFullnameVal: userFullnameVal,
@@ -60,9 +73,11 @@ $("#user-create button#send-to-db")
     addUser(req, (status, response) => {
       if (status) {
         console.log(response);
+        $("#user-create").modal("hide");
       }
       if (!status) {
         console.error(response);
+        // failed
         const alert = uiAlertFail(response);
         $("#user-create #failed").html(alert);
         const modalBody = $("#user-create .modal-body").get(0);

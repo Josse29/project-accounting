@@ -10,6 +10,7 @@ import { getImageBase64 } from "../../utils/loadImg.js";
 $("tbody#product-table")
   .off("click", "#editProduct")
   .on("click", "#editProduct", function () {
+    // init ui
     $("#product-update-failed").html("");
     $("#edit-product-image-file").val("");
     // get value from params
@@ -22,6 +23,7 @@ $("tbody#product-table")
     const productSupplierId = parseInt(product.productsupplierid);
     const productInfo = product.productketerangan;
     let cancelImg = false;
+    // list option
     listCategoryRefProductUpdate(productCategoryId);
     listSupplierRefProductUpdate(productSupplierId);
     // all-input-product
@@ -82,45 +84,49 @@ $("tbody#product-table")
         cancelImg = true;
       });
 
-    // function action to update product
+    // req-to-db
     $("#edit-product-submit")
       .off("click")
       .on("click", async () => {
         try {
           // all - input
+          // productid
           const productId = parseInt(product.productid);
+          // productname
           const productName = capitalizeWord($("#edit-product-name").val());
+          // price buy
           const productPriceBuy = disFormatRupiah1(
             $("#edit-product-price-buy").val()
           );
+          // price sell
           const productPriceSell = disFormatRupiah1(
             $("#edit-product-price-sell").val()
           );
+          // information
           const productInfo = $("#edit-product-keterangan").val();
+          // category id
           let productCategoryId;
           const productCategoryVal = $(
             "select#product-refcategory-update"
           ).val();
-          if (productCategoryVal !== null) {
-            productCategoryId = parseInt(
-              $("select#product-refcategory-update").val()
-            );
+          if (productCategoryVal !== "null") {
+            productCategoryId = parseInt(productCategoryVal);
           }
-          if (productCategoryVal === null || productCategoryVal === "null") {
-            productCategoryId = null;
+          if (productCategoryVal === "null") {
+            productCategoryId = "null";
           }
+          // supplier id
           let productSupplierId;
           const productSupplierVal = $(
             "select#product-refsupplier-update"
           ).val();
-          if (productSupplierVal !== null) {
-            productSupplierId = parseInt(
-              $("select#product-refsupplier-update").val()
-            );
+          if (productSupplierVal !== "null") {
+            productSupplierId = parseInt(productSupplierVal);
           }
-          if (productSupplierVal === null || productSupplierVal === "null") {
-            productSupplierId = null;
+          if (productSupplierVal === "null") {
+            productSupplierId = "null";
           }
+          // image
           const productImgVal = document.getElementById(
             "edit-product-image-file"
           ).files;

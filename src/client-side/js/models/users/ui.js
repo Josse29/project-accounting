@@ -28,6 +28,26 @@ export const uiTr = (el) => {
               </tr>`;
   return tr;
 };
+export const uiTrEmpty = (searchVal) => {
+  let search = `empty....`;
+  if (searchVal !== "") {
+    search = `${searchVal} - not found `;
+  }
+  const tr = `<tr>
+                <td class="text-center fst-italic text-center fw-bold" colspan="5">
+                  ${search}
+                </td>
+              </tr>`;
+  return tr;
+};
+export const uiTrSearching = () => {
+  const tr = `<tr>
+                <td class="animate-load text-center fst-italic fw-bold" colspan="5">
+                  loading....
+                </td>
+              </tr>`;
+  return tr;
+};
 export const uiBtnPage = (i) => {
   let actived = `${i === 1 ? "user-page-active" : ""}`;
   const btn = `<button type="button" class="btn border border-2 fs-6 ${actived}">
@@ -41,33 +61,6 @@ export const uiBtnPageActive = (page) => {
   $(btnPage)
     .eq(page - 1)
     .addClass("user-page-active");
-};
-export const listUser = (el) => {
-  return `<li data-id=${el.id}>${el.fullname}</li>`;
-};
-export const uiShowPassword = () => {
-  return `<label 
-            for="toggle-password"
-            class="fa-solid fa-eye-slash me-2 show-password">
-          </label>`;
-};
-export const uiHidePassword = () => {
-  return `<label 
-            for="toggle-password"
-            class="fa-solid fa-eye me-2 hide-password">
-          </label>`;
-};
-export const uishowConfirmPassword = () => {
-  return `<label         
-            for="toggle-confirm-password"
-            class="fa-solid fa-eye-slash me-2 show-password">
-          </label>`;
-};
-export const uiHidePasswordConfirm = () => {
-  return `<label
-            for="toggle-confirm-password"
-            class="fa-solid fa-eye me-2 hide-password">
-        </label>`;
 };
 export const uiAlertFail = (res) => {
   const alert = `<div class="alert alert-danger alert-dismissible fade show text-start"

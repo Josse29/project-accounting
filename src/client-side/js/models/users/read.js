@@ -1,38 +1,61 @@
 import { fetchLimitOffset, fetchRowPage } from "./services.js";
-import { uiBtnPage, uiBtnPageActive, uiTr } from "./ui.js";
+import {
+  uiBtnPage,
+  uiBtnPageActive,
+  uiTr,
+  uiTrEmpty,
+  uiTrSearching,
+} from "./ui.js";
 let searchVal = $("input#user-search").val();
 let limitVal = parseInt($("select#user-limit").val());
 let offsetVal = 1;
-const req = {
-  searchVal,
-  limitVal,
-  offsetVal,
-};
+// searching
+let timeoutId;
+$("input#user-search")
+  .off("keyup")
+  .on("keyup", function () {
+    searchVal = $(this).val();
+    const tr = uiTrSearching();
+    $("tbody#user").html(tr);
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+    timeoutId = setTimeout(() => {
+      fetchInit();
+    }, 1000);
+  });
 // 1. init & pagination
-fetchRowPage(req, (status, response) => {
-  if (status) {
-    const totalPage = response.totalPage;
-    const totalRow = response.totalRow;
-    $("span#user-total-row").text(totalRow);
-    const existed = totalRow >= 1;
-    if (existed) {
-      let btn = ``;
-      for (let i = 1; i <= totalPage; i++) {
-        btn += uiBtnPage(i);
+fetchInit();
+function fetchInit() {
+  const req = {
+    searchVal,
+    limitVal,
+    offsetVal,
+  };
+  fetchRowPage(req, (status, response) => {
+    if (status) {
+      const totalPage = response.totalPage;
+      const totalRow = response.totalRow;
+      $("span#user-total-row").text(totalRow);
+      const existed = totalRow >= 1;
+      // existed
+      if (existed) {
+        getByPage(req);
+        handlePagination(totalPage);
+        $("div#user-pagination").removeClass("d-none");
       }
-      $("#user-page-number").html(btn);
-      $("div#user-pagination").removeClass("d-none");
-      getByPage(req);
-      handlePagination(totalPage);
+      // non-exsited
+      if (!existed) {
+        const tr = uiTrEmpty(searchVal);
+        $("tbody#user").html(tr);
+        $("div#user-pagination").addClass("d-none");
+      }
     }
-    if (!existed) {
-      $("div#user-pagination").addClass("d-none");
+    if (!status) {
+      console.error(response);
     }
-  }
-  if (!status) {
-    console.error(response);
-  }
-});
+  });
+}
 // 2. get user based on page
 function getByPage(req) {
   fetchLimitOffset(req, (status, response) => {
@@ -52,6 +75,12 @@ function getByPage(req) {
 }
 // handle pagination
 function handlePagination(totalPage) {
+  // insert html
+  let btn = ``;
+  for (let i = 1; i <= totalPage; i++) {
+    btn += uiBtnPage(i);
+  }
+  $("#user-page-number").html(btn);
   // first-page
   $("#user-first-page")
     .off("click")
