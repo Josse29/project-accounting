@@ -1,5 +1,4 @@
 const { app, BrowserWindow, ipcMain } = require("electron/main");
-const db = require("./src/client-side/config/db");
 const remote = require("@electron/remote/main");
 const fs = require("fs");
 remote.initialize();
@@ -19,9 +18,6 @@ const createLoginPage = () => {
   });
   loginPage.loadFile("index.html");
   remote.enable(loginPage.webContents);
-  db.serialize(() => {
-    console.log("terhubung ke sqlite3...");
-  });
   // minimze
   ipcMain.on("minimize-window:login-page", () => {
     loginPage.minimize();

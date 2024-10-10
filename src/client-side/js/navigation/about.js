@@ -12,10 +12,15 @@ $("#minimize-window")
   .on("click", () => {
     ipcRenderer.send("minimize-window:about-page");
   });
-$("#close-about")
+$("#restore-window")
+  .off("click")
+  .on("click", function () {
+    ipcRenderer.send("restore-window:about-page");
+  });
+$("#close-window")
   .off("click")
   .on("click", () => {
-    ipcRenderer.send("minimize-window:about-page");
+    ipcRenderer.send("close-window:about-page");
   });
 $("#dashboardWindowAbout")
   .off("click")

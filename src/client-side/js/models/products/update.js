@@ -15,6 +15,7 @@ $("tbody#product-table")
     $("#edit-product-image-file").val("");
     // get value from params
     const product = this.dataset;
+    console.log(product);
     const productName = product.productname;
     const productPriceBeli = formatRupiah1(product.productpricebeli);
     const productPriceSell = formatRupiah1(product.productpricejual);

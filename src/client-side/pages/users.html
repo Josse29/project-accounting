@@ -4,15 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>User-page</title>
-    <!-- Framework css bootstrap -->
+    <!-- css bootstrap -->
     <link
       rel="stylesheet"
-      href="./../third-party/bootstrap/bootstrap.min.css"
+      href="./../../../node_modules/bootstrap/dist/css/bootstrap.min.css"
     />
-    <!-- Fontawesome -->
+    <!-- font awesome -->
     <link
       rel="stylesheet"
-      href="./../third-party/fontawesome-web/css/all.min.css"
+      href="./../../../node_modules/@fortawesome/fontawesome-free/css/all.min.css"
     />
     <!-- my css -->
     <link rel="stylesheet" href="./../css/users.css" />
@@ -131,6 +131,8 @@
             <h2>Users</h2>
           </div>
           <div class="card-body">
+            <!-- success -->
+            <div id="crud-success"></div>
             <!-- create and total row -->
             <div class="d-flex justify-content-between mb-3">
               <!-- create -->
@@ -159,9 +161,9 @@
                 style="width: auto"
                 id="user-limit"
               >
-                <option value="2">5</option>
-                <option value="5">Two</option>
-                <option value="20">Three</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
               </select>
               <!-- search -->
               <div class="input-group" style="width: 580px">
@@ -250,129 +252,304 @@
       </div>
     </div>
     <!-- Modal Users-->
-    <div class="modal fade" id="user-create" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header" style="background-color: #4338ca">
-            <h1 class="modal-title fs-2 text-white">Users</h1>
-          </div>
-          <div class="modal-body">
-            <!-- alert-danger -->
-            <div id="failed"></div>
-            <!-- fullname -->
-            <div class="mb-3">
-              <label for="userfullname" class="form-label fs-4">Fullname</label>
-              <input
-                type="text"
-                class="form-control"
-                id="userfullname"
-                placeholder="ex : John doe"
-              />
+    <div>
+      <!-- create -->
+      <div class="modal fade" id="user-create" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header" style="background-color: #4338ca">
+              <h1 class="modal-title fs-2 text-white">Users</h1>
             </div>
-            <!-- email -->
-            <div class="mb-3">
-              <label for="useremail" class="form-label fs-4">Email</label>
-              <input
-                type="text"
-                class="form-control"
-                id="useremail"
-                placeholder="ex : jhondeo@gmail.com"
-              />
-            </div>
-            <!-- position -->
-            <div class="mb-3">
-              <label class="form-label fs-4" for="userposition">Position</label>
-              <select class="form-select" id="userposition">
-                <option selected disabled>Open this select position</option>
-                <option value="admin">Admin</option>
-                <option value="sales">Sales</option>
-                <option value="customer">Customer</option>
-              </select>
-            </div>
-            <!-- photo -->
-            <div class="mb-3">
-              <label for="userimg" class="form-label fs-4">Photo</label>
-              <div class="position-relative d-none" id="section-img">
-                <!-- cancel -->
-                <i
-                  class="fa-solid fa-circle-xmark text-danger"
-                  id="cancel-image"
-                ></i>
-                <img src="" class="w-100 h-auto mb-3" id="preview-img" />
-              </div>
-              <input class="form-control" type="file" id="userimg" />
-            </div>
-            <!-- password -->
-            <div class="mb-3">
-              <!-- toggle password -->
-              <div class="d-flex justify-content-between align-items-center">
-                <label for="userpassword" class="form-label fs-4"
-                  >Password</label
+            <div class="modal-body">
+              <!-- alert-danger -->
+              <div id="failed"></div>
+              <!-- fullname -->
+              <div class="mb-3">
+                <label for="userfullname" class="form-label fs-4"
+                  >Fullname</label
                 >
-                <label class="fa-solid fa-eye me-2 show-password fs-5"></label>
-                <label
-                  class="fa-solid fa-eye-slash me-2 hide-password fs-5 d-none"
-                ></label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="userfullname"
+                  placeholder="ex : John doe"
+                />
               </div>
-              <input
-                type="password"
-                class="form-control"
-                id="userpassword"
-                placeholder="*******"
-              />
-            </div>
-            <!-- confirmation - password -->
-            <div class="mb-3">
-              <div class="d-flex justify-content-between align-items-center">
-                <label for="userpassword1" class="form-label fs-4"
-                  >Confirmation Password</label
+              <!-- email -->
+              <div class="mb-3">
+                <label for="useremail" class="form-label fs-4">Email</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="useremail"
+                  placeholder="ex : jhondeo@gmail.com"
+                />
+              </div>
+              <!-- position -->
+              <div class="mb-3">
+                <label class="form-label fs-4" for="userposition"
+                  >Position</label
                 >
-                <label class="fa-solid fa-eye me-2 show-password1 fs-5"></label>
-                <label
-                  class="fa-solid fa-eye-slash me-2 hide-password1 fs-5 d-none"
-                ></label>
+                <select class="form-select" id="userposition">
+                  <option selected disabled>Open this select position</option>
+                  <option value="admin">Admin</option>
+                  <option value="sales">Sales</option>
+                  <option value="customer">Customer</option>
+                </select>
               </div>
-              <input
-                type="password"
-                class="form-control"
-                id="userpassword1"
-                placeholder="*******"
-              />
+              <!-- photo -->
+              <div class="mb-3">
+                <label for="userimg" class="form-label fs-4">Photo</label>
+                <div class="position-relative d-none" id="section-img">
+                  <!-- cancel -->
+                  <i
+                    class="fa-solid fa-circle-xmark text-danger"
+                    id="cancel-image"
+                  ></i>
+                  <img src="" class="w-100 h-auto mb-3" id="preview-img" />
+                </div>
+                <input class="form-control" type="file" id="userimg" />
+              </div>
+              <!-- password -->
+              <div class="mb-3">
+                <!-- toggle password -->
+                <div class="d-flex justify-content-between align-items-center">
+                  <label for="userpassword" class="form-label fs-4"
+                    >Password</label
+                  >
+                  <label
+                    class="fa-solid fa-eye me-2 show-password fs-5"
+                  ></label>
+                  <label
+                    class="fa-solid fa-eye-slash me-2 hide-password fs-5 d-none"
+                  ></label>
+                </div>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="userpassword"
+                  placeholder="*******"
+                />
+              </div>
+              <!-- confirmation - password -->
+              <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center">
+                  <label for="userpassword1" class="form-label fs-4"
+                    >Confirmation Password</label
+                  >
+                  <label
+                    class="fa-solid fa-eye me-2 show-password1 fs-5"
+                  ></label>
+                  <label
+                    class="fa-solid fa-eye-slash me-2 hide-password1 fs-5 d-none"
+                  ></label>
+                </div>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="userpassword1"
+                  placeholder="*******"
+                />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                class="btn text-white"
+                style="background-color: #4338ca"
+                id="send-to-db"
+              >
+                Save changes
+              </button>
             </div>
           </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Close
-            </button>
-            <button
-              type="button"
-              class="btn text-white"
-              style="background-color: #4338ca"
-              id="send-to-db"
-            >
-              Save changes
-            </button>
+        </div>
+      </div>
+      <!-- update -->
+      <div
+        class="modal fade"
+        id="user-update-modal"
+        tabindex="-1"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header" style="background-color: #4338ca">
+              <h1 class="modal-title fs-2 text-white">Users</h1>
+            </div>
+            <div class="modal-body">
+              <!-- alert-danger -->
+              <div id="failed"></div>
+              <!-- fullname -->
+              <div class="mb-3">
+                <label for="userfullname" class="form-label fs-4"
+                  >Fullname</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="userfullname"
+                  placeholder="ex : John doe"
+                />
+              </div>
+              <!-- email -->
+              <div class="mb-3">
+                <label for="useremail" class="form-label fs-4">Email</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="useremail"
+                  placeholder="ex : jhondeo@gmail.com"
+                />
+              </div>
+              <!-- position -->
+              <div class="mb-3">
+                <label class="form-label fs-4" for="userposition"
+                  >Position</label
+                >
+                <select class="form-select" id="userposition">
+                  <option selected disabled>Open this select position</option>
+                  <option value="admin">Admin</option>
+                  <option value="sales">Sales</option>
+                  <option value="customer">Customer</option>
+                </select>
+              </div>
+              <!-- photo -->
+              <div class="mb-3">
+                <label for="userimg" class="form-label fs-4">Photo</label>
+                <div class="position-relative d-none" id="section-img">
+                  <!-- cancel -->
+                  <i
+                    class="fa-solid fa-circle-xmark text-danger"
+                    id="cancel-image"
+                  ></i>
+                  <img src="" class="w-100 h-auto mb-3" id="preview-img" />
+                </div>
+                <input class="form-control" type="file" id="userimg" />
+              </div>
+              <!-- password -->
+              <div class="mb-3">
+                <!-- toggle password -->
+                <div class="d-flex justify-content-between align-items-center">
+                  <label for="userpassword" class="form-label fs-4"
+                    >Password</label
+                  >
+                  <label
+                    class="fa-solid fa-eye me-2 show-password fs-5"
+                  ></label>
+                  <label
+                    class="fa-solid fa-eye-slash me-2 hide-password fs-5 d-none"
+                  ></label>
+                </div>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="userpassword"
+                  placeholder="*******"
+                />
+              </div>
+              <!-- confirmation - password -->
+              <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center">
+                  <label for="userpassword1" class="form-label fs-4"
+                    >Confirmation Password</label
+                  >
+                  <label
+                    class="fa-solid fa-eye me-2 show-password1 fs-5"
+                  ></label>
+                  <label
+                    class="fa-solid fa-eye-slash me-2 hide-password1 fs-5 d-none"
+                  ></label>
+                </div>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="userpassword1"
+                  placeholder="*******"
+                />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                class="btn text-white"
+                style="background-color: #4338ca"
+                id="send-to-db"
+              >
+                Save changes
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- delete -->
+      <div
+        class="modal fade"
+        id="user-delete-modal"
+        tabindex="-1"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header bg-danger">
+              <h1 class="modal-title fs-2 text-white">Users</h1>
+            </div>
+            <div class="modal-body">
+              <i
+                class="fa-solid fa-triangle-exclamation text-danger text-center d-block mb-3"
+                style="font-size: 120px"
+              ></i>
+              <div id="confirmation-text"></div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary d-flex align-items-center gap-2"
+                data-bs-dismiss="modal"
+              >
+                <i class="fa-solid fa-times me-1 fs-4"></i>
+                <span class="fs-5">No</span>
+              </button>
+              <button
+                type="button"
+                class="btn btn-danger text-white d-flex align-items-center gap-2"
+                id="send-to-db"
+              >
+                <i class="fa-solid fa-check me-1 fs-4"></i>
+                <span class="fs-5">Yes</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <!-- bootstrap js  -->
-    <script src="./../third-party/bootstrap/bootstrap.bundle.min.js"></script>
-    <!-- jquery & config with electron-jquery -->
+    <!-- jquery -->
     <script>
       if (typeof module === "object") {
         window.module = module;
         module = undefined;
       }
     </script>
-    <script src="./../third-party/jquery-3.7.1.min.js"></script>
+    <script src="./../../../node_modules/jquery/dist/jquery.min.js"></script>
     <script>
       if (window.module) module = window.module;
     </script>
+    <!-- Impor JS Bootstrap -->
+    <script src="./../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <!-- myscript -->
     <script src="./../require/index.js"></script>
     <script type="module" src="./../js/navigation/user.js"></script>

@@ -1,10 +1,13 @@
+import db from "../../database/config.js";
 import { validateEmail } from "../../utils/regex.js";
 import {
   validateLoadImg,
+  validatePosition,
   validateSamePassword,
   validateUserFullname,
 } from "../../utils/validation.js";
 import {
+  queryDeleteUser,
   queryGet,
   queryGetCustomer,
   queryGetSales,
@@ -20,8 +23,8 @@ export const register = async (req) => {
       UserFullnameVal,
       UserPasswordVal,
       UserPassword1Val,
-      UserPositionVal,
       UserImgVal,
+      UserPositionVal,
     } = req;
     // 1.validation name
     validateUserFullname(UserFullnameVal);
@@ -33,35 +36,20 @@ export const register = async (req) => {
     }
     // 4.validation image & load image
     const imgBase64 = await validateLoadImg(UserImgVal);
-    console.log(
-      `UserEmailVal :,
-      UserFullnameVal : ,
-      UserPasswordVal : ,
-      UserPositionVal :,
-      imgBase64 :`
-    );
-    console.log(
-      UserEmailVal,
-      UserFullnameVal,
-      UserPasswordVal,
-      UserPositionVal,
-      imgBase64
-    );
-    console.log(typeof UserPositionVal);
-    console.log(typeof imgBase64);
-    return false;
+    // 5. validation position
+    validatePosition(UserPositionVal);
     // execute || done
     const query = queryRegister(
       UserEmailVal,
       UserFullnameVal,
       UserPasswordVal,
-      UserPositionVal,
-      imgBase64
+      imgBase64,
+      UserPositionVal
     );
     return new Promise((resolve, reject) => {
       db.run(query, (err) => {
         if (!err) {
-          const msg = `Registered Success`;
+          const msg = `${UserFullnameVal} has been registered!`;
           resolve(msg);
         }
         if (err) {
@@ -81,7 +69,6 @@ export const getUser = (req) => {
   return new Promise((resolve, reject) => {
     db.all(query, (err, res) => {
       if (!err) {
-        console.log(res);
         resolve(res);
       }
       if (err) {
@@ -112,7 +99,6 @@ export const getUserPageRow = (req) => {
     });
   });
 };
-// only customer
 export const getCustomer = () => {
   const query = queryGetCustomer();
   return new Promise((resolve, reject) => {
@@ -126,13 +112,27 @@ export const getCustomer = () => {
     });
   });
 };
-// only sales
 export const getSales = () => {
   const query = queryGetSales();
   return new Promise((resolve, reject) => {
     db.all(query, (err, res) => {
       if (!err) {
         resolve(res);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
+  });
+};
+export const deleteUserId = (req) => {
+  const { userFullname, userId } = req;
+  const query = queryDeleteUser(userId);
+  return new Promise((resolve, reject) => {
+    db.run(query, (err) => {
+      if (!err) {
+        const message = `${userFullname} has been deleted `;
+        resolve(message);
       }
       if (err) {
         reject(err);

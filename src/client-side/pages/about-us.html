@@ -4,20 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>About-page</title>
-    <!-- Framework css bootstrap -->
+    <!-- css bootstrap -->
     <link
       rel="stylesheet"
-      href="./../third-party/bootstrap/bootstrap.min.css"
+      href="./../../../node_modules/bootstrap/dist/css/bootstrap.min.css"
     />
-    <!-- Fontawesome -->
+    <!-- font awesome -->
     <link
       rel="stylesheet"
-      href="./../third-party/fontawesome-web/css/all.min.css"
+      href="./../../../node_modules/@fortawesome/fontawesome-free/css/all.min.css"
     />
     <!-- my css -->
     <link rel="stylesheet" href="./../css/about.css" />
   </head>
-
   <body>
     <div class="top-navigation">
       <h2 class="ms-3">Accouting Software</h2>
@@ -39,14 +38,14 @@
             class="fa-regular fa-window-restore custome-me tooltip-bottom-container"
             id="restore-window"
           >
-            <p class="tooltip-bottom-text fs-5 p-2">Minimize</p>
+            <p class="tooltip-bottom-text fs-5 p-2">Restore</p>
           </i>
           <!-- close -->
           <i
             class="fa-solid fa-right-from-bracket custome-me tooltip-bottom-container"
             id="close-window"
           >
-            <p class="tooltip-bottom-text fs-5 p-2">Minimize</p>
+            <p class="tooltip-bottom-text fs-5 p-2">Close</p>
           </i>
         </div>
       </div>
@@ -241,19 +240,19 @@
         </div>
       </div>
     </div>
-    <!-- bootstrap js  -->
-    <script src="./../third-party/bootstrap/bootstrap.bundle.min.js"></script>
-    <!-- jquery & config with electron-jquery -->
+    <!-- jquery -->
     <script>
       if (typeof module === "object") {
         window.module = module;
         module = undefined;
       }
     </script>
-    <script src="./../third-party/jquery-3.7.1.min.js"></script>
+    <script src="./../../../node_modules/jquery/dist/jquery.min.js"></script>
     <script>
       if (window.module) module = window.module;
     </script>
+    <!-- Impor JS Bootstrap -->
+    <script src="./../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <!-- myscript -->
     <script src="./../require/index.js"></script>
     <script type="module" src="./../js/utils/ipc.js"></script>

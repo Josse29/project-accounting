@@ -3,7 +3,7 @@ import {
   getCategoryInit,
 } from "../../../../serverless-side/functions/categories.js";
 import { reinitTooltip, uiLoad } from "../../utils/updateUi.js";
-import { uiBtnPage, uiBtnPageActive, uiTr } from "./ui.js";
+import { uiBtnPage, uiBtnPageActive, uiTr, uiTrZero } from "./ui.js";
 import { getProductsAgain } from "./../products/read.js";
 import { getPersediaanAgain } from "../persediaan/read.js";
 import { listCategoryRefPersediaanRead } from "./list.js";
@@ -145,7 +145,7 @@ function handlePagination(totalPage) {
 }
 export const getCategoryAgain = () => {
   $("#category-search-input").val("");
-  let searchVal = "";
+  let searchVal = $("#category-search-input").val();
   let limitVal = $("#category-limit").val();
   let offsetVal = 1;
   getInit();

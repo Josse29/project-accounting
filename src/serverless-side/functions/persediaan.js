@@ -1,3 +1,4 @@
+import db from "../database/config.js";
 import { formatQty1 } from "../../client-side/js/utils/formatQty.js";
 import { validateProductAdd, validateQty } from "../etc/validation.js";
 import {

@@ -6,8 +6,18 @@ export const validateUserFullname = (UserFullnameVal) => {
   }
 };
 export const validateSamePassword = (UserPasswordVal, UserPassword1Val) => {
+  if (UserPasswordVal === "" && UserPassword1Val === "") {
+    const msg = `password must be filled`;
+    throw new Error(msg);
+  }
   if (UserPasswordVal !== UserPassword1Val) {
     const msg = `password must be same with confirm password`;
+    throw new Error(msg);
+  }
+};
+export const validatePosition = (UserPositionVal) => {
+  if (UserPositionVal === null) {
+    const msg = `position field required`;
     throw new Error(msg);
   }
 };
@@ -47,4 +57,3 @@ export const validateLoadImg = (file) => {
     return "null";
   }
 };
-export const getImageBase64 = (file) => {};

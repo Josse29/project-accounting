@@ -1,3 +1,4 @@
+import db from "../database/config.js";
 import {
   queryDeleteCash,
   queryInsertCash,

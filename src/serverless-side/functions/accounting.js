@@ -1,3 +1,4 @@
+import db from "../database/config.js";
 import {
   queryCreateAccounting,
   queryDeleteAccounting,
@@ -8,7 +9,6 @@ import {
   querySumDebt,
   queryUpdateAccounting,
 } from "../querysql/accounting.js";
-
 export const createAccounting = (req) => {
   const {
     accountingYMDVal,

@@ -17,11 +17,34 @@ export const uiTr = (el) => {
                     <button class="btn btn-success text-white">
                       <i class="fa-solid fa-eye"></i>
                     </button>
-                    <button class="btn btn-primary text-white">
-                      <i class="fa-solid fa-pencil"></i>
+                    <button class="btn btn-primary text-white"
+                            id="user-update"
+                            data-bs-toggle="modal"
+                            data-bs-target="#user-update-modal"
+                            data-userid=${el.UserId}
+                            data-useremail="${el.UserEmail}"
+                            data-userfullname="${el.UserFullname}"
+                            data-userposition="${el.UserPosition}"
+                            data-userimg="${el.UserImg}">
+                      <i class="fa-solid fa-pencil"
+                         data-bs-toggle="tooltip" 
+                         data-bs-html="true"
+                         data-bs-title="<span>Update-${el.UserFullname}</span>" 
+                         data-bs-placement="bottom"></i>
                     </button>
-                    <button class="btn btn-danger text-white">
-                      <i class="fa-solid fa-trash-can"></i>
+                    <button class="btn btn-danger text-white"
+                            data-bs-toggle="modal"
+                            data-bs-target="#user-delete-modal"
+                            id="user-delete"
+                            data-userid=${el.UserId}
+                            data-userfullname=${el.UserFullname}
+                            data-userposition=${el.UserPosition}
+                            >
+                      <i class="fa-solid fa-trash-can"
+                         data-bs-toggle="tooltip" 
+                         data-bs-html="true"
+                         data-bs-title="<span>Delete-${el.UserFullname}</span>" 
+                         data-bs-placement="bottom"></i>
                     </button>
                   </div>
                 </td>
@@ -64,6 +87,19 @@ export const uiBtnPageActive = (page) => {
 };
 export const uiAlertFail = (res) => {
   const alert = `<div class="alert alert-danger alert-dismissible fade show text-start"
+                      role="alert">
+                  <strong class="text-capitalize">${res}</strong>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"
+                  ></button>
+                </div>`;
+  return alert;
+};
+export const uiAlertSuccess = (res) => {
+  const alert = `<div class="alert alert-success alert-dismissible fade show text-start"
                       role="alert">
                   <strong class="text-capitalize">${res}</strong>
                   <button

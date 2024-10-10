@@ -95,88 +95,91 @@ $("button#order-done")
         $("select#order-create-usercustomerid").removeClass("is-invalid");
       }
       // req-to-db
-      if (totalPaid >= totalCart) {
-        for (const el of storageCart) {
-          // 1. req-to-db-sales
-          const reqSales = {
-            SalesYMDVal: formattedDDMY,
-            SalesHMSVal: formattedHMS,
-            SalesProductIdVal: el.ProductId,
-            SalesProductQtyVal: el.ProductQty,
-            SalesProductRpVal: el.ProductPriceSell * el.ProductQty,
-            SalesPersonIdVal: parseInt(userSalesId),
-            SalesCustomerIdVal: parseInt(customerId),
-            SalesStatusVal: "PAID",
-          };
-          await createSales(reqSales);
-          // 2. req-to-db-persediaan
-          const reqPersediaan = {
-            PersediaanYMDVal: formattedDDMY,
-            PersediaanHMSVal: formattedHMS,
-            PersediaanQtyVal: el.ProductQty * -1,
-            PersediaanTotalVal: el.ProductPriceBuy * el.ProductQty * -1,
-            PersediaanInfoVal: `${el.ProductName} has been sold with qty ${el.ProductQty}`,
-            PersediaanProductIdVal: el.ProductId,
-            PersediaanPersonIdVal: parseInt(userSalesId),
-          };
-          await createPersediaan1(reqPersediaan);
-          // 3. req-to-db-cash
-          const reqCash = {
-            CashYYYYMMDDVal: formattedDDMY,
-            CashHMSVal: formattedHMS,
-            CashNameVal: `Sales Product - ${el.ProductName}`,
-            CashRpVal: el.ProductPriceSell * el.ProductQty,
-            CashInfoVal: `${el.ProductName} has been sold with qty ${el.ProductQty}`,
-          };
-          await createCash(reqCash);
-          //4. req-to-db-accounting
-          const debtEntry = {
-            accountingYMDVal: formattedDDMY,
-            accountingHMSVal: formattedHMS,
-            accountingRefVal: 111,
-            accountingNameVal: "Cash",
-            accountingPositionVal: "debt",
-            accountingRpVal: el.ProductPriceSell * el.ProductQty,
-            accountingInfoVal: `${el.ProductName} has been sold with qty ${el.ProductQty}`,
-          };
-          await createAccounting(debtEntry);
-          const creditEntry = {
-            accountingYMDVal: formattedDDMY,
-            accountingHMSVal: formattedHMS,
-            accountingRefVal: 411,
-            accountingNameVal: "Sales",
-            accountingPositionVal: "credit",
-            accountingRpVal: el.ProductPriceSell * el.ProductQty,
-            accountingInfoVal: `${el.ProductName} has been sold with qty ${el.ProductQty}`,
-          };
-          await createAccounting(creditEntry);
-        }
-        // send to db.piutang|| it credit comingsooon
-        // comingsoonn....
-        // get all ref from orders|sales
-        getProductAgain();
-        getSalesAgain();
-        // remove storage cart and sum storage card
-        removeStorageCart();
-        removeStorageCartSUM();
-        // change
-        $("span#order-change").text(0);
-        $("input#order-payment").val(0);
-        // update ui qty card
-        $(".card-body div#order-create-qty").html("");
-        $("button#order-create-qty-plus").removeClass("unsufficient");
-        $("button#order-create-qty-minus").removeClass("unsufficient");
-        $("select#order-create-usersalesid").val("Choose One Of Sales");
-        $("select#order-create-usercustomerid").val("Choose One Of Customers");
-        $("#sales-create-modal").modal("hide");
-        // sweet alert
-        Swal.fire({
-          title: "Success!",
-          text: "The Order was completed successfully.",
-          icon: "success",
-          confirmButtonText: "OK",
-        });
+      if (totalPaid < totalCart) {
+        const span = `<span class='fst-italic text-danger'>cash in must be greater than total cart</span>`;
+        $("span#order-change").html(span);
+        return false;
       }
+      for (const el of storageCart) {
+        // 1. req-to-db-sales
+        const reqSales = {
+          SalesYMDVal: formattedDDMY,
+          SalesHMSVal: formattedHMS,
+          SalesProductIdVal: el.ProductId,
+          SalesProductQtyVal: el.ProductQty,
+          SalesProductRpVal: el.ProductPriceSell * el.ProductQty,
+          SalesPersonIdVal: parseInt(userSalesId),
+          SalesCustomerIdVal: parseInt(customerId),
+          SalesStatusVal: "PAID",
+        };
+        await createSales(reqSales);
+        // 2. req-to-db-persediaan
+        const reqPersediaan = {
+          PersediaanYMDVal: formattedDDMY,
+          PersediaanHMSVal: formattedHMS,
+          PersediaanQtyVal: el.ProductQty * -1,
+          PersediaanTotalVal: el.ProductPriceBuy * el.ProductQty * -1,
+          PersediaanInfoVal: `${el.ProductName} has been sold with qty ${el.ProductQty}`,
+          PersediaanProductIdVal: el.ProductId,
+          PersediaanPersonIdVal: parseInt(userSalesId),
+        };
+        await createPersediaan1(reqPersediaan);
+        // 3. req-to-db-cash
+        const reqCash = {
+          CashYYYYMMDDVal: formattedDDMY,
+          CashHMSVal: formattedHMS,
+          CashNameVal: `Sales Product - ${el.ProductName}`,
+          CashRpVal: el.ProductPriceSell * el.ProductQty,
+          CashInfoVal: `${el.ProductName} has been sold with qty ${el.ProductQty}`,
+        };
+        await createCash(reqCash);
+        //4. req-to-db-accounting
+        const debtEntry = {
+          accountingYMDVal: formattedDDMY,
+          accountingHMSVal: formattedHMS,
+          accountingRefVal: 111,
+          accountingNameVal: "Cash",
+          accountingPositionVal: "debt",
+          accountingRpVal: el.ProductPriceSell * el.ProductQty,
+          accountingInfoVal: `${el.ProductName} has been sold with qty ${el.ProductQty}`,
+        };
+        await createAccounting(debtEntry);
+        const creditEntry = {
+          accountingYMDVal: formattedDDMY,
+          accountingHMSVal: formattedHMS,
+          accountingRefVal: 411,
+          accountingNameVal: "Sales",
+          accountingPositionVal: "credit",
+          accountingRpVal: el.ProductPriceSell * el.ProductQty,
+          accountingInfoVal: `${el.ProductName} has been sold with qty ${el.ProductQty}`,
+        };
+        await createAccounting(creditEntry);
+      }
+      // send to db.piutang|| it credit comingsooon
+      // comingsoonn....
+      // get all ref from orders|sales
+      getProductAgain();
+      getSalesAgain();
+      // remove storage cart and sum storage card
+      removeStorageCart();
+      removeStorageCartSUM();
+      // change
+      $("span#order-change").text(0);
+      $("input#order-payment").val(0);
+      // update ui qty card
+      $(".card-body div#order-create-qty").html("");
+      $("button#order-create-qty-plus").removeClass("unsufficient");
+      $("button#order-create-qty-minus").removeClass("unsufficient");
+      $("select#order-create-usersalesid").val("Choose One Of Sales");
+      $("select#order-create-usercustomerid").val("Choose One Of Customers");
+      $("#sales-create-modal").modal("hide");
+      // sweet alert
+      Swal.fire({
+        title: "Success!",
+        text: "The Order was completed successfully.",
+        icon: "success",
+        confirmButtonText: "OK",
+      });
     } catch (error) {
       console.error(error);
     }

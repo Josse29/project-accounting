@@ -1,4 +1,5 @@
 import {
+  deleteUserId,
   getUser,
   getUserPageRow,
   register,
@@ -6,9 +7,9 @@ import {
 
 // 1. endpoint : api/user?limit=${limitVal}&offset=${offsetVal}
 // method : get
-// payload : searchVal, limitVal, offsetVal,
+// payload : 1.searchVal, 2.limitVal, 3.offsetVal,
 // return : all users with search, limit, offset
-export const fetchLimitOffset = async (req, res) => {
+export const fetchLimitOffset = async (req) => {
   try {
     // payload
     const req1 = {
@@ -16,34 +17,36 @@ export const fetchLimitOffset = async (req, res) => {
       limitVal: req.limitVal,
       offsetVal: req.offsetVal,
     };
+    // endpoint
     const users = await getUser(req1);
-    return res(true, users);
+    return { status: true, response: users };
   } catch (error) {
-    return res(false, error);
+    return { status: false, response: error };
   }
 };
 // 2. endpoint : api/user/get-page-row
 // method : get
-// payload : searchVal, limitVal
+// payload : 1.searchVal, 2.limitVal
 // return : total page and row
-export const fetchRowPage = async (req, res) => {
+export const fetchRowPage = async (req) => {
   try {
     // payload
     const req1 = {
       searchVal: req.searchVal,
       limitVal: req.limitVal,
     };
+    // endpoint
     const pagination = await getUserPageRow(req1);
-    return res(true, pagination);
+    return { status: true, response: pagination };
   } catch (error) {
-    return res(false, error);
+    return { status: false, response: error };
   }
 };
-// 3. endpoint : api/user/register
+// 3.endpoint : api/user/register
 // method : post
-// payload  : UserEmailVal, UserFullnameVal, UserPasswordVal, UserPassword1Val, UserPositionVal, UserImgVal
+// payload  : 1.UserEmailVal, 2.UserFullnameVal, 3.UserPasswordVal, 4.UserPassword1Val, 5.UserImgVal, 6.UserPositionVal
 // return message has been registered
-export const addUser = async (req, res) => {
+export const addUser = async (req) => {
   try {
     // payload
     const req1 = {
@@ -51,31 +54,29 @@ export const addUser = async (req, res) => {
       UserFullnameVal: req.UserFullnameVal,
       UserPasswordVal: req.UserPasswordVal,
       UserPassword1Val: req.UserPassword1Val,
-      UserPositionVal: req.UserPositionVal,
       UserImgVal: req.UserImgVal,
+      UserPositionVal: req.UserPositionVal,
     };
-    const res1 = await register(req1);
-    return res(true, res1);
+    // endpoint
+    const registered = await register(req1);
+    return { status: true, response: registered };
   } catch (error) {
-    return res(false, error);
+    return { status: false, response: error };
   }
 };
-
-export const fetchMany = async (res) => {
+// 3.endpoint : api/user/delete?userid${userId}
+// method : delete
+// payload : 1.userId , 2.userFullname
+// return message has been registered
+export const deleteById = async (req) => {
   try {
-    const response = await fetch("https://fakestoreapi.com/products");
-    const json = await response.json();
-    res(true, json);
+    const req1 = {
+      userId: req.userId,
+      userFullname: req.userFullname,
+    };
+    const deleted = await deleteUserId(req1);
+    return { status: true, response: deleted };
   } catch (error) {
-    res(false, error);
-  }
-};
-export const fetchSingle = async (res) => {
-  try {
-    const response = await fetch("https://fakestoreapi.com/products/1");
-    const json = await response.json();
-    res(true, json);
-  } catch (error) {
-    res(false, error);
+    return { status: false, response: error };
   }
 };

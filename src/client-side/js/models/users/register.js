@@ -1,6 +1,7 @@
 import { previewLoadImg } from "../../utils/loadImg.js";
+import { getUserAgain } from "./read.js";
 import { addUser } from "./services.js";
-import { uiAlertFail } from "./ui.js";
+import { uiAlertFail, uiAlertSuccess } from "./ui.js";
 // init ui
 $("#section-user button#create")
   .off("click")
@@ -54,7 +55,7 @@ previewLoadImg(args);
 // send-to-db
 $("#user-create button#send-to-db")
   .off("click")
-  .on("click", () => {
+  .on("click", async () => {
     const userEmailVal = $("#user-create #useremail").val();
     const userFullnameVal = $("#user-create #userfullname").val();
     const userPositionVal = $("#user-create #userposition").val();
@@ -66,25 +67,28 @@ $("#user-create button#send-to-db")
       UserFullnameVal: userFullnameVal,
       UserPasswordVal: userPasswordVal,
       UserPassword1Val: userPassword1Val,
-      UserPositionVal: userPositionVal,
       UserImgVal: userImgVal,
+      UserPositionVal: userPositionVal,
     };
     // req-to-db
-    addUser(req, (status, response) => {
-      if (status) {
-        console.log(response);
-        $("#user-create").modal("hide");
-      }
-      if (!status) {
-        console.error(response);
-        // failed
-        const alert = uiAlertFail(response);
-        $("#user-create #failed").html(alert);
-        const modalBody = $("#user-create .modal-body").get(0);
-        modalBody.scrollTo({
-          top: 0,
-          behavior: "smooth",
-        });
-      }
-    });
+    const registered = await addUser(req);
+    const status = registered.status;
+    const response = registered.response;
+    if (status) {
+      console.log(response);
+      console.log("test-1");
+      await getUserAgain();
+      const alert = uiAlertSuccess(response);
+      $("#section-user #crud-success").html(alert);
+      $("#user-create").modal("hide");
+    }
+    if (!status) {
+      const alert = uiAlertFail(response);
+      $("#user-create #failed").html(alert);
+      const modalBody = $("#user-create .modal-body").get(0);
+      modalBody.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
   });

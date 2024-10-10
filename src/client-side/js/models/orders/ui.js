@@ -56,11 +56,10 @@ export const uiCardEmpty = (searchVal) => {
   return emptyP;
 };
 export const uiBtnPage = (number) => {
+  const activePage = number === 1 ? "product-ref-persediaan-page-active" : "";
   const btn = `<button 
                 type="button" 
-                class="btn fs-4 product-ref-persediaan-page border border-2 ${
-                  number === 1 ? "product-ref-persediaan-page-active" : ""
-                }">${number}</button>`;
+                class="btn fs-4 product-ref-persediaan-page border border-1 ${activePage}">${number}</button>`;
   return btn;
 };
 // update ui Active

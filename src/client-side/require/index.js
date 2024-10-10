@@ -2,9 +2,6 @@
 const electron = require("electron");
 const { ipcRenderer } = electron;
 
-// db
-const db = require("./../config/db.js");
-
 // dialog
 const { dialog } = require("@electron/remote");
 

@@ -7,12 +7,12 @@
     <!-- css bootstrap -->
     <link
       rel="stylesheet"
-      href="./src/client-side/third-party/bootstrap/bootstrap.min.css"
+      href="./node_modules/bootstrap/dist/css/bootstrap.min.css"
     />
     <!-- font awesome -->
     <link
       rel="stylesheet"
-      href="./src/client-side/third-party/fontawesome-web/css/all.min.css"
+      href="./node_modules/@fortawesome/fontawesome-free/css/all.min.css"
     />
     <!-- my css -->
     <link rel="stylesheet" href="./src/client-side/css/login.css" />
@@ -108,25 +108,21 @@
         </div>
       </div>
     </div>
-    <!-- js bootstrap -->
-    <script src="./src/client-side/third-party/bootstrap/bootstrap.bundle.min.js"></script>
-    <!-- jquery -->
+    <!-- import jquery -->
     <script>
       if (typeof module === "object") {
         window.module = module;
         module = undefined;
       }
     </script>
-    <script src="./src/client-side/third-party/jquery-3.7.1.min.js"></script>
+    <script src="./node_modules/jquery/dist/jquery.min.js"></script>
     <script>
       if (window.module) module = window.module;
     </script>
-    <script>
-      const electron = require("electron");
-      const { ipcRenderer } = electron;
-    </script>
-    <!-- my script  -->
-    <!-- <script src="./src/client-side/require/index.js"></script> -->
+    <!-- Impor JS Bootstrap -->
+    <script src="./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- myscript -->
+    <script src="./src/client-side/require/index.js"></script>
     <script
       type="module"
       src="./src/client-side/js/navigation/login.js"

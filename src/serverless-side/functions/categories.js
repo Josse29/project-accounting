@@ -1,3 +1,4 @@
+import db from "../database/config.js";
 import { validateCategoryName } from "../etc/validation.js";
 import {
   queryDeleteCategory,
