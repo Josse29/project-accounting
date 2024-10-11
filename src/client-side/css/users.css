@@ -165,6 +165,13 @@ i#cancel-image {
   font-size: 32px;
   cursor: pointer;
 }
+i#cancel-image1 {
+  position: absolute;
+  right: -10px;
+  top: -22px;
+  font-size: 32px;
+  cursor: pointer;
+}
 label#toggle-password {
   cursor: pointer;
 }

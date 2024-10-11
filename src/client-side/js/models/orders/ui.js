@@ -55,7 +55,7 @@ export const uiCardEmpty = (searchVal) => {
   const emptyP = `<p class="d-block fs-4 fst-italic text-center">${search}</p>`;
   return emptyP;
 };
-export const uiBtnPage = (number) => {
+export const uiBtnPage1 = (number) => {
   const activePage = number === 1 ? "product-ref-persediaan-page-active" : "";
   const btn = `<button 
                 type="button" 
@@ -63,7 +63,7 @@ export const uiBtnPage = (number) => {
   return btn;
 };
 // update ui Active
-export const uiBtnPageActive = (pageNumber) => {
+export const uiBtnPageActive1 = (pageNumber) => {
   const btnPage = $("button.product-ref-persediaan-page");
   btnPage.removeClass("product-ref-persediaan-page-active");
   btnPage.eq(pageNumber - 1).addClass("product-ref-persediaan-page-active");

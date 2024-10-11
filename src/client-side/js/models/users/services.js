@@ -3,6 +3,7 @@ import {
   getUser,
   getUserPageRow,
   register,
+  updateUser,
 } from "../../../../serverless-side/models/user/function.js";
 
 // 1. endpoint : api/user?limit=${limitVal}&offset=${offsetVal}
@@ -11,15 +12,13 @@ import {
 // return : all users with search, limit, offset
 export const fetchLimitOffset = async (req) => {
   try {
-    // payload
     const req1 = {
       searchVal: req.searchVal,
       limitVal: req.limitVal,
       offsetVal: req.offsetVal,
     };
-    // endpoint
-    const users = await getUser(req1);
-    return { status: true, response: users };
+    const response = await getUser(req1);
+    return { status: true, response };
   } catch (error) {
     return { status: false, response: error };
   }
@@ -30,25 +29,22 @@ export const fetchLimitOffset = async (req) => {
 // return : total page and row
 export const fetchRowPage = async (req) => {
   try {
-    // payload
     const req1 = {
       searchVal: req.searchVal,
       limitVal: req.limitVal,
     };
-    // endpoint
-    const pagination = await getUserPageRow(req1);
-    return { status: true, response: pagination };
+    const response = await getUserPageRow(req1);
+    return { status: true, response };
   } catch (error) {
     return { status: false, response: error };
   }
 };
 // 3.endpoint : api/user/register
-// method : post
+// method : POST
 // payload  : 1.UserEmailVal, 2.UserFullnameVal, 3.UserPasswordVal, 4.UserPassword1Val, 5.UserImgVal, 6.UserPositionVal
 // return message has been registered
 export const addUser = async (req) => {
   try {
-    // payload
     const req1 = {
       UserEmailVal: req.UserEmailVal,
       UserFullnameVal: req.UserFullnameVal,
@@ -57,15 +53,14 @@ export const addUser = async (req) => {
       UserImgVal: req.UserImgVal,
       UserPositionVal: req.UserPositionVal,
     };
-    // endpoint
-    const registered = await register(req1);
-    return { status: true, response: registered };
+    const response = await register(req1);
+    return { status: true, response };
   } catch (error) {
     return { status: false, response: error };
   }
 };
-// 3.endpoint : api/user/delete?userid${userId}
-// method : delete
+// 4.endpoint : api/user/delete?userid${userId}
+// method : DELETE
 // payload : 1.userId , 2.userFullname
 // return message has been registered
 export const deleteById = async (req) => {
@@ -74,8 +69,27 @@ export const deleteById = async (req) => {
       userId: req.userId,
       userFullname: req.userFullname,
     };
-    const deleted = await deleteUserId(req1);
-    return { status: true, response: deleted };
+    const response = await deleteUserId(req1);
+    return { status: true, response };
+  } catch (error) {
+    return { status: false, response: error };
+  }
+};
+// 5.endpoint : api/user/update?${userid}
+// method : UPDATE
+// payload : UserEmailVal, UserFullnameVal, UserPasswordVal, UserPositionVal, UserId
+export const update = async (req) => {
+  try {
+    const req1 = {
+      UserEmailVal: req.userEmail,
+      UserFullnameVal: req.userFullname,
+      UserImgVal: req.userImg1,
+      UserPositionVal: req.userPosition,
+      UserIdVal: req.userId,
+      CancelImg: req.cancelImg,
+    };
+    const response = await updateUser(req1);
+    return { status: true, response };
   } catch (error) {
     return { status: false, response: error };
   }

@@ -1,4 +1,11 @@
-// for users
+export const validateEmail = (val) => {
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  const isEmail = emailRegex.test(val);
+  if (!isEmail) {
+    const msg = `Please input correct email `;
+    throw new Error(msg);
+  }
+};
 export const validateUserFullname = (UserFullnameVal) => {
   if (UserFullnameVal === "") {
     const msg = `Fullname required `;
@@ -55,5 +62,24 @@ export const validateLoadImg = (file) => {
   }
   if (file.length < 1) {
     return "null";
+  }
+};
+export const validateProductAdd = (productId) => {
+  const isNaN = Number.isNaN(productId);
+  if (isNaN) {
+    const msg = "Please add Product First...";
+    throw new Error(msg);
+  }
+};
+export const validateQty = (valPersediaanQty) => {
+  const isNumeric = (val) => {
+    const regex = /^-?\d*(?:\.\d+)?(?:[eE][-+]?\d+)?$/;
+    const numeric = regex.test(val);
+    return numeric && val !== 0;
+  };
+  const valdateNum = isNumeric(valPersediaanQty);
+  if (!valdateNum) {
+    const msg = "Please input type of number in qty...";
+    throw new Error(msg);
   }
 };

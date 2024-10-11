@@ -1,19 +1,3 @@
-import { isNumeric } from "./regex.js";
-
-export const validateProductAdd = (productId) => {
-  const isNaN = Number.isNaN(productId);
-  if (isNaN) {
-    const msg = "Please add Product First...";
-    throw new Error(msg);
-  }
-};
-export const validateQty = (valPersediaanQty) => {
-  const valdateNum = isNumeric(valPersediaanQty);
-  if (!valdateNum) {
-    const msg = "Please input type of number in qty...";
-    throw new Error(msg);
-  }
-};
 export const validateProductName = (productName) => {
   if (productName === "") {
     const msg = "Product Name must be filled...";

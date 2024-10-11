@@ -71,7 +71,7 @@
           class="text-center mb-5 custome-me tooltip-right-container"
           id="orderWindowUsers"
         >
-          <i class="fa-solid fa-utensils fs-3">
+          <i class="fa-solid fa-cart-shopping fs-3">
             <div class="tooltip-right-text fs-4 p-2 px-3">Order</div>
           </i>
         </div>
@@ -137,12 +137,13 @@
             <div class="d-flex justify-content-between mb-3">
               <!-- create -->
               <button
-                class="btn d-flex gap-2 text-white align-items-center"
+                class="btn d-flex gap-2 text-white align-items-center tooltip-bottom-container"
                 id="create"
                 style="background-color: #4338ca"
                 data-bs-toggle="modal"
                 data-bs-target="#user-create"
               >
+                <div class="tooltip-bottom-text">add-user</div>
                 <i class="fa-solid fa-square-plus fs-5"></i>
                 <span>Add User</span>
               </button>
@@ -270,7 +271,7 @@
                 >
                 <input
                   type="text"
-                  class="form-control"
+                  class="form-control text-capitalize"
                   id="userfullname"
                   placeholder="ex : John doe"
                 />
@@ -372,6 +373,63 @@
           </div>
         </div>
       </div>
+      <!-- detail -->
+      <div
+        class="modal fade"
+        id="user-detail-modal"
+        tabindex="-1"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header" style="background-color: #4338ca">
+              <h1 class="modal-title fs-2 text-white">Users</h1>
+            </div>
+            <div class="modal-body">
+              <!-- email -->
+              <div class="mb-3">
+                <p class="fs-4 mb-1">Email</p>
+                <p class="fs-4 ms-2 mb-0" id="email">Email</p>
+              </div>
+              <!-- fullname -->
+              <div class="mb-3">
+                <p class="fs-4 mb-1">Fullname</p>
+                <p class="fs-4 ms-2 mb-0 text-capitalize" id="fullname">
+                  Fullname
+                </p>
+              </div>
+              <!-- position -->
+              <div class="mb-3">
+                <p class="fs-4 mb-1">Position</p>
+                <p class="fs-4 ms-2 mb-0 text-capitalize" id="position">
+                  Position
+                </p>
+              </div>
+              <!-- photo -->
+              <div class="mb-3">
+                <p class="fs-4 mb-1">Photo</p>
+                <div id="photo"></div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                class="btn text-white"
+                style="background-color: #4338ca"
+              >
+                Save changes
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
       <!-- update -->
       <div
         class="modal fade"
@@ -382,98 +440,55 @@
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header" style="background-color: #4338ca">
-              <h1 class="modal-title fs-2 text-white">Users</h1>
+              <h1 class="modal-title fs-2 text-white text-capitalize">Users</h1>
             </div>
             <div class="modal-body">
               <!-- alert-danger -->
               <div id="failed"></div>
               <!-- fullname -->
               <div class="mb-3">
-                <label for="userfullname" class="form-label fs-4"
+                <label for="userfullname1" class="form-label fs-4"
                   >Fullname</label
                 >
                 <input
                   type="text"
-                  class="form-control"
-                  id="userfullname"
+                  class="form-control text-capitalize"
+                  id="userfullname1"
                   placeholder="ex : John doe"
                 />
               </div>
               <!-- email -->
               <div class="mb-3">
-                <label for="useremail" class="form-label fs-4">Email</label>
+                <label for="useremail1" class="form-label fs-4">Email</label>
                 <input
                   type="text"
                   class="form-control"
-                  id="useremail"
+                  id="useremail1"
                   placeholder="ex : jhondeo@gmail.com"
                 />
               </div>
               <!-- position -->
               <div class="mb-3">
-                <label class="form-label fs-4" for="userposition"
+                <label class="form-label fs-4" for="userposition1"
                   >Position</label
                 >
-                <select class="form-select" id="userposition">
+                <select class="form-select text-capitalize" id="userposition1">
                   <option selected disabled>Open this select position</option>
-                  <option value="admin">Admin</option>
-                  <option value="sales">Sales</option>
-                  <option value="customer">Customer</option>
                 </select>
               </div>
               <!-- photo -->
               <div class="mb-3">
-                <label for="userimg" class="form-label fs-4">Photo</label>
-                <div class="position-relative d-none" id="section-img">
+                <label for="userimg1" class="form-label fs-4">Photo</label>
+                <div class="position-relative d-none" id="section-img1">
                   <!-- cancel -->
                   <i
                     class="fa-solid fa-circle-xmark text-danger"
-                    id="cancel-image"
+                    id="cancel-image1"
                   ></i>
-                  <img src="" class="w-100 h-auto mb-3" id="preview-img" />
+                  <!-- img -->
+                  <img src="" class="w-100 h-auto mb-3" id="preview-img1" />
                 </div>
-                <input class="form-control" type="file" id="userimg" />
-              </div>
-              <!-- password -->
-              <div class="mb-3">
-                <!-- toggle password -->
-                <div class="d-flex justify-content-between align-items-center">
-                  <label for="userpassword" class="form-label fs-4"
-                    >Password</label
-                  >
-                  <label
-                    class="fa-solid fa-eye me-2 show-password fs-5"
-                  ></label>
-                  <label
-                    class="fa-solid fa-eye-slash me-2 hide-password fs-5 d-none"
-                  ></label>
-                </div>
-                <input
-                  type="password"
-                  class="form-control"
-                  id="userpassword"
-                  placeholder="*******"
-                />
-              </div>
-              <!-- confirmation - password -->
-              <div class="mb-3">
-                <div class="d-flex justify-content-between align-items-center">
-                  <label for="userpassword1" class="form-label fs-4"
-                    >Confirmation Password</label
-                  >
-                  <label
-                    class="fa-solid fa-eye me-2 show-password1 fs-5"
-                  ></label>
-                  <label
-                    class="fa-solid fa-eye-slash me-2 hide-password1 fs-5 d-none"
-                  ></label>
-                </div>
-                <input
-                  type="password"
-                  class="form-control"
-                  id="userpassword1"
-                  placeholder="*******"
-                />
+                <input class="form-control" type="file" id="userimg1" />
               </div>
             </div>
             <div class="modal-footer">
@@ -506,7 +521,7 @@
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header bg-danger">
-              <h1 class="modal-title fs-2 text-white">Users</h1>
+              <h1 class="modal-title fs-2 text-white text-capitalize">Users</h1>
             </div>
             <div class="modal-body">
               <i

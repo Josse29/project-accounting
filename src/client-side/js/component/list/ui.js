@@ -13,8 +13,7 @@ export const uiList = (rows) => {
   return div;
 };
 export const uiListZero = () => {
-  const div = `<div class="d-flex justify-content-center align-items-center h-100"
-                    style="height: 500px">
+  const div = `<div class="d-flex justify-content-center align-items-center h-100">
                 <p class="fst-italic text-muted fs-4">orders empty...</p>
                 </div>`;
   return div;

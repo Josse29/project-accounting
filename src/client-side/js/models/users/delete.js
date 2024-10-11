@@ -5,11 +5,14 @@ import { uiAlertSuccess } from "./ui.js";
 $("tbody#user")
   .off("click", "button#user-delete")
   .on("click", "button#user-delete", function () {
-    const user = this.dataset;
+    const user = $(this).closest("tr")[0].dataset;
     const userId = parseInt(user.userid);
     const userFullname = user.userfullname;
+    // label
+    $("#user-delete-modal h1.modal-title").text(userFullname);
+    // confirmation
     const p = `<p class="fs-4 text-center">Are You Sure to Delete <span class="fw-bold text-capitalize">${userFullname}</span> ?</p>`;
-    $("#confirmation-text").html(p);
+    $("#user-delete-modal #confirmation-text").html(p);
     // send-to-db
     $("#user-delete-modal button#send-to-db")
       .off("click")

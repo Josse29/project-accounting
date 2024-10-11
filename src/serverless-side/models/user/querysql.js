@@ -26,6 +26,7 @@ export const queryGet = (searchVal, limitVal, offsetVal) => {
                User.UserId, 
                User.UserFullname,
                User.UserEmail,
+               User.UserImg,
                User.UserPosition
                FROM User `;
   //  with search value
@@ -60,6 +61,28 @@ export const queryGetSales = () => {
   query += `WHERE UserPosition = 'sales' `;
   // sort by fullname ascending
   query += `ORDER BY UserFullname ASC`;
+  return query;
+};
+export const queryUpdate = (
+  UserEmailVal,
+  UserFullnameVal,
+  imgBase64,
+  UserPositionVal,
+  UserIdVal,
+  UserImgVal,
+  CancelImg
+) => {
+  let query = `UPDATE User 
+               SET UserEmail = '${UserEmailVal}',
+                   UserFullname = '${UserFullnameVal}', `;
+  if (!CancelImg && UserImgVal.length >= 1) {
+    query += `UserImg = '${imgBase64}', `;
+  }
+  if (CancelImg) {
+    query += `UserImg = '${imgBase64}', `;
+  }
+  query += `UserPosition = '${UserPositionVal}' `;
+  query += `WHERE UserId = ${UserIdVal}`;
   return query;
 };
 export const queryDeleteUser = (userId) => {

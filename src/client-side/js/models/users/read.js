@@ -16,6 +16,8 @@ let timeoutId;
 $("input#user-search")
   .off("keyup")
   .on("keyup", function () {
+    $("span#user-total-row").text("waiting..");
+    $("div#user-pagination").addClass("d-none");
     searchVal = $(this).val();
     const tr = uiTrSearching();
     $("tbody#user").html(tr);
@@ -32,6 +34,7 @@ $("select#user-limit")
   .off("change")
   .on("change", function () {
     limitVal = $(this).val();
+    $("div#user-pagination").addClass("d-none");
     const tr = uiTrSearching();
     $("tbody#user").html(tr);
     if (timeoutId1) {
@@ -58,7 +61,7 @@ async function fetchInit() {
     const existed = totalRow >= 1;
     // existed
     if (existed) {
-      await getByPage(req);
+      getByPage(req);
       handlePagination(totalPage);
       $("div#user-pagination").removeClass("d-none");
     }
@@ -137,7 +140,6 @@ function handlePagination(totalPage) {
         limitVal,
         offsetVal: numberPage,
       };
-      console.log(req);
       getByPage(req);
     });
   // next - page
@@ -168,6 +170,7 @@ function handlePagination(totalPage) {
       getByPage(req);
     });
 }
+
 export const getUserAgain = async () => {
   $("input#user-search").val("");
   let searchVal = $("input#user-search").val();

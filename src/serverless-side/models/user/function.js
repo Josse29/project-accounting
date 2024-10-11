@@ -1,6 +1,6 @@
 import db from "../../database/config.js";
-import { validateEmail } from "../../utils/regex.js";
 import {
+  validateEmail,
   validateLoadImg,
   validatePosition,
   validateSamePassword,
@@ -13,6 +13,7 @@ import {
   queryGetSales,
   queryGetTotal,
   queryRegister,
+  queryUpdate,
 } from "./querysql.js";
 
 export const register = async (req) => {
@@ -26,10 +27,10 @@ export const register = async (req) => {
       UserImgVal,
       UserPositionVal,
     } = req;
-    // 1.validation name
-    validateUserFullname(UserFullnameVal);
-    // 2.validation email
+    // 1.validation email
     validateEmail(UserEmailVal);
+    // 2.validation name
+    validateUserFullname(UserFullnameVal);
     // 3.validation password
     if (UserPositionVal === "admin" || UserPositionVal === "sales") {
       validateSamePassword(UserPasswordVal, UserPassword1Val);
@@ -41,7 +42,7 @@ export const register = async (req) => {
     // execute || done
     const query = queryRegister(
       UserEmailVal,
-      UserFullnameVal,
+      UserFullnameVal.trim(),
       UserPasswordVal,
       imgBase64,
       UserPositionVal
@@ -118,6 +119,50 @@ export const getSales = () => {
     db.all(query, (err, res) => {
       if (!err) {
         resolve(res);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
+  });
+};
+export const updateUser = async (req) => {
+  const {
+    UserEmailVal,
+    UserFullnameVal,
+    UserImgVal,
+    UserPositionVal,
+    UserIdVal,
+    CancelImg,
+  } = req;
+  // 1.validation email
+  validateEmail(UserEmailVal);
+  // 2.validation name
+  validateUserFullname(UserFullnameVal);
+  // 4.validation image & load image
+  let imgBase64 = ``;
+  if (CancelImg) {
+    imgBase64 = "null";
+  } else {
+    imgBase64 = await validateLoadImg(UserImgVal);
+  }
+  // 5. validation position
+  validatePosition(UserPositionVal);
+  // execute
+  const query = queryUpdate(
+    UserEmailVal,
+    UserFullnameVal.trim(),
+    imgBase64,
+    UserPositionVal,
+    UserIdVal,
+    UserImgVal,
+    CancelImg
+  );
+  return new Promise((resolve, reject) => {
+    db.run(query, (err) => {
+      if (!err) {
+        const message = `${UserFullnameVal} has been updated`;
+        resolve(message);
       }
       if (err) {
         reject(err);

@@ -1,4 +1,4 @@
-const validateImg = (file) => {
+export const validateImg = (file) => {
   const validImageTypes = ["image/jpeg", "image/png", "image/gif"];
   if (file.length > 0) {
     if (validImageTypes.includes(file[0].type)) {
