@@ -1,43 +1,46 @@
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import { formatWaktuIndo } from "../../utils/formatWaktu.js";
-export const uiTr = (rows) => {
-  const YMD = formatWaktuIndo(rows.SalesYMD);
-  const rupiahProduct = formatRupiah2(rows.ProductPriceJual);
-  const rupiahTotal = formatRupiah2(rows.SalesProductRp);
-  const tr = `<tr>
-                    <td class="text-center text-truncate pe-3 align-content-center">
-                      ${rows.SalesId}
-                    </td>
-                    <td class="text-truncate pe-3 align-content-center">
-                      ${YMD}
-                    </td>
-                    <td class="text-truncate pe-3 align-content-center">${rows.SalesHMS}</td>
-                    <td class="text-truncate pe-3 align-content-center text-capitalize">${rows.SalesPersonName}</td>
-                    <td class="text-truncate pe-3 align-content-center text-capitalize">
-                      ${rows.ProductName}
-                    </td>
-                    <td class="text-truncate pe-3 align-content-center">${rupiahProduct}</td>
-                    <td class="text-truncate pe-3 align-content-center text-center">${rows.SalesProductQty}</td>
-                    <td class="text-truncate pe-3 align-content-center">${rupiahTotal}</td>
-                    <td class="text-truncate pe-3 align-content-center text-capitalize">
-                      ${rows.SalesCustomerName}
-                    </td>
-                    <td class="text-truncate pe-3 align-content-center text-center">${rows.SalesStatus}</td>
-                    <td class="text-truncate pe-3 align-content-center" style="width: 220px">
-                      <div class="d-flex gap-1 justify-content-center align-items-center w-100 h-100">
-                        <button class="btn btn-success">
-                          <i class="fa-solid fa-eye fs-6"></i>
-                        </button>
-                        <button class="btn btn-primary">
-                          <i class="fa-solid fa-pencil fs-6"></i>
-                        </button>
-                        <button class="btn btn-danger">
-                          <i class="fa-solid fa-trash fs-6"></i>
-                        </button>
-                    </div>
-                    </td>
-                  </tr>`;
-  return tr;
+export const uiTBody = (sales) => {
+  let tr = ``;
+  sales.forEach((el) => {
+    const YMD = formatWaktuIndo(el.SalesYMD);
+    const rupiahProduct = formatRupiah2(el.ProductPriceJual);
+    const rupiahTotal = formatRupiah2(el.SalesProductRp);
+    tr += `<tr>
+            <td class="text-center text-truncate pe-3 align-content-center">
+              ${el.SalesId}
+            </td>
+            <td class="text-truncate pe-3 align-content-center">
+              ${YMD}
+            </td>
+            <td class="text-truncate pe-3 align-content-center">${el.SalesHMS}</td>
+            <td class="text-truncate pe-3 align-content-center text-capitalize">${el.SalesPersonName}</td>
+            <td class="text-truncate pe-3 align-content-center text-capitalize">
+              ${el.ProductName}
+            </td>
+            <td class="text-truncate pe-3 align-content-center">${rupiahProduct}</td>
+            <td class="text-truncate pe-3 align-content-center text-center">${el.SalesProductQty}</td>
+            <td class="text-truncate pe-3 align-content-center">${rupiahTotal}</td>
+            <td class="text-truncate pe-3 align-content-center text-capitalize">
+              ${el.SalesCustomerName}
+            </td>
+            <td class="text-truncate pe-3 align-content-center text-center">${el.SalesStatus}</td>
+              <td class="text-truncate pe-3 align-content-center" style="width: 220px">
+                <div class="d-flex gap-1 justify-content-center align-items-center w-100 h-100">
+                  <button class="btn btn-success">
+                    <i class="fa-solid fa-eye fs-6"></i>
+                  </button>
+                  <button class="btn btn-primary">
+                    <i class="fa-solid fa-pencil fs-6"></i>
+                  </button>
+                  <button class="btn btn-danger">
+                    <i class="fa-solid fa-trash fs-6"></i>
+                  </button>
+                </div>
+              </td>
+           </tr>`;
+  });
+  $("tbody#sales-read-table").html(tr);
 };
 export const uiTrEmpty = (searchVal) => {
   let search = `sales empty....`;
@@ -45,9 +48,9 @@ export const uiTrEmpty = (searchVal) => {
     search = `${searchVal} - not found`;
   }
   const tr = `<tr>
-                  <td class="text-center fst-italic" colspan="11">${search}</td>
-                </tr>`;
-  return tr;
+                <td class="text-center fst-italic" colspan="11">${search}</td>
+              </tr>`;
+  $("tbody#sales-read-table").html(tr);
 };
 export const uiBtnPage = (i) => {
   const btn = `<button
@@ -85,4 +88,12 @@ export const uiReset = () => {
   $("div#sales-select").removeClass("d-none");
   // select with date
   $("div#sales-select-date").addClass("d-none");
+};
+export const uiLoad = () => {
+  const tr = `<tr>
+                <td colspan="11" class="text-center fst-italic">
+                  loading....
+                </td>
+              </tr>`;
+  $("tbody#sales-read-table").html(tr);
 };

@@ -1,33 +1,40 @@
-import {
-  getPersediaanProductGroup1,
-  getPersediaanTotalRow1,
-} from "../../../../serverless-side/functions/persediaan.js";
 import { uiQty } from "../../component/card/qty.js";
 import { list } from "../../component/list/index.js";
-import { uiBtnPage1, uiBtnPageActive1, uiCard, uiCardEmpty } from "./ui.js";
-
+import { debounce } from "../../utils/debounce.js";
+import { getGroupProduct, getRowPage1 } from "./services.js";
+import {
+  uiBtnPage1,
+  uiBtnPageActive1,
+  uiCard,
+  uiCardEmpty,
+  uiLoad,
+} from "./ui.js";
 let searchVal = $("input#order-search").val();
 let limitVal = 3;
 let offsetVal = 1;
-getInit();
 // searching
+const handleBounce = debounce(() => {
+  getInit();
+}, 1000);
 $("input#order-search")
   .off("keyup")
   .on("keyup", function () {
     searchVal = $(this).val();
-    getInit();
+    uiLoad();
+    handleBounce();
   });
-// get total row and page
+getInit();
 async function getInit() {
-  try {
-    const req = {
-      searchVal,
-      limitVal,
-      offsetVal,
-    };
-    const response = await getPersediaanTotalRow1(req);
-    const totalPage = response.totalPage;
-    const totalRow = response.totalRow;
+  const req = {
+    searchVal,
+    limitVal,
+    offsetVal,
+  };
+  const rowPage = await getRowPage1(req);
+  const response = rowPage.response;
+  const status = rowPage.status;
+  if (status) {
+    const { totalPage, totalRow } = response;
     if (totalRow >= 1) {
       await getPage(req);
       handlePagination(totalPage);
@@ -38,14 +45,16 @@ async function getInit() {
       $("div#product-refpersediaan-read").html(empty);
       $("div#product-refpersediaan-pagination").addClass("d-none");
     }
-  } catch (error) {
-    console.error(error);
+  }
+  if (!status) {
+    console.error(response);
   }
 }
-// get by page
 async function getPage(req) {
-  try {
-    const response = await getPersediaanProductGroup1(req);
+  const stock = await getGroupProduct(req);
+  const response = stock.response;
+  const status = stock.status;
+  if (status) {
     let card = ``;
     response.forEach((rows) => {
       card += uiCard(rows);
@@ -58,11 +67,11 @@ async function getPage(req) {
     list();
     // update active page
     uiBtnPageActive1(req.offsetVal);
-  } catch (error) {
-    console.error(error);
+  }
+  if (!status) {
+    console.error(response);
   }
 }
-// loop and inserthtml pagination
 function handlePagination(totalPage) {
   // insert to html
   let btn = ``;
@@ -141,23 +150,23 @@ function handlePagination(totalPage) {
       await getPage(req);
     });
 }
-export const getProductAgain = () => {
-  let searchVal = "";
-  let limitVal = 3;
-  let offsetVal = 1;
+export const getGroupProductAgain = () => {
   $("input#order-search").val("");
+  const searchVal = "";
+  const limitVal = 3;
+  const offsetVal = 1;
   getInit();
-  // get total row and page
   async function getInit() {
-    try {
-      const req = {
-        searchVal,
-        limitVal,
-        offsetVal,
-      };
-      const response = await getPersediaanTotalRow1(req);
-      const totalPage = response.totalPage;
-      const totalRow = response.totalRow;
+    const req = {
+      searchVal,
+      limitVal,
+      offsetVal,
+    };
+    const rowPage = await getRowPage1(req);
+    const response = rowPage.response;
+    const status = rowPage.status;
+    if (status) {
+      const { totalPage, totalRow } = response;
       if (totalRow >= 1) {
         await getPage(req);
         handlePagination(totalPage);
@@ -168,14 +177,16 @@ export const getProductAgain = () => {
         $("div#product-refpersediaan-read").html(empty);
         $("div#product-refpersediaan-pagination").addClass("d-none");
       }
-    } catch (error) {
-      console.error(error);
+    }
+    if (!status) {
+      console.error(response);
     }
   }
-  // get by page
   async function getPage(req) {
-    try {
-      const response = await getPersediaanProductGroup1(req);
+    const stock = await getGroupProduct(req);
+    const response = stock.response;
+    const status = stock.status;
+    if (status) {
       let card = ``;
       response.forEach((rows) => {
         card += uiCard(rows);
@@ -188,11 +199,11 @@ export const getProductAgain = () => {
       list();
       // update active page
       uiBtnPageActive1(req.offsetVal);
-    } catch (error) {
-      console.error(error);
+    }
+    if (!status) {
+      console.error(response);
     }
   }
-  // loop and inserthtml pagination
   function handlePagination(totalPage) {
     // insert to html
     let btn = ``;

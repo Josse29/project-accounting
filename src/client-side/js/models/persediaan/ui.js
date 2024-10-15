@@ -298,7 +298,55 @@ export const uiTrCategorySum = (rows, no) => {
                 </tr>`;
   return html;
 };
-import { formatRupiah2 } from "../../utils/formatRupiah.js";
+// group by product
+export const uiLoad = () => {
+  const div = `<div class="container-by-me">
+                <div class="card">
+                  <div class="animate-load" style="width: 100%; height: 200px"></div>
+                  <div class="card-body">
+                    <div class="mb-4">
+                      <div class="animate-load mb-2 w-75" style="height: 30px"></div>
+                      <div class="animate-load w-50 mb-2" style="height: 30px"></div>
+                      <div class="animate-load w-25" style="height: 25px"></div>
+                    </div>
+                    <div class="d-flex justify-content-end gap-2">
+                      <div class="animate-load" style="height: 35px; width: 35px"></div>
+                      <div class="animate-load" style="height: 35px; width: 35px"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="animate-load" style="width: 100%; height: 200px"></div>
+                  <div class="card-body">
+                    <div class="mb-4">
+                      <div class="animate-load mb-2 w-75" style="height: 30px"></div>
+                      <div class="animate-load w-50 mb-2" style="height: 30px"></div>
+                      <div class="animate-load w-25" style="height: 25px"></div>
+                    </div>
+                    <div class="d-flex justify-content-end gap-2">
+                      <div class="animate-load" style="height: 35px; width: 35px"></div>
+                      <div class="animate-load" style="height: 35px; width: 35px"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="animate-load" style="width: 100%; height: 200px"></div>
+                  <div class="card-body">
+                    <div class="mb-4">
+                      <div class="animate-load mb-2 w-75" style="height: 30px"></div>
+                      <div class="animate-load w-50 mb-2" style="height: 30px"></div>
+                      <div class="animate-load w-25" style="height: 25px"></div>
+                    </div>
+                    <div class="d-flex justify-content-end gap-2">
+                      <div class="animate-load" style="height: 35px; width: 35px"></div>
+                      <div class="animate-load" style="height: 35px; width: 35px"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>`;
+  $("div#product-refpersediaan-read").html(div);
+  $("div#product-refpersediaan-pagination").addClass("d-none");
+};
 export const uiCard = (rows) => {
   const productId = parseInt(rows.PersediaanProductId);
   const productName = rows.ProductName;

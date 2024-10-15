@@ -1,33 +1,42 @@
-import {
-  getSalesRowPage,
-  getSalesSum,
-  readSales,
-} from "../../../../serverless-side/functions/sales.js";
+import { debounce } from "../../utils/debounce.js";
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
-import { uiBtnPage, uiBtnPageActive, uiReset, uiTr, uiTrEmpty } from "./ui.js";
-
+import { getLimitOffset, getRowPage, getSum } from "./services.js";
+import {
+  uiBtnPage,
+  uiBtnPageActive,
+  uiLoad,
+  uiReset,
+  uiTBody,
+  uiTrEmpty,
+} from "./ui.js";
 let searchVal = $("input#sales-read-search").val();
 let limitVal = parseInt($("select#sales-read-limit").val());
 let offsetVal = 1;
 getInit();
-// limit
-$("select#sales-read-limit")
-  .off("change")
-  .on("change", function () {
-    limitVal = parseInt($(this).val());
-    getInit();
-  });
 // search
+// Debounced event handler
+const handleDebounce = debounce(() => {
+  getInit();
+}, 1000);
 $("input#sales-read-search")
   .off("keyup")
   .on("keyup", function () {
     searchVal = $(this).val();
-    getInit();
+    uiLoad();
+    handleDebounce();
   });
 $("span#sales-search")
   .off("click")
   .on("click", function () {
     getInit();
+  });
+// limit
+$("select#sales-read-limit")
+  .off("change")
+  .on("change", function () {
+    limitVal = parseInt($(this).val());
+    uiLoad();
+    handleDebounce();
   });
 // reset
 $("button#sales-read-reset")
@@ -37,45 +46,52 @@ $("button#sales-read-reset")
     uiReset();
   });
 async function getInit() {
-  try {
-    const req = {
-      searchVal,
-      limitVal,
-      offsetVal,
-    };
-    // total sum
-    const totalSales = await getSalesSum();
-    const currency = formatRupiah2(totalSales);
+  const req = {
+    searchVal,
+    limitVal,
+    offsetVal,
+  };
+  //1.total sum
+  const totalSales = await getSum();
+  const sumStatus = totalSales.status;
+  const resSum = totalSales.response;
+  if (sumStatus) {
+    const currency = formatRupiah2(resSum);
     $("div#sales-total-sum").text(currency);
-    // row page
-    const init = await getSalesRowPage(req);
-    const totalPage = init.totalPage;
-    const totalRow = init.totalRow;
+  }
+  if (!sumStatus) {
+    console.error(resSum);
+  }
+  // 2.row page
+  const init = await getRowPage(req);
+  const initStatus = init.status;
+  const totalPage = init.response.totalPage;
+  const totalRow = init.response.totalRow;
+  if (initStatus) {
     if (totalRow >= 1) {
       await getPage(req);
       handlePagination(totalPage);
       $("div#sales-page-container").removeClass("d-none");
     }
     if (totalRow < 1) {
-      const empty = uiTrEmpty(searchVal);
-      $("tbody#sales-read-table").html(empty);
+      uiTrEmpty(searchVal);
       $("div#sales-page-container").addClass("d-none");
     }
-  } catch (error) {
-    console.error(error);
+  }
+  if (!initStatus) {
+    console.log(init.response);
   }
 }
 async function getPage(req) {
-  try {
-    const response = await readSales(req);
-    let table = ``;
-    response.forEach((rows) => {
-      table += uiTr(rows);
-    });
-    $("tbody#sales-read-table").html(table);
+  const sales = await getLimitOffset(req);
+  const status = sales.status;
+  const response = sales.response;
+  if (status) {
+    uiTBody(response);
     uiBtnPageActive(req.offsetVal);
-  } catch (error) {
-    console.error(error);
+  }
+  if (!status) {
+    console.error(response);
   }
 }
 function handlePagination(totalPage) {
@@ -152,51 +168,59 @@ function handlePagination(totalPage) {
     });
 }
 export const getSalesAgain = () => {
-  let searchVal = "";
-  let limitVal = 3;
-  let offsetVal = 1;
   $("input#sales-read-search").val("");
+  const searchVal = "";
+  const limitVal = 3;
+  const offsetVal = 1;
   getInit();
   async function getInit() {
-    try {
-      const req = {
-        searchVal,
-        limitVal,
-        offsetVal,
-      };
-      // total sum
-      const totalSales = await getSalesSum();
-      const currency = formatRupiah2(totalSales);
+    const req = {
+      searchVal,
+      limitVal,
+      offsetVal,
+    };
+    // total sum
+    const totalSales = await getSum();
+    const sumStatus = totalSales.status;
+    const resSum = totalSales.response;
+    if (sumStatus) {
+      const currency = formatRupiah2(resSum);
       $("div#sales-total-sum").text(currency);
-      // row page
-      const init = await getSalesRowPage(req);
-      const totalPage = init.totalPage;
-      const totalRow = init.totalRow;
+    }
+    if (!sumStatus) {
+      console.error(resSum);
+    }
+    // row page
+    const init = await getRowPage(req);
+    const initStatus = init.status;
+    const totalPage = init.response.totalPage;
+    const totalRow = init.response.totalRow;
+    if (initStatus) {
       if (totalRow >= 1) {
         await getPage(req);
         handlePagination(totalPage);
         $("div#sales-page-container").removeClass("d-none");
       }
       if (totalRow < 1) {
-        const empty = uiTrEmpty(searchVal);
+        uiTrEmpty(searchVal);
         $("tbody#sales-read-table").html(empty);
         $("div#sales-page-container").addClass("d-none");
       }
-    } catch (error) {
-      console.error(error);
+    }
+    if (!initStatus) {
+      console.log(init.response);
     }
   }
   async function getPage(req) {
-    try {
-      const response = await readSales(req);
-      let table = ``;
-      response.forEach((rows) => {
-        table += uiTr(rows);
-      });
-      $("tbody#sales-read-table").html(table);
+    const sales = await getLimitOffset(req);
+    const status = sales.status;
+    const response = sales.response;
+    if (status) {
+      uiTBody(response);
       uiBtnPageActive(req.offsetVal);
-    } catch (error) {
-      console.error(error);
+    }
+    if (!status) {
+      console.error(response);
     }
   }
   function handlePagination(totalPage) {

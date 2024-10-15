@@ -13,6 +13,7 @@ body::-webkit-scrollbar {
   display: none;
 }
 .top-navigation {
+  z-index: 2;
   position: fixed;
   left: 100px;
   right: 0px;
@@ -180,12 +181,12 @@ label#toggle-password {
   position: relative;
   overflow: hidden;
 }
-.animate-load::before {
+.animate-load::after {
   content: "";
   display: block;
   position: absolute;
   top: 0;
-  left: -100%; /* Mulai dari luar elemen */
+  left: -100%;
   width: 100%;
   height: 100%;
   background: linear-gradient(

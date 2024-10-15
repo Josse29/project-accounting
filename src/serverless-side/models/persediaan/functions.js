@@ -103,7 +103,7 @@ export const createPersediaan1 = (request) => {
   return new Promise((resolve, reject) => {
     db.run(query, (err) => {
       if (!err) {
-        const msg = "berhasil";
+        const msg = "Stock has been stored";
         resolve(msg);
       }
       if (err) {

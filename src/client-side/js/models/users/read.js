@@ -1,8 +1,10 @@
+import { debounce } from "../../utils/debounce.js";
 import { reinitTooltip } from "../../utils/updateUi.js";
 import { fetchLimitOffset, fetchRowPage } from "./services.js";
 import {
   uiBtnPage,
   uiBtnPageActive,
+  uiLoad,
   uiTr,
   uiTrEmpty,
   uiTrSearching,
@@ -11,38 +13,25 @@ import {
 let searchVal = $("input#user-search").val();
 let limitVal = parseInt($("select#user-limit").val());
 let offsetVal = 1;
-// searching
-let timeoutId;
+// Debounced event handler
+const handleDebounce = debounce(() => {
+  fetchInit();
+}, 1000);
 $("input#user-search")
   .off("keyup")
   .on("keyup", function () {
-    $("span#user-total-row").text("waiting..");
-    $("div#user-pagination").addClass("d-none");
     searchVal = $(this).val();
-    const tr = uiTrSearching();
-    $("tbody#user").html(tr);
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
-    timeoutId = setTimeout(() => {
-      fetchInit();
-    }, 1000);
+    $("span#user-total-row").text("waiting..");
+    uiLoad();
+    handleDebounce();
   });
 // limit
-let timeoutId1;
 $("select#user-limit")
   .off("change")
   .on("change", function () {
     limitVal = $(this).val();
-    $("div#user-pagination").addClass("d-none");
-    const tr = uiTrSearching();
-    $("tbody#user").html(tr);
-    if (timeoutId1) {
-      clearTimeout(timeoutId1);
-    }
-    timeoutId1 = setTimeout(() => {
-      fetchInit();
-    }, 1000);
+    uiLoad();
+    handleDebounce();
   });
 // 1. init & pagination
 fetchInit();

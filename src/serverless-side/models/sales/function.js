@@ -1,4 +1,4 @@
-import db from "../database/config.js";
+import db from "../../database/config.js";
 import {
   queryCreateSales,
   queryDeleteSales,
@@ -21,7 +21,7 @@ import {
   queryGetSalesSumPersonIdDate,
   queryGetSalesSumProductId,
   queryUpdateSales,
-} from "../querysql/sales.js";
+} from "./querysql.js";
 // create
 export const createSales = (req) => {
   const {
@@ -57,7 +57,22 @@ export const createSales = (req) => {
   });
 };
 // read
-export const getSalesRowPage = (req) => {
+export const getSale = (req) => {
+  const { searchVal, limitVal, offsetVal } = req;
+  const startOffsetVal = parseInt(parseInt(offsetVal - 1) * parseInt(limitVal));
+  const query = queryGetSales(searchVal, limitVal, startOffsetVal);
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, res) => {
+      if (!err) {
+        resolve(res);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
+  });
+};
+export const getSaleRowPage = (req) => {
   const { searchVal, limitVal } = req;
   const query = queryGetSalesRowPage(searchVal);
   return new Promise((resolve, reject) => {
@@ -79,21 +94,6 @@ export const getSalesRowPage = (req) => {
     });
   });
 };
-export const readSales = (req) => {
-  const { searchVal, limitVal, offsetVal } = req;
-  const startOffsetVal = parseInt(parseInt(offsetVal - 1) * parseInt(limitVal));
-  const query = queryGetSales(searchVal, limitVal, startOffsetVal);
-  return new Promise((resolve, reject) => {
-    db.all(query, (err, res) => {
-      if (!err) {
-        resolve(res);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
-};
 export const getReportSales = () => {
   const query = queryGetReportSales();
   return new Promise((resolve, reject) => {
@@ -107,19 +107,14 @@ export const getReportSales = () => {
     });
   });
 };
-export const getSalesSum = () => {
+export const getSaleSum = () => {
   const query = queryGetSalesSum();
   return new Promise((resolve, reject) => {
     db.each(query, (err, result) => {
       if (!err) {
-        let total = 0;
         const response = result.Total_Rp;
-        if (response !== null) {
-          total = parseInt(response);
-        } else {
-          total = 0;
-        }
-        resolve(total);
+        const totalRp = response ? response : 0;
+        resolve(totalRp);
       }
       if (err) {
         reject(err);
@@ -128,7 +123,7 @@ export const getSalesSum = () => {
   });
 };
 // product
-export const getSalesSumProductId = (req) => {
+export const getSaleSumProductId = (req) => {
   const query = queryGetSalesSumProductId(req);
   return new Promise((resolve, reject) => {
     db.each(query, (err, rows) => {
@@ -147,7 +142,7 @@ export const getSalesSumProductId = (req) => {
     });
   });
 };
-export const getSalesProductId = (req) => {
+export const getSaleProductId = (req) => {
   const query = queryGetSalesProductId(req);
   return new Promise((resolve, reject) => {
     db.all(query, (err, rows) => {
@@ -161,7 +156,7 @@ export const getSalesProductId = (req) => {
   });
 };
 // person
-export const getSalesPersonId = (req) => {
+export const getSalePersonId = (req) => {
   const query = queryGetSalesPersonId(req);
   return new Promise((resolve, reject) => {
     db.all(query, (err, rows) => {
@@ -174,7 +169,7 @@ export const getSalesPersonId = (req) => {
     });
   });
 };
-export const getSalesSumPersonId = (req) => {
+export const getSaleSumPersonId = (req) => {
   const query = queryGetSalesSumPersonId(req);
   return new Promise((resolve, reject) => {
     db.each(query, (err, result) => {
@@ -189,7 +184,7 @@ export const getSalesSumPersonId = (req) => {
   });
 };
 // customer
-export const getSalesCustomerId = (req) => {
+export const getSaleCustomerId = (req) => {
   const query = queryGetSalesCustomerId(req);
   return new Promise((resolve, reject) => {
     db.all(query, (err, rows) => {
@@ -202,7 +197,7 @@ export const getSalesCustomerId = (req) => {
     });
   });
 };
-export const getSalesSumCustomerId = (req) => {
+export const getSaleSumCustomerId = (req) => {
   const query = queryGetSalesSumCustomerId(req);
   return new Promise((resolve) => {
     db.each(query, (err, result) => {
@@ -324,7 +319,7 @@ export const getSaleSumPersonIdDate = (req) => {
     });
   });
 };
-export const getSalesCustomerIdDate = (req) => {
+export const getSaleCustomerIdDate = (req) => {
   const { startDateVal, endDateVal, selectedPersonId } = req;
   const query = queryGetSalesCustomerIdDate(
     startDateVal,

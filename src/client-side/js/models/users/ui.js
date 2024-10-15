@@ -121,3 +121,8 @@ export const uiReset = () => {
   $("#user-create #userpassword1").val("");
   $("#user-create input#userimg").val("");
 };
+export const uiLoad = () => {
+  $("div#user-pagination").addClass("d-none");
+  const tr = uiTrSearching();
+  $("tbody#user").html(tr);
+};
