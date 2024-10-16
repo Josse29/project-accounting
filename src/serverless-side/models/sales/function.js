@@ -337,7 +337,7 @@ export const getSaleCustomerIdDate = (req) => {
     });
   });
 };
-export const getSalesSumCustomerIdDate = (req) => {
+export const getSaleSumCustomerIdDate = (req) => {
   const { startDateVal, endDateVal, selectedPersonId } = req;
   const query = queryGetSalesSumCustomerIdDate(
     startDateVal,

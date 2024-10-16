@@ -16,7 +16,6 @@ import {
   queryGetPersediaanDateRpCategoryId,
   queryGetPersediaanDateRpSupplierId,
   queryGetPersediaanDateSUM,
-  queryGetPersediaanDateSumProduct,
   queryGetPersediaanDateSupplierId,
   queryGetPersediaanProductGroup,
   queryGetPersediaanProductGroup1,
@@ -440,31 +439,6 @@ export const getPersediaanDateProductId = (req) => {
       }
       if (err) {
         reject(res);
-      }
-    });
-  });
-};
-export const getPersediaanDateSumProduct = (req) => {
-  const { startDateVal, endDateVal, productId } = req;
-  const query = queryGetPersediaanDateSumProduct(
-    startDateVal,
-    endDateVal,
-    productId
-  );
-  return new Promise((resolve, reject) => {
-    db.each(query, (err, res) => {
-      if (!err) {
-        let totalRp = ``;
-        if (res.TotalRp !== null) {
-          totalRp = parseFloat(res.TotalRp);
-        }
-        if (res.TotalRp === null) {
-          totalRp = 0;
-        }
-        resolve(totalRp);
-      }
-      if (err) {
-        reject(err);
       }
     });
   });

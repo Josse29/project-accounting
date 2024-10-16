@@ -1,51 +1,53 @@
-import {
-  getPersediaanCategoryId,
-  getPersediaanRpSumCategoryId,
-} from "../../../../serverless-side/functions/persediaan.js";
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import { animateFade, reinitTooltip } from "../../utils/updateUi.js";
 import { listCategoryRefPersediaanRead } from "../categories/list.js";
+import { getByCategoryId, getSumPriceCategoryId } from "./services.js";
 import { uiTbody, uiTbodyEmpty } from "./ui.js";
 
 listCategoryRefPersediaanRead();
 $("select#persediaan-refcategory-search")
   .off("change")
   .on("change", async function () {
-    try {
-      animateFade("#persediaan-section");
-      // req
-      const selectedCategoryId = parseInt($(this).val());
-      // selected
-      const selectedCategoryName = $(this).find("option:selected").text();
-      // sum
-      const sum = await getPersediaanRpSumCategoryId(selectedCategoryId);
-      const sumRupiah = formatRupiah2(parseFloat(sum));
+    animateFade("#persediaan-section");
+    // 1. req
+    const selectedCategoryId = parseInt($(this).val());
+    // 2. caption-selected
+    const selectedCategoryName = $(this).find("option:selected").text();
+    // 3. price-buy
+    const sum = await getSumPriceCategoryId(selectedCategoryId);
+    const sumStatus = sum.status;
+    const sumRes = sum.response;
+    if (sumStatus) {
+      const sumRupiah = formatRupiah2(sumRes);
       // insert - to - html sumpersediaan
-      const sumSectionHTML = `<p class="fs-5 ms-2 mb-1 text-capitalize fw-bold ms-2">
-                              ${selectedCategoryName}</p>
-                            <p class="fs-5 ms-4">Total Price : ${sumRupiah} </p>`;
+      const sumSectionHTML = `
+      <p class="fs-5 ms-2 mb-1 text-capitalize fw-bold ms-2">${selectedCategoryName}</p>
+      <p class="fs-5 ms-4">Total Price : ${sumRupiah} </p>`;
       $("div#persediaan-sum-section").html(sumSectionHTML);
-      // table
-      const byCategoryId = await getPersediaanCategoryId(selectedCategoryId);
-      const existedCategory = byCategoryId.length >= 1;
+    }
+    if (!sumStatus) {
+      console.error(sumRes);
+    }
+    // 4. stock-table
+    const byCategoryId = await getByCategoryId(selectedCategoryId);
+    const statusByCategory = byCategoryId.status;
+    const resByCategory = byCategoryId.response;
+    if (statusByCategory) {
+      const existedCategory = resByCategory.length >= 1;
       if (existedCategory) {
-        let tr = "";
-        byCategoryId.forEach((element) => {
-          tr += uiTbody(element);
-        });
-        $("#persediaan-table").html(tr);
+        uiTbody(resByCategory);
         reinitTooltip();
       }
       if (!existedCategory) {
-        const tr = uiTbodyEmpty(selectedCategoryName);
-        $("#persediaan-table").html(tr);
+        uiTbodyEmpty(selectedCategoryName);
       }
-      // references
-      $("#persediaanLimitSearch").addClass("d-none");
-      $("select#persediaan-refproduct-search").val("Choose One Of Products");
-      $("select#persediaan-refsupplier-search").val("Choose One Of Suppliers");
-      $("#persediaan-pagination").addClass("d-none");
-    } catch (error) {
-      console.error(error);
     }
+    if (!statusByCategory) {
+      console.error(resByCategory);
+    }
+    // references
+    $("#persediaanLimitSearch").addClass("d-none");
+    $("select#persediaan-refproduct-search").val("Choose One Of Products");
+    $("select#persediaan-refsupplier-search").val("Choose One Of Suppliers");
+    $("#persediaan-pagination").addClass("d-none");
   });

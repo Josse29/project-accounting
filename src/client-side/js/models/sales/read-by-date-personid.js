@@ -1,11 +1,8 @@
-import {
-  getSalesPersonIdDate,
-  getSalesSumPersonIdDate,
-} from "../../../../serverless-side/functions/sales.js";
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import { formatWaktuIndo } from "../../utils/formatWaktu.js";
 import { animateFade } from "../../utils/updateUi.js";
-import { uiTr, uiTrEmpty } from "./ui.js";
+import { getByDatePerson, getSumByDatePerson } from "./services.js";
+import { uiTBody, uiTrEmpty } from "./ui.js";
 // by date and user
 $("select#sales-read-personid-date")
   .off("change")
@@ -28,24 +25,33 @@ $("select#sales-read-personid-date")
       )}`;
       const selectedText = $(this).find("option:selected").text();
       // req-to=db-summary
-      const resSum = await getSalesSumPersonIdDate(req);
-      const rupiah = formatRupiah2(resSum);
-      const ui = `<p class="fs-5 mb-1 fw-bold text-capitalize">${selectedText} | ${date}</p>
+      const summary = await getSumByDatePerson(req);
+      const resStatus = summary.status;
+      const resSum = summary.response;
+      if (resStatus) {
+        const rupiah = formatRupiah2(resSum);
+        const ui = `<p class="fs-5 mb-1 fw-bold text-capitalize">${selectedText} | ${date}</p>
                   <p class="fs-5 ms-1 mb-1">Total : ${rupiah}</p> `;
-      $("div#summary").html(ui);
-      // req-to=db=table
-      const resTable = await getSalesPersonIdDate(req);
-      const existed = resTable.length >= 1;
-      if (existed) {
-        let tr = ``;
-        resTable.forEach((rows) => {
-          tr += uiTr(rows);
-        });
-        $("tbody#sales-read-table").html(tr);
+        $("div#summary").html(ui);
       }
-      if (!existed) {
-        const tr = uiTrEmpty(`${selectedText} , ${date}`);
-        $("tbody#sales-read-table").html(tr);
+      if (!resStatus) {
+        console.error(resSum);
+      }
+      // req-to=db=table
+      const sales = await getByDatePerson(req);
+      const response = sales.response;
+      const status = sales.status;
+      if (status) {
+        const existed = response.length >= 1;
+        if (existed) {
+          uiTBody(response);
+        }
+        if (!existed) {
+          uiTrEmpty(`${selectedText} , ${date}`);
+        }
+      }
+      if (!status) {
+        console.error(response);
       }
       // reference callback ui
       // 1.select

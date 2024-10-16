@@ -99,8 +99,7 @@ export const queryGetPersediaanTotalRow = (searchVal) => {
     //  with searhing value
     query += `WHERE Product.ProductName LIKE '%${searchVal}%' ESCAPE '!' OR
                     Category.CategoryName LIKE '%${searchVal}%' ESCAPE '!' OR
-                    Supplier.SupplierName LIKE '%${searchVal}%' ESCAPE '!'
- `;
+                    Supplier.SupplierName LIKE '%${searchVal}%' ESCAPE '!' `;
   }
   return query;
 };
@@ -508,20 +507,6 @@ export const queryGetPersediaanRpSupplier = (supplierIdVal) => {
                  LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId
                  WHERE Supplier.SupplierId IS NOT NULL 
                        AND Supplier.SupplierId = ${supplierIdVal}`;
-  return query;
-};
-export const queryGetPersediaanDateSumProduct = (
-  startDate,
-  endDate,
-  valProductId
-) => {
-  let query = `SELECT 
-               SUM(Persediaan.PersediaanRp) AS TotalRp
-               FROM ${tableName} `;
-  //  with valstartDate - endDate
-  query += `WHERE ${tableName}.${colPersediaanDDMY} BETWEEN  '${startDate}' AND '${endDate}' `;
-  // with product id
-  query += `AND Persediaan.PersediaanProductId = ${valProductId}`;
   return query;
 };
 export const queryGetPersediaanDateSUM = (startDate, endDate) => {

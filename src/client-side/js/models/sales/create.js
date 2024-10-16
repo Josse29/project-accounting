@@ -10,9 +10,11 @@ import {
 } from "../../utils/localStorage.js";
 import { listUserRefSalesCreate } from "../users/list.js";
 import { addCash } from "../cash/services.js";
-import { createV1 } from "../persediaan/services.js";
+import { addStock } from "../persediaan/services.js";
 import { addSale } from "./services.js";
 import { getGroupProductAgain } from "../persediaan/read-by-group-product.js";
+import { addAccounting } from "../accounting/services.js";
+import { getSalesAgain } from "./read.js";
 
 // init table order
 $(".card-footer ")
@@ -120,7 +122,7 @@ $("button#order-done")
           PersediaanProductIdVal: el.ProductId,
           PersediaanPersonIdVal: parseInt(userSalesId),
         };
-        await createV1(reqPersediaan);
+        await addStock(reqPersediaan);
         // 3. req-to-db-cash
         const reqCash = {
           CashYYYYMMDDVal: formattedDDMY,
@@ -140,7 +142,7 @@ $("button#order-done")
           accountingRpVal: el.ProductPriceSell * el.ProductQty,
           accountingInfoVal: `${el.ProductName} has been sold with qty ${el.ProductQty}`,
         };
-        await createAccounting(debtEntry);
+        await addAccounting(debtEntry);
         const creditEntry = {
           accountingYMDVal: formattedDDMY,
           accountingHMSVal: formattedHMS,
@@ -150,13 +152,13 @@ $("button#order-done")
           accountingRpVal: el.ProductPriceSell * el.ProductQty,
           accountingInfoVal: `${el.ProductName} has been sold with qty ${el.ProductQty}`,
         };
-        await createAccounting(creditEntry);
+        await addAccounting(creditEntry);
       }
       // send to db.piutang|| it credit comingsooon
       // comingsoonn....
       // get all ref from orders|sales
-      getGroupProductAgain();
-      getSalesAgain();
+      await getGroupProductAgain();
+      await getSalesAgain();
       // remove storage cart and sum storage card
       removeStorageCart();
       removeStorageCartSUM();

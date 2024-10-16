@@ -1,4 +1,4 @@
-import db from "../database/config.js";
+import db from "../../database/config.js";
 import {
   queryCreateAccounting,
   queryDeleteAccounting,

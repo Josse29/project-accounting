@@ -8,20 +8,21 @@ import { getByDate, getSumDate } from "./services.js";
 $("button#read-sales-date")
   .off("click")
   .on("click", async function () {
-    // animate
-    animateFade("#sales-card-body");
+    // request
     const startDateVal = $("input#sales-read-startDate").val();
     const endDateVal = $("input#sales-read-endDate").val();
     const date = `${formatWaktuIndo(startDateVal)} - ${formatWaktuIndo(
       endDateVal
     )}`;
-    if (startDateVal === "" || endDateVal === "" || startDateVal > endDateVal) {
-      return;
-    }
     const req = {
       startDateVal,
       endDateVal,
     };
+    if (startDateVal === "" || endDateVal === "" || startDateVal > endDateVal) {
+      return;
+    }
+    // animate
+    animateFade("#sales-card-body");
     // summary
     const summary = await getSumDate(req);
     const sumStatus = summary.status;

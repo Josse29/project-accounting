@@ -1,109 +1,132 @@
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import { formatWaktuIndo } from "../../utils/formatWaktu.js";
 // ui tr inventory from db
-export const uiTbody = (el) => {
-  // qty
-  const persediaanQty = el.PersediaanQty;
-  const qtyTxt =
-    persediaanQty >= 1 ? `+ ${persediaanQty}` : `- ${Math.abs(persediaanQty)}`;
-  // rupiah
-  const persediaanRp = el.ProductPriceBeli * persediaanQty;
-  const rpTxt =
-    persediaanRp >= 1
-      ? `+ ${formatRupiah2(persediaanRp)}`
-      : `- ${formatRupiah2(Math.abs(persediaanRp))}`;
-  const tr = `<tr>
-                  <td class="align-content-center text-center pe-3 text-truncate">${
-                    el.PersediaanId
-                  } </td>
-                  <td class="align-content-center pe-3 text-truncate">${formatWaktuIndo(
-                    el.PersediaanDDMY
-                  )}</td>
-                  <td class="align-content-center pe-3 text-truncate">${
-                    el.PersediaanHMS
-                  }</td>
-                  <td class="align-content-center text-truncate text-capitalize pe-3">${
-                    el.ProductName
-                  }</td>
-                  <td class="align-content-center text-truncate text-capitalize pe-3">${
-                    el.CategoryName === null ? "-" : el.CategoryName
-                  } </td>
-                  <td class="align-content-center text-truncate text-capitalize pe-3">
-                    ${el.SupplierName === null ? "-" : el.SupplierName}
-                  </td>
-                  <td class="text-truncate align-content-center text-center">
-                    <span class="badge fs-6 text-truncate ${
-                      persediaanQty >= 1 ? "text-bg-success" : "text-bg-danger"
-                    }" style="max-width:100%">${qtyTxt}</span>
-                  </td>
-                  <td class="text-truncate align-content-center text-center">
-                    <span class="badge fs-6 text-truncate ${
-                      persediaanQty >= 1 ? "text-bg-success" : "text-bg-danger"
-                    }"" style="max-width: 100%">${rpTxt}</span>
-                  </td>
-                  <td class="align-content-center">
-                    <div class="d-flex w-100 justify-content-center gap-2">
-                      <button id="persediaanDetail"
-                        class="btn btn-success text-white"                      
-                        data-bs-toggle="modal" 
-                        data-bs-target="#persediaanDetailModal"
-                        data-productname="${el.ProductName}"
-                        data-productpricebuy=${el.ProductPriceBeli} 
-                        data-persediaanddmy="${el.PersediaanDDMY}" 
-                        data-persediaanHMS="${el.PersediaanHMS}"
-                        data-persediaanrp=${el.PersediaanRp}
-                        data-persediaanqty=${el.PersediaanQty}
-                        data-persediaaninfo="${el.PersediaanInfo}">
-                          <i class="fa-solid fa-eye"
-                            data-bs-toggle="tooltip" 
-                            data-bs-html="true"
-                            data-bs-title="<span>See-${el.ProductName}</span>" 
-                            data-bs-placement="bottom">
-                          </i>
-                      </button>
-                      <button id="persediaan-update-btn"
-                              class="btn btn-primary text-white"
-                              data-bs-toggle="modal"
-                              data-bs-target="#persediaanUpdateModal"
-                              data-persediaanid=${el.PersediaanId}
-                              data-persediaanddmy="${el.PersediaanDDMY}" 
-                              data-persediaanHMS="${el.PersediaanHMS}"
-                              data-persediaanqty=${el.PersediaanQty}
-                              data-persediaaninfo="${el.PersediaanInfo}"
-                              data-productid=${el.ProductId} 
-                              data-productpricebuy=${el.ProductPriceBeli} 
-                              data-productname="${el.ProductName}">
-                          <i class="fa-solid fa-pencil"
-                              data-bs-toggle="tooltip" 
-                              data-bs-html="true"
-                              data-bs-title="<span>Update-${
-                                el.ProductName
-                              }</span>" 
-                              data-bs-placement="bottom">
-                          </i>
-                      </button>
-                      <button id="persediaan-delete-btn"
-                              class="btn btn-danger text-white"
-                              data-bs-toggle="modal"
-                              data-bs-target="#persediaanDeleteModal"
-                              data-persediaanid=${el.PersediaanId}
-                              data-persediaanddmy="${el.PersediaanDDMY}" 
-                              data-persediaanHMS="${el.PersediaanHMS}"
-                              data-persediaanqty=${el.PersediaanQty}
-                              data-productid=${el.ProductId}
-                              data-productname="${el.ProductName}">
-                          <i class="fa-solid fa-trash-can"
-                            data-bs-toggle="tooltip" 
-                            data-bs-html="true"
-                            data-bs-title="<span>Delete-${
-                              el.ProductName
-                            }</span>" 
-                            data-bs-placement="bottom"></i>
-                      </button>
-                    </div>
-                  </td>
-              </tr>`;
-  return tr;
+export const uiTbody = (response) => {
+  let tr = ``;
+  response.forEach((el) => {
+    // supplier-name
+    const supplierName = el.SupplierName === null ? "-" : el.SupplierName;
+    // categoryName
+    const categoryName = el.CategoryName === null ? "-" : el.CategoryName;
+    // qty
+    const persediaanQty = el.PersediaanQty;
+    const spanColor = persediaanQty >= 1 ? "text-bg-success" : "text-bg-danger";
+    const qtyTxt =
+      persediaanQty >= 1
+        ? `+ ${persediaanQty}`
+        : `- ${Math.abs(persediaanQty)}`;
+    // rupiah
+    const persediaanRp = el.ProductPriceBeli * persediaanQty;
+    const rpTxt =
+      persediaanRp >= 1
+        ? `+ ${formatRupiah2(persediaanRp)}`
+        : `- ${formatRupiah2(Math.abs(persediaanRp))}`;
+    tr += `
+    <tr>
+      <td class="align-content-center text-center pe-3 text-truncate">
+        ${el.PersediaanId}
+      </td>
+      <td class="align-content-center pe-3 text-truncate">
+        ${formatWaktuIndo(el.PersediaanDDMY)}
+      </td>
+      <td class="align-content-center pe-3 text-truncate">
+        ${el.PersediaanHMS}
+      </td>
+      <td class="align-content-center text-truncate text-capitalize pe-3">
+        ${el.ProductName}
+      </td>
+      <td class="align-content-center text-truncate text-capitalize pe-3">
+        ${supplierName}
+      </td>
+      <td class="align-content-center text-truncate text-capitalize pe-3">
+        ${categoryName}
+      </td>
+      <td class="text-truncate align-content-center text-center">
+        <span
+          class="badge fs-6 text-truncate ${spanColor}"
+          style="max-width: 100%"
+          >${qtyTxt}</span
+        >
+      </td>
+      <td class="text-truncate align-content-center text-center">
+        <span
+          class="badge fs-6 text-truncate ${spanColor}"
+          style="max-width: 100%"
+          >${rpTxt}</span
+        >
+      </td>
+      <td class="align-content-center">
+        <div class="d-flex w-100 justify-content-center gap-2">
+          <button
+            id="persediaanDetail"
+            class="btn btn-success text-white"
+            data-bs-toggle="modal"
+            data-bs-target="#persediaanDetailModal"
+            data-productname="${el.ProductName}"
+            data-productpricebuy="${el.ProductPriceBeli}"
+            data-persediaanddmy="${el.PersediaanDDMY}"
+            data-persediaanHMS="${el.PersediaanHMS}"
+            data-persediaanrp="${el.PersediaanRp}"
+            data-persediaanqty="${el.PersediaanQty}"
+            data-persediaaninfo="${el.PersediaanInfo}"
+          >
+            <i
+              class="fa-solid fa-eye"
+              data-bs-toggle="tooltip"
+              data-bs-html="true"
+              data-bs-title="<span>See-${el.ProductName}</span>"
+              data-bs-placement="bottom"
+            >
+            </i>
+          </button>
+          <button
+            id="persediaan-update-btn"
+            class="btn btn-primary text-white"
+            data-bs-toggle="modal"
+            data-bs-target="#persediaanUpdateModal"
+            data-persediaanid="${el.PersediaanId}"
+            data-persediaanddmy="${el.PersediaanDDMY}"
+            data-persediaanHMS="${el.PersediaanHMS}"
+            data-persediaanqty="${el.PersediaanQty}"
+            data-persediaaninfo="${el.PersediaanInfo}"
+            data-productid="${el.ProductId}"
+            data-productpricebuy="${el.ProductPriceBeli}"
+            data-productname="${el.ProductName}"
+          >
+            <i
+              class="fa-solid fa-pencil"
+              data-bs-toggle="tooltip"
+              data-bs-html="true"
+              data-bs-title="<span>Update-${el.ProductName}</span>"
+              data-bs-placement="bottom"
+            >
+            </i>
+          </button>
+          <button
+            id="persediaan-delete-btn"
+            class="btn btn-danger text-white"
+            data-bs-toggle="modal"
+            data-bs-target="#persediaanDeleteModal"
+            data-persediaanid="${el.PersediaanId}"
+            data-persediaanddmy="${el.PersediaanDDMY}"
+            data-persediaanHMS="${el.PersediaanHMS}"
+            data-persediaanqty="${el.PersediaanQty}"
+            data-productid="${el.ProductId}"
+            data-productname="${el.ProductName}"
+          >
+            <i
+              class="fa-solid fa-trash-can"
+              data-bs-toggle="tooltip"
+              data-bs-html="true"
+              data-bs-title="<span>Delete-${el.ProductName}</span>"
+              data-bs-placement="bottom"
+            ></i>
+          </button>
+        </div>
+      </td>
+    </tr>`;
+  });
+  $("tbody#persediaan-table").html(tr);
 };
 // make alert success after action crud
 export const uiAlertSuccess = (res) => {
@@ -164,10 +187,24 @@ export const uiTbodyEmpty = (searchVal) => {
   if (searchVal !== "") {
     search = `${searchVal} Not Found ....`;
   }
-  const html = `<tr>
-              <td colspan="10" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">${search}</td>
-            </tr>`;
-  return html;
+  const tr = `
+    <tr>
+      <td
+        colspan="10"
+        class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize"
+        style="background-color: #f2f2f2"
+      >
+        ${search}
+      </td>
+    </tr>`;
+  $("tbody#persediaan-table").html(tr);
+};
+export const uiTrLoad = () => {
+  const tr = `<tr>
+                <td colspan="10" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">loading...</td>
+              </tr>`;
+  $("tbody#persediaan-table").html(tr);
+  $("#persediaan-pagination").addClass("d-none");
 };
 // blank value after submit action
 export const uiBlankValue = () => {

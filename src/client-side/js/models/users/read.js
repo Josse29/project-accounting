@@ -1,14 +1,7 @@
 import { debounce } from "../../utils/debounce.js";
 import { reinitTooltip } from "../../utils/updateUi.js";
 import { fetchLimitOffset, fetchRowPage } from "./services.js";
-import {
-  uiBtnPage,
-  uiBtnPageActive,
-  uiLoad,
-  uiTr,
-  uiTrEmpty,
-  uiTrSearching,
-} from "./ui.js";
+import { uiBtnPage, uiBtnPageActive, uiLoad, uiTr, uiTrEmpty } from "./ui.js";
 // request
 let searchVal = $("input#user-search").val();
 let limitVal = parseInt($("select#user-limit").val());
@@ -159,17 +152,13 @@ function handlePagination(totalPage) {
       getByPage(req);
     });
 }
-
 export const getUserAgain = async () => {
   $("input#user-search").val("");
-  let searchVal = $("input#user-search").val();
-  let limitVal = parseInt($("select#user-limit").val());
-  let offsetVal = 1;
   // 1. init & pagination
   const req = {
-    searchVal,
-    limitVal,
-    offsetVal,
+    searchVal: "",
+    limitVal: parseInt($("select#user-limit").val()),
+    offsetVal: 1,
   };
   const rowPage = await fetchRowPage(req);
   const status = rowPage.status;
@@ -186,7 +175,7 @@ export const getUserAgain = async () => {
     }
     // non-exsited
     if (!existed) {
-      const tr = uiTrEmpty(searchVal);
+      const tr = uiTrEmpty(req.searchVal);
       $("tbody#user").html(tr);
       $("div#user-pagination").addClass("d-none");
     }

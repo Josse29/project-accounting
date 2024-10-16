@@ -12,6 +12,7 @@ import {
 let searchVal = $("input#order-search").val();
 let limitVal = 3;
 let offsetVal = 1;
+console.log("test");
 // searching
 const handleBounce = debounce(() => {
   getInit();
@@ -150,12 +151,12 @@ function handlePagination(totalPage) {
       await getPage(req);
     });
 }
-export const getGroupProductAgain = () => {
+export const getGroupProductAgain = async () => {
   $("input#order-search").val("");
   const searchVal = "";
   const limitVal = 3;
   const offsetVal = 1;
-  getInit();
+  await getInit();
   async function getInit() {
     const req = {
       searchVal,

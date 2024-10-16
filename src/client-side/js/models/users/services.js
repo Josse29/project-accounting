@@ -6,8 +6,8 @@ import {
   updateUser,
 } from "../../../../serverless-side/models/user/function.js";
 
-// 1. endpoint : api/user?limit=${limitVal}&offset=${offsetVal}
-// method : get
+// 1. endpoint : api/user/:limit/:offset
+// method : GET
 // payload : 1.searchVal, 2.limitVal, 3.offsetVal,
 // return : all users with search, limit, offset
 export const fetchLimitOffset = async (req) => {
@@ -23,7 +23,7 @@ export const fetchLimitOffset = async (req) => {
     return { status: false, response: error };
   }
 };
-// 2. endpoint : api/user/get-page-row
+// 2. endpoint : api/user/pagination
 // method : get
 // payload : 1.searchVal, 2.limitVal
 // return : total page and row
@@ -59,7 +59,7 @@ export const addUser = async (req) => {
     return { status: false, response: error };
   }
 };
-// 4.endpoint : api/user/delete?userid${userId}
+// 4.endpoint : api/user/:userid
 // method : DELETE
 // payload : 1.userId , 2.userFullname
 // return message has been registered
@@ -75,7 +75,7 @@ export const deleteById = async (req) => {
     return { status: false, response: error };
   }
 };
-// 5.endpoint : api/user/update?${userid}
+// 5.endpoint : api/user/:userid
 // method : UPDATE
 // payload : UserEmailVal, UserFullnameVal, UserPasswordVal, UserPositionVal, UserId
 export const update = async (req) => {
