@@ -1,4 +1,5 @@
 import {
+  createPersediaan,
   createPersediaan1,
   getPersediaan,
   getPersediaanCategoryId,
@@ -322,6 +323,27 @@ export const getByDateCategoryId = async (req) => {
     };
     const sale = await getPersediaanDateCategoryId(payLoad);
     return { status: true, response: sale };
+  } catch (error) {
+    return { status: false, response: error };
+  }
+};
+// 21. endpoint : api/persediaan/
+// method : POST
+// payload : 1.valProductName, 2.valPersediaanDDMY, 3.valPersediaanHMS, 4.valPersediaanProductId, 5.valPersediaanQty, 6.valPersediaanTotalRp, 7.valPersediaanInfo,
+// return : message succes after create
+export const create = async (req) => {
+  try {
+    const payload = {
+      valProductName: req.valProductName,
+      valPersediaanDDMY: req.valPersediaanDDMY,
+      valPersediaanHMS: req.valPersediaanHMS,
+      valPersediaanProductId: req.valPersediaanProductId,
+      valPersediaanQty: req.valPersediaanQty,
+      valPersediaanTotalRp: req.valPersediaanTotalRp,
+      valPersediaanInfo: req.valPersediaanInfo,
+    };
+    const msgCreate = await createPersediaan(payload);
+    return { status: true, response: msgCreate };
   } catch (error) {
     return { status: false, response: error };
   }
