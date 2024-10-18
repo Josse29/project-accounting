@@ -4,36 +4,60 @@ import { formatWaktuIndo } from "../../utils/formatWaktu.js";
 export const uiTbody = (response) => {
   let tr = ``;
   response.forEach((el) => {
+    // persediaanId
+    const persediaanId = parseInt(el.PersediaanId);
+    // persediaanDMY
+    const persediaanDDMY = el.PersediaanDDMY;
+    // persediaanHMS
+    const persediaanHMS = el.PersediaanHMS;
+    // persediaanInfo
+    const persediaanInfo = el.PersediaanInfo;
+    // productId
+    const productId = parseInt(el.ProductId);
+    // productName
+    const productName = el.ProductName;
+    // productPriceBuy
+    const productPriceBuy = parseFloat(el.ProductPriceBeli);
     // supplier-name
     const supplierName = el.SupplierName === null ? "-" : el.SupplierName;
     // categoryName
     const categoryName = el.CategoryName === null ? "-" : el.CategoryName;
     // qty
-    const persediaanQty = el.PersediaanQty;
+    const persediaanQty = parseFloat(el.PersediaanQty);
     const spanColor = persediaanQty >= 1 ? "text-bg-success" : "text-bg-danger";
     const qtyTxt =
       persediaanQty >= 1
         ? `+ ${persediaanQty}`
         : `- ${Math.abs(persediaanQty)}`;
     // rupiah
-    const persediaanRp = el.ProductPriceBeli * persediaanQty;
+    const persediaanRp = parseFloat(el.PersediaanRp);
     const rpTxt =
       persediaanRp >= 1
         ? `+ ${formatRupiah2(persediaanRp)}`
         : `- ${formatRupiah2(Math.abs(persediaanRp))}`;
     tr += `
-    <tr>
+    <tr
+      data-persediaanid=${persediaanId}
+      data-persediaanddmy="${persediaanDDMY}"
+      data-persediaanHMS="${persediaanHMS}"
+      data-persediaanrp="${persediaanRp}"
+      data-persediaanqty="${persediaanQty}"
+      data-persediaaninfo="${persediaanInfo}"
+      data-productid=${productId}
+      data-productname="${productName}"
+      data-productpricebuy="${productPriceBuy}"
+    >
       <td class="align-content-center text-center pe-3 text-truncate">
-        ${el.PersediaanId}
+        ${persediaanId}
       </td>
       <td class="align-content-center pe-3 text-truncate">
-        ${formatWaktuIndo(el.PersediaanDDMY)}
+        ${formatWaktuIndo(persediaanDDMY)}
       </td>
       <td class="align-content-center pe-3 text-truncate">
-        ${el.PersediaanHMS}
+        ${persediaanHMS}
       </td>
       <td class="align-content-center text-truncate text-capitalize pe-3">
-        ${el.ProductName}
+        ${productName}
       </td>
       <td class="align-content-center text-truncate text-capitalize pe-3">
         ${supplierName}
@@ -62,19 +86,12 @@ export const uiTbody = (response) => {
             class="btn btn-success text-white"
             data-bs-toggle="modal"
             data-bs-target="#persediaanDetailModal"
-            data-productname="${el.ProductName}"
-            data-productpricebuy="${el.ProductPriceBeli}"
-            data-persediaanddmy="${el.PersediaanDDMY}"
-            data-persediaanHMS="${el.PersediaanHMS}"
-            data-persediaanrp="${el.PersediaanRp}"
-            data-persediaanqty="${el.PersediaanQty}"
-            data-persediaaninfo="${el.PersediaanInfo}"
           >
             <i
               class="fa-solid fa-eye"
               data-bs-toggle="tooltip"
               data-bs-html="true"
-              data-bs-title="<span>See-${el.ProductName}</span>"
+              data-bs-title="<span>See-${productName}</span>"
               data-bs-placement="bottom"
             >
             </i>
@@ -84,20 +101,12 @@ export const uiTbody = (response) => {
             class="btn btn-primary text-white"
             data-bs-toggle="modal"
             data-bs-target="#persediaanUpdateModal"
-            data-persediaanid="${el.PersediaanId}"
-            data-persediaanddmy="${el.PersediaanDDMY}"
-            data-persediaanHMS="${el.PersediaanHMS}"
-            data-persediaanqty="${el.PersediaanQty}"
-            data-persediaaninfo="${el.PersediaanInfo}"
-            data-productid="${el.ProductId}"
-            data-productpricebuy="${el.ProductPriceBeli}"
-            data-productname="${el.ProductName}"
           >
             <i
               class="fa-solid fa-pencil"
               data-bs-toggle="tooltip"
               data-bs-html="true"
-              data-bs-title="<span>Update-${el.ProductName}</span>"
+              data-bs-title="<span>Update-${productName}</span>"
               data-bs-placement="bottom"
             >
             </i>
@@ -107,18 +116,12 @@ export const uiTbody = (response) => {
             class="btn btn-danger text-white"
             data-bs-toggle="modal"
             data-bs-target="#persediaanDeleteModal"
-            data-persediaanid="${el.PersediaanId}"
-            data-persediaanddmy="${el.PersediaanDDMY}"
-            data-persediaanHMS="${el.PersediaanHMS}"
-            data-persediaanqty="${el.PersediaanQty}"
-            data-productid="${el.ProductId}"
-            data-productname="${el.ProductName}"
           >
             <i
               class="fa-solid fa-trash-can"
               data-bs-toggle="tooltip"
               data-bs-html="true"
-              data-bs-title="<span>Delete-${el.ProductName}</span>"
+              data-bs-title="<span>Delete-${productName}</span>"
               data-bs-placement="bottom"
             ></i>
           </button>
@@ -149,6 +152,7 @@ export const uiAlertFailCreate = (res) => {
                           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>`;
   $("#sectionFailedActionPersediaan").html(alertFailed);
+  $("#section-alert").html("");
 };
 export const uiAlertFailUpdate = (res) => {
   const alertFailed = `<div class="alert alert-danger alert-dismissible fade show text-start my-2" role="alert">
@@ -156,6 +160,7 @@ export const uiAlertFailUpdate = (res) => {
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                       </div>`;
   $("#persediaan-update-failed").html(alertFailed);
+  $("#section-alert").html("");
 };
 export const uiAlertFailDelete = (res) => {
   const alertFailed = `<div class="alert alert-danger alert-dismissible fade show text-start" role="alert">
@@ -163,15 +168,19 @@ export const uiAlertFailDelete = (res) => {
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                       </div>`;
   $("#persediaan-delete-failed").html(alertFailed);
+  $("#section-alert").html("");
 };
 // button pagination
-export const uiBtnPage = (i) => {
-  return `<button type = "button" 
-                  class="persediaan-btn-page ${
-                    i === 1 ? "persediaan-active-page" : ""
-                  }" >
-                    ${i}
-          </button>`;
+export const uiBtnPage = (totalPage) => {
+  let btn = "";
+  for (let i = 1; i <= totalPage; i++) {
+    const active = i === 1 ? "persediaan-active-page" : "";
+    btn += `<button type="button" 
+                    class="persediaan-btn-page ${active}">
+              ${i}
+            </button>`;
+  }
+  $("#persediaan-number-page").html(btn);
 };
 // Function to update active page button
 export const uiBtnPageActive = (activePage) => {
@@ -384,53 +393,63 @@ export const uiLoad = () => {
   $("div#product-refpersediaan-read").html(div);
   $("div#product-refpersediaan-pagination").addClass("d-none");
 };
-export const uiCard = (rows) => {
-  const productId = parseInt(rows.PersediaanProductId);
-  const productName = rows.ProductName;
-  const priceBuy = formatRupiah2(parseFloat(rows.PriceBuy));
-  const priceSell = formatRupiah2(parseFloat(rows.PriceSell));
-  const productStock = parseInt(rows.TotalQty);
-  let imgSrc = ``;
-  if (rows.ProductImage !== "null") {
-    imgSrc = rows.ProductImage;
-  } else {
-    imgSrc = "./../images/no-img.jpg";
-  }
-  const productImg = `<img
-                        src=${imgSrc}
-                        class="card-img-top"
-                        alt="..."/>`;
-  const html = `<div class="card w-full shadow-sm">
-                ${productImg}
-                <div class="card-body">
-                    <h4 class="fw-bold text-truncate" id="order-productname">${productName}</h4>
-                    <h4 class="text-truncate" id="order-productprice">${priceSell}</h4>
-                    <p class='fs-5'>Stock : ${productStock}</p>
-                    <div class="mt-3 d-flex justify-content-between align-items-center">
-                      <div id="order-create-qty">
-                      </div>
-                      <div>
-                        <button id="order-create-qty-plus" class="btn btn-success" 
-                                data-productid=${productId}
-                                data-productname="${productName}"
-                                data-productstock=${productStock}
-                                data-productpricesell=${priceSell}
-                                data-productpricebuy=${priceBuy}>
-                          <i class="fa-solid fa-plus" style="font-size: 18px"></i>
-                        </button>
-                        <button class="btn btn-danger" id="order-create-qty-minus"
-                                data-productid=${productId}
-                                data-productname="${productName}"
-                                data-productstock=${productStock}
-                                data-productpricesell=${priceSell}
-                                data-productpricebuy=${priceBuy}>
-                          <i class="fa-solid fa-minus" style="font-size: 18px"></i>
-                        </button>
-                      </div>
-                  </div>
-                </div>
-                </div>`;
-  return html;
+export const uiCard = (response) => {
+  let card = ``;
+  response.forEach((rows) => {
+    const productId = parseInt(rows.PersediaanProductId);
+    const productName = rows.ProductName;
+    const priceBuy = formatRupiah2(parseFloat(rows.PriceBuy));
+    const priceSell = formatRupiah2(parseFloat(rows.PriceSell));
+    const productStock = parseInt(rows.TotalQty);
+    let imgSrc = ``;
+    if (rows.ProductImage !== "null") {
+      imgSrc = rows.ProductImage;
+    } else {
+      imgSrc = "./../images/no-img.jpg";
+    }
+    const productImg = `
+    <img src="${imgSrc}" class="card-img-top" alt="..." />`;
+    card += `
+    <div class="card w-full shadow-sm">
+      ${productImg}
+      <div class="card-body">
+        <h4 class="fw-bold text-truncate" id="order-productname">
+          ${productName}
+        </h4>
+        <h4 class="text-truncate" id="order-productprice">${priceSell}</h4>
+        <p class="fs-5">Stock : ${productStock}</p>
+        <div class="mt-3 d-flex justify-content-between align-items-center">
+          <div id="order-create-qty"></div>
+          <div>
+            <button
+              id="order-create-qty-plus"
+              class="btn btn-success"
+              data-productid="${productId}"
+              data-productname="${productName}"
+              data-productstock="${productStock}"
+              data-productpricesell="${priceSell}"
+              data-productpricebuy="${priceBuy}"
+            >
+              <i class="fa-solid fa-plus" style="font-size: 18px"></i>
+            </button>
+            <button
+              class="btn btn-danger"
+              id="order-create-qty-minus"
+              data-productid="${productId}"
+              data-productname="${productName}"
+              data-productstock="${productStock}"
+              data-productpricesell="${priceSell}"
+              data-productpricebuy="${priceBuy}"
+            >
+              <i class="fa-solid fa-minus" style="font-size: 18px"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  });
+  const parentCard = `<div class="container-by-me">${card}</div>`;
+  $("div#product-refpersediaan-read").html(parentCard);
 };
 export const uiCardEmpty = (searchVal) => {
   let search = `stock empty...`;
@@ -438,14 +457,17 @@ export const uiCardEmpty = (searchVal) => {
     search = `${searchVal} - not found....`;
   }
   const emptyP = `<p class="d-block fs-4 fst-italic text-center">${search}</p>`;
-  return emptyP;
+  $("div#product-refpersediaan-read").html(emptyP);
 };
-export const uiBtnPage1 = (number) => {
-  const activePage = number === 1 ? "product-ref-persediaan-page-active" : "";
-  const btn = `<button 
+export const uiBtnPage1 = (totalPage) => {
+  let btn = ``;
+  for (let i = 1; i <= totalPage; i++) {
+    const activePage = i === 1 ? "product-ref-persediaan-page-active" : "";
+    btn += `<button 
                 type="button" 
-                class="btn fs-4 product-ref-persediaan-page border border-1 ${activePage}">${number}</button>`;
-  return btn;
+                class="btn fs-4 product-ref-persediaan-page border border-1 ${activePage}">${i}</button>`;
+  }
+  $("div#product-ref-persediaan-page-number").html(btn);
 };
 // update ui Active
 export const uiBtnPageActive1 = (pageNumber) => {

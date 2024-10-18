@@ -253,6 +253,7 @@ ipcMain.on("load:about-page", () => {
     frame: false,
   });
   aboutPage.loadFile("./src/client-side/pages/about-us.html");
+  console.log(isAboutListenerSet);
   if (!isAboutListenerSet) {
     // minimize
     ipcMain.on("minimize-window:about-page", () => {
@@ -315,6 +316,7 @@ ipcMain.on("pdf:product", (event, tbody, file_path) => {
       });
   });
 });
+let ispersediaanPdf = false;
 ipcMain.on(
   "pdf:persediaan",
   (
@@ -352,25 +354,31 @@ ipcMain.on(
         file_path
       );
     });
-    ipcMain.on("create:pdf-persediaan", (event, file_path) => {
-      persediaanPdf.webContents
-        .printToPDF({
-          marginsType: 0,
-          printBackground: true,
-          printSelectionOnly: false,
-          landscape: true,
-        })
-        .then((data) => {
-          fs.writeFile(file_path, data, (err) => {
-            if (err) throw err;
-            persediaanPdf.close();
-            inventoryPage.webContents.send("success:pdf-persediaan", file_path);
+    if (!ispersediaanPdf) {
+      ipcMain.on("create:pdf-persediaan", (event, file_path) => {
+        persediaanPdf.webContents
+          .printToPDF({
+            marginsType: 0,
+            printBackground: true,
+            printSelectionOnly: false,
+            landscape: true,
+          })
+          .then((data) => {
+            fs.writeFile(file_path, data, (err) => {
+              if (err) throw err;
+              persediaanPdf.close();
+              inventoryPage.webContents.send(
+                "success:pdf-persediaan",
+                file_path
+              );
+              ispersediaanPdf = true;
+            });
+          })
+          .catch((error) => {
+            console.log(error);
           });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    });
+      });
+    }
   }
 );
 ipcMain.on("pdf:sales", (event, tbodySales, file_path) => {

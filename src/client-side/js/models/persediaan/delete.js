@@ -1,9 +1,6 @@
-import {
-  deletePersediaan,
-  deletePersediaanAll,
-} from "../../../../serverless-side/functions/persediaan.js";
 import { formatWaktuIndo } from "../../utils/formatWaktu.js";
 import { getPersediaanAgain } from "./read.js";
+import { deleteAll, deleteById } from "./services.js";
 import { uiAlertFailDelete, uiAlertSuccess } from "./ui.js";
 
 // 1.delete by-id
@@ -12,8 +9,7 @@ $("tbody#persediaan-table")
   .on("click", "#persediaan-delete-btn", function () {
     $("#persediaan-delete-failed").html(``);
     // get data from attr button
-    const persediaan = this.dataset;
-    console.log(persediaan);
+    const persediaan = $(this).closest("tr")[0].dataset;
     const valPersediaanYMD = formatWaktuIndo(persediaan.persediaanddmy);
     const valPersediaanHMS = persediaan.persediaanhms;
     const valPersediaanId = parseInt(persediaan.persediaanid);
@@ -31,26 +27,28 @@ $("tbody#persediaan-table")
       valPersediaanQty >= 1 ? "text-bg-success" : "text-bg-danger"
     }">${txtQty}</span>`;
     // confirm delete section
-    const divConfirmDelete = `Are you sure to delete ${spanQty} ${valProductName} on <span class="fw-bold">Date : ${valPersediaanYMD} Hours : ${valPersediaanHMS} </span> ?`;
+    const divConfirmDelete = `
+    Are you sure to delete ${spanQty} ${valProductName} on <span class="fw-bold">Date : ${valPersediaanYMD} Hours : ${valPersediaanHMS} </span> ?`;
     $("#confirm-text").html(divConfirmDelete);
     // req-to-db
     $("#persediaan-delete-yes")
       .off("click")
       .on("click", async function () {
-        try {
-          const req = {
-            valPersediaanId,
-            valProductName,
-            valPersediaanQty,
-            valPersediaanProductId,
-          };
-          const response = await deletePersediaan(req);
-          getPersediaanAgain();
+        const req = {
+          valPersediaanId,
+          valProductName,
+          valPersediaanQty,
+          valPersediaanProductId,
+        };
+        const { status, response } = await deleteById(req);
+        if (status) {
+          await getPersediaanAgain();
           uiAlertSuccess(response);
           $("#persediaanDeleteModal").modal("hide");
-        } catch (error) {
-          const errMsg = error || error.message;
-          uiAlertFailDelete(errMsg);
+        }
+        if (!status) {
+          console.error(response);
+          uiAlertFailDelete(response);
           const modalBody = $("#persediaan-delete-modal-body").get(0);
           modalBody.scrollTo({
             top: 0,
@@ -64,13 +62,13 @@ $("tbody#persediaan-table")
 $("button#persediaan-delete-all-yes")
   .off("click")
   .on("click", async function () {
-    try {
-      const response = await deletePersediaanAll();
+    const { status, response } = await deleteAll();
+    if (status) {
       uiSuccessActionPersediaan(response);
       getPersediaanAgain();
       $("#persediaanDeleteAllModal").modal("hide");
-    } catch (error) {
-      const errMsg = error || error.message;
-      console.error(errMsg);
+    }
+    if (!status) {
+      console.error(response);
     }
   });

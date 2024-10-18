@@ -1,6 +1,7 @@
+import { email, number } from "./regex.js";
+
 export const validateEmail = (val) => {
-  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  const isEmail = emailRegex.test(val);
+  const isEmail = email.test(val);
   if (!isEmail) {
     const msg = `Please input correct email `;
     throw new Error(msg);
@@ -46,19 +47,17 @@ export const validateLoadImg = (file) => {
       throw new Error(msg);
     }
     // 3 after validate type & size, loadImg to base64
-    if (validateImg && maxFileSize) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => {
-          const base64 = reader.result;
-          resolve(base64);
-        };
-        reader.onerror = (error) => {
-          reject(error);
-        };
-        reader.readAsDataURL(file[0]);
-      });
-    }
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64 = reader.result;
+        resolve(base64);
+      };
+      reader.onerror = (error) => {
+        reject(error);
+      };
+      reader.readAsDataURL(file[0]);
+    });
   }
   if (file.length < 1) {
     return "null";
@@ -73,13 +72,42 @@ export const validateProductAdd = (productId) => {
 };
 export const validateQty = (valPersediaanQty) => {
   const isNumeric = (val) => {
-    const regex = /^-?\d*(?:\.\d+)?(?:[eE][-+]?\d+)?$/;
-    const numeric = regex.test(val);
+    const numeric = number.test(val);
     return numeric && val !== 0;
   };
   const valdateNum = isNumeric(valPersediaanQty);
   if (!valdateNum) {
     const msg = "Please input type of number in qty...";
+    throw new Error(msg);
+  }
+};
+export const validateImg = (file) => {
+  if (file.length >= 1) {
+    // Validate type file (image/jpeg, image/png, dll.)
+    const validImageTypes = ["image/jpeg", "image/png", "image/gif"];
+    if (!validImageTypes.includes(file[0].type)) {
+      const msg =
+        "File type is not valid. Please upload an image (JPEG, PNG, GIF).";
+      throw new Error(msg);
+    }
+    // Validate size file (max 2 MB)
+    const maxFileSize = 2 * 1024 * 1024; // 2 MB in bytes
+    if (file[0].size > maxFileSize) {
+      const msg = "File size exceeds 2 MB.";
+      throw new Error(msg);
+    }
+  }
+};
+export const validatePrice = (buy, sell) => {
+  const priceBuyLesser = buy < sell;
+  if (!priceBuyLesser) {
+    const msg = "Price Buy must be lesser than Price Sell";
+    throw new Error(msg);
+  }
+};
+export const validateProductName = (productName) => {
+  if (productName === "") {
+    const msg = "Product Name must be filled...";
     throw new Error(msg);
   }
 };

@@ -1,7 +1,13 @@
 import { debounce } from "../../utils/debounce.js";
 import { reinitTooltip } from "../../utils/updateUi.js";
 import { fetchLimitOffset, fetchRowPage } from "./services.js";
-import { uiBtnPage, uiBtnPageActive, uiLoad, uiTr, uiTrEmpty } from "./ui.js";
+import {
+  uiBtnPage,
+  uiBtnPageActive,
+  uiLoad,
+  uiTbody,
+  uiTbodyEmpty,
+} from "./ui.js";
 // request
 let searchVal = $("input#user-search").val();
 let limitVal = parseInt($("select#user-limit").val());
@@ -43,14 +49,13 @@ async function fetchInit() {
     const existed = totalRow >= 1;
     // existed
     if (existed) {
-      getByPage(req);
+      await getByPage(req);
       handlePagination(totalPage);
       $("div#user-pagination").removeClass("d-none");
     }
     // non-exsited
     if (!existed) {
-      const tr = uiTrEmpty(searchVal);
-      $("tbody#user").html(tr);
+      uiTbodyEmpty(searchVal);
       $("div#user-pagination").addClass("d-none");
     }
   }
@@ -60,15 +65,9 @@ async function fetchInit() {
 }
 // 2. get user based on page
 async function getByPage(req) {
-  const users = await fetchLimitOffset(req);
-  const status = users.status;
-  const response = users.response;
+  const { status, response } = await fetchLimitOffset(req);
   if (status) {
-    let tr = ``;
-    response.forEach((el) => {
-      tr += uiTr(el);
-    });
-    $("tbody#user").html(tr);
+    uiTbody(response);
     reinitTooltip();
     // active page
     uiBtnPageActive(req.offsetVal);
@@ -155,10 +154,13 @@ function handlePagination(totalPage) {
 export const getUserAgain = async () => {
   $("input#user-search").val("");
   // 1. init & pagination
+  let searchVal = $("input#user-search").val();
+  let limitVal = parseInt($("select#user-limit").val());
+  let offsetVal = 1;
   const req = {
-    searchVal: "",
-    limitVal: parseInt($("select#user-limit").val()),
-    offsetVal: 1,
+    searchVal,
+    limitVal,
+    offsetVal,
   };
   const rowPage = await fetchRowPage(req);
   const status = rowPage.status;
@@ -175,8 +177,7 @@ export const getUserAgain = async () => {
     }
     // non-exsited
     if (!existed) {
-      const tr = uiTrEmpty(req.searchVal);
-      $("tbody#user").html(tr);
+      uiTbodyEmpty(searchVal);
       $("div#user-pagination").addClass("d-none");
     }
   }
@@ -185,19 +186,12 @@ export const getUserAgain = async () => {
   }
   // 2. get user based on page
   async function getByPage(req) {
-    const users = await fetchLimitOffset(req);
-    const status = users.status;
-    const response = users.response;
+    const { status, response } = await fetchLimitOffset(req);
     if (status) {
-      let tr = ``;
-      response.forEach((el) => {
-        tr += uiTr(el);
-      });
-      $("tbody#user").html(tr);
+      uiTbody(response);
       reinitTooltip();
       // active page
       uiBtnPageActive(req.offsetVal);
-      console.log("test-2");
     }
     if (!status) {
       console.error(response);

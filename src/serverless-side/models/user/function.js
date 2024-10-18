@@ -130,9 +130,9 @@ export const updateUser = async (req) => {
   const {
     UserEmailVal,
     UserFullnameVal,
-    UserImgVal,
     UserPositionVal,
     UserIdVal,
+    UserImgVal,
     CancelImg,
   } = req;
   // 1.validation email
@@ -140,22 +140,17 @@ export const updateUser = async (req) => {
   // 2.validation name
   validateUserFullname(UserFullnameVal);
   // 4.validation image & load image
-  let imgBase64 = ``;
-  if (CancelImg) {
-    imgBase64 = "null";
-  } else {
-    imgBase64 = await validateLoadImg(UserImgVal);
-  }
+  const imgBase64 = await validateLoadImg(UserImgVal);
   // 5. validation position
   validatePosition(UserPositionVal);
   // execute
   const query = queryUpdate(
     UserEmailVal,
     UserFullnameVal.trim(),
-    imgBase64,
     UserPositionVal,
     UserIdVal,
     UserImgVal,
+    imgBase64,
     CancelImg
   );
   return new Promise((resolve, reject) => {

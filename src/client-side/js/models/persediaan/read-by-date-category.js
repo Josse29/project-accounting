@@ -1,6 +1,6 @@
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import { formatWaktuIndo } from "../../utils/formatWaktu.js";
-import { animateFade } from "../../utils/updateUi.js";
+import { animateFade, reinitTooltip } from "../../utils/updateUi.js";
 import { getByDateCategoryId, getSumPriceDateCategory } from "./services.js";
 import { uiTbody, uiTbodyEmpty } from "./ui.js";
 // get persediaan date and category
@@ -40,6 +40,7 @@ $("div#persediaan-date-all-search")
       const existed = dateCategoryRes.length >= 1;
       if (existed) {
         uiTbody(dateCategoryRes);
+        reinitTooltip();
       }
       if (!existed) {
         const tr = uiTbodyEmpty(selectedTxt);

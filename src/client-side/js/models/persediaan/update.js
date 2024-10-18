@@ -1,16 +1,13 @@
-import {
-  getPersediaanQty,
-  updatePersediaan,
-} from "../../../../serverless-side/functions/persediaan.js";
 import { getTimeNow } from "../../utils/formatWaktu.js";
 import { getPersediaanAgain } from "./read.js";
+import { getSumQty, updateId } from "./services.js";
 import { uiAlertFailUpdate, uiAlertSuccess } from "./ui.js";
 
 $("tbody#persediaan-table")
   .off("click", "#persediaan-update-btn")
   .on("click", "#persediaan-update-btn", async function () {
     $("#persediaan-update-failed").html(``);
-    const persediaan = this.dataset;
+    const persediaan = $(this).closest("tr")[0].dataset;
     const persediaanId = parseInt(persediaan.persediaanid);
     const persediaanQty = parseFloat(persediaan.persediaanqty);
     const persediaanName = persediaan.productname;
@@ -27,13 +24,14 @@ $("tbody#persediaan-table")
     $("input#persediaan-refproduct-update-id").val(persediaanProductId);
     $("input#persediaan-refproduct-update-qty").val(persediaanQty);
     // get qty
-    try {
-      const totalQty = await getPersediaanQty(persediaanProductId);
+    const { status, response } = await getSumQty(persediaanProductId);
+    if (status) {
       $("input#persediaan-refproduct-update-search").val(
-        `${persediaanName} - Total Qty : ${totalQty}`
+        `${persediaanName} - Total Qty : ${response}`
       );
-    } catch (error) {
-      console.error(error);
+    }
+    if (!status) {
+      console.error(response);
     }
     // function update increse or decrease qty
     let persediaanUpdateQty = $("input#persediaan-refproduct-update-qty").val();
@@ -58,43 +56,43 @@ $("tbody#persediaan-table")
     $("button#persediaan-update-submit")
       .off("click")
       .on("click", async function () {
-        try {
-          // get value
-          const { formattedDDMY, formattedHMS } = getTimeNow();
-          const valPersediaanId = persediaanId;
-          const valPersediaanDDMY = formattedDDMY;
-          const valPersediaanHMS = formattedHMS;
-          const valPersediaanProductId = parseInt(
-            $("#persediaan-refproduct-update-id").val()
-          );
-          const valPersediaanQty = parseFloat(
-            $("input#persediaan-refproduct-update-qty").val()
-          );
-          const valProductIdRp = parseFloat(
-            $("input#persediaan-refproduct-update-rp").val()
-          );
-          const valPersediaanInfo = $("#persediaan-update-info").val();
-          const valProductName = $("#persediaan-refproduct-update-name").val();
-          const valPersediaanTotalRp = valPersediaanQty * valProductIdRp;
-          // send to params
-          const req = {
-            valPersediaanId,
-            valPersediaanDDMY,
-            valPersediaanHMS,
-            valPersediaanProductId,
-            valPersediaanQty,
-            valPersediaanTotalRp,
-            valPersediaanInfo,
-            valProductName,
-          };
-          // req-to-db
-          const response = await updatePersediaan(req);
+        // get value
+        const { formattedDDMY, formattedHMS } = getTimeNow();
+        const valPersediaanId = persediaanId;
+        const valPersediaanDDMY = formattedDDMY;
+        const valPersediaanHMS = formattedHMS;
+        const valPersediaanProductId = parseInt(
+          $("#persediaan-refproduct-update-id").val()
+        );
+        const valPersediaanQty = parseFloat(
+          $("input#persediaan-refproduct-update-qty").val()
+        );
+        const valProductIdRp = parseFloat(
+          $("input#persediaan-refproduct-update-rp").val()
+        );
+        const valPersediaanInfo = $("#persediaan-update-info").val();
+        const valProductName = $("#persediaan-refproduct-update-name").val();
+        const valPersediaanTotalRp = valPersediaanQty * valProductIdRp;
+        // send to params
+        const req = {
+          valPersediaanId,
+          valPersediaanDDMY,
+          valPersediaanHMS,
+          valPersediaanProductId,
+          valPersediaanQty,
+          valPersediaanTotalRp,
+          valPersediaanInfo,
+          valProductName,
+        };
+        // req-to-db
+        const { status, response } = await updateId(req);
+        if (status) {
           uiAlertSuccess(response);
-          getPersediaanAgain();
+          await getPersediaanAgain();
           $("#persediaanUpdateModal").modal("hide");
-        } catch (error) {
-          const errMsg = error || error.message;
-          uiAlertFailUpdate(errMsg);
+        }
+        if (!status) {
+          uiAlertFailUpdate(response);
           const modalBody = $("#persediaan-update-modal-body").get(0);
           modalBody.scrollTo({
             top: 0,

@@ -2,7 +2,7 @@ import { getTimeNow } from "../../utils/formatWaktu.js";
 import { uiBlankValue, uiAlertFailCreate, uiAlertSuccess } from "./ui.js";
 import { listProductRefPersediaanCreate } from "../products/list.js";
 import { getPersediaanAgain } from "./read.js";
-import { create, getSumQty } from "./services.js";
+import { addStock, getSumQty } from "./services.js";
 
 // 1.init-ui-modal-create
 $("button#btnpersediaanModal")
@@ -41,18 +41,16 @@ $("select#persediaan-refproduct-search-name")
     const productId = parseInt($(this).val());
     const productName = selectedOption.text();
     const pricebuy = selectedOption.data("pricebuy");
-    const qty = await getSumQty(productId);
-    const qtyStatus = qty.status;
-    const qtyResponse = qty.response;
-    if (qtyStatus) {
-      $("p#persediaan-create-product-qty").text(qtyResponse);
+    const { status, response } = await getSumQty(productId);
+    if (status) {
+      $("p#persediaan-create-product-qty").text(response);
       $("input#persediaan-refproduct-create-id").val(productId);
       $("#persediaan-refproduct-create-name").val(productName);
       $("input#persediaan-refproduct-create-rp").val(pricebuy);
       $("div#persediaan-create-stock").removeClass("d-none");
     }
-    if (!qtyStatus) {
-      console.error(qtyResponse);
+    if (!status) {
+      console.error(response);
     }
   });
 // req-to-db
@@ -81,18 +79,16 @@ $("#persediaan-create-submit")
       valPersediaanTotalRp,
       valPersediaanInfo,
     };
-    const created = await create(req);
-    const createdStatus = created.status;
-    const createdRes = created.response;
-    if (createdStatus) {
-      getPersediaanAgain();
-      uiAlertSuccess(createdRes);
+    const { status, response } = await addStock(req);
+    if (status) {
+      await getPersediaanAgain();
+      uiAlertSuccess(response);
       uiBlankValue();
       persediaanCreateQty = 0; //hufft
       $("#persediaanCreateModal").modal("hide");
     }
-    if (!createdStatus) {
-      uiAlertFailCreate(createdRes);
+    if (!status) {
+      uiAlertFailCreate(response);
       const modalBody = $("#persediaan-create-modal-body").get(0);
       modalBody.scrollTo({
         top: 0,

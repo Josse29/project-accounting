@@ -30,11 +30,7 @@ $("tbody#user")
       let selected = userPosition === el && "selected";
       option += `<option value="${el}" ${selected} class="text-capitalize">${el}</option>`;
     });
-    const selected = `<option selected disabled>
-                        Open this select position
-                      </option>
-                      ${option}`;
-    $("#user-update-modal select#userposition1").html(selected);
+    $("#user-update-modal select#userposition1").html(option);
     // preview-image
     const inputImg = $("#user-update-modal input#userimg1");
     const sectionImg = $("#user-update-modal #section-img1");
@@ -87,9 +83,9 @@ $("tbody#user")
         const req = {
           userEmail,
           userFullname,
-          userImg1,
           userPosition,
           userId,
+          userImg1,
           cancelImg,
         };
         const updated = await update(req);

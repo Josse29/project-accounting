@@ -80,7 +80,7 @@ export const deleteById = async (req) => {
 // payload : UserEmailVal, UserFullnameVal, UserPasswordVal, UserPositionVal, UserId
 export const update = async (req) => {
   try {
-    const req1 = {
+    const payLoad = {
       UserEmailVal: req.userEmail,
       UserFullnameVal: req.userFullname,
       UserImgVal: req.userImg1,
@@ -88,7 +88,7 @@ export const update = async (req) => {
       UserIdVal: req.userId,
       CancelImg: req.cancelImg,
     };
-    const response = await updateUser(req1);
+    const response = await updateUser(payLoad);
     return { status: true, response };
   } catch (error) {
     return { status: false, response: error };

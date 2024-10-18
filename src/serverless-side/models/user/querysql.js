@@ -66,23 +66,24 @@ export const queryGetSales = () => {
 export const queryUpdate = (
   UserEmailVal,
   UserFullnameVal,
-  imgBase64,
   UserPositionVal,
   UserIdVal,
   UserImgVal,
+  imgBase64,
   CancelImg
 ) => {
-  let query = `UPDATE User 
+  let query = `UPDATE 
+               User 
                SET UserEmail = '${UserEmailVal}',
                    UserFullname = '${UserFullnameVal}', `;
+  query += `UserPosition = '${UserPositionVal}' `;
   if (!CancelImg && UserImgVal.length >= 1) {
     query += `UserImg = '${imgBase64}', `;
   }
   if (CancelImg) {
-    query += `UserImg = '${imgBase64}', `;
+    query += `UserImg = 'null', `;
   }
-  query += `UserPosition = '${UserPositionVal}' `;
-  query += `WHERE UserId = ${UserIdVal}`;
+  query += `WHERE UserId = ${UserIdVal} `;
   return query;
 };
 export const queryDeleteUser = (userId) => {

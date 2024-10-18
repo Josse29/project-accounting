@@ -12,7 +12,6 @@ import {
 let searchVal = $("input#order-search").val();
 let limitVal = 3;
 let offsetVal = 1;
-console.log("test");
 // searching
 const handleBounce = debounce(() => {
   getInit();
@@ -42,8 +41,7 @@ async function getInit() {
       $("div#product-refpersediaan-pagination").removeClass("d-none");
     }
     if (totalRow < 1) {
-      const empty = uiCardEmpty(searchVal);
-      $("div#product-refpersediaan-read").html(empty);
+      uiCardEmpty(searchVal);
       $("div#product-refpersediaan-pagination").addClass("d-none");
     }
   }
@@ -56,12 +54,7 @@ async function getPage(req) {
   const response = stock.response;
   const status = stock.status;
   if (status) {
-    let card = ``;
-    response.forEach((rows) => {
-      card += uiCard(rows);
-    });
-    const parentCard = `<div class="container-by-me">${card}</div>`;
-    $("div#product-refpersediaan-read").html(parentCard);
+    uiCard(response);
     // update qty to card menu as well as btn plus/min triggered
     uiQty();
     // update list cart menu as well as btn plus/min triggered
@@ -75,11 +68,7 @@ async function getPage(req) {
 }
 function handlePagination(totalPage) {
   // insert to html
-  let btn = ``;
-  for (let i = 1; i <= totalPage; i++) {
-    btn += uiBtnPage1(i);
-  }
-  $("div#product-ref-persediaan-page-number").html(btn);
+  uiBtnPage1(totalPage);
   // first page
   $("button#product-ref-persediaan-first-page")
     .off("click")
@@ -151,11 +140,12 @@ function handlePagination(totalPage) {
       await getPage(req);
     });
 }
+// get product again
 export const getGroupProductAgain = async () => {
   $("input#order-search").val("");
-  const searchVal = "";
-  const limitVal = 3;
-  const offsetVal = 1;
+  let searchVal = $("input#order-search").val();
+  let limitVal = 3;
+  let offsetVal = 1;
   await getInit();
   async function getInit() {
     const req = {
@@ -174,8 +164,7 @@ export const getGroupProductAgain = async () => {
         $("div#product-refpersediaan-pagination").removeClass("d-none");
       }
       if (totalRow < 1) {
-        const empty = uiCardEmpty(searchVal);
-        $("div#product-refpersediaan-read").html(empty);
+        uiCardEmpty(req.searchVal);
         $("div#product-refpersediaan-pagination").addClass("d-none");
       }
     }
@@ -188,12 +177,7 @@ export const getGroupProductAgain = async () => {
     const response = stock.response;
     const status = stock.status;
     if (status) {
-      let card = ``;
-      response.forEach((rows) => {
-        card += uiCard(rows);
-      });
-      const parentCard = `<div class="container-by-me">${card}</div>`;
-      $("div#product-refpersediaan-read").html(parentCard);
+      uiCard(response);
       // update qty to card menu as well as btn plus/min triggered
       uiQty();
       // update list cart menu as well as btn plus/min triggered
@@ -207,11 +191,7 @@ export const getGroupProductAgain = async () => {
   }
   function handlePagination(totalPage) {
     // insert to html
-    let btn = ``;
-    for (let i = 1; i <= totalPage; i++) {
-      btn += uiBtnPage1(i);
-    }
-    $("div#product-ref-persediaan-page-number").html(btn);
+    uiBtnPage1(totalPage);
     // first page
     $("button#product-ref-persediaan-first-page")
       .off("click")

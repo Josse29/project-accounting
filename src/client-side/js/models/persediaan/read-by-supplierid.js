@@ -1,7 +1,7 @@
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import { animateFade, reinitTooltip } from "../../utils/updateUi.js";
 import { listSupplierRefPersediaanRead } from "../supplier/list.js";
-import { getBySupplierId, getSumPriceSupplier } from "./services.js";
+import { getBySupplierId, getSumPriceSupplierId } from "./services.js";
 import { uiTbody, uiTbodyEmpty } from "./ui.js";
 
 listSupplierRefPersediaanRead();
@@ -14,7 +14,7 @@ $("select#persediaan-refsupplier-search")
     // 2. caption-selected
     const selectedSupplierName = $(this).find("option:selected").text();
     // 3. price-buy
-    const summary = await getSumPriceSupplier(selectedSupplierId);
+    const summary = await getSumPriceSupplierId(selectedSupplierId);
     const summaryRes = summary.response;
     const summaryStatus = summary.status;
     if (summaryStatus) {

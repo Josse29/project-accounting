@@ -305,7 +305,7 @@ export const getPersediaanProductId2 = (valPersediaanProductId) => {
     });
   });
 };
-export const getPersediaanProductReport = () => {
+export const getPersediaanReport1 = () => {
   const query = queryGetPersediaanProductReport();
   return new Promise((resolve, reject) => {
     db.all(query, (err, result) => {
@@ -318,7 +318,7 @@ export const getPersediaanProductReport = () => {
     });
   });
 };
-export const getPersediaanProductGroup = () => {
+export const getPersediaanGroupProduct1 = () => {
   const query = queryGetPersediaanProductGroup();
   return new Promise((resolve, reject) => {
     db.all(query, (err, res) => {
@@ -332,7 +332,7 @@ export const getPersediaanProductGroup = () => {
   });
 };
 
-export const getPersediaanSupplierGroup = () => {
+export const getPersediaanGroupSupplier = () => {
   const query = queryGetPersediaanSupplierGroup();
   return new Promise((resolve, reject) => {
     db.all(query, (err, res) => {
@@ -537,7 +537,7 @@ export const getPersediaanSumPriceDateCategoryId = (req) => {
     });
   });
 };
-export const getPersediaanCategoryIdGroup = () => {
+export const getPersediaanGroupCategory = () => {
   const query = queryGetPersediaanCategoryGroup();
   return new Promise((resolve, reject) => {
     db.all(query, (err, res) => {
@@ -550,7 +550,7 @@ export const getPersediaanCategoryIdGroup = () => {
     });
   });
 };
-export const getPersediaanSupplierSum = () => {
+export const getPersediaanSumSupplier = () => {
   const query = queryGetPersediaanSupplierSum();
   return new Promise((resolve, reject) => {
     db.each(query, (err, res) => {
@@ -585,7 +585,7 @@ export const getPersediaanSumPriceSupplier = (supplierId) => {
     });
   });
 };
-export const getPersediaanCategorySum = () => {
+export const getPersediaanSumCategory = () => {
   const query = queryGetPersediaanCategorySum();
   return new Promise((resolve, reject) => {
     db.each(query, (err, res) => {

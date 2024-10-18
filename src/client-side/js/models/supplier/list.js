@@ -4,7 +4,7 @@ export const listSupplierRefProductCreate = async () => {
   try {
     const response = await getListSupplier("");
     const existed = response.length >= 1;
-    let option = `<option selected value=null>Choose One Of Suppliers</option>`;
+    let option = `<option selected value="null">Choose One Of Suppliers</option>`;
     if (existed) {
       response.forEach((el) => {
         option += `<option value=${el.SupplierId}>${el.SupplierName}</option>`;
@@ -22,7 +22,7 @@ export const listSupplierRefProductUpdate = async (selected) => {
   try {
     const response = await getListSupplier("");
     const existed = response.length >= 1;
-    let option = `<option value=null>Choose One Of Suppliers</option>`;
+    let option = `<option value="null">Choose One Of Suppliers</option>`;
     if (existed) {
       response.forEach((el) => {
         const isSelected =

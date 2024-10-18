@@ -5,7 +5,7 @@ import { getProductRef, getProductsAgain } from "./read.js";
 import { uiAlertSuccess, uiAlertFailUpdate } from "./ui.js";
 import { capitalizeWord } from "../../utils/formatCapitalize.js";
 import { disFormatRupiah1, formatRupiah1 } from "../../utils/formatRupiah.js";
-import { getImageBase64 } from "../../utils/loadImg.js";
+import { getImageBase64, validateImg } from "../../utils/loadImg.js";
 // upadte | event binding
 $("tbody#product-table")
   .off("click", "#editProduct")
@@ -14,7 +14,7 @@ $("tbody#product-table")
     $("#product-update-failed").html("");
     $("#edit-product-image-file").val("");
     // get value from params
-    const product = this.dataset;
+    const product = $(this).closest("tr")[0].dataset;
     const productName = product.productname;
     const productPriceBeli = formatRupiah1(product.productpricebeli);
     const productPriceSell = formatRupiah1(product.productpricejual);
@@ -22,7 +22,6 @@ $("tbody#product-table")
     const productCategoryId = parseInt(product.productcategoryid);
     const productSupplierId = parseInt(product.productsupplierid);
     const productInfo = product.productketerangan;
-    let cancelImg = false;
     // list option
     listCategoryRefProductUpdate(productCategoryId);
     listSupplierRefProductUpdate(productSupplierId);
@@ -35,14 +34,18 @@ $("tbody#product-table")
     $("select#product-refsupplier-update").val(productSupplierId);
     $("#edit-product-keterangan").val(productInfo);
     // Format as Rupiah
-    $("input#edit-product-price-buy").on("input", function () {
-      let formattedValue = formatRupiah1($(this).val());
-      $(this).val(formattedValue);
-    });
-    $("input#edit-product-price-sell").on("input", function () {
-      let formattedValue = formatRupiah1($(this).val());
-      $(this).val(formattedValue);
-    });
+    $("input#edit-product-price-buy")
+      .off("input")
+      .on("input", function () {
+        let formattedValue = formatRupiah1($(this).val());
+        $(this).val(formattedValue);
+      });
+    $("input#edit-product-price-sell")
+      .off("input")
+      .on("input", function () {
+        let formattedValue = formatRupiah1($(this).val());
+        $(this).val(formattedValue);
+      });
     // it doesn't exist productimage from params
     if (productImg === "null") {
       $("img#edit-product-image").attr("src", "");
@@ -50,27 +53,26 @@ $("tbody#product-table")
     }
     // it exist productimage from params
     if (productImg !== "null") {
-      $("img#edit-product-image").attr("src", product.productimage);
+      $("img#edit-product-image").attr("src", productImg);
       $("#section-edit-product-img").show();
     }
-    // preview-image-product on edit keselll
+    // preview-image-product on edit kesell
+    let productCancelImg = false;
     $("#edit-product-image-file")
       .off("change")
       .on("change", async (event) => {
         try {
-          const files = event.target.files;
-          const validImageTypes = ["image/jpeg", "image/png", "image/gif"];
-          if (files.length > 0) {
-            if (validImageTypes.includes(files[0].type)) {
-              const imgbase64 = await getImageBase64(files[0]);
-              $("img#edit-product-image").attr("src", imgbase64);
-              $("#section-edit-product-img").show();
-            }
-            if (!validImageTypes.includes(files[0].type)) {
-              $("#section-edit-product-img").hide();
-            }
-            cancelImg = false;
+          const target = event.target.files;
+          const validate = validateImg(target);
+          if (validate) {
+            const imgbase64 = await getImageBase64(target[0]);
+            $("img#edit-product-image").attr("src", imgbase64);
+            $("#section-edit-product-img").show();
           }
+          if (!validate) {
+            $("#section-edit-product-img").hide();
+          }
+          productCancelImg = false;
         } catch (error) {
           console.error(error);
         }
@@ -79,11 +81,10 @@ $("tbody#product-table")
     $("#edit-product-cancel-image")
       .off("click")
       .on("click", function () {
+        productCancelImg = true;
         $("#edit-product-image-file").val("");
         $("#section-edit-product-img").hide();
-        cancelImg = true;
       });
-
     // req-to-db
     $("#edit-product-submit")
       .off("click")
@@ -130,31 +131,16 @@ $("tbody#product-table")
           const productImgVal = document.getElementById(
             "edit-product-image-file"
           ).files;
-          let imgBase64 = ``;
-          const validImageTypes = ["image/jpeg", "image/png", "image/gif"];
-          if (!cancelImg) {
-            if (
-              productImgVal.length > 0 &&
-              validImageTypes.includes(productImgVal[0].type)
-            ) {
-              imgBase64 = await getImageBase64(productImgVal[0]);
-            } else {
-              imgBase64 = productImg;
-            }
-          }
-          if (cancelImg) {
-            imgBase64 = "null";
-          }
           const req = {
             productId,
             productName,
             productPriceBuy,
             productPriceSell,
-            productImgVal,
             productCategoryId,
             productSupplierId,
             productInfo,
-            imgBase64,
+            productImgVal,
+            productCancelImg,
           };
           const response = await updateProduct(req);
           $("#edit-product-image-file").val("");

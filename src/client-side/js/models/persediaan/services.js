@@ -1,16 +1,26 @@
 import {
   createPersediaan,
   createPersediaan1,
+  deletePersediaan,
+  deletePersediaanAll,
+  deletePersediaanProductId,
   getPersediaan,
   getPersediaanCategoryId,
   getPersediaanDate,
   getPersediaanDateCategoryId,
   getPersediaanDateProductId,
   getPersediaanDateSupplierId,
+  getPersediaanGroupCategory,
   getPersediaanGroupProduct,
+  getPersediaanGroupProduct1,
+  getPersediaanGroupSupplier,
   getPersediaanPagination,
   getPersediaanPagination1,
+  getPersediaanProductId,
   getPersediaanProductId2,
+  getPersediaanReport,
+  getPersediaanReport1,
+  getPersediaanSumCategory,
   getPersediaanSumPrice,
   getPersediaanSumPriceCategoryId,
   getPersediaanSumPriceDate,
@@ -19,7 +29,9 @@ import {
   getPersediaanSumPriceSupplier,
   getPersediaanSumQty,
   getPersediaanSumQtyDateProductId,
+  getPersediaanSumSupplier,
   getPersediaanSupplierId,
+  updatePersediaan,
 } from "../../../../serverless-side/models/persediaan/functions.js";
 
 // 1. endpoint : api/persediaan/group-product
@@ -59,7 +71,7 @@ export const getRowPage1 = async (req) => {
 // methode : POST
 // payload = 1.PersediaanYMDVal, 2.PersediaanHMSVal, 3.PersediaanQtyVal, 4.PersediaanTotalVal, 5. PersediaanInfoVal, 6.PersediaanProductIdVal, 7.PersediaanPersonIdVal
 // return = success message after create sales
-export const addStock = async (req) => {
+export const addStock1 = async (req) => {
   try {
     const payLoad = {
       PersediaanYMDVal: req.formattedDDMY,
@@ -149,7 +161,7 @@ export const getByProductId2 = async (productId) => {
 // method :GET
 // payload : 1.supplierId
 //  return : sum price based supplierid
-export const getSumPriceSupplier = async (supplierId) => {
+export const getSumPriceSupplierId = async (supplierId) => {
   try {
     const price = await getPersediaanSumPriceSupplier(supplierId);
     return { status: true, response: price };
@@ -331,7 +343,7 @@ export const getByDateCategoryId = async (req) => {
 // method : POST
 // payload : 1.valProductName, 2.valPersediaanDDMY, 3.valPersediaanHMS, 4.valPersediaanProductId, 5.valPersediaanQty, 6.valPersediaanTotalRp, 7.valPersediaanInfo,
 // return : message succes after create
-export const create = async (req) => {
+export const addStock = async (req) => {
   try {
     const payload = {
       valProductName: req.valProductName,
@@ -344,6 +356,167 @@ export const create = async (req) => {
     };
     const msgCreate = await createPersediaan(payload);
     return { status: true, response: msgCreate };
+  } catch (error) {
+    return { status: false, response: error };
+  }
+};
+// 22. endpoint : api/persediaan/report-csv
+// method : GET
+// payload : ""
+// return all stock
+export const getCSV = async () => {
+  try {
+    const stock = await getPersediaanReport();
+    return { status: true, response: stock };
+  } catch (error) {
+    return { status: false, response: error };
+  }
+};
+// 23. endpoint : api/persediaan/group-category
+// method : GET
+// payload : ""
+// return all stock with group category
+export const getByGroupCategory = async () => {
+  try {
+    const stock = await getPersediaanGroupCategory();
+    return { status: true, response: stock };
+  } catch (error) {
+    return { status: false, response: error };
+  }
+};
+// 24. endpoint : api/persediaan/sum-price/category
+// method : GET
+// payload : ""
+// return : summary of category
+export const getSumPriceCategory = async () => {
+  try {
+    const summary = await getPersediaanSumCategory();
+    return { status: true, response: summary };
+  } catch (error) {
+    return { status: false, response: error };
+  }
+};
+// 25. endpoint : api/persediaan/group-product
+// method : GET
+// payload : ""
+// return :  all stock with group product
+export const getByGroupProduct1 = async () => {
+  try {
+    const stock = await getPersediaanGroupProduct1();
+    return { status: true, response: stock };
+  } catch (error) {
+    return { status: false, response: error };
+  }
+};
+// 26.endpoint : api/persediaan/report-pdf
+// method : GET
+// payload : ""
+// return : all stock as pdf report
+export const getPDF = async () => {
+  try {
+    const stock = await getPersediaanReport1();
+    return { status: true, response: stock };
+  } catch (error) {
+    return { status: false, response: error };
+  }
+};
+// 27. endpoint : api/persediaan/group-supplier
+// method : GET
+// payload : ""
+// return : all stock with group supplier
+export const getByGroupSupplier = async () => {
+  try {
+    const stock = await getPersediaanGroupSupplier();
+    return { status: true, response: stock };
+  } catch (error) {
+    return { status: false, response: error };
+  }
+};
+
+// 28. endpoint : api/persediaan/sum=price/supplier
+// method : GET
+// payLoad : ""
+// return : summary of supplier
+export const getSumPriceSupplier = async () => {
+  try {
+    const stock = await getPersediaanSumSupplier();
+    return { status: true, response: stock };
+  } catch (error) {
+    return { status: false, response: error };
+  }
+};
+// 29. endpoint : api/persediaan/:persediaanid
+// method : DELETE
+// payload : 1.valPersediaanId, 2.valProductName, 3.valPersediaanQty, 4.valPersediaanProductId
+// return : message with delete by id
+export const deleteById = async (req) => {
+  try {
+    const payLoad = {
+      valPersediaanId: req.valPersediaanId,
+      valProductName: req.valProductName,
+      valPersediaanQty: req.valPersediaanQty,
+      valPersediaanProductId: req.valPersediaanProductId,
+    };
+    const deleted = await deletePersediaan(payLoad);
+    return { status: true, response: deleted };
+  } catch (error) {
+    return { status: false, response: error };
+  }
+};
+// 30. endpoint : api/persediaan/
+// method : DELETE
+// payload : ""
+// return : message with delete all
+export const deleteAll = async () => {
+  try {
+    const deleted = await deletePersediaanAll();
+    return { status: true, response: deleted };
+  } catch (error) {
+    return { status: false, response: error };
+  }
+};
+// 31. endpoint : api/persediaan/:persediaanid
+// method : PATCH
+// payload : 1.valPersediaanId, 2.valPersediaanDDMY, 3.valPersediaanHMS, 4.valPersediaanProductId, 5.valPersediaanQty, 6.valPersediaanTotalRp, 7.valPersediaanInfo, 8.valProductName
+// return : message with update all
+export const updateId = async (req) => {
+  try {
+    const payLoad = {
+      valPersediaanId: req.valPersediaanId,
+      valPersediaanDDMY: req.valPersediaanDDMY,
+      valPersediaanHMS: req.valPersediaanHMS,
+      valPersediaanProductId: req.valPersediaanProductId,
+      valPersediaanQty: req.valPersediaanQty,
+      valPersediaanTotalRp: req.valPersediaanTotalRp,
+      valPersediaanInfo: req.valPersediaanInfo,
+      valProductName: req.valProductName,
+    };
+    const updated = await updatePersediaan(payLoad);
+    return { status: true, response: updated };
+  } catch (error) {
+    return { status: false, response: error };
+  }
+};
+// 32. endpoint : api/persediaan/:productid
+// method : DELETE
+// payload : product id
+// return : message with delete all
+export const deleteByProductId = async (productId) => {
+  try {
+    const deleted = await deletePersediaanProductId(productId);
+    return { status: true, response: deleted };
+  } catch (error) {
+    return { status: false, response: error };
+  }
+};
+// 33. endpoint : api/persediaan/:productid/v-1
+// method : GET
+// payload productid
+// return :  all stock with productid
+export const getByProductId1 = async (productId) => {
+  try {
+    const stock = await getPersediaanProductId(productId);
+    return { status: true, response: stock };
   } catch (error) {
     return { status: false, response: error };
   }

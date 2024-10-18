@@ -103,11 +103,7 @@ async function getPersediaanPage(req) {
 }
 function handlePagination(totalPage) {
   // for pagination
-  let uiBtnPaginate = "";
-  for (let i = 1; i <= totalPage; i++) {
-    uiBtnPaginate += uiBtnPage(i);
-  }
-  $("#persediaan-number-page").html(uiBtnPaginate);
+  uiBtnPage(totalPage);
   // first page
   $("#persediaan-first-page")
     .off("click")
@@ -176,8 +172,11 @@ function handlePagination(totalPage) {
     });
 }
 export const getPersediaanAgain = async () => {
-  // reset search
-  $("input#persediaan-search").val("");
+  let searchVal = $("input#persediaan-search").val();
+  let limitVal = parseInt($("#persediaan-limit").val());
+  let offsetVal = 1;
+  // reset ui
+  uiInit();
   // 1.sum rupiah persediaan
   const totalPrice = await getSumPrice();
   const totalPriceRes = totalPrice.response;
@@ -191,9 +190,9 @@ export const getPersediaanAgain = async () => {
   }
   // 2.get total row and page
   const req = {
-    searchVal: "",
-    limitVal: parseInt($("#persediaan-limit").val()),
-    offsetVal: 1,
+    searchVal,
+    limitVal,
+    offsetVal,
   };
   const init = await getPagination(req);
   const initStatus = init.status;
@@ -208,7 +207,7 @@ export const getPersediaanAgain = async () => {
     }
     // if it doesn't exist inventory
     if (totalRow < 1) {
-      uiTbodyEmpty(req.searchVal);
+      uiTbodyEmpty(searchVal);
       $("#persediaan-pagination").addClass("d-none");
     }
   }
@@ -230,11 +229,7 @@ export const getPersediaanAgain = async () => {
   }
   function handlePagination(totalPage) {
     // for pagination
-    let uiBtnPaginate = "";
-    for (let i = 1; i <= totalPage; i++) {
-      uiBtnPaginate += uiBtnPage(i);
-    }
-    $("#persediaan-number-page").html(uiBtnPaginate);
+    uiBtnPage(totalPage);
     // first page
     $("#persediaan-first-page")
       .off("click")

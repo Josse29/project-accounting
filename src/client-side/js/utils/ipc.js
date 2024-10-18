@@ -41,12 +41,6 @@ export const sendIpcHideUser = () => {
 export const sendIpcLoadAbout = () => {
   ipcRenderer.send("load:about-page");
 };
-export const sendIpcMinimizeWindowAbout = () => {
-  ipcRenderer.send("minimize-window:about-page");
-};
 export const sendIpcHideAbout = () => {
   ipcRenderer.send("hide-window:about-page");
-};
-export const sendIpcCloseWindowAbout = () => {
-  ipcRenderer.send("close-window:about-page");
 };

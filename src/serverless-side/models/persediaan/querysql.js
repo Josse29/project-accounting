@@ -9,7 +9,7 @@ export const queryInsertPersediaan = (
 ) => {
   let query = `INSERT 
                  INTO Persediaan 
-                 (PersediaanDDMY,${colPersediaanHMS},${colPersediaanProductId},${colPersediaanQty},${colPersediaanRp},${colPersediaanInfo}) 
+                 (PersediaanDDMY,PersediaanHMS,PersediaanProductId,PersediaanQty,PersediaanRp,PersediaanInfo) 
                  VALUES 
                  ('${valPersediaanDDMY}', '${valPersediaanHMS}',${valPersediaanProductId},${valPersediaanQty},${valPersediaanRp},'${valPersediaanInfo}')`;
   return query;
@@ -145,13 +145,13 @@ export const queryGetPersediaanProductRow = (valPersediaanProductId) => {
 };
 export const queryGetPersediaanProductId = (valPersediaanProductId) => {
   const query = `SELECT
-                   Persediaan.PersediaanDDMY,
-                   Persediaan.${colPersediaanHMS},
-                   Persediaan.${colPersediaanQty}
-                   FROM Persediaan
-                   WHERE Persediaan.PersediaanProductId = ${valPersediaanProductId}
-                   ORDER BY Persediaan.PersediaanDDMY DESC, 
-                   Persediaan.${colPersediaanHMS} DESC `;
+                 Persediaan.PersediaanDDMY,
+                 Persediaan.PersediaanHMS,
+                 Persediaan.PersediaanQty
+                 FROM Persediaan
+                 WHERE Persediaan.PersediaanProductId = ${valPersediaanProductId}
+                 ORDER BY Persediaan.PersediaanDDMY DESC, 
+                Persediaan.PersediaanHMS DESC `;
   return query;
 };
 
@@ -311,9 +311,9 @@ export const queryGetPersediaanDateRpCategoryId = (
   valCategoryId
 ) => {
   let query = `SELECT 
-                 SUM(Persediaan.PersediaanRp) AS TotalRp
-                 FROM Persediaan 
-                 LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId `;
+               SUM(Persediaan.PersediaanRp) AS TotalRp
+               FROM Persediaan 
+               LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId `;
   //  with valstartDate - endDate
   query += `WHERE Persediaan.PersediaanDDMY BETWEEN '${startDate}' AND '${endDate}' `;
   // with supplier id
@@ -566,18 +566,18 @@ export const queryUpdatePersediaan = (
   return `UPDATE
             Persediaan
             SET PersediaanDDMY = '${valPersediaanDDMY}',
-                ${colPersediaanHMS} = '${valPersediaanHMS}',
-                ${colPersediaanProductId} = ${valPersediaanProductId},
-                ${colPersediaanQty} = ${valPersediaanQty},
-                ${colPersediaanRp} = ${valPersediaanRp},
-                ${colPersediaanInfo} = '${valPersediaanInfo}'
-            WHERE ${colPersediaanId} = ${valPersediaanId}`;
+                PersediaanHMS = '${valPersediaanHMS}',
+                PersediaanProductId = ${valPersediaanProductId},
+                PersediaanQty = ${valPersediaanQty},
+                PersediaanRp = ${valPersediaanRp},
+                PersediaanInfo = '${valPersediaanInfo}'
+            WHERE PersediaanId = ${valPersediaanId}`;
 };
 // 4.DELETE
 export const queryDeletePersediaan = (valPersediaanId) => {
   let query = `DELETE
                  FROM Persediaan
-                 WHERE ${colPersediaanId} = ${valPersediaanId}`;
+                 WHERE PersediaanId = ${valPersediaanId}`;
   return query;
 };
 export const queryDeletePersediaanAll = () => {

@@ -1,15 +1,12 @@
-import {
-  getProductInit,
-  getProducts,
-} from "../../../../serverless-side/functions/product.js";
 import { reinitTooltip, uiLoad } from "../../utils/updateUi.js";
-import { uiBtnPage, uiBtnPageActive, uiTr, uiTrEmpty } from "./ui.js";
+import { uiBtnPage, uiBtnPageActive, uiTbody, uiTrEmpty } from "./ui.js";
 import { getPersediaanAgain } from "../persediaan/read.js";
 import {
   listProductRefPersediaanRead,
   listProductRefSalesRead,
 } from "./list.js";
 import { getCategoryAgain } from "../categories/read.js";
+import { getLimitOffset, getPagination } from "./services.js";
 // loading
 $("div#product-loading").html(uiLoad());
 $("div#product-done").hide();
@@ -32,16 +29,15 @@ $("#product-limit")
     getInit();
   });
 async function getInit() {
-  try {
-    const req = {
-      searchVal,
-      limitVal,
-      offsetVal,
-    };
-    const init = await getProductInit(req);
-    const totalPage = init.totalPage;
-    // total Row
-    const totalRow = init.totalRow;
+  const req = {
+    searchVal,
+    limitVal,
+    offsetVal,
+  };
+  const pagination = await getPagination(req);
+  const { status, response } = pagination;
+  if (status) {
+    const { totalPage, totalRow } = response;
     $("p#product-total-row").text(`Total : ${totalRow}`);
     if (totalRow >= 1) {
       await getProductPage(req);
@@ -56,30 +52,24 @@ async function getInit() {
     // references and loading
     $("div#product-loading").html("");
     $("div#product-done").show();
-  } catch (error) {
-    console.error(error);
+  }
+  if (!status) {
+    console.error(response);
   }
 }
 async function getProductPage(req) {
-  try {
-    const response = await getProducts(req);
-    let tr = "";
-    response.forEach((element) => {
-      tr += uiTr(element);
-    });
-    $("#product-table").html(tr);
+  const { status, response } = await getLimitOffset(req);
+  if (status) {
+    uiTbody(response);
     reinitTooltip();
     uiBtnPageActive(req.offsetVal);
-  } catch (error) {
-    console.error(error);
+  }
+  if (!status) {
+    console.error(response);
   }
 }
 function handlePagination(totalPage) {
-  let uiBtnPaginate = "";
-  for (let i = 1; i <= totalPage; i++) {
-    uiBtnPaginate += uiBtnPage(i);
-  }
-  $("#product-number-page").html(uiBtnPaginate);
+  uiBtnPage(totalPage);
   // first page
   $("#product-first-page")
     .off("click")
@@ -148,58 +138,53 @@ function handlePagination(totalPage) {
     });
 }
 // RE-Initial fetch and setup
-export function getProductsAgain() {
+export const getProductsAgain = async () => {
+  // reset-search
+  $("#product-search-input").val("");
   let searchVal = "";
   let limitVal = parseInt($("#product-limit").val());
   let offsetVal = 1;
-  $("#product-search-input").val("");
-  getInit();
-  async function getInit() {
-    try {
-      const req = {
-        searchVal,
-        limitVal,
-        offsetVal,
-      };
-      const init = await getProductInit(req);
-      const totalPage = init.totalPage;
-      // total Row
-      const totalRow = init.totalRow;
-      $("p#product-total-row").text(`Total : ${totalRow}`);
-      if (totalRow >= 1) {
-        await getProductPage(req);
-        handlePagination(totalPage);
-        $("#product-pagination").removeClass("d-none");
-      }
-      if (totalRow < 1) {
-        const empty = uiTrEmpty(searchVal);
-        $("#product-table").html(empty);
-        $("#product-pagination").addClass("d-none");
-      }
-    } catch (error) {
-      console.error(error);
+  // 1. init
+  const req = {
+    searchVal,
+    limitVal,
+    offsetVal,
+  };
+  const pagination = await getPagination(req);
+  const { status, response } = pagination;
+  if (status) {
+    const { totalPage, totalRow } = response;
+    $("p#product-total-row").text(`Total : ${totalRow}`);
+    if (totalRow >= 1) {
+      await getProductPage(req);
+      handlePagination(totalPage);
+      $("#product-pagination").removeClass("d-none");
     }
+    if (totalRow < 1) {
+      const empty = uiTrEmpty(searchVal);
+      $("#product-table").html(empty);
+      $("#product-pagination").addClass("d-none");
+    }
+    // references and loading
+    $("div#product-loading").html("");
+    $("div#product-done").show();
+  }
+  if (!status) {
+    console.error(response);
   }
   async function getProductPage(req) {
-    try {
-      const response = await getProducts(req);
-      let tr = "";
-      response.forEach((element) => {
-        tr += uiTr(element);
-      });
-      $("#product-table").html(tr);
+    const { status, response } = await getLimitOffset(req);
+    if (status) {
+      uiTbody(response);
       reinitTooltip();
       uiBtnPageActive(req.offsetVal);
-    } catch (error) {
-      console.error(error);
+    }
+    if (!status) {
+      console.error(response);
     }
   }
   function handlePagination(totalPage) {
-    let uiBtnPaginate = "";
-    for (let i = 1; i <= totalPage; i++) {
-      uiBtnPaginate += uiBtnPage(i);
-    }
-    $("#product-number-page").html(uiBtnPaginate);
+    uiBtnPage(totalPage);
     // first page
     $("#product-first-page")
       .off("click")
@@ -267,10 +252,10 @@ export function getProductsAgain() {
         await getProductPage(req);
       });
   }
-}
-export const getProductRef = () => {
-  getPersediaanAgain();
-  getCategoryAgain();
-  listProductRefPersediaanRead();
-  listProductRefSalesRead();
+};
+export const getProductRef = async () => {
+  await getPersediaanAgain();
+  await getCategoryAgain();
+  await listProductRefPersediaanRead();
+  await listProductRefSalesRead();
 };

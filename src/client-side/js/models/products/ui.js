@@ -1,77 +1,99 @@
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 
 // UI tr Product from dbsqlite
-export const uiTr = (el) => {
-  const priceBuy = formatRupiah2(el.ProductPriceBeli);
-  const priceSell = formatRupiah2(el.ProductPriceJual);
-  const supplierName = el.SupplierName === null ? " - " : el.SupplierName;
-  const categoryName = el.CategoryName === null ? " - " : el.CategoryName;
-  const tr = `<tr>
-              <td class="text-center align-content-center text-truncate pe-2">${el.ProductId}</td>
-              <td class="align-content-center text-capitalize text-truncate pe-3">${el.ProductName}</td>
-              <td class="align-content-center text-truncate pe-3">${priceBuy}</td>
-              <td class="align-content-center text-truncate pe-3">${priceSell}</td>
-              <td class="align-content-center text-capitalize text-truncate pe-3">${categoryName}</td>
-              <td class="align-content-center text-capitalize text-truncate pe-3">${supplierName}</td>
-              <td class="align-content-center">
-                <div class="d-flex justify-content-center gap-2" >
-                  <button
-                    id="productDetailBtn" 
-                    class="btn btn-success text-white"
-                    data-bs-toggle="modal" 
-                    data-bs-target="#productDetailModal" 
-                    data-productid=${el.ProductId}  
-                    data-productname="${el.ProductName}" 
-                    data-productpricebeli=${el.ProductPriceBeli} 
-                    data-productpricejual=${el.ProductPriceJual} 
-                    data-productketerangan="${el.ProductInfo}" 
-                    data-productcategory="${el.CategoryName}"
-                    data-productimage="${el.ProductImage}"
-                    data-productsupplier="${el.SupplierName}">
-                      <i class="fa-solid fa-eye"
-                        data-bs-toggle="tooltip" 
-                        data-bs-html="true"
-                        data-bs-title="<span>See-${el.ProductName}</span>" 
-                        data-bs-placement="bottom"></i>
-                  </button>
-                  <button 
-                    id="editProduct" 
-                    class="btn btn-primary text-white"
-                    data-bs-toggle="modal" 
-                    data-bs-target="#editProductModal" 
-                    data-productid=${el.ProductId}
-                    data-productname="${el.ProductName}" 
-                    data-productpricebeli=${el.ProductPriceBeli} 
-                    data-productpricejual=${el.ProductPriceJual} 
-                    data-productketerangan="${el.ProductInfo}"
-                    data-productimage="${el.ProductImage}"
-                    data-productcategoryid=${el.CategoryId}
-                    data-productcategoryname="${el.CategoryName}"
-                    data-productsupplierid=${el.SupplierId}
-                    data-productsuppliername="${el.SupplierName}">
-                      <i class="fa-solid fa-pencil"
-                        data-bs-toggle="tooltip" 
-                        data-bs-html="true"
-                        data-bs-title="<span>Update-${el.ProductName}</span>" 
-                        data-bs-placement="bottom"></i>
-                  </button>
-                  <button 
-                    id="deleteProduct" 
-                    class="btn btn-danger text-white" 
-                    data-productid="${el.ProductId}" 
-                    data-productname="${el.ProductName}" 
-                    data-bs-toggle="modal" 
-                    data-bs-target="#confirmDeleteProductModal">
-                      <i class="fa-solid fa-trash-can"
-                        data-bs-toggle="tooltip" 
-                        data-bs-html="true"
-                        data-bs-title="<span>Delete-${el.ProductName}</span>" 
-                        data-bs-placement="bottom"></i>
-                  </button>
-                </div>
-              </td>
-            </tr>`;
-  return tr;
+export const uiTbody = (response) => {
+  let tr = "";
+  response.forEach((el) => {
+    const productId = parseInt(el.ProductId);
+    const productName = el.ProductName;
+    const productBuy = parseFloat(el.ProductPriceBeli);
+    const productSell = parseFloat(el.ProductPriceJual);
+    const productInfo = el.ProductInfo;
+    const productImg = el.ProductImage;
+    const categoryId = el.CategoryId;
+    const categoryName = el.CategoryName;
+    const supplierId = parseInt(el.SupplierId);
+    const supplierName = el.SupplierName;
+    const priceBuy = formatRupiah2(productBuy);
+    const priceSell = formatRupiah2(productSell);
+    const supplierNameTxt = supplierName === null ? " - " : supplierName;
+    const categoryNameTxt = categoryName === null ? " - " : categoryName;
+    tr += `
+    <tr
+      data-productid="${productId}"
+      data-productname="${productName}"
+      data-productpricebeli=${productBuy}
+      data-productpricejual=${productSell}
+      data-productketerangan="${productInfo}"
+      data-productimage="${productImg}"
+      data-productcategoryid=${categoryId}
+      data-productcategoryname="${categoryName}"
+      data-productsupplierid=${supplierId}
+      data-productsuppliername="${supplierName}"
+    >
+      <td class="text-center align-content-center text-truncate pe-2">
+        ${productId}
+      </td>
+      <td class="align-content-center text-capitalize text-truncate pe-3">
+        ${productName}
+      </td>
+      <td class="align-content-center text-truncate pe-3">${priceBuy}</td>
+      <td class="align-content-center text-truncate pe-3">${priceSell}</td>
+      <td class="align-content-center text-capitalize text-truncate pe-3">
+        ${categoryNameTxt}
+      </td>
+      <td class="align-content-center text-capitalize text-truncate pe-3">
+        ${supplierNameTxt}
+      </td>
+      <td class="align-content-center">
+        <div class="d-flex justify-content-center gap-2">
+          <button
+            id="productDetailBtn"
+            class="btn btn-success text-white"
+            data-bs-toggle="modal"
+            data-bs-target="#productDetailModal"
+          >
+            <i
+              class="fa-solid fa-eye"
+              data-bs-toggle="tooltip"
+              data-bs-html="true"
+              data-bs-title="<span>See-${productName}</span>"
+              data-bs-placement="bottom"
+            ></i>
+          </button>
+          <button
+            id="editProduct"
+            class="btn btn-primary text-white"
+            data-bs-toggle="modal"
+            data-bs-target="#editProductModal"
+          >
+            <i
+              class="fa-solid fa-pencil"
+              data-bs-toggle="tooltip"
+              data-bs-html="true"
+              data-bs-title="<span>Update-${productName}</span>"
+              data-bs-placement="bottom"
+            ></i>
+          </button>
+          <button
+            id="deleteProduct"
+            class="btn btn-danger text-white"
+            data-bs-toggle="modal"
+            data-bs-target="#confirmDeleteProductModal"
+          >
+            <i
+              class="fa-solid fa-trash-can"
+              data-bs-toggle="tooltip"
+              data-bs-html="true"
+              data-bs-title="<span>Delete-${productName}</span>"
+              data-bs-placement="bottom"
+            ></i>
+          </button>
+        </div>
+      </td>
+    </tr>`;
+  });
+  $("#product-table").html(tr);
 };
 // when total product row 0 being seaching
 export const uiTrEmpty = (searchVal) => {
@@ -96,13 +118,17 @@ export const uiBlankVal = () => {
   $("#product-price-jual").val("");
 };
 // button pagination
-export const uiBtnPage = (i) => {
-  const btn = `<button 
-            type="button" 
-            class="product-btn-page ${i === 1 ? "product-active-page" : ""} ">
+export const uiBtnPage = (totalPage) => {
+  let btn = "";
+  for (let i = 1; i <= totalPage; i++) {
+    const actived = i === 1 ? "product-active-page" : "";
+    btn += `<button 
+            type="button"
+            class="product-btn-page ${actived}">
               ${i}
-          </button>`;
-  return btn;
+            </button>`;
+  }
+  $("#product-number-page").html(btn);
 };
 // Function to update active page button
 export const uiBtnPageActive = (numberPage) => {

@@ -5,7 +5,7 @@ export const listCategoryRefProductCreate = async () => {
   try {
     const response = await getListCategory("");
     const existed = response.length >= 1;
-    let option = `<option selected value=null>Choose One Of Categories</option>`;
+    let option = `<option selected value="null">Choose One Of Categories</option>`;
     if (existed) {
       response.forEach((el) => {
         option += `<option value=${el.CategoryId}>${el.CategoryName}</option>`;
@@ -24,7 +24,7 @@ export const listCategoryRefProductUpdate = async (selected) => {
   try {
     const response = await getListCategory("");
     const existed = response.length >= 1;
-    let option = `<option value=null>Choose One Of Categories</option>`;
+    let option = `<option value="null">Choose One Of Categories</option>`;
     if (existed) {
       response.forEach((el) => {
         const isSelected =

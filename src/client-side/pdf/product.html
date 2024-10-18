@@ -4,12 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <!-- Framework css bootstrap -->
-    <link rel="stylesheet" href="./../third-party/bootstrap.min.css" />
-    <!-- Fontawesome -->
+    <!-- css bootstrap -->
     <link
       rel="stylesheet"
-      href="./../third-party/fontawesome-web/css/all.min.css"
+      href="./../../../node_modules/bootstrap/dist/css/bootstrap.min.css"
+    />
+    <!-- font awesome -->
+    <link
+      rel="stylesheet"
+      href="./../../../node_modules/@fortawesome/fontawesome-free/css/all.min.css"
     />
     <!-- my css -->
     <style>
@@ -63,19 +66,32 @@
         </div>
       </div>
     </div>
-    <!-- bootstrap js  -->
-    <script src="./../third-party/bootstrap.bundle.min.js"></script>
-    <!-- jquery & config with electron-jquery -->
+    <!-- jquery -->
     <script>
       if (typeof module === "object") {
         window.module = module;
         module = undefined;
       }
     </script>
-    <script src="./../third-party/jquery-3.7.1.min.js"></script>
+    <script src="./../../../node_modules/jquery/dist/jquery.min.js"></script>
     <script>
       if (window.module) module = window.module;
     </script>
+    <!-- Impor JS Bootstrap -->
+    <script src="./../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jquery -->
+    <script>
+      if (typeof module === "object") {
+        window.module = module;
+        module = undefined;
+      }
+    </script>
+    <script src="./../../../node_modules/jquery/dist/jquery.min.js"></script>
+    <script>
+      if (window.module) module = window.module;
+    </script>
+    <!-- Impor JS Bootstrap -->
+    <script src="./../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <!-- myscript -->
     <script src="./../require/index.js"></script>
     <script type="module" src="./../js/utils/updateUi.js"></script>

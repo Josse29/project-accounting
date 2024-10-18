@@ -1,14 +1,14 @@
-import {
-  getPersediaanCategoryIdGroup,
-  getPersediaanCategorySum,
-  getPersediaanProductGroup,
-  getPersediaanProductReport,
-  getPersediaanQty,
-  getPersediaanRpSum,
-  getPersediaanSupplierGroup,
-  getPersediaanSupplierSum,
-} from "../../../../serverless-side/functions/persediaan.js";
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
+import {
+  getByGroupCategory,
+  getByGroupProduct1,
+  getByGroupSupplier,
+  getPDF,
+  getSumPrice,
+  getSumPriceCategory,
+  getSumPriceSupplier,
+  getSumQty,
+} from "./services.js";
 import {
   uiAlertSuccess,
   uiTrCategorySum,
@@ -19,9 +19,9 @@ import {
 
 // export pdf persediaan
 // product
-const getPersediaanProductGroupAsync = async () => {
-  try {
-    const response = await getPersediaanProductGroup();
+const groupProduct = async () => {
+  const { status, response } = await getByGroupProduct1();
+  if (status) {
     let no = 1;
     let tbodyProductSum = ``;
     response.forEach((element) => {
@@ -29,14 +29,15 @@ const getPersediaanProductGroupAsync = async () => {
       no++;
     });
     return tbodyProductSum;
-  } catch (error) {
-    console.error(error);
+  }
+  if (!status) {
+    console.error(response);
   }
 };
 // supplier
-const getPersediaanSupplierGroupAsync = async () => {
-  try {
-    const response = await getPersediaanSupplierGroup();
+const groupSupplier = async () => {
+  const { status, response } = await getByGroupSupplier();
+  if (status) {
     const existedSupplier = response.length >= 1;
     let tbody = ``;
     let no = 1;
@@ -52,23 +53,25 @@ const getPersediaanSupplierGroupAsync = async () => {
                  </tr>`;
     }
     return tbody;
-  } catch (error) {
-    console.error(error);
+  }
+  if (!status) {
+    console.error(response);
   }
 };
-const getPersediaanSupplierSumAsync = async () => {
-  try {
-    const response = await getPersediaanSupplierSum();
+const sumSupplier = async () => {
+  const { status, response } = await getSumPriceSupplier();
+  if (status) {
     const totalRp = formatRupiah2(response);
     return totalRp;
-  } catch (error) {
-    console.error(error);
+  }
+  if (!status) {
+    console.error(response);
   }
 };
 // category
-const getPersediaanCategoryIdGroupAsync = async () => {
-  try {
-    const response = await getPersediaanCategoryIdGroup();
+const groupCategory = async () => {
+  const { status, response } = await getByGroupCategory();
+  if (status) {
     const existedCategory = response.length >= 1;
     let tbody = ``;
     if (existedCategory) {
@@ -80,48 +83,52 @@ const getPersediaanCategoryIdGroupAsync = async () => {
     }
     if (!existedCategory) {
       tbody += `<tr>
-                    <td class="text-center text-nowrap align-content-center" colspan="3">category empty....</td>
-                  </tr>`;
+                  <td class="text-center text-nowrap align-content-center" colspan="3">category empty....</td>
+                </tr>`;
     }
     return tbody;
-  } catch (error) {
-    console.error(error);
+  }
+  if (!status) {
+    console.error(response);
   }
 };
-const getPersediaanCategorySumAsync = async () => {
-  try {
-    const response = await getPersediaanCategorySum();
+const sumCategory = async () => {
+  const { status, response } = await getSumPriceCategory();
+  if (status) {
     const totalRp = formatRupiah2(response);
     return totalRp;
-  } catch (error) {
-    console.error(error);
+  }
+  if (!status) {
+    console.error(response);
   }
 };
 // sum-qty
-const getPersediaanQtySumAsync = async () => {
-  try {
-    const response = await getPersediaanQty("");
+const sumQty = async () => {
+  const { status, response } = await getSumQty("");
+  if (status) {
     return response;
-  } catch (error) {
-    console.error(error);
+  }
+  if (!status) {
+    console.error(response);
   }
 };
 // sum-rp
-const getPersediaanRpSumAsync = async () => {
-  try {
-    const response = await getPersediaanRpSum();
+const sumPrice = async () => {
+  const { status, response } = await getSumPrice();
+  if (status) {
     const rupiah = formatRupiah2(response);
     return rupiah;
-  } catch (error) {
-    console.error(error);
+  }
+  if (!status) {
+    console.error(response);
   }
 };
 // actions
 $("#persediaan-export-pdf")
   .off("click")
   .on("click", async () => {
-    try {
-      const response = await getPersediaanProductReport();
+    const { status, response } = await getPDF();
+    if (status) {
       const existed = response.length >= 1;
       if (existed) {
         let no = 1;
@@ -130,13 +137,13 @@ $("#persediaan-export-pdf")
           tbodyProduct += uiTrPDF(rows, no);
           no++;
         });
-        const tbodyProductGroup = await getPersediaanProductGroupAsync();
-        const tbodySupplierGroup = await getPersediaanSupplierGroupAsync();
-        const txtSumSupplier = await getPersediaanSupplierSumAsync();
-        const tbodyCategoryGroup = await getPersediaanCategoryIdGroupAsync();
-        const txtSumCategory = await getPersediaanCategorySumAsync();
-        const txtPersediaanQtySum = await getPersediaanQtySumAsync();
-        const txtPersediaanRpSum = await getPersediaanRpSumAsync();
+        const tbodyProductGroup = await groupProduct();
+        const tbodySupplierGroup = await groupSupplier();
+        const txtSumSupplier = await sumSupplier();
+        const tbodyCategoryGroup = await groupCategory();
+        const txtSumCategory = await sumCategory();
+        const txtPersediaanQtySum = await sumQty();
+        const txtPersediaanRpSum = await sumPrice();
         let file_path = dialog.showSaveDialogSync({
           title: "Export Data",
           filters: [{ name: "pdf", extensions: ["pdf"] }],
@@ -160,7 +167,8 @@ $("#persediaan-export-pdf")
           });
         }
       }
-    } catch (error) {
-      console.error(error);
+    }
+    if (!status) {
+      console.error(response);
     }
   });

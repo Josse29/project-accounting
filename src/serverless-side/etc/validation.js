@@ -1,16 +1,3 @@
-export const validateProductName = (productName) => {
-  if (productName === "") {
-    const msg = "Product Name must be filled...";
-    throw new Error(msg);
-  }
-};
-export const validatePrice = (buy, sell) => {
-  const priceBuyLesser = buy < sell;
-  if (!priceBuyLesser) {
-    const msg = "Price Buy must be lesser than Price Sell";
-    throw new Error(msg);
-  }
-};
 export const validateSupplierName = (supplierName) => {
   if (supplierName === "") {
     const msg = "Supplier Name must be filled...";
@@ -32,6 +19,19 @@ export const validateImg = (file) => {
       const msg = "File size exceeds 2 MB.";
       throw new Error(msg);
     }
+  }
+};
+export const validatePrice = (buy, sell) => {
+  const priceBuyLesser = buy < sell;
+  if (!priceBuyLesser) {
+    const msg = "Price Buy must be lesser than Price Sell";
+    throw new Error(msg);
+  }
+};
+export const validateProductName = (productName) => {
+  if (productName === "") {
+    const msg = "Product Name must be filled...";
+    throw new Error(msg);
   }
 };
 export const validateCategoryName = (categoryName) => {
