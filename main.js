@@ -2,7 +2,6 @@ const { app, BrowserWindow, ipcMain } = require("electron/main");
 const remote = require("@electron/remote/main");
 const fs = require("fs");
 remote.initialize();
-
 // 1 loginpage
 let loginPage;
 const createLoginPage = () => {
@@ -52,7 +51,6 @@ ipcMain.on("load:dashboard-page", () => {
   dashboardPage.webContents.on("did-finish-load", () => {
     loginPage.hide();
   });
-  remote.enable(dashboardPage.webContents);
   if (!isDashboardListenerSet) {
     // minimize page
     ipcMain.on("minimize-window:dashboard-page", () => {
@@ -253,7 +251,6 @@ ipcMain.on("load:about-page", () => {
     frame: false,
   });
   aboutPage.loadFile("./src/client-side/pages/about-us.html");
-  console.log(isAboutListenerSet);
   if (!isAboutListenerSet) {
     // minimize
     ipcMain.on("minimize-window:about-page", () => {
@@ -281,8 +278,7 @@ ipcMain.on("load:about-page", () => {
 });
 // export-pdf
 let productPDF;
-let persediaanPdf;
-let salesPDF;
+let isProductPDF = false;
 ipcMain.on("pdf:product", (event, tbody, file_path) => {
   productPDF = new BrowserWindow({
     webPreferences: {
@@ -296,26 +292,30 @@ ipcMain.on("pdf:product", (event, tbody, file_path) => {
   productPDF.webContents.on("dom-ready", () => {
     productPDF.webContents.send("tables:product", tbody, file_path);
   });
-  ipcMain.on("create:pdf-product", (event, file_path) => {
-    productPDF.webContents
-      .printToPDF({
-        marginsType: 0,
-        printBackground: true,
-        printSelectionOnly: false,
-        landscape: true,
-      })
-      .then((data) => {
-        fs.writeFile(file_path, data, (err) => {
-          if (err) throw err;
-          productPDF.close();
-          inventoryPage.webContents.send("success:pdf-product", file_path);
+  if (!isProductPDF) {
+    ipcMain.on("create:pdf-product", (event, file_path) => {
+      productPDF.webContents
+        .printToPDF({
+          marginsType: 0,
+          printBackground: true,
+          printSelectionOnly: false,
+          landscape: true,
+        })
+        .then((data) => {
+          fs.writeFile(file_path, data, (err) => {
+            if (err) throw err;
+            productPDF.close();
+            inventoryPage.webContents.send("success:pdf-product", file_path);
+            isProductPDF = true;
+          });
+        })
+        .catch((error) => {
+          console.log(error);
         });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  });
+    });
+  }
 });
+let persediaanPdf;
 let ispersediaanPdf = false;
 ipcMain.on(
   "pdf:persediaan",
@@ -381,6 +381,7 @@ ipcMain.on(
     }
   }
 );
+let salesPDF;
 ipcMain.on("pdf:sales", (event, tbodySales, file_path) => {
   salesPDF = new BrowserWindow({
     webPreferences: {

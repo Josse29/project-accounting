@@ -1,19 +1,19 @@
-import { updateSupplier } from "../../../../serverless-side/functions/supplier.js";
 import { getSupplierAgain, getSupplierRef } from "./read.js";
 import { uiAlertFailUpdate, uiAlertSuccess } from "./ui.js";
 import { capitalizeWord } from "../../utils/formatCapitalize.js";
-import { getImageBase64 } from "../../utils/loadImg.js";
+import { getImageBase64, validateImg } from "../../utils/loadImg.js";
+import { update } from "./services.js";
 $("#supplier-table")
   .off("click", "#supplierUpdate")
   .on("click", "#supplierUpdate", function () {
     $("input#supplier-update-img").val("");
     $("div#supplier-update-failed").html("");
     // get from params
-    const supplier = this.dataset;
+    const supplier = $(this).closest("tr")[0].dataset;
     const supplierName = supplier.suppliername;
     const supplierInfo = supplier.supplierinfo;
     const supplierImg = supplier.supplierimg;
-    let cancelImg = false;
+    let supplierCancelImg = false;
     // name
     $("#supplierUpdateModalLabel").text(supplierName);
     $("#supplier-update-name").val(supplierName);
@@ -35,18 +35,16 @@ $("#supplier-table")
       .on("change", async (event) => {
         try {
           const files = event.target.files;
-          const validImageTypes = ["image/jpeg", "image/png", "image/gif"];
-          if (files.length > 0) {
-            if (validImageTypes.includes(files[0].type)) {
-              const imgBase64 = await getImageBase64(files[0]);
-              $("#supplier-update-img-preview").attr("src", imgBase64);
-              $("#supplier-update-img-section").show();
-            }
-            if (!validImageTypes.includes(files[0].type)) {
-              $("#supplier-update-img-section").hide();
-            }
-            cancelImg = false;
+          const validImg = validateImg(files);
+          if (validImg) {
+            const imgBase64 = await getImageBase64(files[0]);
+            $("#supplier-update-img-preview").attr("src", imgBase64);
+            $("#supplier-update-img-section").show();
           }
+          if (!validImg) {
+            $("#supplier-update-img-section").hide();
+          }
+          supplierCancelImg = false;
         } catch (error) {
           console.error(error);
         }
@@ -57,51 +55,36 @@ $("#supplier-table")
       .on("click", function () {
         $("input#supplier-update-img").val("");
         $("#supplier-update-img-section").hide();
-        cancelImg = true;
+        supplierCancelImg = true;
       });
     // event submit update
     $("#supplier-update-submit")
       .off("click")
       .on("click", async () => {
-        try {
-          const supplierId = parseInt(supplier.supplierid);
-          const supplierName = capitalizeWord($("#supplier-update-name").val());
-          const supplierInfo = $("#supplier-update-info").val();
-          const supplierImgVal = document.getElementById(
-            "supplier-update-img"
-          ).files;
-          let imgBase64 = ``;
-          const validImageTypes = ["image/jpeg", "image/png", "image/gif"];
-          if (!cancelImg) {
-            if (
-              supplierImgVal.length > 0 &&
-              validImageTypes.includes(supplierImgVal[0].type)
-            ) {
-              imgBase64 = await getImageBase64(supplierImgVal[0]);
-            } else {
-              imgBase64 = supplierImg;
-            }
-          }
-          if (cancelImg) {
-            imgBase64 = "null";
-          }
-          // action createSupplier
-          const req = {
-            supplierId,
-            supplierName,
-            supplierInfo,
-            supplierImgVal,
-            imgBase64,
-          };
-          const response = await updateSupplier(req);
+        const supplierId = parseInt(supplier.supplierid);
+        const supplierName = capitalizeWord($("#supplier-update-name").val());
+        const supplierInfo = $("#supplier-update-info").val();
+        const supplierImgVal = document.getElementById(
+          "supplier-update-img"
+        ).files;
+        // action createSupplier
+        const req = {
+          supplierId,
+          supplierName,
+          supplierInfo,
+          supplierImgVal,
+          supplierCancelImg,
+        };
+        const { status, response } = await update(req);
+        if (status) {
           getSupplierAgain();
           getSupplierRef();
           uiAlertSuccess(response);
           $("#supplierUpdateModal").modal("hide");
-        } catch (error) {
-          const errMsg = error || error.message;
-          uiAlertFailUpdate(errMsg);
-          console.error(error);
+        }
+        if (!status) {
+          console.error(response);
+          uiAlertFailUpdate(response);
           const modalBody = $("#supplier-update-modalBody").get(0);
           modalBody.scrollTo({
             top: 0,

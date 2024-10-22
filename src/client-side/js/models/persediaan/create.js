@@ -88,6 +88,7 @@ $("#persediaan-create-submit")
       $("#persediaanCreateModal").modal("hide");
     }
     if (!status) {
+      console.error(response);
       uiAlertFailCreate(response);
       const modalBody = $("#persediaan-create-modal-body").get(0);
       modalBody.scrollTo({

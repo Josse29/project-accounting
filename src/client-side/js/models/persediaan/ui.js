@@ -208,7 +208,7 @@ export const uiTbodyEmpty = (searchVal) => {
     </tr>`;
   $("tbody#persediaan-table").html(tr);
 };
-export const uiTrLoad = () => {
+export const uiTBodyLoad = () => {
   const tr = `<tr>
                 <td colspan="10" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">loading...</td>
               </tr>`;

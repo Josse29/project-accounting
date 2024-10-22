@@ -96,15 +96,22 @@ export const uiTbody = (response) => {
   $("#product-table").html(tr);
 };
 // when total product row 0 being seaching
-export const uiTrEmpty = (searchVal) => {
+export const uiTBodyEmpty = (searchVal) => {
   let search = `Product Empty....`;
   if (searchVal !== "") {
     search = `Product - ${searchVal} Not found...`;
   }
   const tr = `<tr>
-                <td colspan="6" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">${search}</td>
+                <td colspan="7" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">${search}</td>
               </tr>`;
-  return tr;
+  $("#product-table").html(tr);
+};
+export const uiTBodyLoad = () => {
+  const tr = `<tr>
+                <td colspan="7" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">Loading....</td>
+              </tr>`;
+  $("#product-table").html(tr);
+  $("#product-pagination").addClass("d-none");
 };
 // blank value after submit action
 export const uiBlankVal = () => {

@@ -4,7 +4,9 @@ import {
   insertProducts,
   updateProduct,
   deleteProductId,
-} from "../../../../serverless-side/models/product/function.js";
+  getProductPDF,
+  getProductCSV,
+} from "../../../../serverless-side/models/product/controller.js";
 // 1.endpoint : api/product/:limit/:offset
 // method : GET
 // payload : 1.searchVal, 2.limitVal, 3.offsetVal
@@ -61,7 +63,7 @@ export const addProduct = async (req) => {
 };
 // 4. endpoint : api/product/:productid
 // method : PUT
-// payload : 1.productId, 2.productName, 3.productPriceBuy, 4.productPriceSell, 5.productImgVal, 6.productCategoryId, 7.productSupplierId, 8.productInfo,
+// payload : 1.productId, 2.productName, 3.productPriceBuy, 4.productPriceSell, 5.productCategoryId, 6.productSupplierId, 7.productInfo, 8.productImgVal, 9.productCancelImg
 // return : message success update
 export const update = async (req) => {
   try {
@@ -74,6 +76,7 @@ export const update = async (req) => {
       productSupplierId: req.productSupplierId,
       productInfo: req.productInfo,
       productImgVal: req.productImgVal,
+      productCancelImg: req.productCancelImg,
     };
     const updated = await updateProduct(payLoad);
     return { status: true, response: updated };
@@ -97,4 +100,27 @@ export const deletedById = async (req) => {
     return { status: false, response: error };
   }
 };
-// 6.endpoint : api/product
+// 6.enpoint : api/product/report-pdf
+// method : GET
+// payload : ""
+// return : get all product
+export const getPDF = async () => {
+  try {
+    const products = await getProductPDF();
+    return { status: true, response: products };
+  } catch (error) {
+    return { status: false, response: error };
+  }
+};
+// 6.enpoint : api/product/report-csv
+// method : GET
+// payload : ""
+// return : get all product
+export const getCSV = async () => {
+  try {
+    const products = await getProductCSV();
+    return { status: true, response: products };
+  } catch (error) {
+    return { status: false, response: error };
+  }
+};

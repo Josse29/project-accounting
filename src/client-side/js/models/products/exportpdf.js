@@ -1,12 +1,12 @@
-import { getProductPDF } from "../../../../serverless-side/functions/product.js";
+import { getPDF } from "./services.js";
 import { uiAlertFail, uiAlertSuccess, uiTrPDf } from "./ui.js";
 //
 // export pdf product
 $("#product-export-pdf")
   .off("click")
   .on("click", async () => {
-    try {
-      const response = await getProductPDF();
+    const { status, response } = await getPDF();
+    if (status) {
       const existed = response.length >= 1;
       if (existed) {
         let file_path = dialog.showSaveDialogSync({
@@ -29,7 +29,8 @@ $("#product-export-pdf")
       } else {
         uiAlertFail("upppps Product is still empty...");
       }
-    } catch (error) {
-      console.error(error);
+    }
+    if (!status) {
+      console.error(response);
     }
   });

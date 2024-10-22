@@ -5,7 +5,7 @@ import { listSupplierRefProductCreate } from "../supplier/list.js";
 import { disFormatRupiah1, formatRupiah1 } from "../../utils/formatRupiah.js";
 import { capitalizeWord } from "../../utils/formatCapitalize.js";
 import { listProductRefPersediaanCreate } from "./list.js";
-import { getImageBase64, previewLoadImg } from "../../utils/loadImg.js";
+import { previewLoadImg } from "../../utils/loadImg.js";
 import { addProduct } from "./services.js";
 
 $("button#product-create")
@@ -47,11 +47,11 @@ $("#submit_product")
   .off("click")
   .on("click", async () => {
     const productName = capitalizeWord($("#product-name").val().trim());
+    const productPriceBuy = disFormatRupiah1($("#product-price-beli").val());
+    const productPriceSell = disFormatRupiah1($("#product-price-jual").val());
     const productInfo = $("#product-keterangan").val();
     const productCategoryId = $("#product-refcategory-create").val();
     const productSupplierId = $("#product-refsupplier-create").val();
-    const productPriceBuy = disFormatRupiah1($("#product-price-beli").val());
-    const productPriceSell = disFormatRupiah1($("#product-price-jual").val());
     const productImg = document.getElementById("create-image-product").files;
     const req = {
       productName,
@@ -72,12 +72,12 @@ $("#submit_product")
       $("#productCreateModal").modal("hide");
     }
     if (!status) {
+      console.error(response);
       uiAlertFailCreate(response);
       const modalBody = $("#productCreate-modal-body").get(0);
       modalBody.scrollTo({
         top: 0,
         behavior: "smooth",
       });
-      console.error(response);
     }
   });

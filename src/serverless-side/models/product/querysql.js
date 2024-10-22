@@ -76,32 +76,17 @@ export const queryTotalRowProducts = (productSearch) => {
   }
   return query;
 };
-export const queryGetProductSupplierId = (supplierId) => {
-  let query = `SELECT Product.ProductName FROM Product `;
-  // join table supplier
-  query += `LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId `;
-  // by supplierid
-  query += `WHERE Supplier.SupplierId = ${supplierId}`;
-  return query;
-};
-export const queryGetProductCategoryId = (categoryId) => {
-  let query = `SELECT Product.ProductName FROM Product `;
-  // join table supplier
-  query += `LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId `;
-  // by categoryId
-  query += `WHERE Category.CategoryId = ${categoryId}`;
-  return query;
-};
 // 3.UPDATE
 export const queryUpdateProduct = (
   productId,
   productName,
   productPriceBuy,
   productPriceSell,
-  imgBase64,
   productCategoryId,
   productSupplierId,
-  productInfo
+  productInfo,
+  imgBase64,
+  productCancelImg
 ) => {
   let query = `UPDATE Product
                  SET ProductName = '${productName}',
@@ -109,8 +94,17 @@ export const queryUpdateProduct = (
                      ProductPriceJual = ${productPriceSell},
                      ProductCategoryId = ${productCategoryId},
                      ProductSupplierId = ${productSupplierId}, 
-                     ProductInfo = '${productInfo}',
-                     ProductImage = '${imgBase64}' `;
+                     ProductInfo = '${productInfo}', `;
+  // condition image
+  //  1. if remove image
+  if (productCancelImg) {
+    query += `ProductImage = 'null' `;
+  }
+  //  2. if change image
+  if (!productCancelImg && imgBase64 !== "null") {
+    query += `ProductImage = '${imgBase64}' `;
+  }
+  // 3. if it isn't change img or remove img , nothing do column image
   query += `WHERE ProductId = ${productId} `;
   return query;
 };
@@ -129,12 +123,12 @@ export const queryGetProductPDF = () => {
 };
 export const queryGetProductCSV = () => {
   let query = `SELECT 
-                 Product.ProductName AS ProductName,
-                 Product.ProductPriceBeli AS ProductPriceBuy,
-                 Product.ProductPriceJual AS ProductPriceSell,
-                 Supplier.SupplierName AS SupplieName,
-                 Category.CategoryName AS CategoryName
-                 FROM Product `;
+               Product.ProductName AS ProductName,
+               Product.ProductPriceBeli AS ProductPriceBuy,
+               Product.ProductPriceJual AS ProductPriceSell,
+               Supplier.SupplierName AS SupplieName,
+               Category.CategoryName AS CategoryName
+               FROM Product `;
   // left join table supplier
   query += `LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId `;
   // left join table Category

@@ -11,7 +11,7 @@ import {
 
 // 1.CREATE
 export const createSupplier = (req) => {
-  const { supplierName, supplierInfo, supplierImg, imgBase64 } = req;
+  const { supplierName, supplierInfo, supplierImg } = req;
   // 1.validate name
   validateSupplierName(supplierName);
   // 2. validateImg

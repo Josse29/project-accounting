@@ -4,7 +4,7 @@ import {
   uiInit,
   uiTbody,
   uiTbodyEmpty,
-  uiTrLoad,
+  uiTBodyLoad,
 } from "./ui.js";
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import { reinitTooltip, uiLoad } from "../../utils/updateUi.js";
@@ -30,12 +30,12 @@ $("button#persediaan-refresh")
 // search
 const handleBounce = debounce(() => {
   getInitAsync();
-}, 5000);
+}, 1000);
 $("input#persediaan-search")
   .off("keyup")
   .on("keyup", function () {
     searchVal = $(this).val();
-    uiTrLoad();
+    uiTBodyLoad();
     handleBounce();
   });
 // limit
@@ -43,7 +43,7 @@ $("select#persediaan-limit")
   .off("change")
   .on("change", function () {
     limitVal = parseInt($(this).val());
-    uiTrLoad();
+    uiTBodyLoad();
     handleBounce();
   });
 async function getInitAsync() {
@@ -89,16 +89,14 @@ async function getInitAsync() {
   $("div#persediaan-loading").html("");
 }
 async function getPersediaanPage(req) {
-  const stock = await getAll(req);
-  const statusStock = stock.status;
-  const resStock = stock.response;
-  if (statusStock) {
-    uiTbody(resStock);
+  const { status, response } = await getAll(req);
+  if (status) {
+    uiTbody(response);
     uiBtnPageActive(req.offsetVal);
     reinitTooltip();
   }
-  if (!statusStock) {
-    console.error(resStock);
+  if (!status) {
+    console.error(response);
   }
 }
 function handlePagination(totalPage) {
@@ -215,16 +213,14 @@ export const getPersediaanAgain = async () => {
     console.error(initRes);
   }
   async function getPersediaanPage(req) {
-    const stock = await getAll(req);
-    const statusStock = stock.status;
-    const resStock = stock.response;
-    if (statusStock) {
-      uiTbody(resStock);
+    const { status, response } = await getAll(req);
+    if (status) {
+      uiTbody(response);
       uiBtnPageActive(req.offsetVal);
       reinitTooltip();
     }
-    if (!statusStock) {
-      console.error(resStock);
+    if (!status) {
+      console.error(response);
     }
   }
   function handlePagination(totalPage) {

@@ -1,81 +1,83 @@
-import {
-  getCategory,
-  getCategoryInit,
-} from "../../../../serverless-side/functions/categories.js";
 import { reinitTooltip, uiLoad } from "../../utils/updateUi.js";
-import { uiBtnPage, uiBtnPageActive, uiTr, uiTrZero } from "./ui.js";
+import {
+  uiBtnPage,
+  uiBtnPageActive,
+  uiTbody,
+  uiTbodyEmpty,
+  uiTbodyLoad,
+} from "./ui.js";
 import { getProductsAgain } from "./../products/read.js";
 import { getPersediaanAgain } from "../persediaan/read.js";
 import { listCategoryRefPersediaanRead } from "./list.js";
+import { getByLimitOffset, getPagination } from "./services.js";
+import { debounce } from "../../utils/debounce.js";
 // loading
 $("div#category-loading").html(uiLoad());
 $("div#category-done").hide();
-let searchVal = $("#category-search-input").val();
-let limitVal = parseInt($("#category-limit").val());
-let offsetVal = 1;
-getInit();
 // searching
+const handleBounce = debounce(() => {
+  getInit();
+}, 1000);
 $("#category-search-input")
   .off("keyup")
   .on("keyup", function () {
     searchVal = $(this).val();
-    getInit(searchVal);
+    uiTbodyLoad();
+    handleBounce();
   });
 // limit
 $("#category-limit")
   .off("change")
   .on("change", function () {
     limitVal = parseInt($(this).val());
-    getInit();
+    uiTbodyLoad();
+    handleBounce();
   });
+let searchVal = $("#category-search-input").val();
+let limitVal = parseInt($("#category-limit").val());
+let offsetVal = 1;
+getInit();
 async function getInit() {
-  try {
-    const req = {
-      searchVal,
-      limitVal,
-      offsetVal,
-    };
-    const init = await getCategoryInit(req);
-    const totalPage = init.totalPage;
-    // total-row
-    const totalRow = init.totalRow;
+  const req = {
+    searchVal,
+    limitVal,
+    offsetVal,
+  };
+  const { status, response } = await getPagination(req);
+  if (status) {
+    const { totalPage, totalRow } = response;
     $("p#categories-total-row").text(`Total : ${totalRow}`);
+    // exsited category
     if (totalRow >= 1) {
       await getCategoryPage(req);
       handlePagination(totalPage);
       $("div#category-pagination").removeClass("d-none");
     }
+    // non=exsited category
     if (totalRow < 1) {
-      const empty = uiTrZero(searchVal);
-      $("#category-data").html(empty);
+      uiTbodyEmpty(searchVal);
       $("div#category-pagination").addClass("d-none");
     }
     $("div#category-loading").html("");
     $("div#category-done").show();
-  } catch (error) {
-    console.error(error);
+  }
+  if (!status) {
+    console.error(response);
   }
 }
 async function getCategoryPage(req) {
-  try {
-    const response = await getCategory(req);
-    let tr = "";
-    response.forEach((element) => {
-      tr += uiTr(element);
-    });
-    $("#category-data").html(tr);
+  const { status, response } = await getByLimitOffset(req);
+  if (status) {
+    uiTbody(response);
     reinitTooltip();
     uiBtnPageActive(req.offsetVal);
-  } catch (error) {
-    console.error(error);
+  }
+  if (!status) {
+    console.error(response);
   }
 }
 function handlePagination(totalPage) {
-  let uiBtnPaginate = "";
-  for (let i = 1; i <= totalPage; i++) {
-    uiBtnPaginate += uiBtnPage(i);
-  }
-  $("#category-number-page").html(uiBtnPaginate);
+  uiBtnPage(totalPage);
   // first page
   $("#category-first-page")
     .off("click")
@@ -143,58 +145,48 @@ function handlePagination(totalPage) {
       await getCategoryPage(req);
     });
 }
-export const getCategoryAgain = () => {
+export const getCategoryAgain = async () => {
   $("#category-search-input").val("");
   let searchVal = $("#category-search-input").val();
   let limitVal = $("#category-limit").val();
   let offsetVal = 1;
-  getInit();
-  async function getInit() {
-    try {
-      const req = {
-        searchVal,
-        limitVal,
-        offsetVal,
-      };
-      const init = await getCategoryInit(req);
-      const totalPage = init.totalPage;
-      // total-row
-      const totalRow = init.totalRow;
-      $("p#categories-total-row").text(`Total : ${totalRow}`);
-      if (totalRow >= 1) {
-        await getCategoryPage(req);
-        handlePagination(totalPage);
-        $("div#category-pagination").removeClass("d-none");
-      }
-      if (totalRow < 1) {
-        const empty = uiTrZero(searchVal);
-        $("#category-data").html(empty);
-        $("div#category-pagination").addClass("d-none");
-      }
-    } catch (error) {
-      console.error(error);
+  const req = {
+    searchVal,
+    limitVal,
+    offsetVal,
+  };
+  const { status, response } = await getPagination(req);
+  if (status) {
+    const { totalPage, totalRow } = response;
+    $("p#categories-total-row").text(`Total : ${totalRow}`);
+    if (totalRow >= 1) {
+      await getCategoryPage(req);
+      handlePagination(totalPage);
+      $("div#category-pagination").removeClass("d-none");
     }
+    if (totalRow < 1) {
+      uiTbodyEmpty(searchVal);
+      $("div#category-pagination").addClass("d-none");
+    }
+    $("div#category-loading").html("");
+    $("div#category-done").show();
+  }
+  if (!status) {
+    console.error(response);
   }
   async function getCategoryPage(req) {
-    try {
-      const response = await getCategory(req);
-      let tr = "";
-      response.forEach((element) => {
-        tr += uiTr(element);
-      });
-      $("#category-data").html(tr);
+    const { status, response } = await getByLimitOffset(req);
+    if (status) {
+      uiTbody(response);
       reinitTooltip();
       uiBtnPageActive(req.offsetVal);
-    } catch (error) {
-      console.error(error);
+    }
+    if (!status) {
+      console.error(response);
     }
   }
   function handlePagination(totalPage) {
-    let uiBtnPaginate = "";
-    for (let i = 1; i <= totalPage; i++) {
-      uiBtnPaginate += uiBtnPage(i);
-    }
-    $("#category-number-page").html(uiBtnPaginate);
+    uiBtnPage(totalPage);
     // first page
     $("#category-first-page")
       .off("click")
@@ -263,8 +255,8 @@ export const getCategoryAgain = () => {
       });
   }
 };
-export const getCategoryRef = () => {
-  getProductsAgain();
-  getPersediaanAgain();
+export const getCategoryRef = async () => {
+  await getProductsAgain();
+  await getPersediaanAgain();
   listCategoryRefPersediaanRead();
 };

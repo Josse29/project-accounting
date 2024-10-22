@@ -17,22 +17,22 @@ import {
   getPersediaanPagination,
   getPersediaanPagination1,
   getPersediaanProductId,
-  getPersediaanProductId2,
+  getPersediaanProductId1,
   getPersediaanReport,
   getPersediaanReport1,
-  getPersediaanSumCategory,
   getPersediaanSumPrice,
+  getPersediaanSumPriceCategory,
   getPersediaanSumPriceCategoryId,
   getPersediaanSumPriceDate,
   getPersediaanSumPriceDateCategoryId,
   getPersediaanSumPriceDateSupplierId,
   getPersediaanSumPriceSupplier,
+  getPersediaanSumPriceSupplierId,
   getPersediaanSumQty,
   getPersediaanSumQtyDateProductId,
-  getPersediaanSumSupplier,
   getPersediaanSupplierId,
   updatePersediaan,
-} from "../../../../serverless-side/models/persediaan/functions.js";
+} from "../../../../serverless-side/models/persediaan/controller.js";
 
 // 1. endpoint : api/persediaan/group-product
 // methode = GET
@@ -151,7 +151,7 @@ export const getSumQty = async (productId) => {
 // return : get all stock based on productid
 export const getByProductId2 = async (productId) => {
   try {
-    const stock = await getPersediaanProductId2(productId);
+    const stock = await getPersediaanProductId1(productId);
     return { status: true, response: stock };
   } catch (error) {
     return { status: false, response: error };
@@ -163,7 +163,7 @@ export const getByProductId2 = async (productId) => {
 //  return : sum price based supplierid
 export const getSumPriceSupplierId = async (supplierId) => {
   try {
-    const price = await getPersediaanSumPriceSupplier(supplierId);
+    const price = await getPersediaanSumPriceSupplierId(supplierId);
     return { status: true, response: price };
   } catch (error) {
     return { status: false, response: error };
@@ -390,7 +390,7 @@ export const getByGroupCategory = async () => {
 // return : summary of category
 export const getSumPriceCategory = async () => {
   try {
-    const summary = await getPersediaanSumCategory();
+    const summary = await getPersediaanSumPriceCategory();
     return { status: true, response: summary };
   } catch (error) {
     return { status: false, response: error };
@@ -439,7 +439,7 @@ export const getByGroupSupplier = async () => {
 // return : summary of supplier
 export const getSumPriceSupplier = async () => {
   try {
-    const stock = await getPersediaanSumSupplier();
+    const stock = await getPersediaanSumPriceSupplier();
     return { status: true, response: stock };
   } catch (error) {
     return { status: false, response: error };

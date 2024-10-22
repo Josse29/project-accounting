@@ -92,6 +92,7 @@ $("tbody#persediaan-table")
           $("#persediaanUpdateModal").modal("hide");
         }
         if (!status) {
+          console.error(response);
           uiAlertFailUpdate(response);
           const modalBody = $("#persediaan-update-modal-body").get(0);
           modalBody.scrollTo({

@@ -1,81 +1,110 @@
-export const uiTr = (el) => {
-  return `<tr>
-            <td class="text-center align-content-center text-truncate pe-2">${el.CategoryId}</td>
-            <td class="align-content-center text-capitalize text-truncate pe-2">
-              ${el.CategoryName}
-            </td>
-            <td class="align-content-center">
-              <div class="d-flex w-100 justify-content-center gap-2">
-                <button 
-                  class="btn btn-success text-white"
-                  id="categoryDetailBtn"
-                  data-bs-toggle="modal" 
-                  data-bs-target="#categoryDetailModal"
-                  data-categoryid=${el.CategoryId}
-                  data-categorynama="${el.CategoryName}" 
-                  data-categoryketerangan="${el.CategoryInfo}">
-                    <i class="fa-solid fa-eye"
-                       data-bs-toggle="tooltip" 
-                       data-bs-html="true"
-                       data-bs-title="<span>See-${el.CategoryName}</span>" 
-                       data-bs-placement="bottom"></i>
-                </button>
-                <button 
-                  class="btn btn-primary text-white" 
-                  id="editCategory"
-                  data-bs-toggle="modal" 
-                  data-bs-target="#categoryModalEdit"
-                  data-categoryid="${el.CategoryId}"
-                  data-categorynama="${el.CategoryName}" 
-                  data-categoryketerangan="${el.CategoryInfo}"   
-                  >
-                  <i class="fa-solid fa-pencil"
-                     data-bs-toggle="tooltip" 
-                     data-bs-html="true"
-                     data-bs-title="<span>Update-${el.CategoryName}</span>" 
-                     data-bs-placement="bottom"></i>
-                </button>
-                <button 
-                class="btn btn-danger text-white"
-                id="deleteCategory"
-                data-bs-toggle="modal" 
-                data-bs-target="#confirmDeleteCategoryModal"
-                data-categoryid="${el.CategoryId}"
-                data-categorynama="${el.CategoryName}" 
-                data-categoryketerangan="${el.CategoryInfo}"
-                >
-                  <i class="fa-solid fa-trash-can"
-                     data-bs-toggle="tooltip" 
-                     data-bs-html="true"
-                     data-bs-title="<span>Delete-${el.CategoryName}</span>" 
-                     data-bs-placement="bottom"></i>
-                </button>
-              </div>
-            </td>
-          </tr> `;
+export const uiTbody = (response) => {
+  let tr = "";
+  response.forEach((el) => {
+    const categoryId = parseInt(el.CategoryId);
+    const categoryName = el.CategoryName;
+    const categoryInfo = el.CategoryInfo;
+    const categoryProductList = el.CategoryProductList;
+    tr += `
+    <tr
+      data-categoryid=${categoryId}
+      data-categorynama="${categoryName}"
+      data-categoryketerangan="${categoryInfo}"
+      data-categoryproductlist="${categoryProductList}"
+    >
+      <td class="text-center align-content-center text-truncate pe-2">
+        ${categoryId}
+      </td>
+      <td class="align-content-center text-capitalize text-truncate pe-2">
+        ${categoryName}
+      </td>
+      <td class="align-content-center">
+        <div class="d-flex w-100 justify-content-center gap-2">
+          <button
+            class="btn btn-success text-white"
+            id="categoryDetailBtn"
+            data-bs-toggle="modal"
+            data-bs-target="#categoryDetailModal"
+          >
+            <i
+              class="fa-solid fa-eye"
+              data-bs-toggle="tooltip"
+              data-bs-html="true"
+              data-bs-title="<span>See-${categoryName}</span>"
+              data-bs-placement="bottom"
+            ></i>
+          </button>
+          <button
+            class="btn btn-primary text-white"
+            id="editCategory"
+            data-bs-toggle="modal"
+            data-bs-target="#categoryModalEdit"
+          >
+            <i
+              class="fa-solid fa-pencil"
+              data-bs-toggle="tooltip"
+              data-bs-html="true"
+              data-bs-title="<span>Update-${categoryName}</span>"
+              data-bs-placement="bottom"
+            ></i>
+          </button>
+          <button
+            class="btn btn-danger text-white"
+            id="deleteCategory"
+            data-bs-toggle="modal"
+            data-bs-target="#confirmDeleteCategoryModal"
+          >
+            <i
+              class="fa-solid fa-trash-can"
+              data-bs-toggle="tooltip"
+              data-bs-html="true"
+              data-bs-title="<span>Delete-${categoryName}</span>"
+              data-bs-placement="bottom"
+            ></i>
+          </button>
+        </div>
+      </td>
+    </tr>
+    `;
+  });
+  $("#category-data").html(tr);
 };
 // when total category row 0 being seaching
-export const uiTrZero = (searchVal) => {
+export const uiTbodyEmpty = (searchVal) => {
   let search = `Category is empty....`;
   if (searchVal !== "") {
     search = `Category - ${searchVal} not found`;
   }
-  return `<tr>
-              <td colspan="4" 
-              class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">${search}</td>
-          </tr>`;
+  const tr = `<tr>
+                <td colspan="4" 
+                class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">${search}</td>
+              </tr>`;
+  $("#category-data").html(tr);
+};
+export const uiTbodyLoad = () => {
+  const tr = `<tr>
+                <td colspan="4" 
+                class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">Loading....</td>
+              </tr>`;
+  $("#category-data").html(tr);
+  $("div#category-pagination").addClass("d-none");
 };
 export const uiBlankVal = () => {
   $("#category-nama").val("");
   $("#category-keterangan").val("");
 };
 // button pagination
-export const uiBtnPage = (i) => {
-  return `<button 
-            type="button" 
-            class="category-btn-page ${i === 1 ? "category-active-page" : ""}">
-              ${i}
-          </button>`;
+export const uiBtnPage = (totalPage) => {
+  let btnPage = "";
+  for (let i = 1; i <= totalPage; i++) {
+    const actived = i === 1 ? "category-active-page" : "";
+    btnPage += `<button 
+                  type="button" 
+                  class="category-btn-page ${actived}">
+                  ${i}
+                </button>`;
+  }
+  $("#category-number-page").html(btnPage);
 };
 // Function to update active page button
 export const uiBtnPageActive = (pageActive) => {

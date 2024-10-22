@@ -1,84 +1,132 @@
 import { formatWaktuIndo } from "../../utils/formatWaktu.js";
 // ui tr supplier from db
-export const uiTr = (el) => {
-  const splitDateTime = el.SupplierDate.split(" ");
-  const dateSupplier = formatWaktuIndo(splitDateTime[0]);
-  return `<tr>
-                <td class="text-center align-content-center text-truncate pe-2">${el.SupplierId}</td>
-                <td class="align-content-center text-capitalize text-truncate pe-2">${el.SupplierName}</td>
-                <td class="align-content-center">
-                    <div class="d-flex w-100 justify-content-center gap-2">
-                        <button 
-                            class="btn btn-success text-white"
-                            id="supplierDetail" 
-                            data-bs-toggle="modal" 
-                            data-bs-target="#supplierDetailModal" 
-                            data-supplierid=${el.SupplierId}
-                            data-suppliername="${el.SupplierName}"
-                            data-supplierinfo="${el.SupplierInfo}"
-                            data-supplierimg="${el.SupplierImg}"
-                            data-supplierdate="${dateSupplier}"
-                            >
-                              <i class="fa-solid fa-eye"
-                                 data-bs-toggle="tooltip" 
-                                 data-bs-html="true"
-                                 data-bs-title="<span>See-${el.SupplierName}</span>" 
-                                 data-bs-placement="bottom"></i>
-                        </button>
-                        <button 
-                            class="btn btn-primary text-white"
-                            data-bs-toggle="modal" 
-                            data-bs-target="#supplierUpdateModal" 
-                            id="supplierUpdate" 
-                            data-supplierid="${el.SupplierId}"  
-                            data-suppliername="${el.SupplierName}"
-                            data-supplierinfo="${el.SupplierInfo}"
-                            data-supplierimg="${el.SupplierImg}">
-                                <i class="fa-solid fa-pencil"
-                                 data-bs-toggle="tooltip" 
-                                 data-bs-html="true"
-                                 data-bs-title="<span>Update-${el.SupplierName}</span>" 
-                                 data-bs-placement="bottom"></i>
-                        </button>
-                        <button
-                            class="btn btn-danger text-white"
-                            data-bs-toggle="modal" 
-                            data-bs-target="#supplierDeleteModal" 
-                            id="supplierDelete" 
-                            data-supplierid="${el.SupplierId}"  
-                            data-suppliername="${el.SupplierName}"
-                            data-supplierinfo="${el.SupplierInfo}">
-                                <i class="fa-solid fa-trash-can"
-                                   data-bs-toggle="tooltip" 
-                                   data-bs-html="true"
-                                   data-bs-title="<span>Delete-${el.SupplierName}</span>" 
-                                   data-bs-placement="bottom"></i>
-                        </button>
-                    </div>
-                </td>
-            </tr>`;
+export const uiTbody = (response) => {
+  let tr = ``;
+  response.forEach((el) => {
+    // supplier id
+    const supplierId = el.SupplierId;
+    // suppliername
+    const supplierName = el.SupplierName;
+    // supplierInfo
+    const supplierInfo = el.SupplierInfo;
+    // supplierImg
+    const supplierImg = el.SupplierImg;
+    // product list
+    const supplierProductList = el.SupplierProductList;
+    // date
+    const splitDateTime = el.SupplierDate.split(" ");
+    const dateSupplier = formatWaktuIndo(splitDateTime[0]);
+    tr += `
+    <tr
+      data-supplierid=${supplierId}
+      data-suppliername="${supplierName}"
+      data-supplierinfo="${supplierInfo}"
+      data-supplierimg="${supplierImg}"
+      data-supplierdate="${dateSupplier}"
+      data-supplierproductlist="${supplierProductList}"
+    >
+      <td class="text-center align-content-center text-truncate pe-2">
+        ${supplierId}
+      </td>
+      <td class="align-content-center text-capitalize text-truncate pe-2">
+        ${supplierName}
+      </td>
+      <td class="align-content-center">
+        <div class="d-flex w-100 justify-content-center gap-2">
+          <button
+            class="btn btn-success text-white"
+            id="supplierDetail"
+            data-bs-toggle="modal"
+            data-bs-target="#supplierDetailModal"
+          >
+            <i
+              class="fa-solid fa-eye"
+              data-bs-toggle="tooltip"
+              data-bs-html="true"
+              data-bs-title="<span>See-${supplierName}</span>"
+              data-bs-placement="bottom"
+            ></i>
+          </button>
+          <button
+            class="btn btn-primary text-white"
+            data-bs-toggle="modal"
+            data-bs-target="#supplierUpdateModal"
+            id="supplierUpdate"
+          >
+            <i
+              class="fa-solid fa-pencil"
+              data-bs-toggle="tooltip"
+              data-bs-html="true"
+              data-bs-title="<span>Update-${supplierName}</span>"
+              data-bs-placement="bottom"
+            ></i>
+          </button>
+          <button
+            class="btn btn-danger text-white"
+            data-bs-toggle="modal"
+            data-bs-target="#supplierDeleteModal"
+            id="supplierDelete"
+          >
+            <i
+              class="fa-solid fa-trash-can"
+              data-bs-toggle="tooltip"
+              data-bs-html="true"
+              data-bs-title="<span>Delete-${supplierName}</span>"
+              data-bs-placement="bottom"
+            ></i>
+          </button>
+        </div>
+      </td>
+    </tr>`;
+  });
+  $("#supplier-table").html(tr);
 };
-
 // it doesn't exist supplier while  event search
-export const uiTrZero = (searchVal) => {
+export const uiTbodyZero = (searchVal) => {
   let search = `Supplier Empty ......`;
   if (searchVal !== "") {
     search = `Supplier - ${searchVal} is empty`;
   }
-  return `<tr>
-                <td colspan="5" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">${search}</td>
-            </tr>`;
+  const tr = `
+    <tr>
+      <td
+        colspan="5"
+        class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize"
+        style="background-color: #f2f2f2"
+      >
+        ${search}
+      </td>
+    </tr>`;
+  $("#supplier-table").html(tr);
+};
+export const uiTbodyLoad = () => {
+  const tr = `
+    <tr>
+      <td
+        colspan="5"
+        class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize"
+        style="background-color: #f2f2f2"
+      >
+        Loading.....
+      </td>
+    </tr>`;
+  $("#supplier-table").html(tr);
+  $("div#supplier-pagination").addClass("d-none");
 };
 // button pagination
-export const btnSupplierPage = (i) => {
-  return `<button 
+export const uiBtnPage = (totalPage) => {
+  let btn = "";
+  for (let i = 1; i <= totalPage; i++) {
+    btn += `<button 
             type="button" 
             class="supplier-btn-page ${i === 1 ? "supplier-active-page" : ""} ">
               ${i}
           </button>`;
+  }
+  $("#supplier-number-page").html(btn);
 };
 // update active pagination
-export function uiActivePageBtn(pageNumber) {
+export function uiBtnPageActive(pageNumber) {
   $("button.supplier-btn-page").removeClass("supplier-active-page");
   $("button.supplier-btn-page")
     .eq(pageNumber - 1)

@@ -111,3 +111,15 @@ export const validateProductName = (productName) => {
     throw new Error(msg);
   }
 };
+export const validateSupplierName = (supplierName) => {
+  if (supplierName === "") {
+    const msg = "Supplier Name must be filled...";
+    throw new Error(msg);
+  }
+};
+export const validateCategoryName = (categoryName) => {
+  if (categoryName === "") {
+    const msg = "Category Name must be filled...";
+    throw new Error(msg);
+  }
+};

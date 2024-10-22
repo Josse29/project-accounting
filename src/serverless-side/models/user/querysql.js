@@ -75,8 +75,8 @@ export const queryUpdate = (
   let query = `UPDATE 
                User 
                SET UserEmail = '${UserEmailVal}',
-                   UserFullname = '${UserFullnameVal}', `;
-  query += `UserPosition = '${UserPositionVal}' `;
+                   UserFullname = '${UserFullnameVal}',
+                   UserPosition = '${UserPositionVal}' `;
   if (!CancelImg && UserImgVal.length >= 1) {
     query += `UserImg = '${imgBase64}', `;
   }

@@ -1,5 +1,11 @@
 import { reinitTooltip, uiLoad } from "../../utils/updateUi.js";
-import { uiBtnPage, uiBtnPageActive, uiTbody, uiTrEmpty } from "./ui.js";
+import {
+  uiBtnPage,
+  uiBtnPageActive,
+  uiTbody,
+  uiTBodyEmpty,
+  uiTBodyLoad,
+} from "./ui.js";
 import { getPersediaanAgain } from "../persediaan/read.js";
 import {
   listProductRefPersediaanRead,
@@ -7,27 +13,33 @@ import {
 } from "./list.js";
 import { getCategoryAgain } from "../categories/read.js";
 import { getLimitOffset, getPagination } from "./services.js";
+import { debounce } from "../../utils/debounce.js";
 // loading
 $("div#product-loading").html(uiLoad());
 $("div#product-done").hide();
-let searchVal = $("#product-search-input").val();
-let limitVal = parseInt($("#product-limit").val());
-let offsetVal = 1;
-getInit();
 // search
+const handleBounce = debounce(() => {
+  getInit();
+}, 1000);
 $("#product-search-input")
   .off("keyup")
   .on("keyup", function () {
     searchVal = $(this).val();
-    getInit();
+    uiTBodyLoad();
+    handleBounce();
   });
 // limit
 $("#product-limit")
   .off("change")
   .on("change", function () {
     limitVal = parseInt($(this).val());
-    getInit();
+    uiTBodyLoad();
+    handleBounce();
   });
+let searchVal = $("#product-search-input").val();
+let limitVal = parseInt($("#product-limit").val());
+let offsetVal = 1;
+getInit();
 async function getInit() {
   const req = {
     searchVal,
@@ -45,8 +57,7 @@ async function getInit() {
       $("#product-pagination").removeClass("d-none");
     }
     if (totalRow < 1) {
-      const empty = uiTrEmpty(searchVal);
-      $("#product-table").html(empty);
+      uiTBodyEmpty(searchVal);
       $("#product-pagination").addClass("d-none");
     }
     // references and loading
@@ -161,8 +172,7 @@ export const getProductsAgain = async () => {
       $("#product-pagination").removeClass("d-none");
     }
     if (totalRow < 1) {
-      const empty = uiTrEmpty(searchVal);
-      $("#product-table").html(empty);
+      uiTBodyEmpty(searchVal);
       $("#product-pagination").addClass("d-none");
     }
     // references and loading

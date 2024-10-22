@@ -17,22 +17,20 @@ $("tbody#product-table")
     $("#sureDelete")
       .off("click")
       .on("click", async () => {
-        try {
-          const req = {
-            productid,
-            productName,
-          };
-          await deleteByProductId(productid);
-          const { status, response } = await deletedById(req);
-          if (status) {
-            await getProductsAgain();
-            await getProductRef();
-            uiAlertSuccess(response);
-            $("#confirmDeleteProductModal").modal("hide");
-          }
-          if (!status) {
-            console.error(response);
-          }
-        } catch (error) {}
+        const req = {
+          productid,
+          productName,
+        };
+        await deleteByProductId(productid);
+        const { status, response } = await deletedById(req);
+        if (status) {
+          await getProductsAgain();
+          await getProductRef();
+          uiAlertSuccess(response);
+          $("#confirmDeleteProductModal").modal("hide");
+        }
+        if (!status) {
+          console.error(response);
+        }
       });
   });
