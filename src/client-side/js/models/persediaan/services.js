@@ -1,6 +1,5 @@
 import {
   createPersediaan,
-  createPersediaan1,
   deletePersediaan,
   deletePersediaanAll,
   deletePersediaanProductId,
@@ -67,28 +66,7 @@ export const getRowPage1 = async (req) => {
     return { status: false, response: error };
   }
 };
-// 3.endpoint : api/persediaan/v-2
-// methode : POST
-// payload = 1.PersediaanYMDVal, 2.PersediaanHMSVal, 3.PersediaanQtyVal, 4.PersediaanTotalVal, 5. PersediaanInfoVal, 6.PersediaanProductIdVal, 7.PersediaanPersonIdVal
-// return = success message after create sales
-export const addStock1 = async (req) => {
-  try {
-    const payLoad = {
-      PersediaanYMDVal: req.formattedDDMY,
-      PersediaanHMSVal: req.formattedHMS,
-      PersediaanQtyVal: req.PersediaanQtyVal,
-      PersediaanTotalVal: req.PersediaanTotalVal,
-      PersediaanInfoVal: req.PersediaanInfoVal,
-      PersediaanProductIdVal: req.PersediaanProductIdVal,
-      PersediaanPersonIdVal: req.PersediaanPersonIdVal,
-    };
-    const response = await createPersediaan1(payLoad);
-    return { status: true, response };
-  } catch (error) {
-    return { status: false, response: error };
-  }
-};
-// 4. endpoint : api/persediaan/summary-price
+// 3. endpoint : api/persediaan/summary-price
 // method : GET
 // payload : ""
 // return : summary price
@@ -100,7 +78,7 @@ export const getSumPrice = async () => {
     return { status: false, response: error };
   }
 };
-// 5. endpoint : api/persediaan/:search/:limit/:offset
+// 4. endpoint : api/persediaan/:search/:limit/:offset
 // method : GET
 // payload : 1.searchVal, 2.limitVal,
 // return : get all persediaan with search, limit, offset
@@ -117,7 +95,7 @@ export const getAll = async (req) => {
     return { status: false, response: error };
   }
 };
-// 6. endpoint : api/persediaan/pagination
+// 5. endpoint : api/persediaan/pagination
 //  method : GET
 // payload : 1.searchVal, 2.limitVal,
 // return : get pagination
@@ -133,7 +111,7 @@ export const getPagination = async (req) => {
     return { status: false, response: error };
   }
 };
-// 7. endpoint : api/persediaan/sum-qty/:productid:
+// 6. endpoint : api/persediaan/sum-qty/:productid:
 // method : GET
 //  payload : 1.productId
 // return : sum qty by productid
@@ -145,7 +123,7 @@ export const getSumQty = async (productId) => {
     return { status: false, response: error };
   }
 };
-// 8. endpoint : api/persediaan/:productid
+// 7. endpoint : api/persediaan/:productid
 // method : GET
 // payload : 1.productId
 // return : get all stock based on productid
@@ -157,7 +135,7 @@ export const getByProductId2 = async (productId) => {
     return { status: false, response: error };
   }
 };
-// 9. endpoint : api/persediaan/sum-price/:supplierid
+// 8. endpoint : api/persediaan/sum-price/:supplierid
 // method :GET
 // payload : 1.supplierId
 //  return : sum price based supplierid
@@ -169,7 +147,7 @@ export const getSumPriceSupplierId = async (supplierId) => {
     return { status: false, response: error };
   }
 };
-// 10. endpoint : api/persediaan/:supplierid
+// 9. endpoint : api/persediaan/:supplierid
 // method : GET
 // payload : 1.supplierid
 // return : all persediaan by supplierid
@@ -181,7 +159,7 @@ export const getBySupplierId = async (supplierId) => {
     return { status: false, response: error };
   }
 };
-// 11. endpoint : api/persediaan/sum-price/:categoryid
+// 10. endpoint : api/persediaan/sum-price/:categoryid
 // method : GET
 // payload : 1.categoryid
 // return : sum price based categoryid
@@ -193,7 +171,7 @@ export const getSumPriceCategoryId = async (categoryId) => {
     return { status: false, response: error };
   }
 };
-// 12. endpoint : api/persediaan/:categoryid
+// 11. endpoint : api/persediaan/:categoryid
 // method : GET
 // payload : 1.categoryid
 // return all persediaan based categoryid
@@ -205,7 +183,7 @@ export const getByCategoryId = async (categoryId) => {
     return { status: false, response: error };
   }
 };
-// 13. endpoint : api/persediaan/sum-price/:stard-date/:end-date
+// 12. endpoint : api/persediaan/sum-price/:stard-date/:end-date
 // method : GET
 // payload : 1.startdate, 2.endate,
 // return : summary of stock by date
@@ -221,7 +199,7 @@ export const getSumPriceDate = async (req) => {
     return { status: false, response: error };
   }
 };
-// 14. endpoint : api/persediaan/:start-date/:end-date
+// 13. endpoint : api/persediaan/:start-date/:end-date
 // method : GET
 // payload : 1.startdate, 2.enddate
 // return : all of stock by date
@@ -237,7 +215,7 @@ export const getByDate = async (req) => {
     return { status: false, response: error };
   }
 };
-// 15. endpoint : api/persediaan/sum-qty/:start-date/:end-date/:product-id
+// 14. endpoint : api/persediaan/sum-qty/:start-date/:end-date/:product-id
 // method : GET
 // payload : 1.startdateVal, 2.endDateVal, 3.productid
 // return : summary of price from product id
@@ -254,7 +232,7 @@ export const getSumQtyDateProduct = async (req) => {
     return { status: false, response: error };
   }
 };
-// 16. endpoint : api/persediaan/:start-date/:end-date/:product-id
+// 15. endpoint : api/persediaan/:start-date/:end-date/:product-id
 // method : GET
 // payload : 1.startdateVal, 2.endDateVal, 3.productId
 //  return : get with date and productid
@@ -271,7 +249,7 @@ export const getByDateProductId = async (req) => {
     return { status: false, response: error };
   }
 };
-// 17. endpoint : api/persediaan/sum-price/:start-date/:end-date/:supplier-id
+// 16. endpoint : api/persediaan/sum-price/:start-date/:end-date/:supplier-id
 // method : GET
 // payload : 1.startdateVal, 2.endDateVal, 3.supplierId
 // return : get summary with date and supplierId
@@ -288,7 +266,7 @@ export const getSumPriceDateSupplier = async (req) => {
     return { status: false, response: error };
   }
 };
-// 18 .endpoint : api/persediaan/:start-date/:end-date/:supplierid
+// 17 .endpoint : api/persediaan/:start-date/:end-date/:supplierid
 // method : GET
 // payload : 1.startdateVal, 2.endDateVal, 3.supplierId
 // return : get with date and supplierId
@@ -305,7 +283,7 @@ export const getByDateSupplierId = async (req) => {
     return { status: false, response: error };
   }
 };
-// 19 .endpoint : api/persediaan/sum-price/:start-date/:end-date/:categoryid
+// 18 .endpoint : api/persediaan/sum-price/:start-date/:end-date/:categoryid
 // method : GET
 // payload : 1.startdateVal, 2.endDateVal, 3.categoryid
 // return : get with date and categoryid
@@ -322,7 +300,7 @@ export const getSumPriceDateCategory = async (req) => {
     return { status: false, response: error };
   }
 };
-// 20 .endpoint : api/persediaan/:start-date/:end-date/:categoryid
+// 19 .endpoint : api/persediaan/:start-date/:end-date/:categoryid
 // method : GET
 // payload : 1.startdateVal, 2.endDateVal, 3.categoryid
 // return : get with date and categoryid
@@ -339,7 +317,7 @@ export const getByDateCategoryId = async (req) => {
     return { status: false, response: error };
   }
 };
-// 21. endpoint : api/persediaan/
+// 20. endpoint : api/persediaan/
 // method : POST
 // payload : 1.valProductName, 2.valPersediaanDDMY, 3.valPersediaanHMS, 4.valPersediaanProductId, 5.valPersediaanQty, 6.valPersediaanTotalRp, 7.valPersediaanInfo,
 // return : message succes after create
@@ -360,7 +338,7 @@ export const addStock = async (req) => {
     return { status: false, response: error };
   }
 };
-// 22. endpoint : api/persediaan/report-csv
+// 21. endpoint : api/persediaan/report-csv
 // method : GET
 // payload : ""
 // return all stock
@@ -372,7 +350,7 @@ export const getCSV = async () => {
     return { status: false, response: error };
   }
 };
-// 23. endpoint : api/persediaan/group-category
+// 22. endpoint : api/persediaan/group-category
 // method : GET
 // payload : ""
 // return all stock with group category
@@ -384,7 +362,7 @@ export const getByGroupCategory = async () => {
     return { status: false, response: error };
   }
 };
-// 24. endpoint : api/persediaan/sum-price/category
+// 23. endpoint : api/persediaan/sum-price/category
 // method : GET
 // payload : ""
 // return : summary of category
@@ -396,7 +374,7 @@ export const getSumPriceCategory = async () => {
     return { status: false, response: error };
   }
 };
-// 25. endpoint : api/persediaan/group-product
+// 24. endpoint : api/persediaan/group-product
 // method : GET
 // payload : ""
 // return :  all stock with group product
@@ -408,7 +386,7 @@ export const getByGroupProduct1 = async () => {
     return { status: false, response: error };
   }
 };
-// 26.endpoint : api/persediaan/report-pdf
+// 25.endpoint : api/persediaan/report-pdf
 // method : GET
 // payload : ""
 // return : all stock as pdf report
@@ -420,7 +398,7 @@ export const getPDF = async () => {
     return { status: false, response: error };
   }
 };
-// 27. endpoint : api/persediaan/group-supplier
+// 26. endpoint : api/persediaan/group-supplier
 // method : GET
 // payload : ""
 // return : all stock with group supplier
@@ -432,8 +410,7 @@ export const getByGroupSupplier = async () => {
     return { status: false, response: error };
   }
 };
-
-// 28. endpoint : api/persediaan/sum=price/supplier
+// 27. endpoint : api/persediaan/sum=price/supplier
 // method : GET
 // payLoad : ""
 // return : summary of supplier
@@ -445,7 +422,7 @@ export const getSumPriceSupplier = async () => {
     return { status: false, response: error };
   }
 };
-// 29. endpoint : api/persediaan/:persediaanid
+// 28. endpoint : api/persediaan/:persediaanid
 // method : DELETE
 // payload : 1.valPersediaanId, 2.valProductName, 3.valPersediaanQty, 4.valPersediaanProductId
 // return : message with delete by id
@@ -463,7 +440,7 @@ export const deleteById = async (req) => {
     return { status: false, response: error };
   }
 };
-// 30. endpoint : api/persediaan/
+// 29. endpoint : api/persediaan/
 // method : DELETE
 // payload : ""
 // return : message with delete all
@@ -475,7 +452,7 @@ export const deleteAll = async () => {
     return { status: false, response: error };
   }
 };
-// 31. endpoint : api/persediaan/:persediaanid
+// 30. endpoint : api/persediaan/:persediaanid
 // method : PATCH
 // payload : 1.valPersediaanId, 2.valPersediaanDDMY, 3.valPersediaanHMS, 4.valPersediaanProductId, 5.valPersediaanQty, 6.valPersediaanTotalRp, 7.valPersediaanInfo, 8.valProductName
 // return : message with update all
@@ -497,7 +474,7 @@ export const updateId = async (req) => {
     return { status: false, response: error };
   }
 };
-// 32. endpoint : api/persediaan/:productid
+// 31. endpoint : api/persediaan/:productid
 // method : DELETE
 // payload : product id
 // return : message with delete all
@@ -509,7 +486,7 @@ export const deleteByProductId = async (productId) => {
     return { status: false, response: error };
   }
 };
-// 33. endpoint : api/persediaan/:productid/v-1
+// 32. endpoint : api/persediaan/:productid/v-1
 // method : GET
 // payload productid
 // return :  all stock with productid

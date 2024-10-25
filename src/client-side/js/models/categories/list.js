@@ -1,9 +1,9 @@
-import { getListCategory } from "../../../../serverless-side/functions/categories.js";
+import { getList } from "./services.js";
 
 // function to update when create list product ref categories
 export const listCategoryRefProductCreate = async () => {
-  try {
-    const response = await getListCategory("");
+  const { status, response } = await getList("");
+  if (status) {
     const existed = response.length >= 1;
     let option = `<option selected value="null">Choose One Of Categories</option>`;
     if (existed) {
@@ -15,14 +15,15 @@ export const listCategoryRefProductCreate = async () => {
       option += `<option disabled class="fst-italic text-center">Category Empty........</option>`;
     }
     $("select#product-refcategory-create").html(option);
-  } catch (error) {
-    console.error(error);
+  }
+  if (!status) {
+    console.error(response);
   }
 };
 // function to update when update list product ref categories
 export const listCategoryRefProductUpdate = async (selected) => {
-  try {
-    const response = await getListCategory("");
+  const { status, response } = await getList("");
+  if (status) {
     const existed = response.length >= 1;
     let option = `<option value="null">Choose One Of Categories</option>`;
     if (existed) {
@@ -36,13 +37,14 @@ export const listCategoryRefProductUpdate = async (selected) => {
       option += `<option disabled class="fst-italic text-center">Category Empty........</option>`;
     }
     $("select#product-refcategory-update").html(option);
-  } catch (error) {
-    console.error(error);
+  }
+  if (!status) {
+    console.error(response);
   }
 };
 export const listCategoryRefPersediaanRead = async () => {
-  try {
-    const response = await getListCategory("");
+  const { status, response } = await getList("");
+  if (status) {
     const existed = response.length >= 1;
     let option = `<option selected disabled>Choose One Of Categories</option>`;
     if (existed) {
@@ -54,13 +56,14 @@ export const listCategoryRefPersediaanRead = async () => {
       option += `<option disabled class="fst-italic text-center">Category Empty........</option>`;
     }
     $("select#persediaan-refcategory-search").html(option);
-  } catch (error) {
-    console.error(error);
+  }
+  if (!status) {
+    console.error(response);
   }
 };
 export const listCategoryRefPersediaanReadDate = async () => {
-  try {
-    const response = await getListCategory("");
+  const { status, response } = await getList("");
+  if (status) {
     const existed = response.length >= 1;
     let option = `<option selected disabled>Choose One Of Categories</option>`;
     if (existed) {
@@ -72,7 +75,8 @@ export const listCategoryRefPersediaanReadDate = async () => {
       option += `<option disabled class="fst-italic text-center">Category Empty........</option>`;
     }
     $("select#persediaan-date-category").html(option);
-  } catch (error) {
-    console.error(error);
+  }
+  if (!status) {
+    console.error(response);
   }
 };

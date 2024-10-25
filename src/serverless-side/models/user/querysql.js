@@ -68,7 +68,6 @@ export const queryUpdate = (
   UserFullnameVal,
   UserPositionVal,
   UserIdVal,
-  UserImgVal,
   imgBase64,
   CancelImg
 ) => {
@@ -77,11 +76,11 @@ export const queryUpdate = (
                SET UserEmail = '${UserEmailVal}',
                    UserFullname = '${UserFullnameVal}',
                    UserPosition = '${UserPositionVal}' `;
-  if (!CancelImg && UserImgVal.length >= 1) {
-    query += `UserImg = '${imgBase64}', `;
+  if (!CancelImg && imgBase64 !== "null") {
+    query += `UserImg = '${imgBase64}' `;
   }
   if (CancelImg) {
-    query += `UserImg = 'null', `;
+    query += `UserImg = 'null' `;
   }
   query += `WHERE UserId = ${UserIdVal} `;
   return query;

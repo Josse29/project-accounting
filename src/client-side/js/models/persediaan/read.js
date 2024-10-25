@@ -170,9 +170,6 @@ function handlePagination(totalPage) {
     });
 }
 export const getPersediaanAgain = async () => {
-  let searchVal = $("input#persediaan-search").val();
-  let limitVal = parseInt($("#persediaan-limit").val());
-  let offsetVal = 1;
   // reset ui
   uiInit();
   // 1.sum rupiah persediaan

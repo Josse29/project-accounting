@@ -1,6 +1,5 @@
-import { getSaleCustomerIdDate } from "../../../../serverless-side/functions/sales.js";
 import {
-  createSales,
+  createSale,
   getSale,
   getSaleCustomerId,
   getSaleDate,
@@ -8,6 +7,7 @@ import {
   getSalePersonId,
   getSalePersonIdDate,
   getSaleProductId,
+  getSaleReport,
   getSaleRowPage,
   getSaleSum,
   getSaleSumCustomerId,
@@ -17,24 +17,26 @@ import {
   getSaleSumPersonId,
   getSaleSumPersonIdDate,
   getSaleSumProductId,
-} from "../../../../serverless-side/models/sales/function.js";
+} from "../../../../serverless-side/models/sales/controller.js";
 // 1. endpoint = /api/sale/
 // method : POST
-// payload  : 1.SalesYMDVal, 2.SalesHMSVal, 3.SalesProductIdVal, 4.SalesProductQtyVal, 5.SalesProductRpVal, 6.SalesPersonIdVal, 7.SalesCustomerIdVal, 8.SalesStatusVal,
+// payload  : 1.formattedDDMY, 2.formattedHMS, 3.SalesPersonId, 4.SalesCustomerId, 5.SalesStatusVal, 6.ProductIdVal, 7.ProductName, 8.ProductPriceBuy, 9.ProductPriceSell, 10.ProductQtyVal
 // return : message success create sales
 export const addSale = async (req) => {
   try {
     const payLoad = {
-      SalesYMDVal: req.formattedDDMY,
-      SalesHMSVal: req.formattedHMS,
-      SalesProductIdVal: req.ProductId,
-      SalesProductQtyVal: req.ProductQty,
-      SalesProductRpVal: req.SalesProductRpVal,
-      SalesPersonIdVal: req.SalesPersonIdVal,
-      SalesCustomerIdVal: req.SalesCustomerIdVal,
-      SalesStatusVal: "PAID",
+      formattedDDMY: req.formattedDDMY,
+      formattedHMS: req.formattedHMS,
+      SalesPersonId: req.SalesPersonId,
+      SalesCustomerId: req.SalesCustomerId,
+      SalesStatusVal: req.SalesStatusVal,
+      ProductIdVal: req.ProductIdVal,
+      ProductName: req.ProductName,
+      ProductPriceBuy: req.ProductPriceBuy,
+      ProductPriceSell: req.ProductPriceSell,
+      ProductQtyVal: req.ProductQtyVal,
     };
-    const response = await createSales(payLoad);
+    const response = await createSale(payLoad);
     return { status: true, response };
   } catch (error) {
     return { status: false, response: error };
@@ -287,6 +289,22 @@ export const getByDateCustomer = async (req) => {
     };
     const sales = await getSaleCustomerIdDate(payLoad);
     return { status: true, response: sales };
+  } catch (error) {
+    return { status: false, response: error };
+  }
+};
+// 19. endpoint : api/sale/report
+// method : GET
+// payload : ""
+// return : get all sales with pdf and csv
+export const getReport = async (req) => {
+  try {
+    const payLoad = {
+      startDateVal: req.startDateVal,
+      endDateVal: req.endDateVal,
+    };
+    const sale = await getSaleReport(payLoad);
+    return { status: true, response: sale };
   } catch (error) {
     return { status: false, response: error };
   }

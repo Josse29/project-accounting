@@ -325,7 +325,11 @@
             <div id="sales-success-container"></div>
             <!-- download excel search category and waiter -->
             <div class="d-flex gap-2 mb-3">
-              <button class="btn btn-success" id="sales-convert-csv">
+              <button
+                class="btn btn-success"
+                data-bs-toggle="modal"
+                data-bs-target="#modal-sales-convert-csv"
+              >
                 <i class="fa-solid fa-file-excel fs-5 me-1"></i>
                 <span>Excel</span>
               </button>
@@ -660,6 +664,47 @@
             </button>
             <button type="button" class="btn" id="order-done">
               Save changes
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- sales-create -->
+    <div
+      class="modal fade"
+      id="modal-sales-convert-csv"
+      tabindex="-1"
+      aria-labelledby="sales-create-modalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header px-3 py-2 bg-success">
+            <i class="fa-solid fa-file-excel fs-4 text-white"></i>
+            <h3 class="modal-title text-white ms-3">Excel</h3>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="sale-start-date" class="fs-4 mb-2"
+                >Start Date :</label
+              >
+              <input type="date" class="form-control" id="sale-start-date" />
+            </div>
+            <div class="mb-3">
+              <label for="sale-end-date" class="fs-4 mb-2">End Date :</label>
+              <input type="date" class="form-control" id="sale-end-date" />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn bg-danger text-white"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn bg-success" id="sale-convert-csv">
+              Convert
             </button>
           </div>
         </div>

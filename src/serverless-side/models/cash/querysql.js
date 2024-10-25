@@ -6,14 +6,16 @@ export const queryInsertCash = (
   CashRpVal,
   CashInfoVal
 ) => {
-  let queryInsertCash = `INSERT 
-                          INTO Cash (CashYYYYMMDD, CashHMS, CashName, CashRp, CashInfo) 
-                          VALUES ('${CashYYYYMMDDVal}', '${CashHMSVal}', '${CashNameVal}', ${CashRpVal}, '${CashInfoVal}')`;
-  return queryInsertCash;
+  let query = `INSERT 
+               INTO Cash
+               (CashYYYYMMDD, CashHMS, CashName, CashRp, CashInfo) 
+               VALUES 
+               ('${CashYYYYMMDDVal}', '${CashHMSVal}', '${CashNameVal}', ${CashRpVal}, '${CashInfoVal}')`;
+  return query;
 };
 // READ
 export const queryReadInitCash = (searchVal) => {
-  let query = `SELECT COUNT(Cash.CashId) AS Total_Row
+  let query = `SELECT COUNT(*) AS Total_Row
                  FROM Cash `;
   if (searchVal !== "") {
     query += `WHERE Cash.CashName LIKE '%${searchVal}%' `;

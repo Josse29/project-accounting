@@ -148,9 +148,6 @@ function handlePagination(totalPage) {
     });
 }
 export const getSupplierAgain = async () => {
-  let searchVal = "";
-  let limitVal = parseInt($("#supplier-limit").val());
-  let offsetVal = 1;
   $("#supplier-search-input").val("");
   // pagination
   const req = {

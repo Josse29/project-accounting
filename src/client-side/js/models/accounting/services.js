@@ -1,4 +1,4 @@
-import { createAccounting } from "../../../../serverless-side/models/accounting/function.js";
+import { createAccounting } from "../../../../serverless-side/models/accounting/controller.js";
 // 1. endpoint = api/accounting/
 // method : POST
 // payload : 1.accountingYMDVal, 2.accountingHMSVal, 3.accountingRefVal, 4.accountingNameVal, 5.accountingPositionVal, 6.accountingRpVal, 7.accountingInfoVal

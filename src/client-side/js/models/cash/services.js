@@ -1,4 +1,4 @@
-import { createCash } from "../../../../serverless-side/models/cash/functions.js";
+import { createCash } from "../../../../serverless-side/models/cash/controller.js";
 
 // 1. endpoint = /api/sales/create/
 // method : POST

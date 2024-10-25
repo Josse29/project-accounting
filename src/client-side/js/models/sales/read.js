@@ -45,8 +45,9 @@ $("select#sales-read-limit")
 $("button#sales-read-reset")
   .off("click")
   .on("click", function () {
-    getInit();
-    uiReset();
+    searchVal = "";
+    uiLoad();
+    handleDebounce();
   });
 async function getInit() {
   const req = {

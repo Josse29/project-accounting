@@ -42,7 +42,7 @@ export const queryTotalRowCategory = (categorySearch) => {
 };
 export const queryGetListCategory = (categorySearch) => {
   let query = `SELECT *
-               FROM Category( `;
+               FROM Category `;
   // with search value categories
   if (categorySearch !== "") {
     query += `WHERE CategoryName LIKE '%${categorySearch}%' ESCAPE '!' OR 

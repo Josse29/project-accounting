@@ -152,9 +152,6 @@ function handlePagination(totalPage) {
 export const getProductsAgain = async () => {
   // reset-search
   $("#product-search-input").val("");
-  let searchVal = "";
-  let limitVal = parseInt($("#product-limit").val());
-  let offsetVal = 1;
   // 1. init
   const req = {
     searchVal,

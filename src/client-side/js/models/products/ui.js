@@ -145,10 +145,20 @@ export const uiBtnPageActive = (numberPage) => {
 };
 // make alert success after action crud
 export const uiAlertSuccess = (res) => {
-  const alertSuccessMe = `<div class="alert alert-success alert-dismissible fade show text-start" role="alert">
-                            <strong class="text-capitalize">${res}</strong> 
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                          </div>`;
+  const alertSuccessMe = `
+    <div
+      class="alert alert-success alert-dismissible fade show text-start"
+      role="alert"
+    >
+      <strong class="text-capitalize">${res}</strong>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
+  `;
   $("#sectionSuccessActionProduct").html(alertSuccessMe);
 };
 export const uiAlertFail = (res) => {

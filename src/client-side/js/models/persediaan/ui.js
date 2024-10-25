@@ -424,7 +424,7 @@ export const uiCard = (response) => {
             <button
               id="order-create-qty-plus"
               class="btn btn-success"
-              data-productid="${productId}"
+              data-productid=${productId}
               data-productname="${productName}"
               data-productstock="${productStock}"
               data-productpricesell="${priceSell}"

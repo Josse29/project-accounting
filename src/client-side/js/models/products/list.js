@@ -1,8 +1,8 @@
-import { getListProduct } from "../../../../serverless-side/functions/product.js";
+import { getList } from "./services.js";
 // function to update when create list product ref persediaan
 export const listProductRefPersediaanCreate = async () => {
-  try {
-    const response = await getListProduct("");
+  const { status, response } = await getList("");
+  if (status) {
     const existed = response.length >= 1;
     let option = `<option selected disabled>Choose One Of Products</option>`;
     if (existed) {
@@ -14,13 +14,14 @@ export const listProductRefPersediaanCreate = async () => {
       option += `<option disabled class="fst-italic text-center">Product Empty........</option>`;
     }
     $("select#persediaan-refproduct-search-name").html(option);
-  } catch (error) {
-    console.error(error);
+  }
+  if (!status) {
+    console.error(response);
   }
 };
 export const listProductRefPersediaanRead = async () => {
-  try {
-    const response = await getListProduct("");
+  const { status, response } = await getList("");
+  if (status) {
     const existed = response.length >= 1;
     let option = `<option selected disabled>Choose One Of Products</option>`;
     if (existed) {
@@ -32,13 +33,14 @@ export const listProductRefPersediaanRead = async () => {
       option += `<option disabled class="fst-italic text-center">Product Empty........</option>`;
     }
     $("select#persediaan-refproduct-search").html(option);
-  } catch (error) {
-    console.error(error);
+  }
+  if (!status) {
+    console.error(response);
   }
 };
 export const listProductRefPersediaanReadDate = async () => {
-  try {
-    const response = await getListProduct("");
+  const { status, response } = await getList("");
+  if (status) {
     const existed = response.length >= 1;
     let option = `<option selected disabled>Choose One Of Products</option>`;
     if (existed) {
@@ -50,13 +52,14 @@ export const listProductRefPersediaanReadDate = async () => {
       option += `<option disabled class="fst-italic text-center">Product Empty........</option>`;
     }
     $("select#persediaan-date-product").html(option);
-  } catch (error) {
-    console.error(error);
+  }
+  if (!status) {
+    console.error(response);
   }
 };
 export const listProductRefSalesRead = async () => {
-  try {
-    const response = await getListProduct("");
+  const { status, response } = await getList("");
+  if (status) {
     const existed = response.length >= 1;
     let option = `<option selected disabled>Choose One Of Products</option>`;
     if (existed) {
@@ -68,13 +71,14 @@ export const listProductRefSalesRead = async () => {
       option += `<option disabled class="fst-italic text-center">Product Empty........</option>`;
     }
     $("select#sales-read-productid").html(option);
-  } catch (error) {
-    console.error(error);
+  }
+  if (!status) {
+    console.error(response);
   }
 };
 export const listProductRefSalesReadDate = async () => {
-  try {
-    const response = await getListProduct("");
+  const { status, response } = await getList("");
+  if (status) {
     const existed = response.length >= 1;
     let option = `<option selected disabled>Choose One Of Products</option>`;
     if (existed) {
@@ -86,7 +90,8 @@ export const listProductRefSalesReadDate = async () => {
       option += `<option disabled class="fst-italic text-center">Product Empty........</option>`;
     }
     $("select#sales-read-productid-date").html(option);
-  } catch (error) {
-    console.error(error);
+  }
+  if (!status) {
+    console.error(response);
   }
 };

@@ -28,9 +28,7 @@ $("select#sales-read-customerid")
     const status = sales.status;
     const response = sales.response;
     if (status) {
-      console.log(response);
       const existed = response.length >= 1;
-      console.log(existed);
       if (existed) {
         uiTBody(response);
       }

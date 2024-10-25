@@ -1,10 +1,12 @@
 import {
   deleteUserId,
   getUser,
+  getUserCustomer,
   getUserPageRow,
+  getUserSale,
   register,
   updateUser,
-} from "../../../../serverless-side/models/user/function.js";
+} from "../../../../serverless-side/models/user/controller.js";
 
 // 1. endpoint : api/user/:limit/:offset
 // method : GET
@@ -90,6 +92,30 @@ export const update = async (req) => {
     };
     const response = await updateUser(payLoad);
     return { status: true, response };
+  } catch (error) {
+    return { status: false, response: error };
+  }
+};
+// 6.endpoint : api/user/list-customer
+// method : GET
+// payload : ""
+// return : list of customer
+export const getListCustomer = async () => {
+  try {
+    const customer = await getUserCustomer();
+    return { status: true, response: customer };
+  } catch (error) {
+    return { status: false, response: error };
+  }
+};
+// 7.endpoint : api/user/list-sales
+// method : GET
+// payload : ""
+// return : list of salesuser
+export const getListSales = async () => {
+  try {
+    const sales = await getUserSale();
+    return { status: true, response: sales };
   } catch (error) {
     return { status: false, response: error };
   }

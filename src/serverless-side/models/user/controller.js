@@ -100,7 +100,7 @@ export const getUserPageRow = (req) => {
     });
   });
 };
-export const getCustomer = () => {
+export const getUserCustomer = () => {
   const query = queryGetCustomer();
   return new Promise((resolve, reject) => {
     db.all(query, (err, res) => {
@@ -113,7 +113,7 @@ export const getCustomer = () => {
     });
   });
 };
-export const getSales = () => {
+export const getUserSale = () => {
   const query = queryGetSales();
   return new Promise((resolve, reject) => {
     db.all(query, (err, res) => {
@@ -149,7 +149,6 @@ export const updateUser = async (req) => {
     UserFullnameVal.trim(),
     UserPositionVal,
     UserIdVal,
-    UserImgVal,
     imgBase64,
     CancelImg
   );

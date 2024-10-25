@@ -72,7 +72,7 @@ export const getSupplierInit = (req) => {
     });
   });
 };
-export const getListSupplier = (supplierSearch) => {
+export const getSupplierList = (supplierSearch) => {
   const query = queryGetListSupplier(supplierSearch);
   return new Promise((resolve, reject) => {
     db.all(query, (err, res) => {

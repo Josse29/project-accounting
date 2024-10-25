@@ -14,20 +14,21 @@ export const queryInsertPersediaan = (
                  ('${valPersediaanDDMY}', '${valPersediaanHMS}',${valPersediaanProductId},${valPersediaanQty},${valPersediaanRp},'${valPersediaanInfo}')`;
   return query;
 };
-export const queryInsertPersediaan1 = (
-  PersediaanYMDVal,
-  PersediaanHMSVal,
-  PersediaanQtyVal,
-  PersediaanTotalVal,
-  PersediaanInfoVal,
-  PersediaanProductIdVal,
-  PersediaanPersonIdVal
-) => {
+export const queryInsertPersediaan1 = (req) => {
+  const {
+    PersediaanYMDVal,
+    PersediaanHMSVal,
+    PersediaanQtyVal,
+    PersediaanTotalVal,
+    PersediaanInfoVal,
+    PersediaanProductIdVal,
+    PersediaanPersonIdVal,
+  } = req;
   let query = `INSERT 
-                 INTO Persediaan
-                 (PersediaanDDMY, PersediaanHMS, PersediaanQty, PersediaanRp, PersediaanInfo, PersediaanProductId,PersediaanPersonId) 
-                 VALUES 
-                 ('${PersediaanYMDVal}', '${PersediaanHMSVal}',${PersediaanQtyVal}, ${PersediaanTotalVal}, '${PersediaanInfoVal}', ${PersediaanProductIdVal}, ${PersediaanPersonIdVal})`;
+               INTO Persediaan
+               (PersediaanDDMY, PersediaanHMS, PersediaanQty, PersediaanRp, PersediaanInfo, PersediaanProductId,PersediaanPersonId) 
+               VALUES 
+               ('${PersediaanYMDVal}', '${PersediaanHMSVal}',${PersediaanQtyVal}, ${PersediaanTotalVal}, '${PersediaanInfoVal}', ${PersediaanProductIdVal}, ${PersediaanPersonIdVal})`;
   return query;
 };
 // 2.READ

@@ -1,4 +1,7 @@
 import db from "../../database/config.js";
+import { createAccounting } from "../accounting/controller.js";
+import { createCash } from "../cash/controller.js";
+import { createPersediaan1 } from "../persediaan/controller.js";
 import {
   queryCreateSales,
   queryDeleteSales,
@@ -23,25 +26,77 @@ import {
   queryUpdateSales,
 } from "./querysql.js";
 // create
-export const createSales = (req) => {
+export const createSale = async (req) => {
   const {
-    SalesYMDVal,
-    SalesHMSVal,
-    SalesProductIdVal,
-    SalesProductQtyVal,
-    SalesProductRpVal,
-    SalesPersonIdVal,
-    SalesCustomerIdVal,
+    formattedDDMY,
+    formattedHMS,
+    SalesPersonId,
+    SalesCustomerId,
     SalesStatusVal,
+    ProductIdVal,
+    ProductName,
+    ProductPriceBuy,
+    ProductPriceSell,
+    ProductQtyVal,
   } = req;
+  // 1. effect to db.stock
+  const reqPersediaan = {
+    PersediaanYMDVal: formattedDDMY,
+    PersediaanHMSVal: formattedHMS,
+    PersediaanQtyVal: parseFloat(ProductQtyVal * -1),
+    PersediaanTotalVal: parseFloat(ProductPriceBuy * -1),
+    PersediaanInfoVal: `${ProductName} has been sold with qty ${parseFloat(
+      ProductQtyVal
+    )}`,
+    PersediaanProductIdVal: parseInt(ProductIdVal),
+    PersediaanPersonIdVal: parseInt(SalesPersonId),
+  };
+  await createPersediaan1(reqPersediaan);
+  // 2.effect to db.cash
+  const reqCash = {
+    CashYYYYMMDDVal: formattedDDMY,
+    CashHMSVal: formattedHMS,
+    CashNameVal: `Sales Product - ${ProductName}`,
+    CashRpVal: parseFloat(ProductPriceSell * ProductQtyVal),
+    CashInfoVal: `${ProductName} has been sold with qty ${parseFloat(
+      ProductQtyVal
+    )}`,
+  };
+  await createCash(reqCash);
+  // 3.effect to db.acounting credit and debt
+  const debtEntry = {
+    accountingYMDVal: formattedDDMY,
+    accountingHMSVal: formattedHMS,
+    accountingRefVal: 111,
+    accountingNameVal: "Cash",
+    accountingPositionVal: "debt",
+    accountingRpVal: parseFloat(ProductPriceSell * ProductQtyVal),
+    accountingInfoVal: `${ProductName} has been sold with qty ${parseFloat(
+      ProductQtyVal
+    )}`,
+  };
+  await createAccounting(debtEntry);
+  const creditEntry = {
+    accountingYMDVal: formattedDDMY,
+    accountingHMSVal: formattedHMS,
+    accountingRefVal: 411,
+    accountingNameVal: "Sales",
+    accountingPositionVal: "credit",
+    accountingRpVal: parseFloat(ProductPriceSell * ProductQtyVal),
+    accountingInfoVal: `${ProductName} has been sold with qty ${parseFloat(
+      ProductQtyVal
+    )}`,
+  };
+  await createAccounting(creditEntry);
+  // execute db.sales
   const query = queryCreateSales(
-    SalesYMDVal,
-    SalesHMSVal,
-    SalesProductIdVal,
-    SalesProductQtyVal,
-    SalesProductRpVal,
-    SalesPersonIdVal,
-    SalesCustomerIdVal,
+    formattedDDMY,
+    formattedHMS,
+    ProductIdVal,
+    ProductQtyVal,
+    parseFloat(ProductPriceSell * ProductQtyVal),
+    parseInt(SalesPersonId),
+    parseInt(SalesCustomerId),
     SalesStatusVal
   );
   return new Promise((resolve, reject) => {
@@ -94,8 +149,10 @@ export const getSaleRowPage = (req) => {
     });
   });
 };
-export const getReportSales = () => {
-  const query = queryGetReportSales();
+export const getSaleReport = (req) => {
+  const { startDateVal, endDateVal } = req;
+  const query = queryGetReportSales(startDateVal, endDateVal);
+  console.log(query);
   return new Promise((resolve, reject) => {
     db.all(query, (err, rows) => {
       if (!err) {

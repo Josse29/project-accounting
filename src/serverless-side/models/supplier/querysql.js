@@ -65,9 +65,10 @@ export const queryUpdateSupplier = (
   imgBase64,
   supplierCancelImg
 ) => {
-  let query = `UPDATE Supplier
-                 SET SupplierName = '${supplierName}',
-                     SupplierInfo = '${supplierInfo}', `;
+  let query = `UPDATE 
+               Supplier
+               SET SupplierName = '${supplierName}',
+                   SupplierInfo = '${supplierInfo}', `;
   //  if remove image
   if (supplierCancelImg) {
     query += `SupplierImg = 'null' `;

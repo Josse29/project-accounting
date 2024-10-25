@@ -68,13 +68,24 @@ export const uiBtnPageActive = (pageNumber) => {
   btnPage.eq(pageNumber - 1).addClass("sales-active-page");
 };
 export const uiSuccess = (res) => {
-  let alert = `<div class="alert alert-success" role="alert">${res}</div>`;
+  const alert = `
+  <div
+      class="alert alert-success alert-dismissible fade show text-start"
+      role="alert"
+    >
+      <strong class="text-capitalize">${res}</strong>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+  </div>`;
   $("div#sales-success-container").html(alert);
-  setInterval(() => {
-    $("div#sales-success-container").html(``);
-  }, 20000);
 };
 export const uiReset = () => {
+  // reset search
+  $("input#sales-read-search").val("");
   // summary
   $("div#summary").html(``);
   // limit-search
@@ -91,7 +102,7 @@ export const uiReset = () => {
 };
 export const uiLoad = () => {
   const tr = `<tr>
-                <td colspan="11" class="text-center fst-italic">
+                <td colspan="11" class="text-center fst-italic fw-bold">
                   loading....
                 </td>
               </tr>`;

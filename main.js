@@ -382,6 +382,7 @@ ipcMain.on(
   }
 );
 let salesPDF;
+let isSalesPDF = false;
 ipcMain.on("pdf:sales", (event, tbodySales, file_path) => {
   salesPDF = new BrowserWindow({
     webPreferences: {
@@ -395,25 +396,28 @@ ipcMain.on("pdf:sales", (event, tbodySales, file_path) => {
   salesPDF.webContents.on("dom-ready", () => {
     salesPDF.webContents.send("tables:sales", tbodySales, file_path);
   });
-  ipcMain.on("create:pdf-sales", (event, file_path) => {
-    salesPDF.webContents
-      .printToPDF({
-        marginsType: 0,
-        printBackground: true,
-        printSelectionOnly: false,
-        landscape: true,
-      })
-      .then((data) => {
-        fs.writeFile(file_path, data, (err) => {
-          if (err) throw err;
-          salesPDF.close();
-          orderPage.webContents.send("success:pdf-sales", file_path);
+  if (!isSalesPDF) {
+    ipcMain.on("create:pdf-sales", (event, file_path) => {
+      salesPDF.webContents
+        .printToPDF({
+          marginsType: 0,
+          printBackground: true,
+          printSelectionOnly: false,
+          landscape: true,
+        })
+        .then((data) => {
+          fs.writeFile(file_path, data, (err) => {
+            if (err) throw err;
+            salesPDF.close();
+            orderPage.webContents.send("success:pdf-sales", file_path);
+            isSalesPDF = true;
+          });
+        })
+        .catch((error) => {
+          console.log(error);
         });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  });
+    });
+  }
 });
 // read-apps
 app.whenReady().then(() => {

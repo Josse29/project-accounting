@@ -147,9 +147,6 @@ function handlePagination(totalPage) {
 }
 export const getCategoryAgain = async () => {
   $("#category-search-input").val("");
-  let searchVal = $("#category-search-input").val();
-  let limitVal = $("#category-limit").val();
-  let offsetVal = 1;
   const req = {
     searchVal,
     limitVal,

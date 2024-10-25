@@ -80,26 +80,8 @@ export const createPersediaan = async (req) => {
     });
   });
 };
-// while selling , it's effect the stock
 export const createPersediaan1 = (request) => {
-  const {
-    PersediaanYMDVal,
-    PersediaanHMSVal,
-    PersediaanQtyVal,
-    PersediaanTotalVal,
-    PersediaanInfoVal,
-    PersediaanProductIdVal,
-    PersediaanPersonIdVal,
-  } = request;
-  const query = queryInsertPersediaan1(
-    PersediaanYMDVal,
-    PersediaanHMSVal,
-    PersediaanQtyVal,
-    PersediaanTotalVal,
-    PersediaanInfoVal,
-    PersediaanProductIdVal,
-    PersediaanPersonIdVal
-  );
+  const query = queryInsertPersediaan1(request);
   return new Promise((resolve, reject) => {
     db.run(query, (err) => {
       if (!err) {

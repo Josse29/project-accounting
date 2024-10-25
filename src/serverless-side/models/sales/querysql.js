@@ -13,7 +13,7 @@ export const queryCreateSales = (
                  INTO Sales
                  (SalesYMD, SalesHMS, SalesProductId, SalesProductQty, SalesProductRp,   SalesPersonId, SalesCustomerId, SalesStatus)
                  VALUES 
-                 ('${SalesYMDVal}', '${SalesHMSVal}', ${SalesProductIdVal}, ${SalesProductQtyVal}, '${SalesProductRpVal}', ${SalesPersonIdVal}, ${SalesCustomerIdVal}, '${SalesStatusVal}')
+                 ('${SalesYMDVal}', '${SalesHMSVal}', ${SalesProductIdVal}, ${SalesProductQtyVal}, ${SalesProductRpVal}, ${SalesPersonIdVal}, ${SalesCustomerIdVal}, '${SalesStatusVal}')
                  `;
   return query;
 };
@@ -84,7 +84,7 @@ export const queryGetSalesProductId = (productIdVal) => {
                  SalesPerson.UserFullname AS SalesPersonName,
                  SalesCustomer.UserId AS SalesCustomerId,    
                  SalesCustomer.UserFullname AS SalesCustomerName
-                 FROM Salesx `;
+                 FROM Sales `;
   query += `LEFT JOIN Product ON Sales.SalesProductId = Product.ProductId `;
   query += `LEFT JOIN User AS SalesPerson ON Sales.SalesPersonId = SalesPerson.UserId `;
   query += `LEFT JOIN User AS SalesCustomer ON Sales.SalesCustomerId = SalesCustomer.UserId `;
@@ -333,24 +333,29 @@ export const queryGetSalesSumCustomerIdDate = (
   return query;
 };
 // report
-export const queryGetReportSales = () => {
+export const queryGetReportSales = (startDateVal, endDateVal) => {
   let query = `SELECT
-                 Sales.SalesYMD AS Date,
-                 Sales.SalesHMS AS Hour,
-                 SalesPerson.UserFullname AS SalesPersonName,    
-                 Product.ProductName AS ProductName,
-                 Product.ProductPriceBeli AS PriceBuy, 
-                 Product.ProductPriceJual AS PriceSell,
-                 Sales.SalesProductQty AS Qty,
-                 Sales.SalesProductRp AS Total,
-                 SalesCustomer.UserFullname AS CustomerName,
-                 Sales.SalesStatus AS Status
-                 FROM Sales `;
+               Sales.SalesYMD AS Date,
+               Sales.SalesHMS AS Hour,
+               SalesPerson.UserFullname AS SalesPersonName,    
+               Product.ProductName AS ProductName,
+               Product.ProductPriceBeli AS PriceBuy, 
+               Product.ProductPriceJual AS PriceSell,
+               Sales.SalesProductQty AS Qty,
+               Sales.SalesProductRp AS Total,
+               SalesCustomer.UserFullname AS CustomerName,
+               Sales.SalesStatus AS Status
+               FROM Sales `;
   query += `LEFT JOIN Product ON Sales.SalesProductId = Product.ProductId `;
   query += `LEFT JOIN User AS SalesPerson ON Sales.SalesPersonId = SalesPerson.UserId `;
   query += `LEFT JOIN User AS SalesCustomer ON Sales.SalesCustomerId = SalesCustomer.UserId `;
+  // with date
+  if (startDateVal !== "" && endDateVal !== "") {
+    query += `WHERE Sales.SalesYMD BETWEEN '${startDateVal}' AND '${endDateVal}' `;
+  }
   // with order
   query += `ORDER BY Sales.SalesYMD DESC, Sales.SalesHMS DESC `;
+  console.log(query);
   return query;
 };
 // UPDATE

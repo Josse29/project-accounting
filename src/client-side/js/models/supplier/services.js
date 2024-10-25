@@ -3,6 +3,7 @@ import {
   deleteSupplier,
   getSupplier,
   getSupplierInit,
+  getSupplierList,
   updateSupplier,
 } from "../../../../serverless-side/models/supplier/controller.js";
 // 1.endpoint : api/supplier/
@@ -86,6 +87,18 @@ export const deleteById = async (req) => {
     };
     const deleted = await deleteSupplier(payLoad);
     return { status: true, response: deleted };
+  } catch (error) {
+    return { status: false, response: error };
+  }
+};
+// 6.endpoint : api/supplier/list
+// method : GET
+// payload : 1.searchVal
+// return : supplier list
+export const getList = async (req) => {
+  try {
+    const list = await getSupplierList(req);
+    return { status: true, response: list };
   } catch (error) {
     return { status: false, response: error };
   }

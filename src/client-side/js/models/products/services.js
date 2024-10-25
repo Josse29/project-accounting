@@ -1,11 +1,12 @@
 import {
-  getProductPagination,
-  getProduct,
-  insertProducts,
-  updateProduct,
+  createProduct,
   deleteProductId,
-  getProductPDF,
-  getProductCSV,
+  getProduct,
+  getProductList,
+  getProductPagination,
+  getProductReport,
+  getProductReport1,
+  updateProduct,
 } from "../../../../serverless-side/models/product/controller.js";
 // 1.endpoint : api/product/:limit/:offset
 // method : GET
@@ -55,7 +56,7 @@ export const addProduct = async (req) => {
       productSupplierId: req.productSupplierId,
       productImg: req.productImg,
     };
-    const created = await insertProducts(payLoad);
+    const created = await createProduct(payLoad);
     return { status: true, response: created };
   } catch (error) {
     return { status: false, response: error };
@@ -106,7 +107,7 @@ export const deletedById = async (req) => {
 // return : get all product
 export const getPDF = async () => {
   try {
-    const products = await getProductPDF();
+    const products = await getProductReport();
     return { status: true, response: products };
   } catch (error) {
     return { status: false, response: error };
@@ -118,8 +119,20 @@ export const getPDF = async () => {
 // return : get all product
 export const getCSV = async () => {
   try {
-    const products = await getProductCSV();
+    const products = await getProductReport1();
     return { status: true, response: products };
+  } catch (error) {
+    return { status: false, response: error };
+  }
+};
+// 7.endpoint : api/product/list
+// method : GET
+// payload : 1.searchVal
+// return : product list
+export const getList = async (req) => {
+  try {
+    const list = await getProductList(req);
+    return { status: true, response: list };
   } catch (error) {
     return { status: false, response: error };
   }

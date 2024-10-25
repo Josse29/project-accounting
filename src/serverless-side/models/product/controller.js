@@ -16,7 +16,7 @@ import {
 } from "./querysql.js";
 
 // 1.CREATE
-export const insertProducts = async (req) => {
+export const createProduct = async (req) => {
   const {
     productName,
     productPriceBuy,
@@ -92,7 +92,7 @@ export const getProduct = (req) => {
     });
   });
 };
-export const getListProduct = (productSearch) => {
+export const getProductList = (productSearch) => {
   const query = queryGetListProduct(productSearch);
   return new Promise((resolve, reject) => {
     db.all(query, (err, res) => {
@@ -164,7 +164,7 @@ export const deleteProductId = (req) => {
   });
 };
 // convert | PDF
-export const getProductPDF = () => {
+export const getProductReport = () => {
   const query = queryGetProductPDF();
   return new Promise((resolve, reject) => {
     db.all(query, (err, res) => {
@@ -177,7 +177,7 @@ export const getProductPDF = () => {
     });
   });
 };
-export const getProductCSV = () => {
+export const getProductReport1 = () => {
   const query = queryGetProductCSV();
   return new Promise((resolve, reject) => {
     db.all(query, (err, res) => {
