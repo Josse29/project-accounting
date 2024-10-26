@@ -355,7 +355,6 @@ export const queryGetReportSales = (startDateVal, endDateVal) => {
   }
   // with order
   query += `ORDER BY Sales.SalesYMD DESC, Sales.SalesHMS DESC `;
-  console.log(query);
   return query;
 };
 // UPDATE

@@ -52,15 +52,17 @@ export const uiTrEmpty = (searchVal) => {
               </tr>`;
   $("tbody#sales-read-table").html(tr);
 };
-export const uiBtnPage = (i) => {
-  const btn = `<button
-                      type="button"
-                      class="btn sales-page border border-2 fs-5 ${
-                        i === 1 ? "sales-active-page" : ""
-                      }">
-                        ${i}
-                   </button>`;
-  return btn;
+export const uiBtnPage = (totalPage) => {
+  let btn = ``;
+  for (let i = 1; i <= totalPage; i++) {
+    const actived = i === 1 ? "sales-active-page" : "";
+    btn += `<button
+              type="button"
+              class="btn sales-page border border-2 fs-5 ${actived}">
+                ${i}
+           </button>`;
+  }
+  $("div#sales-read-numberpage").html(btn);
 };
 export const uiBtnPageActive = (pageNumber) => {
   const btnPage = $("button.sales-page");
@@ -107,4 +109,5 @@ export const uiLoad = () => {
                 </td>
               </tr>`;
   $("tbody#sales-read-table").html(tr);
+  $("div#sales-page-container").addClass("d-none");
 };

@@ -9,8 +9,6 @@ $("#modal-sales-convert-csv button#sale-convert-csv")
       startDateVal,
       endDateVal,
     };
-    console.log(req);
-    return false;
     if (startDateVal > endDateVal) {
       return false;
     }
@@ -34,15 +32,9 @@ $("#modal-sales-convert-csv button#sale-convert-csv")
             .join("\r\n");
           fs.writeFile(file_path, csvString, (err) => {
             if (!err) {
+              uiSuccess(`File Excel has been saved on ${file_path}`);
               $("input#sale-start-date").val("");
               $("input#sale-end-date").val("");
-              let rangeDate = `Sale`;
-              if (startDateVal > endDateVal) {
-                rangeDate = `Sale ${startDateVal} s/d ${endDateVal}`;
-              }
-              uiSuccess(
-                `File Excel ${rangeDate} has been saved on ${file_path}`
-              );
               $("#modal-sales-convert-csv").modal("hide");
             }
             if (err) {

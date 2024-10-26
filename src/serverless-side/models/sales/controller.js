@@ -152,7 +152,6 @@ export const getSaleRowPage = (req) => {
 export const getSaleReport = (req) => {
   const { startDateVal, endDateVal } = req;
   const query = queryGetReportSales(startDateVal, endDateVal);
-  console.log(query);
   return new Promise((resolve, reject) => {
     db.all(query, (err, rows) => {
       if (!err) {

@@ -37,7 +37,6 @@ $("tbody#product-table")
     $("p#detail-product-price-sell").text(productPriceRupiahSell);
     // 5.Stock
     // 1. summary (price,qty, totalprice)
-    console.log("test");
     const qty = await getSumQty(productId);
     const qtyStatus = qty.status;
     const qtyResponse = qty.response;

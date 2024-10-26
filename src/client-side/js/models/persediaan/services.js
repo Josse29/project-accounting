@@ -28,6 +28,7 @@ import {
   getPersediaanSumPriceSupplier,
   getPersediaanSumPriceSupplierId,
   getPersediaanSumQty,
+  getPersediaanSumQtyDate,
   getPersediaanSumQtyDateProductId,
   getPersediaanSupplierId,
   updatePersediaan,
@@ -340,11 +341,15 @@ export const addStock = async (req) => {
 };
 // 21. endpoint : api/persediaan/report-csv
 // method : GET
-// payload : ""
+// payload : 1.startdate, 2.endate
 // return all stock
-export const getCSV = async () => {
+export const getCSV = async (req) => {
   try {
-    const stock = await getPersediaanReport();
+    const payLoad = {
+      startDateVal: req.startDateVal,
+      endDateVal: req.endDateVal,
+    };
+    const stock = await getPersediaanReport(payLoad);
     return { status: true, response: stock };
   } catch (error) {
     return { status: false, response: error };
@@ -352,11 +357,15 @@ export const getCSV = async () => {
 };
 // 22. endpoint : api/persediaan/group-category
 // method : GET
-// payload : ""
+// payload : 1.startdate, 2.endate
 // return all stock with group category
-export const getByGroupCategory = async () => {
+export const getByGroupCategory = async (req) => {
   try {
-    const stock = await getPersediaanGroupCategory();
+    const payLoad = {
+      startDateVal: req.startDateVal,
+      endDateVal: req.endDateVal,
+    };
+    const stock = await getPersediaanGroupCategory(payLoad);
     return { status: true, response: stock };
   } catch (error) {
     return { status: false, response: error };
@@ -364,11 +373,15 @@ export const getByGroupCategory = async () => {
 };
 // 23. endpoint : api/persediaan/sum-price/category
 // method : GET
-// payload : ""
+// payload : 1.startdate, 2.endate
 // return : summary of category
-export const getSumPriceCategory = async () => {
+export const getSumPriceCategory = async (req) => {
   try {
-    const summary = await getPersediaanSumPriceCategory();
+    const payLoad = {
+      startDateVal: req.startDateVal,
+      endDateVal: req.endDateVal,
+    };
+    const summary = await getPersediaanSumPriceCategory(payLoad);
     return { status: true, response: summary };
   } catch (error) {
     return { status: false, response: error };
@@ -376,11 +389,15 @@ export const getSumPriceCategory = async () => {
 };
 // 24. endpoint : api/persediaan/group-product
 // method : GET
-// payload : ""
+// payload : 1.startDateVal , 2.endDateVal
 // return :  all stock with group product
-export const getByGroupProduct1 = async () => {
+export const getByGroupProduct1 = async (req) => {
   try {
-    const stock = await getPersediaanGroupProduct1();
+    const payLoad = {
+      startDateVal: req.startDateVal,
+      endDateVal: req.endDateVal,
+    };
+    const stock = await getPersediaanGroupProduct1(payLoad);
     return { status: true, response: stock };
   } catch (error) {
     return { status: false, response: error };
@@ -388,11 +405,15 @@ export const getByGroupProduct1 = async () => {
 };
 // 25.endpoint : api/persediaan/report-pdf
 // method : GET
-// payload : ""
+// payload : 1.startdtate, 2.endate
 // return : all stock as pdf report
-export const getPDF = async () => {
+export const getPDF = async (req) => {
   try {
-    const stock = await getPersediaanReport1();
+    const payLoad = {
+      startDateVal: req.startDateVal,
+      endDateVal: req.endDateVal,
+    };
+    const stock = await getPersediaanReport1(payLoad);
     return { status: true, response: stock };
   } catch (error) {
     return { status: false, response: error };
@@ -400,11 +421,15 @@ export const getPDF = async () => {
 };
 // 26. endpoint : api/persediaan/group-supplier
 // method : GET
-// payload : ""
+// payload : 1.startdtate, 2.endate
 // return : all stock with group supplier
-export const getByGroupSupplier = async () => {
+export const getByGroupSupplier = async (req) => {
   try {
-    const stock = await getPersediaanGroupSupplier();
+    const payLoad = {
+      startDateVal: req.startDateVal,
+      endDateVal: req.endDateVal,
+    };
+    const stock = await getPersediaanGroupSupplier(payLoad);
     return { status: true, response: stock };
   } catch (error) {
     return { status: false, response: error };
@@ -412,11 +437,15 @@ export const getByGroupSupplier = async () => {
 };
 // 27. endpoint : api/persediaan/sum=price/supplier
 // method : GET
-// payLoad : ""
+// payLoad : 1.startdtate, 2.endate
 // return : summary of supplier
 export const getSumPriceSupplier = async () => {
   try {
-    const stock = await getPersediaanSumPriceSupplier();
+    const payLoad = {
+      startDateVal: req.startDateVal,
+      endDateVal: req.endDateVal,
+    };
+    const stock = await getPersediaanSumPriceSupplier(payLoad);
     return { status: true, response: stock };
   } catch (error) {
     return { status: false, response: error };
@@ -494,6 +523,23 @@ export const getByProductId1 = async (productId) => {
   try {
     const stock = await getPersediaanProductId(productId);
     return { status: true, response: stock };
+  } catch (error) {
+    return { status: false, response: error };
+  }
+};
+// 33. endpoint : api/persediaan/sum-qty/:productid:
+// method : GET
+//  payload : 1.productId, 2.startdate, 3.enddate
+// return : sum qty by productid
+export const getSumQtyDate = async (req) => {
+  try {
+    const payLoad = {
+      productId: req.productId,
+      startDateVal: req.startDateVal,
+      endDateVal: req.endDateVal,
+    };
+    const sumQty = await getPersediaanSumQtyDate(payLoad);
+    return { status: true, response: sumQty };
   } catch (error) {
     return { status: false, response: error };
   }

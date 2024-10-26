@@ -325,6 +325,7 @@
             <div id="sales-success-container"></div>
             <!-- download excel search category and waiter -->
             <div class="d-flex gap-2 mb-3">
+              <!-- excel -->
               <button
                 class="btn btn-success"
                 data-bs-toggle="modal"
@@ -333,14 +334,21 @@
                 <i class="fa-solid fa-file-excel fs-5 me-1"></i>
                 <span>Excel</span>
               </button>
-              <button class="btn btn-primary" id="sales-convert-pdf">
+              <!-- pdf -->
+              <button
+                class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#modal-sales-convert-pdf"
+              >
                 <i class="fa-solid fa-file-pdf fs-5 me-1"></i>
                 <span>PDF</span>
               </button>
+              <!-- delete all -->
               <button class="btn btn-danger">
                 <i class="fa-solid fa-trash fs-5 me-1"></i>
                 <span>Delete</span>
               </button>
+              <!-- refresh -->
               <button class="btn btn-secondary" id="sales-read-reset">
                 <i class="fa-solid fa-arrows-rotate fs-5 me-1"></i>
                 <span>Refresh</span>
@@ -496,8 +504,8 @@
                 </thead>
                 <tbody id="sales-read-table">
                   <tr>
-                    <td colspan="11" class="text-center fst-italic">
-                      loading....
+                    <td colspan="11" class="text-center fst-italic fw-bold">
+                      Loading....
                     </td>
                   </tr>
                 </tbody>
@@ -641,9 +649,9 @@
             <!-- Payment and Change -->
             <div class="m-2 d-flex gap-4">
               <div class="d-flex flex-column">
-                <label for="order-payment">Total Uang Masuk</label>
-                <span>Total Belanja</span>
-                <span class="">Pengembalian</span>
+                <label for="order-payment">Total Cash</label>
+                <span>Total Payment </span>
+                <span class="">Change</span>
               </div>
               <div class="d-flex flex-column">
                 <div>
@@ -669,7 +677,7 @@
         </div>
       </div>
     </div>
-    <!-- sales-create -->
+    <!-- sales-csv -->
     <div
       class="modal fade"
       id="modal-sales-convert-csv"
@@ -684,12 +692,14 @@
             <h3 class="modal-title text-white ms-3">Excel</h3>
           </div>
           <div class="modal-body">
+            <!-- start date -->
             <div class="mb-3">
               <label for="sale-start-date" class="fs-4 mb-2"
                 >Start Date :</label
               >
               <input type="date" class="form-control" id="sale-start-date" />
             </div>
+            <!-- endate -->
             <div class="mb-3">
               <label for="sale-end-date" class="fs-4 mb-2">End Date :</label>
               <input type="date" class="form-control" id="sale-end-date" />
@@ -704,6 +714,49 @@
               Close
             </button>
             <button type="button" class="btn bg-success" id="sale-convert-csv">
+              Convert
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- sales-pdf -->
+    <div
+      class="modal fade"
+      id="modal-sales-convert-pdf"
+      tabindex="-1"
+      aria-labelledby="sales-create-modalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header px-3 py-2 bg-primary">
+            <i class="fa-solid fa-file-pdf fs-4 text-white"></i>
+            <h3 class="modal-title text-white ms-3">PDF</h3>
+          </div>
+          <div class="modal-body">
+            <!-- start date -->
+            <div class="mb-3">
+              <label for="sale-start-date-1" class="fs-4 mb-2"
+                >Start Date :</label
+              >
+              <input type="date" class="form-control" id="sale-start-date-1" />
+            </div>
+            <!-- endate -->
+            <div class="mb-3">
+              <label for="sale-end-date-1" class="fs-4 mb-2">End Date :</label>
+              <input type="date" class="form-control" id="sale-end-date-1" />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn bg-danger text-white"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary" id="sale-convert-pdf">
               Convert
             </button>
           </div>

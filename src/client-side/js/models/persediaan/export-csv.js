@@ -1,10 +1,16 @@
 import { getCSV } from "./services.js";
 import { uiAlertFail, uiAlertSuccess } from "./ui.js";
 
-$("button#persediaan-export-excel")
+$("#persediaan-modal-convert-csv button#persediaan-convert-csv")
   .off("click")
   .on("click", async function () {
-    const { status, response } = await getCSV();
+    const startDateVal = $("input#persediaan-start-date-csv").val();
+    const endDateVal = $("input#persediaan-end-date-csv").val();
+    const req = { startDateVal, endDateVal };
+    if (startDateVal > endDateVal) {
+      return false;
+    }
+    const { status, response } = await getCSV(req);
     if (status) {
       const existed = response.length >= 1;
       if (existed) {
@@ -24,7 +30,10 @@ $("button#persediaan-export-excel")
             .join("\r\n");
           fs.writeFile(file_path, csvString, (err) => {
             if (!err) {
-              uiAlertSuccess(`File Save On ${file_path}`);
+              uiAlertSuccess(`File Excel Save On ${file_path}`);
+              $("input#persediaan-start-date-csv").val("");
+              $("input#persediaan-end-date-csv").val("");
+              $("#persediaan-modal-convert-csv").modal("hide");
             }
             if (err) {
               console.error(err);

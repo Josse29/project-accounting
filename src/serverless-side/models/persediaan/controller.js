@@ -25,6 +25,7 @@ import {
   queryGetPersediaanProductRow,
   queryGetPersediaanQty,
   queryGetPersediaanQty2,
+  queryGetPersediaanQtyDate,
   queryGetPersediaanReport,
   queryGetPersediaanRpSum,
   queryGetPersediaanRpSumCategoryId,
@@ -208,9 +209,26 @@ export const getPersediaanSumQty = (valPersediaanProductId) => {
     });
   });
 };
-export const getPersediaanSumPrice = () => {
+export const getPersediaanSumQtyDate = (req) => {
+  const { productId, startDateVal, endDateVal } = req;
+  const query = queryGetPersediaanQtyDate(productId, startDateVal, endDateVal);
   return new Promise((resolve, reject) => {
-    db.each(queryGetPersediaanRpSum(), (err, res) => {
+    db.each(query, (err, res) => {
+      if (!err) {
+        const response = res.TotalQty;
+        const totalQty = response ? response : 0;
+        resolve(totalQty);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
+  });
+};
+export const getPersediaanSumPrice = () => {
+  const query = queryGetPersediaanRpSum();
+  return new Promise((resolve, reject) => {
+    db.each(query, (err, res) => {
       if (!err) {
         const response = res.TotalRp;
         const totalRp = response ? response : 0;
@@ -289,8 +307,9 @@ export const getPersediaanProductId1 = (valPersediaanProductId) => {
     });
   });
 };
-export const getPersediaanReport1 = () => {
-  const query = queryGetPersediaanProductReport();
+export const getPersediaanReport1 = (req) => {
+  const { startDateVal, endDateVal } = req;
+  const query = queryGetPersediaanProductReport(startDateVal, endDateVal);
   return new Promise((resolve, reject) => {
     db.all(query, (err, result) => {
       if (!err) {
@@ -302,8 +321,9 @@ export const getPersediaanReport1 = () => {
     });
   });
 };
-export const getPersediaanGroupProduct1 = () => {
-  const query = queryGetPersediaanProductGroup();
+export const getPersediaanGroupProduct1 = (req) => {
+  const { startDateVal, endDateVal } = req;
+  const query = queryGetPersediaanProductGroup(startDateVal, endDateVal);
   return new Promise((resolve, reject) => {
     db.all(query, (err, res) => {
       if (!err) {
@@ -316,8 +336,9 @@ export const getPersediaanGroupProduct1 = () => {
   });
 };
 
-export const getPersediaanGroupSupplier = () => {
-  const query = queryGetPersediaanSupplierGroup();
+export const getPersediaanGroupSupplier = (req) => {
+  const { startDateVal, endDateVal } = req;
+  const query = queryGetPersediaanSupplierGroup(startDateVal, endDateVal);
   return new Promise((resolve, reject) => {
     db.all(query, (err, res) => {
       if (!err) {
@@ -329,9 +350,11 @@ export const getPersediaanGroupSupplier = () => {
     });
   });
 };
-export const getPersediaanReport = () => {
+export const getPersediaanReport = (req) => {
+  const { startDateVal, endDateVal } = req;
+  const query = queryGetPersediaanReport(startDateVal, endDateVal);
   return new Promise((resolve, reject) => {
-    db.all(queryGetPersediaanReport(), (err, res) => {
+    db.all(query, (err, res) => {
       if (!err) {
         resolve(res);
       }
@@ -521,8 +544,9 @@ export const getPersediaanSumPriceDateCategoryId = (req) => {
     });
   });
 };
-export const getPersediaanGroupCategory = () => {
-  const query = queryGetPersediaanCategoryGroup();
+export const getPersediaanGroupCategory = (req) => {
+  const { startDateVal, endDateVal } = req;
+  const query = queryGetPersediaanCategoryGroup(startDateVal, endDateVal);
   return new Promise((resolve, reject) => {
     db.all(query, (err, res) => {
       if (!err) {
@@ -534,8 +558,9 @@ export const getPersediaanGroupCategory = () => {
     });
   });
 };
-export const getPersediaanSumPriceSupplier = () => {
-  const query = queryGetPersediaanSupplierSum();
+export const getPersediaanSumPriceSupplier = (req) => {
+  const { startDateVal, endDateVal } = req;
+  const query = queryGetPersediaanSupplierSum(startDateVal, endDateVal);
   return new Promise((resolve, reject) => {
     db.each(query, (err, res) => {
       if (!err) {
@@ -564,8 +589,9 @@ export const getPersediaanSumPriceSupplierId = (supplierId) => {
     });
   });
 };
-export const getPersediaanSumPriceCategory = () => {
-  const query = queryGetPersediaanCategorySum();
+export const getPersediaanSumPriceCategory = (req) => {
+  const { startDate, endDateVal } = req;
+  const query = queryGetPersediaanCategorySum(startDate, endDateVal);
   return new Promise((resolve, reject) => {
     db.each(query, (err, res) => {
       if (!err) {

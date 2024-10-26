@@ -10,3 +10,7 @@
 - refactoring model create sales hufft 
 - refactoring list category, supplier, product
 - continue convert model sales pdf,csv with date .....
+26/10/2024
+- continue convert model sales pdf,csv with date part - 2 
+- continue convert model persediaan csv with date 
+- continue convert model persediaan pdf with date hufftt

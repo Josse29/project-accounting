@@ -295,7 +295,7 @@ export const getByDateCustomer = async (req) => {
 };
 // 19. endpoint : api/sale/report
 // method : GET
-// payload : ""
+// payload : 1.startdate, 2.endate
 // return : get all sales with pdf and csv
 export const getReport = async (req) => {
   try {

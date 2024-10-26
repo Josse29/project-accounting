@@ -270,6 +270,7 @@ export const uiTrPDF = (rows, no) => {
   return tr;
 };
 export const uiTrProductSum = (rows, no) => {
+  // qty
   const totalQty = rows.TotalQty;
   let totalQtyTxt = ``;
   if (totalQty === 0) {
@@ -281,6 +282,7 @@ export const uiTrProductSum = (rows, no) => {
   if (totalQty < 0) {
     totalQtyTxt = `- ${Math.abs(totalQty)}`;
   }
+  // price
   const totalRp = rows.TotalRp;
   let totalRpTxt = ``;
   if (totalRp === 0) {

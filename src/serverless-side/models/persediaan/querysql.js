@@ -94,21 +94,26 @@ export const queryListPersediaan = (valPersediaanSearch) => {
   }
   return query;
 };
-export const queryGetPersediaanReport = () => {
-  const query = `SELECT
-                   Persediaan.PersediaanDDMY AS Tanggal,
-                   Persediaan.PersediaanHMS AS Waktu, 
-                   Product.ProductName AS NamaProduk,
-                   Category.CategoryName AS Kategori, 
-                   Product.ProductPriceBeli AS HargaBeli,
-                   Supplier.SupplierName AS Supplier,  
-                   Persediaan.PersediaanQty AS TotalQty,
-                   Persediaan.PersediaanRp AS TotalRupiah
-                   FROM Persediaan
-                   LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
-                   LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
-                   LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId
-                   ORDER BY Persediaan.PersediaanDDMY DESC,Persediaan.PersediaanHMS DESC `;
+export const queryGetPersediaanReport = (startDateVal, endDateVal) => {
+  let query = `SELECT
+               Persediaan.PersediaanDDMY AS Tanggal,
+               Persediaan.PersediaanHMS AS Waktu, 
+               Product.ProductName AS NamaProduk,
+               Category.CategoryName AS Kategori, 
+               Product.ProductPriceBeli AS HargaBeli,
+               Supplier.SupplierName AS Supplier,  
+               Persediaan.PersediaanQty AS TotalQty,
+               Persediaan.PersediaanRp AS TotalRupiah
+               FROM Persediaan
+               LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
+               LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
+               LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId `;
+  // with date
+  if (startDateVal !== "" && endDateVal !== "") {
+    query += `WHERE Persediaan.PersediaanDDMY BETWEEN '${startDateVal}' AND '${endDateVal}' `;
+  }
+  // with order by
+  query += `ORDER BY Persediaan.PersediaanDDMY DESC,Persediaan.PersediaanHMS DESC `;
   return query;
 };
 export const queryGetPersediaanDate = (startDate, endDate) => {
@@ -207,35 +212,46 @@ export const queryGetPersediaanDateProductId = (
               LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId `;
   // with between date
   query += `WHERE Persediaan.PersediaanDDMY BETWEEN '${valStartDate}' AND '${valEndDate}'
-                    AND Persediaan.PersediaanProductId = ${valProductId} `;
+              AND Persediaan.PersediaanProductId = ${valProductId} `;
   // with order persediaaddmy and date  desc
   query += `ORDER BY Persediaan.PersediaanDDMY DESC,
                        Persediaan.PersediaanHMS DESC`;
   return query;
 };
-export const queryGetPersediaanProductReport = () => {
-  const query = `SELECT
-                   Persediaan.PersediaanDDMY,
-                   Persediaan.PersediaanHMS, 
-                   Product.ProductName, 
-                   Product.ProductPriceBeli AS HargaBeli,
-                   Persediaan.PersediaanQty,
-                   Persediaan.PersediaanRp
-                   FROM Persediaan
-                   LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
-                   ORDER BY Persediaan.PersediaanDDMY DESC, Persediaan.PersediaanHMS DESC`;
+
+export const queryGetPersediaanProductReport = (startDateVal, endDateVal) => {
+  let query = `SELECT
+               Persediaan.PersediaanDDMY,
+               Persediaan.PersediaanHMS, 
+               Product.ProductName, 
+               Product.ProductPriceBeli AS HargaBeli,
+               Persediaan.PersediaanQty,
+               Persediaan.PersediaanRp
+               FROM Persediaan
+               LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId `;
+  // with between date
+  if (startDateVal !== "" && endDateVal !== "") {
+    query += `WHERE Persediaan.PersediaanDDMY BETWEEN '${startDateVal}' AND '${endDateVal}'`;
+  }
+  // order
+  query += `ORDER BY Persediaan.PersediaanDDMY DESC, Persediaan.PersediaanHMS DESC`;
   return query;
 };
-export const queryGetPersediaanProductGroup = () => {
-  const query = `SELECT
+export const queryGetPersediaanProductGroup = (startDateVal, endDateVal) => {
+  let query = `SELECT
                    Product.ProductName,
                    Product.ProductPriceBeli,
                    SUM(Persediaan.PersediaanQty) AS TotalQty,
                    SUM(Persediaan.PersediaanRp) AS TotalRp
                    FROM Persediaan
-                   LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
-                   GROUP BY Persediaan.PersediaanProductId
-                   ORDER BY Product.ProductName ASC`;
+                   LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId `;
+  // with between date
+  if (startDateVal !== "" && endDateVal !== "") {
+    query += `WHERE Persediaan.PersediaanDDMY BETWEEN '${startDateVal}' AND '${endDateVal}'`;
+  }
+  // order
+  query += `GROUP BY Persediaan.PersediaanProductId
+            ORDER BY Product.ProductName ASC`;
   return query;
 };
 
@@ -263,16 +279,22 @@ export const queryGetPersediaanCategoryId = (valCategoryId) => {
   query += `ORDER BY Persediaan.PersediaanDDMY DESC, Persediaan.PersediaanHMS DESC `;
   return query;
 };
-export const queryGetPersediaanCategoryGroup = () => {
-  const query = `SELECT
-                 Category.CategoryId,
-                 Category.CategoryName,
-                 SUM(Persediaan.PersediaanRp) AS TotalRp
-                 FROM Persediaan
-                 LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
-                 LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
-                 WHERE  Category.CategoryId IS NOT NULL
-                 GROUP BY Category.CategoryId`;
+export const queryGetPersediaanCategoryGroup = (startDateVal, endDateVal) => {
+  let query = `SELECT
+               Category.CategoryId,
+               Category.CategoryName,
+               SUM(Persediaan.PersediaanRp) AS TotalRp
+               FROM Persediaan
+               LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
+               LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
+               WHERE Category.CategoryId IS NOT NULL AND `;
+  // with between date
+  if (startDateVal !== "" && endDateVal !== "") {
+    query += `Persediaan.PersediaanDDMY BETWEEN '${startDateVal}' AND '${endDateVal}' `;
+  }
+  // grouping
+  query += `GROUP BY Category.CategoryId 
+            ORDER BY Category.CategoryName ASC `;
   return query;
 };
 export const queryGetPersediaanDateCategoryId = (
@@ -323,16 +345,21 @@ export const queryGetPersediaanDateRpCategoryId = (
 };
 
 // reference suppliers
-export const queryGetPersediaanSupplierGroup = () => {
-  const query = `SELECT
-                   Supplier.SupplierName,
-                   SUM(Persediaan.PersediaanQty) AS TotalQty,
-                   SUM(Persediaan.PersediaanRp) AS TotalRp
-                   FROM Persediaan
-                   LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
-                   LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId
-                   WHERE Supplier.SupplierId IS NOT NULL
-                   GROUP BY Supplier.SupplierId`;
+export const queryGetPersediaanSupplierGroup = (startDateVal, endDateVal) => {
+  let query = `SELECT
+               Supplier.SupplierName,
+               SUM(Persediaan.PersediaanQty) AS TotalQty,
+               SUM(Persediaan.PersediaanRp) AS TotalRp
+               FROM Persediaan
+               LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
+               LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId 
+               WHERE Supplier.SupplierId IS NOT NULL AND `;
+  if (startDateVal !== "" && endDateVal !== "") {
+    query += `Persediaan.PersediaanDDMY BETWEEN '${startDateVal}' AND '${endDateVal}' `;
+  }
+  // group
+  query += `GROUP BY Supplier.SupplierId 
+            ORDER Supplier.SupplierName ASC `;
   return query;
 };
 export const queryGetPersediaanDateSupplierId = (
@@ -407,11 +434,27 @@ export const queryGetPersediaanSupplierId = (valSupplierId) => {
 // qty
 export const queryGetPersediaanQty = (valPersediaanProductId) => {
   let query = `SELECT
-                 PersediaanProductId,
-                 SUM(PersediaanQty) AS TotalQty
-                 FROM Persediaan `;
+               PersediaanProductId,
+               SUM(PersediaanQty) AS TotalQty
+               FROM Persediaan `;
   if (valPersediaanProductId !== "") {
     query += `WHERE PersediaanProductId = ${valPersediaanProductId} `;
+  }
+  return query;
+};
+export const queryGetPersediaanQtyDate = (
+  productId,
+  startDateVal,
+  endDateVal
+) => {
+  let query = `SELECT
+               PersediaanProductId,
+               SUM(PersediaanQty) AS TotalQty
+               FROM Persediaan `;
+  //  with product id and date
+  query += `WHERE PersediaanProductId = ${productId} `;
+  if (startDateVal !== "" && endDateVal !== "") {
+    query += `AND Persediaan.PersediaanDDMY BETWEEN '${startDateVal}' AND '${endDateVal}' `;
   }
   return query;
 };
@@ -459,21 +502,28 @@ export const queryGetPersediaanRpSumCategoryId = (valCategoryId) => {
   return query;
 };
 export const queryGetPersediaanCategorySum = () => {
-  const query = `SELECT
-                   SUM(Persediaan.PersediaanRp) AS TotalRp
-                   FROM Persediaan
-                   LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
-                   LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
-                   WHERE Category.CategoryId IS NOT NULL `;
+  let query = `SELECT
+               SUM(Persediaan.PersediaanRp) AS TotalRp
+               FROM Persediaan
+               LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
+               LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
+               WHERE Category.CategoryId IS NOT NULL AND `;
+  //  with date
+  if (startDateVal !== "" && endDateVal !== "") {
+    query += `Persediaan.PersediaanDDMY BETWEEN  '${startDateVal}' AND '${endDateVal}' `;
+  }
   return query;
 };
-export const queryGetPersediaanSupplierSum = () => {
-  const query = `SELECT
-                   SUM(Persediaan.PersediaanRp) AS TotalRp
-                   FROM Persediaan
-                   LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
-                   LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId
-                   WHERE Supplier.SupplierId IS NOT NULL `;
+export const queryGetPersediaanSupplierSum = (startDateVal, endDateVal) => {
+  let query = `SELECT
+               SUM(Persediaan.PersediaanRp) AS TotalRp
+               FROM Persediaan
+               LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
+               LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId
+               WHERE Supplier.SupplierId IS NOT NULL AND `;
+  if (startDateVal !== "" && endDateVal !== "") {
+    query += `Persediaan.PersediaanDDMY BETWEEN  '${startDateVal}' AND '${endDateVal}' `;
+  }
   return query;
 };
 export const queryGetPersediaanRpSupplier = (supplierIdVal) => {
@@ -505,7 +555,9 @@ export const queryGetPersediaanDateSUM = (startDate, endDate) => {
                SUM(Persediaan.PersediaanRp) AS TotalRp
                FROM Persediaan `;
   //  with valstartDate - endDate
-  query += `WHERE Persediaan.PersediaanDDMY BETWEEN  '${startDate}' AND '${endDate}' `;
+  if (startDate !== "" && endDate !== "") {
+    query += `WHERE Persediaan.PersediaanDDMY BETWEEN  '${startDate}' AND '${endDate}' `;
+  }
   return query;
 };
 
@@ -544,12 +596,12 @@ export const queryGetPersediaanProductGroup1 = (
   if (searchVal !== "") {
     query += `WHERE Product.ProductName LIKE '%${searchVal}%' ESCAPE '!' `;
   }
-  // with group,HAVING  order
+  // with group,HAVING
   query += `GROUP BY Persediaan.PersediaanProductId
-            HAVING TotalQty >= 1
-            ORDER BY Product.ProductName ASC `;
-  // offset limit, for pagination
-  query += `LIMIT ${limitVal}
+            HAVING TotalQty >= 1 `;
+  // offset limit, for pagination order
+  query += `ORDER BY Product.ProductName ASC 
+            LIMIT ${limitVal}
             OFFSET ${offsetVal}`;
   return query;
 };

@@ -235,15 +235,43 @@ h5#order-list-total:hover {
   text-wrap: wrap;
 }
 input#order-payment {
-  border: none; /* Menghilangkan semua border */
-  border-bottom: 2px solid transparent; /* Menyediakan garis bawah yang transparan secara default */
-  outline: none; /* Menghilangkan outline default pada fokus */
-  box-shadow: none; /* Menghilangkan bayangan pada elemen */
-  transition: border-bottom-color 0.3s ease-in-out; /* Efek transisi untuk garis bawah */
+  border: none;
+  border-bottom: 2px solid transparent;
+  outline: none;
+  box-shadow: none;
+  transition: border-bottom-color 0.3s ease-in-out;
 }
 input#order-payment:focus {
   box-shadow: none;
-  border-bottom-color: blue; /* Garis bawah akan muncul dengan warna biru saat fokus */
+  border-bottom-color: blue;
+}
+input#sale-start-date {
+  outline: none;
+}
+input#sale-start-date:focus {
+  outline: #4caf50 solid 2px;
+  box-shadow: none;
+}
+input#sale-end-date {
+  outline: none;
+}
+input#sale-end-date:focus {
+  box-shadow: none;
+  outline: #4caf50 solid 2px;
+}
+input#sale-start-date-1 {
+  outline: none;
+}
+input#sale-start-date-1:focus {
+  outline: #4c75af solid 2px;
+  box-shadow: none;
+}
+input#sale-end-date-1 {
+  outline: none;
+}
+input#sale-end-date-1:focus {
+  box-shadow: none;
+  outline: #4c75af solid 2px;
 }
 span#order-change-result {
   border-radius: 4px;

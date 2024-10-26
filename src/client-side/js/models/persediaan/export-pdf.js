@@ -6,8 +6,10 @@ import {
   getPDF,
   getSumPrice,
   getSumPriceCategory,
+  getSumPriceDate,
   getSumPriceSupplier,
   getSumQty,
+  getSumQtyDate,
 } from "./services.js";
 import {
   uiAlertSuccess,
@@ -19,8 +21,8 @@ import {
 
 // export pdf persediaan
 // product
-const groupProduct = async () => {
-  const { status, response } = await getByGroupProduct1();
+const groupProduct = async (req) => {
+  const { status, response } = await getByGroupProduct1(req);
   if (status) {
     let no = 1;
     let tbodyProductSum = ``;
@@ -35,8 +37,8 @@ const groupProduct = async () => {
   }
 };
 // supplier
-const groupSupplier = async () => {
-  const { status, response } = await getByGroupSupplier();
+const groupSupplier = async (req) => {
+  const { status, response } = await getByGroupSupplier(req);
   if (status) {
     const existedSupplier = response.length >= 1;
     let tbody = ``;
@@ -58,8 +60,8 @@ const groupSupplier = async () => {
     console.error(response);
   }
 };
-const sumSupplier = async () => {
-  const { status, response } = await getSumPriceSupplier();
+const sumSupplier = async (req) => {
+  const { status, response } = await getSumPriceSupplier(req);
   if (status) {
     const totalRp = formatRupiah2(response);
     return totalRp;
@@ -69,8 +71,8 @@ const sumSupplier = async () => {
   }
 };
 // category
-const groupCategory = async () => {
-  const { status, response } = await getByGroupCategory();
+const groupCategory = async (req) => {
+  const { status, response } = await getByGroupCategory(req);
   if (status) {
     const existedCategory = response.length >= 1;
     let tbody = ``;
@@ -92,8 +94,8 @@ const groupCategory = async () => {
     console.error(response);
   }
 };
-const sumCategory = async () => {
-  const { status, response } = await getSumPriceCategory();
+const sumCategory = async (req) => {
+  const { status, response } = await getSumPriceCategory(req);
   if (status) {
     const totalRp = formatRupiah2(response);
     return totalRp;
@@ -103,8 +105,8 @@ const sumCategory = async () => {
   }
 };
 // sum-qty
-const sumQty = async () => {
-  const { status, response } = await getSumQty("");
+const sumQty = async (req) => {
+  const { status, response } = await getSumQtyDate(req);
   if (status) {
     return response;
   }
@@ -113,8 +115,8 @@ const sumQty = async () => {
   }
 };
 // sum-rp
-const sumPrice = async () => {
-  const { status, response } = await getSumPrice();
+const sumPrice = async (req) => {
+  const { status, response } = await getSumPriceDate(req);
   if (status) {
     const rupiah = formatRupiah2(response);
     return rupiah;
@@ -124,10 +126,16 @@ const sumPrice = async () => {
   }
 };
 // actions
-$("#persediaan-export-pdf")
+$("#persediaan-modal-convert-pdf #persediaan-convert-pdf")
   .off("click")
   .on("click", async () => {
-    const { status, response } = await getPDF();
+    const startDateVal = $("input#persediaan-start-date-pdf").val();
+    const endDateVal = $("input#persediaan-end-date-pdf").val();
+    const req = { startDateVal, endDateVal };
+    if (startDateVal > endDateVal) {
+      return false;
+    }
+    const { status, response } = await getPDF(req);
     if (status) {
       const existed = response.length >= 1;
       if (existed) {
@@ -137,13 +145,13 @@ $("#persediaan-export-pdf")
           tbodyProduct += uiTrPDF(rows, no);
           no++;
         });
-        const tbodyProductGroup = await groupProduct();
-        const tbodySupplierGroup = await groupSupplier();
-        const txtSumSupplier = await sumSupplier();
-        const tbodyCategoryGroup = await groupCategory();
-        const txtSumCategory = await sumCategory();
-        const txtPersediaanQtySum = await sumQty();
-        const txtPersediaanRpSum = await sumPrice();
+        const tbodyProductGroup = await groupProduct(req);
+        const tbodySupplierGroup = await groupSupplier(req);
+        const txtSumSupplier = await sumSupplier(req);
+        const tbodyCategoryGroup = await groupCategory(req);
+        const txtSumCategory = await sumCategory(req);
+        const txtPersediaanQtySum = await sumQty(req);
+        const txtPersediaanRpSum = await sumPrice(req);
         let file_path = dialog.showSaveDialogSync({
           title: "Export Data",
           filters: [{ name: "pdf", extensions: ["pdf"] }],
@@ -164,6 +172,7 @@ $("#persediaan-export-pdf")
           );
           ipcRenderer.on("success:pdf-persediaan", (e, file_path) => {
             uiAlertSuccess(`File Save On ${file_path}`);
+            $("#persediaan-modal-convert-pdf").modal("hide");
           });
         }
       }

@@ -9,6 +9,10 @@ import {
   uiTBody,
   uiTrEmpty,
 } from "./ui.js";
+// Debounced event handler
+const handleDebounce = debounce(() => {
+  getInit();
+}, 1000);
 // get all value
 let searchVal = $("input#sales-read-search").val();
 let limitVal = parseInt($("select#sales-read-limit").val());
@@ -16,10 +20,6 @@ let offsetVal = 1;
 // fetch init
 getInit();
 // search
-// Debounced event handler
-const handleDebounce = debounce(() => {
-  getInit();
-}, 1000);
 $("input#sales-read-search")
   .off("keyup")
   .on("keyup", function () {
@@ -46,6 +46,7 @@ $("button#sales-read-reset")
   .off("click")
   .on("click", function () {
     searchVal = "";
+    uiReset();
     uiLoad();
     handleDebounce();
   });
@@ -99,11 +100,7 @@ async function getPage(req) {
   }
 }
 function handlePagination(totalPage) {
-  let btn = ``;
-  for (let i = 1; i <= totalPage; i++) {
-    btn += uiBtnPage(i);
-  }
-  $("div#sales-read-numberpage").html(btn);
+  uiBtnPage(totalPage);
   // first page
   $("button#sales-read-firstpage")
     .off("click")
@@ -173,7 +170,7 @@ function handlePagination(totalPage) {
 }
 
 export const getSalesAgain = async () => {
-  $("input#sales-read-search").val("");
+  uiReset();
   const searchVal = "";
   const limitVal = 3;
   const offsetVal = 1;
@@ -226,11 +223,7 @@ export const getSalesAgain = async () => {
     }
   }
   function handlePagination(totalPage) {
-    let btn = ``;
-    for (let i = 1; i <= totalPage; i++) {
-      btn += uiBtnPage(i);
-    }
-    $("div#sales-read-numberpage").html(btn);
+    uiBtnPage(totalPage);
     // first page
     $("button#sales-read-firstpage")
       .off("click")

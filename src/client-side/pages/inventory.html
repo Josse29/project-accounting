@@ -134,235 +134,233 @@
             <div id="persediaan-detail-totalrp" class="me-4"></div>
           </div>
           <div class="card-body">
-            <div id="persediaan-loading"></div>
-            <div id="persediaan-done">
-              <!-- btn group create, export persediaan -->
-              <div class="btn-group gap-2 mb-3">
-                <!-- tambah persediaan -->
-                <button
-                  id="btnpersediaanModal"
-                  class="btn btn-primary tooltip-bottom-container"
-                  data-bs-toggle="modal"
-                  data-bs-target="#persediaanCreateModal"
-                >
-                  <span class="d-flex gap-2 align-items-center">
-                    <div class="tooltip-bottom-text">add-inventory</div>
-                    <i class="fa-solid fa-folder-plus fs-4"></i>
-                    <span class="text-nowrap">Add Inventory</span>
-                  </span>
-                </button>
-                <!-- export persediaan excel -->
-                <button
-                  type="button"
-                  class="btn btn-success tooltip-bottom-container"
-                  id="persediaan-export-excel"
-                >
-                  <div class="tooltip-bottom-text">excel-inventory</div>
-                  <i class="fa-solid fa-file-excel fs-4"> </i>
-                </button>
-                <!-- export persediaan pdf -->
-                <button
-                  type="button"
-                  class="btn text-white tooltip-bottom-container"
-                  id="persediaan-export-pdf"
-                >
-                  <div class="tooltip-bottom-text">pdf-inventory</div>
-                  <i class="fa-solid fa-file-pdf fs-4"></i>
-                </button>
-                <!-- delete || cuci gudang -->
-                <button
-                  type="button"
-                  class="btn btn-danger text-white tooltip-bottom-container"
-                  id="persediaan-delete-all"
-                  data-bs-toggle="modal"
-                  data-bs-target="#persediaanDeleteAllModal"
-                >
-                  <div class="tooltip-bottom-text">delete-inventory</div>
-                  <i class="fa-solid fa-trash fs-5"></i>
-                </button>
-                <!-- refresh -->
-                <button
-                  id="persediaan-refresh"
-                  type="button"
-                  class="btn btn-secondary tooltip-bottom-container"
-                >
-                  <div class="tooltip-bottom-text">refresh-inventory</div>
-                  <i class="fa-solid fa-arrows-rotate fs-5"></i>
-                </button>
-              </div>
-              <!-- section succes after action crud persediaan -->
-              <div id="section-alert"></div>
-              <!-- for limit & search-->
-              <div class="d-flex gap-2 mb-3" id="persediaanLimitSearch">
-                <!-- limit -->
-                <select
-                  class="form-select py-2 w-auto"
-                  aria-label="Default select example"
-                  id="persediaan-limit"
-                >
-                  <option value="10">10</option>
-                  <option value="20">20</option>
-                  <option value="50">50</option>
-                </select>
-                <!-- search -->
-                <div class="input-group" style="width: 580px">
-                  <input
-                    type="text"
-                    class="form-control py-2"
-                    placeholder="masukkan keyword persediaan..."
-                    id="persediaan-search"
-                  />
-                  <span
-                    id="persediaan-search"
-                    class="input-group-text text-white"
-                    style="background-color: #3b82f6"
-                    >Search</span
-                  >
-                </div>
-              </div>
-              <!-- select product,categories,supplier,user -->
-              <div class="d-flex gap-2 mb-3" id="persediaanList">
-                <!-- for product -->
-                <select
-                  id="persediaan-refproduct-search"
-                  class="form-select w-auto py-2"
-                >
-                  <option>Choose One Of Products</option>
-                </select>
-                <!-- for supplier -->
-                <select
-                  class="form-select w-auto py-2"
-                  id="persediaan-refsupplier-search"
-                >
-                  <option>Choose One Of Suppliers</option>
-                </select>
-                <!-- for category -->
-                <select
-                  id="persediaan-refcategory-search"
-                  class="form-select w-auto py-2"
-                >
-                  <option>Choose One Of Categories</option>
-                </select>
-              </div>
-              <!-- date -->
-              <div class="input-group mb-3" style="width: max-content">
+            <!-- btn group create, export persediaan -->
+            <div class="btn-group gap-2 mb-3">
+              <!-- tambah persediaan -->
+              <button
+                id="btnpersediaanModal"
+                class="btn btn-primary tooltip-bottom-container"
+                data-bs-toggle="modal"
+                data-bs-target="#persediaanCreateModal"
+              >
+                <span class="d-flex gap-2 align-items-center">
+                  <div class="tooltip-bottom-text">add-inventory</div>
+                  <i class="fa-solid fa-folder-plus fs-4"></i>
+                  <span class="text-nowrap">Add Inventory</span>
+                </span>
+              </button>
+              <!-- export persediaan excel -->
+              <button
+                type="button"
+                class="btn btn-success tooltip-bottom-container"
+                data-bs-toggle="modal"
+                data-bs-target="#persediaan-modal-convert-csv"
+              >
+                <div class="tooltip-bottom-text">excel-inventory</div>
+                <i class="fa-solid fa-file-excel fs-4"> </i>
+              </button>
+              <!-- export persediaan pdf -->
+              <button
+                type="button"
+                class="btn text-white tooltip-bottom-container persediaan-pdf"
+                data-bs-toggle="modal"
+                data-bs-target="#persediaan-modal-convert-pdf"
+                style="color: white; background-color: rgb(236, 71, 17)"
+              >
+                <div class="tooltip-bottom-text">pdf-inventory</div>
+                <i class="fa-solid fa-file-pdf fs-4"></i>
+              </button>
+              <!-- delete || cuci gudang -->
+              <button
+                type="button"
+                class="btn btn-danger text-white tooltip-bottom-container"
+                id="persediaan-delete-all"
+                data-bs-toggle="modal"
+                data-bs-target="#persediaanDeleteAllModal"
+              >
+                <div class="tooltip-bottom-text">delete-inventory</div>
+                <i class="fa-solid fa-trash fs-5"></i>
+              </button>
+              <!-- refresh -->
+              <button
+                id="persediaan-refresh"
+                type="button"
+                class="btn btn-secondary tooltip-bottom-container"
+              >
+                <div class="tooltip-bottom-text">refresh-inventory</div>
+                <i class="fa-solid fa-arrows-rotate fs-5"></i>
+              </button>
+            </div>
+            <!-- section succes after action crud persediaan -->
+            <div id="section-alert"></div>
+            <!-- for limit & search-->
+            <div class="d-flex gap-2 mb-3" id="persediaanLimitSearch">
+              <!-- limit -->
+              <select
+                class="form-select py-2 w-auto"
+                aria-label="Default select example"
+                id="persediaan-limit"
+              >
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+              </select>
+              <!-- search -->
+              <div class="input-group" style="width: 580px">
                 <input
-                  type="date"
+                  type="text"
                   class="form-control py-2"
-                  id="persediaan-start-date"
-                  style="width: 300px"
+                  placeholder="masukkan keyword persediaan..."
+                  id="persediaan-search"
                 />
                 <span
-                  class="text-center align-content-center p-2 bg-body-secondary"
-                  >s/d</span
+                  id="persediaan-search"
+                  class="input-group-text text-white"
+                  style="background-color: #3b82f6"
+                  >Search</span
                 >
-                <input
-                  type="date"
-                  class="form-control py-2"
-                  id="persediaan-end-date"
-                  style="width: 300px"
-                />
-                <button
-                  class="btn btn-primary rounded-end-2"
-                  id="persediaan-date-search"
-                >
-                  search
-                </button>
               </div>
-              <!-- section list date with misc -->
-              <div
-                id="persediaan-date-all-search"
-                class="input-group gap-2"
-                style="width: max-content"
-              ></div>
-              <!-- section sum -->
-              <div id="persediaan-sum-section" class="ms-3"></div>
-              <!-- table persediaan  -->
-              <div class="py-2" id="persediaan-scroll-byme">
-                <table class="table table-striped" style="table-layout: fixed">
-                  <thead>
-                    <tr>
-                      <!-- id -->
-                      <th class="text-center text-nowrap" style="width: 100px">
-                        #
-                      </th>
-                      <!-- day / date -->
-                      <th style="width: 260px" class="text-nowrap">
-                        Day / Date
-                      </th>
-                      <!-- hours -->
-                      <th style="width: 140px" class="text-nowrap">Hours</th>
-                      <!-- product name -->
-                      <th style="width: 190px" class="text-nowrap">
-                        Product Name
-                      </th>
-                      <!-- supplier name -->
-                      <th style="width: 190px" class="text-nowrap">
-                        Supplier Name
-                      </th>
-                      <!-- category name -->
-                      <th style="width: 190px" class="text-nowrap">
-                        Category Name
-                      </th>
-                      <!-- qty -->
-                      <th class="text-center text-nowrap" style="width: 120px">
-                        Qty
-                      </th>
-                      <!-- price -->
-                      <th class="text-center text-nowrap" style="width: 200px">
-                        Price
-                      </th>
-                      <!-- action -->
-                      <th class="text-center text-nowrap" style="width: 220px">
-                        Action
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody id="persediaan-table">
-                    <tr>
-                      <td colspan="9" class="text-center fst-italic fw-bold">
-                        loading....
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <!-- pagination persediaan -->
-              <div
-                class="w-100 d-flex justify-content-center py-2 pt-3 d-none"
-                id="persediaan-pagination"
+            </div>
+            <!-- select product,categories,supplier,user -->
+            <div class="d-flex gap-2 mb-3" id="persediaanList">
+              <!-- for product -->
+              <select
+                id="persediaan-refproduct-search"
+                class="form-select w-auto py-2"
               >
-                <div class="btn-group">
-                  <button
-                    type="button"
-                    class="btn border border-2"
-                    id="persediaan-first-page"
-                  >
-                    <i class="fa-solid fa-backward-fast fs-6"></i>
-                  </button>
-                  <button
-                    type="button"
-                    class="btn border border-2"
-                    id="persediaan-prev-page"
-                  >
-                    <i class="fa-solid fa-backward-step fs-6"></i>
-                  </button>
-                  <div id="persediaan-number-page"></div>
-                  <button
-                    type="button"
-                    class="btn border border-2"
-                    id="persediaan-next-page"
-                  >
-                    <i class="fa-solid fa-forward-step fs-6"></i>
-                  </button>
-                  <button
-                    type="button"
-                    class="btn border border-2"
-                    id="persediaan-last-page"
-                  >
-                    <i class="fa-solid fa-forward-fast fs-6"></i>
-                  </button>
-                </div>
+                <option>Choose One Of Products</option>
+              </select>
+              <!-- for supplier -->
+              <select
+                class="form-select w-auto py-2"
+                id="persediaan-refsupplier-search"
+              >
+                <option>Choose One Of Suppliers</option>
+              </select>
+              <!-- for category -->
+              <select
+                id="persediaan-refcategory-search"
+                class="form-select w-auto py-2"
+              >
+                <option>Choose One Of Categories</option>
+              </select>
+            </div>
+            <!-- date -->
+            <div class="input-group mb-3" style="width: max-content">
+              <input
+                type="date"
+                class="form-control py-2"
+                id="persediaan-start-date"
+                style="width: 300px"
+              />
+              <span
+                class="text-center align-content-center p-2 bg-body-secondary"
+                >s/d</span
+              >
+              <input
+                type="date"
+                class="form-control py-2"
+                id="persediaan-end-date"
+                style="width: 300px"
+              />
+              <button
+                class="btn btn-primary rounded-end-2"
+                id="persediaan-date-search"
+              >
+                search
+              </button>
+            </div>
+            <!-- section list date with misc -->
+            <div
+              id="persediaan-date-all-search"
+              class="input-group gap-2"
+              style="width: max-content"
+            ></div>
+            <!-- section sum -->
+            <div id="persediaan-sum-section" class="ms-3"></div>
+            <!-- table persediaan  -->
+            <div class="py-2" id="persediaan-scroll-byme">
+              <table class="table table-striped" style="table-layout: fixed">
+                <thead>
+                  <tr>
+                    <!-- id -->
+                    <th class="text-center text-nowrap" style="width: 100px">
+                      #
+                    </th>
+                    <!-- day / date -->
+                    <th style="width: 260px" class="text-nowrap">Day / Date</th>
+                    <!-- hours -->
+                    <th style="width: 140px" class="text-nowrap">Hours</th>
+                    <!-- product name -->
+                    <th style="width: 190px" class="text-nowrap">
+                      Product Name
+                    </th>
+                    <!-- supplier name -->
+                    <th style="width: 190px" class="text-nowrap">
+                      Supplier Name
+                    </th>
+                    <!-- category name -->
+                    <th style="width: 190px" class="text-nowrap">
+                      Category Name
+                    </th>
+                    <!-- qty -->
+                    <th class="text-center text-nowrap" style="width: 120px">
+                      Qty
+                    </th>
+                    <!-- price -->
+                    <th class="text-center text-nowrap" style="width: 200px">
+                      Price
+                    </th>
+                    <!-- action -->
+                    <th class="text-center text-nowrap" style="width: 220px">
+                      Action
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="persediaan-table">
+                  <tr>
+                    <td colspan="9" class="text-center fst-italic fw-bold">
+                      loading....
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- pagination persediaan -->
+            <div
+              class="w-100 d-flex justify-content-center py-2 pt-3 d-none"
+              id="persediaan-pagination"
+            >
+              <div class="btn-group">
+                <button
+                  type="button"
+                  class="btn border border-2"
+                  id="persediaan-first-page"
+                >
+                  <i class="fa-solid fa-backward-fast fs-6"></i>
+                </button>
+                <button
+                  type="button"
+                  class="btn border border-2"
+                  id="persediaan-prev-page"
+                >
+                  <i class="fa-solid fa-backward-step fs-6"></i>
+                </button>
+                <div id="persediaan-number-page"></div>
+                <button
+                  type="button"
+                  class="btn border border-2"
+                  id="persediaan-next-page"
+                >
+                  <i class="fa-solid fa-forward-step fs-6"></i>
+                </button>
+                <button
+                  type="button"
+                  class="btn border border-2"
+                  id="persediaan-last-page"
+                >
+                  <i class="fa-solid fa-forward-fast fs-6"></i>
+                </button>
               </div>
             </div>
           </div>
@@ -1185,6 +1183,116 @@
                 >
                   <i class="fa-solid fa-check me-1 fs-4"></i>
                   <span class="fs-5">Yes</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- convert-csv -->
+        <div class="modal fade" id="persediaan-modal-convert-csv" tabindex="-1">
+          <div
+            class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
+          >
+            <div class="modal-content">
+              <div class="modal-header px-3 py-2 bg-success">
+                <i class="fa-solid fa-file-excel fs-4 text-white"></i>
+                <h3 class="modal-title text-white ms-3">Excel</h3>
+              </div>
+              <div class="modal-body">
+                <!-- start date -->
+                <div class="mb-3">
+                  <label for="persediaan-start-date-csv" class="fs-4 mb-2"
+                    >Start Date :</label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="persediaan-start-date-csv"
+                  />
+                </div>
+                <!-- endate -->
+                <div class="mb-3">
+                  <label for="persediaan-end-date-csv" class="fs-4 mb-2"
+                    >End Date :</label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="persediaan-end-date-csv"
+                  />
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn bg-danger text-white"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-success"
+                  id="persediaan-convert-csv"
+                >
+                  Convert
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- convert-pdf -->
+        <div class="modal fade" id="persediaan-modal-convert-pdf" tabindex="-1">
+          <div
+            class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
+          >
+            <div class="modal-content">
+              <div
+                class="modal-header px-3 py-2"
+                style="background-color: rgb(249, 97, 46)"
+              >
+                <i class="fa-solid fa-file-pdf fs-4 text-white"></i>
+                <h3 class="modal-title text-white ms-3">PDF</h3>
+              </div>
+              <div class="modal-body">
+                <!-- start date -->
+                <div class="mb-3">
+                  <label for="persediaan-start-date-pdf" class="fs-4 mb-2"
+                    >Start Date :</label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="persediaan-start-date-pdf"
+                  />
+                </div>
+                <!-- endate -->
+                <div class="mb-3">
+                  <label for="persediaan-end-date-pdf" class="fs-4 mb-2"
+                    >End Date :</label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="persediaan-end-date-pdf"
+                  />
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn bg-danger text-white"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button
+                  type="button"
+                  class="btn"
+                  id="persediaan-convert-pdf"
+                  style="background-color: rgb(249, 97, 46); color: white"
+                >
+                  Convert
                 </button>
               </div>
             </div>

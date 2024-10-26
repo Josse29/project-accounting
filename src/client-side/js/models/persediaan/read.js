@@ -7,12 +7,13 @@ import {
   uiTBodyLoad,
 } from "./ui.js";
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
-import { reinitTooltip, uiLoad } from "../../utils/updateUi.js";
+import { reinitTooltip } from "../../utils/updateUi.js";
 import { debounce } from "../../utils/debounce.js";
 import { getAll, getPagination, getSumPrice } from "./services.js";
-// loading
-$("div#persediaan-loading").html(uiLoad());
-$("div#persediaan-done").hide();
+// debouncing
+const handleBounce = debounce(() => {
+  getInitAsync();
+}, 1000);
 // get all value
 let searchVal = $("input#persediaan-search").val();
 let limitVal = parseInt($("#persediaan-limit").val());
@@ -24,13 +25,11 @@ $("button#persediaan-refresh")
   .off("click")
   .on("click", function () {
     searchVal = "";
-    getInitAsync();
     uiInit();
+    uiTBodyLoad();
+    handleBounce();
   });
 // search
-const handleBounce = debounce(() => {
-  getInitAsync();
-}, 1000);
 $("input#persediaan-search")
   .off("keyup")
   .on("keyup", function () {
@@ -43,6 +42,7 @@ $("select#persediaan-limit")
   .off("change")
   .on("change", function () {
     limitVal = parseInt($(this).val());
+    uiInit();
     uiTBodyLoad();
     handleBounce();
   });
@@ -84,9 +84,6 @@ async function getInitAsync() {
   if (!initStatus) {
     console.error(initRes);
   }
-  // references and loading
-  $("div#persediaan-done").show();
-  $("div#persediaan-loading").html("");
 }
 async function getPersediaanPage(req) {
   const { status, response } = await getAll(req);
