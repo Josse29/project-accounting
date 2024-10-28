@@ -414,7 +414,14 @@ export const uiCard = (response) => {
     card += `
     <div class="card w-full shadow-sm">
       ${productImg}
-      <div class="card-body">
+      <div
+        class="card-body"
+        data-productid="${productId}"
+        data-productname="${productName}"
+        data-productstock="${productStock}"
+        data-productpricesell="${priceSell}"
+        data-productpricebuy="${priceBuy}"
+      >
         <h4 class="fw-bold text-truncate" id="order-productname">
           ${productName}
         </h4>
@@ -423,26 +430,10 @@ export const uiCard = (response) => {
         <div class="mt-3 d-flex justify-content-between align-items-center">
           <div id="order-create-qty"></div>
           <div>
-            <button
-              id="order-create-qty-plus"
-              class="btn btn-success"
-              data-productid=${productId}
-              data-productname="${productName}"
-              data-productstock="${productStock}"
-              data-productpricesell="${priceSell}"
-              data-productpricebuy="${priceBuy}"
-            >
+            <button id="order-create-qty-plus" class="btn btn-success">
               <i class="fa-solid fa-plus" style="font-size: 18px"></i>
             </button>
-            <button
-              class="btn btn-danger"
-              id="order-create-qty-minus"
-              data-productid="${productId}"
-              data-productname="${productName}"
-              data-productstock="${productStock}"
-              data-productpricesell="${priceSell}"
-              data-productpricebuy="${priceBuy}"
-            >
+            <button class="btn btn-danger" id="order-create-qty-minus">
               <i class="fa-solid fa-minus" style="font-size: 18px"></i>
             </button>
           </div>

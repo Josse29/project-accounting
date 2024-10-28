@@ -4,6 +4,9 @@ import {
   getSaleCustomerId,
   getSaleDate,
   getSaleDateProductId,
+  getSaleGroupCustomer,
+  getSaleGroupPerson,
+  getSaleGroupProduct,
   getSalePersonId,
   getSalePersonIdDate,
   getSaleProductId,
@@ -14,6 +17,7 @@ import {
   getSaleSumCustomerIdDate,
   getSaleSumDate,
   getSaleSumDateProductId,
+  getSaleSummary,
   getSaleSumPersonId,
   getSaleSumPersonIdDate,
   getSaleSumProductId,
@@ -305,6 +309,70 @@ export const getReport = async (req) => {
     };
     const sale = await getSaleReport(payLoad);
     return { status: true, response: sale };
+  } catch (error) {
+    return { status: false, response: error };
+  }
+};
+// 20. endpoint : api/sale/group-sales
+// method : GET
+// payload : 1.startdate, 2.endate
+// return sales by group person
+export const getByGroupSale = async (req) => {
+  try {
+    const payLoad = {
+      startDateVal: req.startDateVal,
+      endDateVal: req.endDateVal,
+    };
+    const sales = await getSaleGroupPerson(payLoad);
+    return { status: true, response: sales };
+  } catch (error) {
+    return { status: false, response: error };
+  }
+};
+// 21.endpoint : api/sale/group-product
+// method : GET
+// payload : 1.startDate,endDate
+// return sales by group product
+export const getByGroupProduct = async (req) => {
+  try {
+    const payLoad = {
+      startDateVal: req.startDateVal,
+      endDateVal: req.endDateVal,
+    };
+    const sales = await getSaleGroupProduct(payLoad);
+    return { status: true, response: sales };
+  } catch (error) {
+    return { status: false, response: error };
+  }
+};
+// 22. endpoint : api/sale/group-customer
+// method : GET
+// payload : 1.startdate, 2.endate
+// return sales by group person
+export const getByGroupCustomer = async (req) => {
+  try {
+    const payLoad = {
+      startDateVal: req.startDateVal,
+      endDateVal: req.endDateVal,
+    };
+    const sales = await getSaleGroupCustomer(payLoad);
+    return { status: true, response: sales };
+  } catch (error) {
+    return { status: false, response: error };
+  }
+};
+// 23. endpoint : api/sale/summary
+// method : GET
+// payload : 1.startDateVal, 2.endDateVal
+// return : summary qty and price
+export const getSummary = async (req) => {
+  try {
+    const payLoad = {
+      startDateVal: req.startDateVal,
+      endDateVal: req.endDateVal,
+    };
+    const summary = await getSaleSummary(payLoad);
+    return { status: true, response: summary };
   } catch (error) {
     return { status: false, response: error };
   }

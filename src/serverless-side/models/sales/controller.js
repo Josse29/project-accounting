@@ -5,6 +5,8 @@ import { createPersediaan1 } from "../persediaan/controller.js";
 import {
   queryCreateSales,
   queryDeleteSales,
+  queryGetGroupCustomer,
+  queryGetGroupPerson,
   queryGetReportSales,
   queryGetSales,
   queryGetSalesCustomerId,
@@ -16,6 +18,7 @@ import {
   queryGetSalesProductId,
   queryGetSalesRowPage,
   queryGetSalesSum,
+  queryGetSalesSum1,
   queryGetSalesSumCustomerId,
   queryGetSalesSumCustomerIdDate,
   queryGetSalesSumDate,
@@ -24,6 +27,7 @@ import {
   queryGetSalesSumPersonIdDate,
   queryGetSalesSumProductId,
   queryUpdateSales,
+  queyrGetGroupProduct,
 } from "./querysql.js";
 // create
 export const createSale = async (req) => {
@@ -44,7 +48,7 @@ export const createSale = async (req) => {
     PersediaanYMDVal: formattedDDMY,
     PersediaanHMSVal: formattedHMS,
     PersediaanQtyVal: parseFloat(ProductQtyVal * -1),
-    PersediaanTotalVal: parseFloat(ProductPriceBuy * -1),
+    PersediaanTotalVal: parseFloat(ProductQtyVal * ProductPriceBuy * -1),
     PersediaanInfoVal: `${ProductName} has been sold with qty ${parseFloat(
       ProductQtyVal
     )}`,
@@ -171,6 +175,49 @@ export const getSaleSum = () => {
         const response = result.Total_Rp;
         const totalRp = response ? response : 0;
         resolve(totalRp);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
+  });
+};
+export const getSaleGroupPerson = (req) => {
+  const { startDateVal, endDateVal } = req;
+  const query = queryGetGroupPerson(startDateVal, endDateVal);
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, res) => {
+      if (!err) {
+        resolve(res);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
+  });
+};
+export const getSaleGroupCustomer = (req) => {
+  const { startDateVal, endDateVal } = req;
+  const query = queryGetGroupCustomer(startDateVal, endDateVal);
+  console.log(query);
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, res) => {
+      if (!err) {
+        resolve(res);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
+  });
+};
+export const getSaleGroupProduct = (req) => {
+  const { startDateVal, endDateVal } = req;
+  const query = queyrGetGroupProduct(startDateVal, endDateVal);
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, res) => {
+      if (!err) {
+        resolve(res);
       }
       if (err) {
         reject(err);
@@ -406,6 +453,25 @@ export const getSaleSumCustomerIdDate = (req) => {
         const response = result.Total_Rp;
         const total = response ? response : 0;
         resolve(total);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
+  });
+};
+export const getSaleSummary = (req) => {
+  const { startDateVal, endDateVal } = req;
+  const query = queryGetSalesSum1(startDateVal, endDateVal);
+  return new Promise((resolve, reject) => {
+    db.each(query, (err, res) => {
+      if (!err) {
+        const response1 = res.Total_Rp ? res.Total_Rp : 0;
+        const response2 = res.Total_Qty ? res.Total_Qty : 0;
+        resolve({
+          totalRp: response1,
+          totalQty: response2,
+        });
       }
       if (err) {
         reject(err);

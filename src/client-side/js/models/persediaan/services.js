@@ -191,8 +191,8 @@ export const getByCategoryId = async (categoryId) => {
 export const getSumPriceDate = async (req) => {
   try {
     const payLoad = {
-      startDate: req.startDate,
-      endDate: req.endDate,
+      startDateVal: req.startDateVal,
+      endDateVal: req.endDateVal,
     };
     const summary = await getPersediaanSumPriceDate(payLoad);
     return { status: true, response: summary };
@@ -439,7 +439,7 @@ export const getByGroupSupplier = async (req) => {
 // method : GET
 // payLoad : 1.startdtate, 2.endate
 // return : summary of supplier
-export const getSumPriceSupplier = async () => {
+export const getSumPriceSupplier = async (req) => {
   try {
     const payLoad = {
       startDateVal: req.startDateVal,
@@ -527,14 +527,13 @@ export const getByProductId1 = async (productId) => {
     return { status: false, response: error };
   }
 };
-// 33. endpoint : api/persediaan/sum-qty/:productid:
+// 33. endpoint : api/persediaan/sum-qty/
 // method : GET
-//  payload : 1.productId, 2.startdate, 3.enddate
+//  payload : 1.startdate, 2.enddate
 // return : sum qty by productid
 export const getSumQtyDate = async (req) => {
   try {
     const payLoad = {
-      productId: req.productId,
       startDateVal: req.startDateVal,
       endDateVal: req.endDateVal,
     };

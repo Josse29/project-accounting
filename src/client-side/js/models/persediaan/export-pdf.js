@@ -4,11 +4,9 @@ import {
   getByGroupProduct1,
   getByGroupSupplier,
   getPDF,
-  getSumPrice,
   getSumPriceCategory,
   getSumPriceDate,
   getSumPriceSupplier,
-  getSumQty,
   getSumQtyDate,
 } from "./services.js";
 import {

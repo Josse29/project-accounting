@@ -49,23 +49,81 @@ export const queryGetSales = (searchVal, limitVal, offsetVal) => {
                SalesCustomer.UserId AS SalesCustomerId,    
                SalesCustomer.UserFullname AS SalesCustomerName
                FROM Sales `;
+  //  left join with product and user
   query += `LEFT JOIN Product ON Sales.SalesProductId = Product.ProductId `;
   query += `LEFT JOIN User AS SalesPerson ON Sales.SalesPersonId = SalesPerson.UserId `;
   query += `LEFT JOIN User AS SalesCustomer ON Sales.SalesCustomerId = SalesCustomer.UserId `;
   // with search value
   if (searchVal !== "") {
     query += `WHERE Product.ProductName LIKE '%${searchVal}%' ESCAPE '!' OR  
-                      SalesPerson.UserFullname LIKE '%${searchVal}%' ESCAPE '!' OR 
-                      SalesCustomer.UserFullname LIKE '%${searchVal}%' ESCAPE '!' `;
+                    SalesPerson.UserFullname LIKE '%${searchVal}%' ESCAPE '!' OR 
+                    SalesCustomer.UserFullname LIKE '%${searchVal}%' ESCAPE '!' `;
   }
   // with order, limit, offset
   query += `ORDER BY Sales.SalesYMD DESC, Sales.SalesHMS DESC
-              LIMIT ${limitVal}
-              OFFSET ${offsetVal}`;
+            LIMIT ${limitVal}
+            OFFSET ${offsetVal}`;
+  return query;
+};
+export const queryGetGroupPerson = (startDateVal, endDateVal) => {
+  let query = `SELECT
+               SalesPerson.UserId AS SalesPersonId,
+               SalesPerson.UserFullname,
+               SUM(Sales.SalesProductRp) AS Sales_Total
+               FROM Sales `;
+  query += `LEFT JOIN User AS SalesPerson ON Sales.SalesPersonId = SalesPerson.UserId `;
+  //  only sales person
+  query += `WHERE SalesPerson.UserPosition = 'sales' `;
+  //  with range date
+  if (startDateVal !== "" && endDateVal !== "") {
+    query += `AND Sales.SalesYMD BETWEEN '${startDateVal}' AND '${endDateVal}' `;
+  }
+  // group
+  query += `GROUP BY SalesPerson.UserId 
+            ORDER BY SalesPerson.UserFullname ASC `;
+  return query;
+};
+export const queryGetGroupCustomer = (startDateVal, endDateVal) => {
+  let query = `SELECT
+               SalesCustomer.UserId AS SalesCustomerId,
+               SalesCustomer.UserFullname,
+               SUM(Sales.SalesProductRp) AS Sales_Total
+               FROM Sales `;
+  query += `LEFT JOIN User AS SalesCustomer ON Sales.SalesCustomerId = SalesCustomer.UserId `;
+  //  only sales person
+  query += `WHERE SalesCustomer.UserPosition = 'customer' `;
+  //  with range date
+  if (startDateVal !== "" && endDateVal !== "") {
+    query += `AND Sales.SalesYMD BETWEEN '${startDateVal}' AND '${endDateVal}' `;
+  }
+  // group
+  query += `GROUP BY SalesCustomer.UserId 
+            ORDER BY SalesCustomer.UserFullname ASC `;
+  return query;
+};
+export const queyrGetGroupProduct = (startDateVal, endDateVal) => {
+  let query = `SELECT 
+               Sales.SalesId,
+               SUM(Sales.SalesProductQty) AS Sales_Qty, 
+               SUM(Sales.SalesProductRp) AS Sales_Total,
+               Product.ProductId,
+               Product.ProductName,
+               Product.ProductPriceJual
+               FROM Sales `;
+  //  left join with product and user
+  query += `LEFT JOIN Product ON Sales.SalesProductId = Product.ProductId `;
+  //  with range date
+  if (startDateVal !== "" && endDateVal !== "") {
+    query += `WHERE Sales.SalesYMD BETWEEN '${startDateVal}' AND '${endDateVal}' `;
+  }
+  // group
+  query += `GROUP BY Product.ProductId 
+            ORDER BY Product.ProductName ASC `;
   return query;
 };
 export const queryGetSalesSum = () => {
-  let query = `SELECT SUM(Sales.SalesProductRp) AS Total_Rp FROM Sales `;
+  let query = `SELECT 
+               SUM(Sales.SalesProductRp) AS Total_Rp FROM Sales `;
   return query;
 };
 // by productid
@@ -197,8 +255,8 @@ export const queryGetSalesDate = (startDateVal, endDateVal) => {
 };
 export const queryGetSalesSumDate = (startDateVal, endDateVal) => {
   let query = `SELECT 
-                 SUM(Sales.SalesProductRp) AS Total_Rp
-                 FROM Sales `;
+               SUM(Sales.SalesProductRp) AS Total_Rp
+               FROM Sales `;
   query += `WHERE Sales.SalesYMD BETWEEN '${startDateVal}' AND '${endDateVal}' `;
   return query;
 };
@@ -244,6 +302,17 @@ export const queryGetSalesSumDateProductId = (
   query += `LEFT JOIN Product ON Sales.SalesProductId = Product.ProductId `;
   query += `WHERE Sales.SalesYMD BETWEEN '${startDateVal}' AND '${endDateVal}' 
               AND Product.ProductId = ${selectedProductId}`;
+  return query;
+};
+export const queryGetSalesSum1 = (startDateVal, endDateVal) => {
+  let query = `SELECT 
+               SUM(Sales.SalesProductRp) AS Total_Rp,
+               SUM(Sales.SalesProductQty) AS Total_Qty
+               FROM Sales `;
+  query += `LEFT JOIN Product ON Sales.SalesProductId = Product.ProductId `;
+  if (startDateVal !== "" && endDateVal !== "") {
+    query += `WHERE Sales.SalesYMD BETWEEN '${startDateVal}' AND '${endDateVal}' `;
+  }
   return query;
 };
 export const queryGetSalesPersonIdDate = (

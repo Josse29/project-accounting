@@ -41,16 +41,17 @@
               <h3>Table-Sales</h3>
               <h6 class="hari-tanggal-tahun">Jumat, 17-05-2024</h6>
               <div class="d-flex gap-1">
-                <h6 class="jam">12:00 :</h6>
-                <h6 class="menit">r</h6>
-                <h6 class="detik">s</h6>
+                <h6 class="jam">H</h6>
+                <h6 class="menit">M</h6>
+                <h6 class="detik">S</h6>
               </div>
             </div>
             <!-- tabel sales -->
-            <div>
-              <table class="table table-striped">
+            <div class="mb-3">
+              <table class="table table-striped" style="width: auto">
                 <thead>
                   <tr>
+                    <th>No</th>
                     <th>Sales</th>
                     <th>Product</th>
                     <th>Price</th>
@@ -59,7 +60,29 @@
                   </tr>
                 </thead>
                 <tbody id="sales-data"></tbody>
+                <tfoot>
+                  <tr>
+                    <th colspan="4">Total</th>
+                    <th id="total-qty">0</th>
+                    <th id="total-rp">0</th>
+                  </tr>
+                </tfoot>
               </table>
+            </div>
+            <!-- tabel sales by group sales -->
+            <div style="width: max-content" class="mb-3">
+              <h5 class="fw-bold">Summary of Sales</h5>
+              <table class="table table-striped" id="1"></table>
+            </div>
+            <!-- tabel sales by group product -->
+            <div style="width: max-content" class="mb-3">
+              <h5 class="fw-bold">Summary of Product</h5>
+              <table class="table table-striped" id="2"></table>
+            </div>
+            <!-- tabel sales by group Customer -->
+            <div style="width: max-content" class="mb-3">
+              <h5 class="fw-bold">Summary of Customer</h5>
+              <table class="table table-striped" id="3"></table>
             </div>
           </div>
         </div>
@@ -82,10 +105,19 @@
     <script src="./../require/index.js"></script>
     <script type="module" src="./../js/utils/updateUi.js"></script>
     <script>
-      ipcRenderer.on("tables:sales", (e, tbody, filePath) => {
-        $("tbody#sales-data").html(tbody);
-        ipcRenderer.send("create:pdf-sales", filePath);
-      });
+      ipcRenderer.on(
+        "tables:sales",
+        (e, tbody, tbody1, tbody2, tbody3, summary, filePath) => {
+          $("tbody#sales-data").html(tbody);
+          $("table#1").html(tbody1);
+          $("table#2").html(tbody2);
+          $("table#3").html(tbody3);
+          const { totalQty, totalRp } = summary;
+          $("#total-qty").text(totalQty);
+          $("#total-rp").text(totalRp);
+          ipcRenderer.send("create:pdf-sales", filePath);
+        }
+      );
     </script>
   </body>
 </html>

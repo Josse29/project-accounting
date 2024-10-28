@@ -8,17 +8,19 @@ $("div#product-refpersediaan-read")
   .on("click", "button#order-create-qty-plus", function () {
     // get from storage
     const cartArray = getStorageCart();
-    // get all data
-    const productId = $(this).data("productid");
-    const productName = $(this).data("productname");
-    const productStock = $(this).data("productstock");
-    const productPriceSell = disFormatRupiah1($(this).data("productpricesell"));
-    const productPriceBuy = disFormatRupiah1($(this).data("productpricebuy"));
     // find dom
-    const productCard = $(`button[data-productid=${productId}]`).closest(
-      ".card-body"
-    );
+    const productCard = $(this).closest("div.card-body");
+    console.log(productCard);
+    // get all data
+    const productData = productCard.data;
+    console.log(productData);
+    const productId = productData.productid;
+    const productName = productData.productname;
+    const productStock = productData.productstock;
+    const productPriceSell = disFormatRupiah1(productData.productpricesell);
+    const productPriceBuy = disFormatRupiah1(productData.productpricebuy);
     const btnPlus = productCard.find("button#order-create-qty-plus");
+    console.log(btnPlus);
     const btnMin = productCard.find("button#order-create-qty-minus");
     // find index id
     const productIndex = cartArray.findIndex((e) => {

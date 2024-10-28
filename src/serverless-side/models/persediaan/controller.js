@@ -210,8 +210,8 @@ export const getPersediaanSumQty = (valPersediaanProductId) => {
   });
 };
 export const getPersediaanSumQtyDate = (req) => {
-  const { productId, startDateVal, endDateVal } = req;
-  const query = queryGetPersediaanQtyDate(productId, startDateVal, endDateVal);
+  const { startDateVal, endDateVal } = req;
+  const query = queryGetPersediaanQtyDate(startDateVal, endDateVal);
   return new Promise((resolve, reject) => {
     db.each(query, (err, res) => {
       if (!err) {
@@ -379,8 +379,8 @@ export const getPersediaanDate = (req) => {
   });
 };
 export const getPersediaanSumPriceDate = (req) => {
-  const { startDate, endDate } = req;
-  const query = queryGetPersediaanDateSUM(startDate, endDate);
+  const { startDateVal, endDateVal } = req;
+  const query = queryGetPersediaanDateSUM(startDateVal, endDateVal);
   return new Promise((resolve, reject) => {
     db.each(query, (err, res) => {
       if (!err) {
@@ -590,8 +590,8 @@ export const getPersediaanSumPriceSupplierId = (supplierId) => {
   });
 };
 export const getPersediaanSumPriceCategory = (req) => {
-  const { startDate, endDateVal } = req;
-  const query = queryGetPersediaanCategorySum(startDate, endDateVal);
+  const { startDateVal, endDateVal } = req;
+  const query = queryGetPersediaanCategorySum(startDateVal, endDateVal);
   return new Promise((resolve, reject) => {
     db.each(query, (err, res) => {
       if (!err) {

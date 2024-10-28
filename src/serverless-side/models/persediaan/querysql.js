@@ -287,10 +287,10 @@ export const queryGetPersediaanCategoryGroup = (startDateVal, endDateVal) => {
                FROM Persediaan
                LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
                LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
-               WHERE Category.CategoryId IS NOT NULL AND `;
+               WHERE Category.CategoryId IS NOT NULL `;
   // with between date
   if (startDateVal !== "" && endDateVal !== "") {
-    query += `Persediaan.PersediaanDDMY BETWEEN '${startDateVal}' AND '${endDateVal}' `;
+    query += `AND Persediaan.PersediaanDDMY BETWEEN '${startDateVal}' AND '${endDateVal}' `;
   }
   // grouping
   query += `GROUP BY Category.CategoryId 
@@ -353,13 +353,13 @@ export const queryGetPersediaanSupplierGroup = (startDateVal, endDateVal) => {
                FROM Persediaan
                LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
                LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId 
-               WHERE Supplier.SupplierId IS NOT NULL AND `;
+               WHERE Supplier.SupplierId IS NOT NULL `;
   if (startDateVal !== "" && endDateVal !== "") {
-    query += `Persediaan.PersediaanDDMY BETWEEN '${startDateVal}' AND '${endDateVal}' `;
+    query += `AND Persediaan.PersediaanDDMY BETWEEN '${startDateVal}' AND '${endDateVal}' `;
   }
   // group
   query += `GROUP BY Supplier.SupplierId 
-            ORDER Supplier.SupplierName ASC `;
+            ORDER BY Supplier.SupplierName ASC `;
   return query;
 };
 export const queryGetPersediaanDateSupplierId = (
@@ -442,19 +442,14 @@ export const queryGetPersediaanQty = (valPersediaanProductId) => {
   }
   return query;
 };
-export const queryGetPersediaanQtyDate = (
-  productId,
-  startDateVal,
-  endDateVal
-) => {
+export const queryGetPersediaanQtyDate = (startDateVal, endDateVal) => {
   let query = `SELECT
                PersediaanProductId,
                SUM(PersediaanQty) AS TotalQty
                FROM Persediaan `;
-  //  with product id and date
-  query += `WHERE PersediaanProductId = ${productId} `;
+  //  with range date
   if (startDateVal !== "" && endDateVal !== "") {
-    query += `AND Persediaan.PersediaanDDMY BETWEEN '${startDateVal}' AND '${endDateVal}' `;
+    query += `WHERE Persediaan.PersediaanDDMY BETWEEN '${startDateVal}' AND '${endDateVal}' `;
   }
   return query;
 };
@@ -501,16 +496,16 @@ export const queryGetPersediaanRpSumCategoryId = (valCategoryId) => {
   query += `WHERE Category.CategoryId = ${valCategoryId}`;
   return query;
 };
-export const queryGetPersediaanCategorySum = () => {
+export const queryGetPersediaanCategorySum = (startDateVal, endDateVal) => {
   let query = `SELECT
                SUM(Persediaan.PersediaanRp) AS TotalRp
                FROM Persediaan
                LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
                LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
-               WHERE Category.CategoryId IS NOT NULL AND `;
+               WHERE Category.CategoryId IS NOT NULL `;
   //  with date
   if (startDateVal !== "" && endDateVal !== "") {
-    query += `Persediaan.PersediaanDDMY BETWEEN  '${startDateVal}' AND '${endDateVal}' `;
+    query += `AND Persediaan.PersediaanDDMY BETWEEN  '${startDateVal}' AND '${endDateVal}' `;
   }
   return query;
 };
@@ -520,9 +515,10 @@ export const queryGetPersediaanSupplierSum = (startDateVal, endDateVal) => {
                FROM Persediaan
                LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
                LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId
-               WHERE Supplier.SupplierId IS NOT NULL AND `;
+               WHERE Supplier.SupplierId IS NOT NULL `;
+  //  with range date
   if (startDateVal !== "" && endDateVal !== "") {
-    query += `Persediaan.PersediaanDDMY BETWEEN  '${startDateVal}' AND '${endDateVal}' `;
+    query += `AND Persediaan.PersediaanDDMY BETWEEN  '${startDateVal}' AND '${endDateVal}' `;
   }
   return query;
 };

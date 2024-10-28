@@ -51,6 +51,9 @@ ipcMain.on("load:dashboard-page", () => {
   dashboardPage.webContents.on("did-finish-load", () => {
     loginPage.hide();
   });
+  dashboardPage.on("close", (event) => {
+    app.quit();
+  });
   if (!isDashboardListenerSet) {
     // minimize page
     ipcMain.on("minimize-window:dashboard-page", () => {
@@ -383,42 +386,53 @@ ipcMain.on(
 );
 let salesPDF;
 let isSalesPDF = false;
-ipcMain.on("pdf:sales", (event, tbodySales, file_path) => {
-  salesPDF = new BrowserWindow({
-    webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
-    },
-    // frame: false,
-  });
-  remote.enable(salesPDF.webContents);
-  salesPDF.loadFile("./src/client-side/pdf/sales.html");
-  salesPDF.webContents.on("dom-ready", () => {
-    salesPDF.webContents.send("tables:sales", tbodySales, file_path);
-  });
-  if (!isSalesPDF) {
-    ipcMain.on("create:pdf-sales", (event, file_path) => {
-      salesPDF.webContents
-        .printToPDF({
-          marginsType: 0,
-          printBackground: true,
-          printSelectionOnly: false,
-          landscape: true,
-        })
-        .then((data) => {
-          fs.writeFile(file_path, data, (err) => {
-            if (err) throw err;
-            salesPDF.close();
-            orderPage.webContents.send("success:pdf-sales", file_path);
-            isSalesPDF = true;
-          });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+ipcMain.on(
+  "pdf:sales",
+  (event, tbodySales, tbody1, tbody2, tbody3, summary, file_path) => {
+    salesPDF = new BrowserWindow({
+      webPreferences: {
+        nodeIntegration: true,
+        contextIsolation: false,
+      },
+      // frame: false,
     });
+    remote.enable(salesPDF.webContents);
+    salesPDF.loadFile("./src/client-side/pdf/sales.html");
+    salesPDF.webContents.on("dom-ready", () => {
+      salesPDF.webContents.send(
+        "tables:sales",
+        tbodySales,
+        tbody1,
+        tbody2,
+        tbody3,
+        summary,
+        file_path
+      );
+    });
+    if (!isSalesPDF) {
+      ipcMain.on("create:pdf-sales", (event, file_path) => {
+        salesPDF.webContents
+          .printToPDF({
+            marginsType: 0,
+            printBackground: true,
+            printSelectionOnly: false,
+            landscape: true,
+          })
+          .then((data) => {
+            fs.writeFile(file_path, data, (err) => {
+              if (err) throw err;
+              salesPDF.close();
+              orderPage.webContents.send("success:pdf-sales", file_path);
+              isSalesPDF = true;
+            });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      });
+    }
   }
-});
+);
 // read-apps
 app.whenReady().then(() => {
   createLoginPage();
