@@ -12,32 +12,30 @@ $("div#product-refpersediaan-read")
     // get from storage
     const cartArray = getStorageCart();
     // get all data
-    const productId = $(this).data("productid");
+    const product = $(this).closest("div.card-body");
+    const productId = product[0].dataset.productid;
     // find product index
     const productIndex = cartArray.findIndex((e) => {
       return e.ProductId === productId;
     });
     // find dom
-    const productCard = $(`button[data-productid=${productId}]`).closest(
-      ".card-body"
-    );
-    const btnMin = productCard.find("button#order-create-qty-minus");
-    const btnPlus = productCard.find("button#order-create-qty-plus");
+    const btnMin = product.find("button#order-create-qty-minus")[0];
+    const btnPlus = product.find("button#order-create-qty-plus")[0];
     // if it already exist in storage, justupdate qty--
     if (productIndex !== -1) {
       let cartProductI = cartArray[productIndex];
       if (cartProductI.ProductQty > 0) {
         cartProductI.ProductQty--;
-        btnPlus.removeClass("unsufficient");
+        btnPlus.classList.remove("unsufficient");
       }
       if (cartProductI.ProductQty <= 0) {
-        btnMin.addClass("unsufficient");
+        btnMin.classList.add("unsufficient");
       }
     }
     // if its'not already exist in storage, justaddclass btn
     if (productIndex === -1) {
-      btnPlus.removeClass("unsufficient");
-      btnMin.addClass("unsufficient");
+      btnPlus.classList.remove("unsufficient");
+      btnMin.classList.add("unsufficient");
     }
     // save to storage
     setStorageCart(cartArray);

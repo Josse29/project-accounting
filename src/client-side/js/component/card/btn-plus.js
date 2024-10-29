@@ -10,18 +10,15 @@ $("div#product-refpersediaan-read")
     const cartArray = getStorageCart();
     // find dom
     const productCard = $(this).closest("div.card-body");
-    console.log(productCard);
     // get all data
-    const productData = productCard.data;
-    console.log(productData);
+    const productData = productCard[0].dataset;
     const productId = productData.productid;
     const productName = productData.productname;
     const productStock = productData.productstock;
     const productPriceSell = disFormatRupiah1(productData.productpricesell);
     const productPriceBuy = disFormatRupiah1(productData.productpricebuy);
-    const btnPlus = productCard.find("button#order-create-qty-plus");
-    console.log(btnPlus);
-    const btnMin = productCard.find("button#order-create-qty-minus");
+    const btnPlus = productCard.find("button#order-create-qty-plus")[0];
+    const btnMin = productCard.find("button#order-create-qty-minus")[0];
     // find index id
     const productIndex = cartArray.findIndex((e) => {
       return e.ProductId === productId;
@@ -32,11 +29,11 @@ $("div#product-refpersediaan-read")
       // it enough from stock
       if (cartProductI.ProductQty < productStock) {
         cartProductI.ProductQty++;
-        btnMin.removeClass("unsufficient");
+        btnMin.classList.remove("unsufficient");
       }
       // it exceed from stock
       if (cartProductI.ProductQty >= productStock) {
-        btnPlus.addClass("unsufficient");
+        btnPlus.classList.add("unsufficient");
       }
     }
     // if it isn't already exist in storage, push to storage
@@ -52,7 +49,7 @@ $("div#product-refpersediaan-read")
       cartArray.push(newObject);
       // sort array by name
       cartArray.sort((a, b) => a.ProductName.localeCompare(b.ProductName));
-      btnMin.removeClass("unsufficient");
+      btnMin.classList.remove("unsufficient");
     }
     // save to storage
     setStorageCart(cartArray);
