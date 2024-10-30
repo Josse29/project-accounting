@@ -6,8 +6,8 @@ import {
   uiBtnPageActive,
   uiLoad,
   uiReset,
-  uiTBody,
-  uiTrEmpty,
+  uiTbody,
+  uiTbodyEmpty,
 } from "./ui.js";
 
 // Debounced event handler
@@ -52,57 +52,58 @@ $("button#sales-read-reset")
     handleDebounce();
   });
 
-// fetch init
+// function
 getInit();
+// 1. get total page and row
 async function getInit() {
   const req = {
     searchVal,
     limitVal,
     offsetVal,
   };
-  //1.total sum
-  const totalSales = await getSum();
-  const sumStatus = totalSales.status;
-  const resSum = totalSales.response;
-  if (sumStatus) {
-    const currency = formatRupiah2(resSum);
-    $("div#sales-total-sum").text(currency);
-  }
-  if (!sumStatus) {
-    console.error(resSum);
-  }
-  // 2.row page
-  const init = await getRowPage(req);
-  const initStatus = init.status;
-  const totalPage = init.response.totalPage;
-  const totalRow = init.response.totalRow;
-  if (initStatus) {
-    if (totalRow >= 1) {
+  const { status, response } = await getRowPage(req);
+  const { totalPage, totalRow } = response;
+  if (status) {
+    const existed = totalRow >= 1;
+    if (existed) {
+      await getSummary();
       await getPage(req);
       handlePagination(totalPage);
       $("div#sales-page-container").removeClass("d-none");
     }
-    if (totalRow < 1) {
-      uiTrEmpty(searchVal);
+    if (!existed) {
+      uiTbodyEmpty(searchVal);
       $("div#sales-page-container").addClass("d-none");
+      $("div#sales-total-sum").text(`Rp 0.00,-`);
     }
   }
-  if (!initStatus) {
-    console.log(init.response);
+  if (!status) {
+    console.error(response);
   }
 }
-async function getPage(req) {
-  const sales = await getLimitOffset(req);
-  const status = sales.status;
-  const response = sales.response;
+// 2. get summary
+async function getSummary() {
+  const { status, response } = await getSum();
   if (status) {
-    uiTBody(response);
+    const currency = formatRupiah2(response);
+    $("div#sales-total-sum").text(currency);
+  }
+  if (!status) {
+    console.error(response);
+  }
+}
+// 3. get sales by limit and offset
+async function getPage(req) {
+  const { status, response } = await getLimitOffset(req);
+  if (status) {
+    uiTbody(response);
     uiBtnPageActive(req.offsetVal);
   }
   if (!status) {
     console.error(response);
   }
 }
+// 4.handle pagination
 function handlePagination(totalPage) {
   uiBtnPage(totalPage);
   // first page
@@ -178,54 +179,55 @@ export const getSalesAgain = async () => {
   const searchVal = "";
   const limitVal = 3;
   const offsetVal = 1;
+
+  // 1. get total page and row
   const req = {
     searchVal,
     limitVal,
     offsetVal,
   };
-  // 1.total sum
-  const totalSales = await getSum();
-  const sumStatus = totalSales.status;
-  const resSum = totalSales.response;
-  if (sumStatus) {
-    const currency = formatRupiah2(resSum);
-    $("div#sales-total-sum").text(currency);
-  }
-  if (!sumStatus) {
-    console.error(resSum);
-  }
-  // 2. row page
-  const init = await getRowPage(req);
-  const initStatus = init.status;
-  const totalPage = init.response.totalPage;
-  const totalRow = init.response.totalRow;
-  if (initStatus) {
-    if (totalRow >= 1) {
+  const { status, response } = await getRowPage(req);
+  const { totalPage, totalRow } = response;
+  if (status) {
+    const existed = totalRow >= 1;
+    if (existed) {
+      await getSummary();
       await getPage(req);
       handlePagination(totalPage);
       $("div#sales-page-container").removeClass("d-none");
     }
-    if (totalRow < 1) {
-      uiTrEmpty(req.searchVal);
-      $("tbody#sales-read-table").html(empty);
+    if (!existed) {
+      uiTbodyEmpty(searchVal);
       $("div#sales-page-container").addClass("d-none");
+      $("div#sales-total-sum").text(`Rp 0.00,-`);
     }
   }
-  if (!initStatus) {
-    console.log(init.response);
+  if (!status) {
+    console.error(response);
   }
-  async function getPage(req) {
-    const sales = await getLimitOffset(req);
-    const status = sales.status;
-    const response = sales.response;
+  // 2. get summary
+  async function getSummary() {
+    const { status, response } = await getSum();
     if (status) {
-      uiTBody(response);
+      const currency = formatRupiah2(response);
+      $("div#sales-total-sum").text(currency);
+    }
+    if (!status) {
+      console.error(response);
+    }
+  }
+  // 3. get sales by limit and offset
+  async function getPage(req) {
+    const { status, response } = await getLimitOffset(req);
+    if (status) {
+      uiTbody(response);
       uiBtnPageActive(req.offsetVal);
     }
     if (!status) {
       console.error(response);
     }
   }
+  // 4.handle pagination
   function handlePagination(totalPage) {
     uiBtnPage(totalPage);
     // first page

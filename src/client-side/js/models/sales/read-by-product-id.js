@@ -1,8 +1,9 @@
+import { getByProductId, getSumProductId } from "./services.js";
+import { uiTbody, uiTbodyEmpty } from "./ui.js";
 import { listProductRefSalesRead } from "../products/list.js";
 import { formatRupiah2 } from "./../../utils/formatRupiah.js";
-import { uiTBody, uiTrEmpty } from "./ui.js";
 import { animateFade } from "../../utils/updateUi.js";
-import { getByProductId, getSumProductId } from "./services.js";
+
 listProductRefSalesRead();
 $("select#sales-read-productid")
   .off("change")
@@ -41,10 +42,10 @@ $("select#sales-read-productid")
     if (salesStatus) {
       const existed = salesRes.length >= 1;
       if (existed) {
-        uiTBody(salesRes);
+        uiTbody(salesRes);
       }
       if (!existed) {
-        uiTrEmpty(productName);
+        uiTbodyEmpty(productName);
       }
     }
     if (!salesStatus) {

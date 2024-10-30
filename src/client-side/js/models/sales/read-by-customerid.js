@@ -1,7 +1,7 @@
+import { getByCustomerId, getSumCustomerId } from "./services.js";
+import { uiTbody, uiTbodyEmpty } from "./ui.js";
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import { animateFade } from "../../utils/updateUi.js";
-import { getByCustomerId, getSumCustomerId } from "./services.js";
-import { uiTBody, uiTrEmpty } from "./ui.js";
 
 $("select#sales-read-customerid")
   .off("change")
@@ -30,10 +30,10 @@ $("select#sales-read-customerid")
     if (status) {
       const existed = response.length >= 1;
       if (existed) {
-        uiTBody(response);
+        uiTbody(response);
       }
       if (!existed) {
-        uiTrEmpty(selectedText);
+        uiTbodyEmpty(selectedText);
       }
     }
     if (!status) {

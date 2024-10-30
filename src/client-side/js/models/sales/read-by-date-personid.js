@@ -1,8 +1,9 @@
+import { getByDatePerson, getSumByDatePerson } from "./services.js";
+import { uiTbody, uiTbodyEmpty } from "./ui.js";
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import { formatWaktuIndo } from "../../utils/formatWaktu.js";
 import { animateFade } from "../../utils/updateUi.js";
-import { getByDatePerson, getSumByDatePerson } from "./services.js";
-import { uiTBody, uiTrEmpty } from "./ui.js";
+
 // by date and user
 $("select#sales-read-personid-date")
   .off("change")
@@ -43,10 +44,11 @@ $("select#sales-read-personid-date")
     if (status) {
       const existed = response.length >= 1;
       if (existed) {
-        uiTBody(response);
+        uiTbody(response);
       }
       if (!existed) {
-        uiTrEmpty(`${selectedText} , ${date}`);
+        const txt = `${selectedText} , ${date}`;
+        uiTbodyEmpty(txt);
       }
     }
     if (!status) {

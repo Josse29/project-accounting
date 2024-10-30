@@ -208,7 +208,7 @@ export const uiTbodyEmpty = (searchVal) => {
     </tr>`;
   $("tbody#persediaan-table").html(tr);
 };
-export const uiTBodyLoad = () => {
+export const uiTbodyLoad = () => {
   const tr = `<tr>
                 <td colspan="10" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">loading...</td>
               </tr>`;
@@ -449,7 +449,11 @@ export const uiCardEmpty = (searchVal) => {
   if (searchVal !== "") {
     search = `${searchVal} - not found....`;
   }
-  const emptyP = `<p class="d-block fs-4 fst-italic text-center">${search}</p>`;
+  const emptyP = `
+  <div class="d-flex justify-content-center align-items-center" style="height:400px;">
+      <p class="d-block fs-4 fst-italic text-capitalize fw-bold">${search}</p>
+  </div>
+  `;
   $("div#product-refpersediaan-read").html(emptyP);
 };
 export const uiBtnPage1 = (totalPage) => {

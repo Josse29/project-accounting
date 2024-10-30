@@ -319,7 +319,7 @@
             style="background-color: #273eec"
           >
             <div>Sales</div>
-            <div id="sales-total-sum"></div>
+            <div id="sales-total-sum">Rp 0.00,-</div>
           </div>
           <div class="card-body overflow-auto" id="sales-card-body">
             <div id="sales-success-container"></div>
@@ -332,7 +332,7 @@
                 data-bs-target="#modal-sales-convert-csv"
               >
                 <i class="fa-solid fa-file-excel fs-5"></i>
-                <span>Excel</span>
+                <span class="fs-6 ms-1">Excel</span>
               </button>
               <!-- pdf -->
               <button
@@ -341,12 +341,16 @@
                 data-bs-target="#modal-sales-convert-pdf"
               >
                 <i class="fa-solid fa-file-pdf fs-5"></i>
-                <span>PDF</span>
+                <span class="fs-6 ms-1">PDF</span>
               </button>
               <!-- delete all -->
-              <button class="btn btn-danger d-flex align-items-center gap-2">
+              <button
+                class="btn btn-danger d-flex align-items-center gap-2"
+                data-bs-toggle="modal"
+                data-bs-target="#modal-sales-delete-all"
+              >
                 <i class="fa-solid fa-trash fs-5"></i>
-                <span>Delete</span>
+                <span class="fs-6 ms-1">Delete</span>
               </button>
               <!-- refresh -->
               <button
@@ -354,7 +358,7 @@
                 id="sales-read-reset"
               >
                 <i class="fa-solid fa-arrows-rotate fs-5"></i>
-                <span>Refresh</span>
+                <span class="fs-6 ms-1">Refresh</span>
               </button>
             </div>
             <!-- limit, search-->
@@ -761,6 +765,45 @@
             </button>
             <button type="button" class="btn btn-primary" id="sale-convert-pdf">
               Convert
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- sales-delete -->
+    <div class="modal fade" id="modal-sales-delete-all" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header bg-danger">
+            <div
+              class="modal-title fs-2 text-white text-capitalize d-flex justify-content-between w-100"
+            >
+              <div>Delete All</div>
+            </div>
+          </div>
+          <div class="modal-body text-center">
+            <i
+              class="fa-solid fa-triangle-exclamation text-danger"
+              style="font-size: 120px"
+            ></i>
+            <p class="my-3 lh-base fs-4 fw-semibold">
+              Are you sure to delete all data sales ?
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button
+              class="btn btn-secondary d-flex align-items-center gap-3"
+              data-bs-dismiss="modal"
+            >
+              <i class="fa-solid fa-times fs-4"></i>
+              <span class="fs-5">No</span>
+            </button>
+            <button
+              class="btn btn-danger d-flex align-items-center gap-2"
+              id="sale-delete-all"
+            >
+              <i class="fa-solid fa-check me-1 fs-4"></i>
+              <span class="fs-5">Yes</span>
             </button>
           </div>
         </div>

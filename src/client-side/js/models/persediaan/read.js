@@ -4,29 +4,30 @@ import {
   uiInit,
   uiTbody,
   uiTbodyEmpty,
-  uiTBodyLoad,
+  uiTbodyLoad,
 } from "./ui.js";
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import { reinitTooltip } from "../../utils/updateUi.js";
 import { debounce } from "../../utils/debounce.js";
 import { getAll, getPagination, getSumPrice } from "./services.js";
+
 // debouncing
 const handleBounce = debounce(() => {
   getInitAsync();
 }, 1000);
+
 // get all value
 let searchVal = $("input#persediaan-search").val();
 let limitVal = parseInt($("#persediaan-limit").val());
 let offsetVal = 1;
-// get init
-getInitAsync();
+
 // refresh
 $("button#persediaan-refresh")
   .off("click")
   .on("click", function () {
     searchVal = "";
     uiInit();
-    uiTBodyLoad();
+    uiTbodyLoad();
     handleBounce();
   });
 // search
@@ -34,7 +35,7 @@ $("input#persediaan-search")
   .off("keyup")
   .on("keyup", function () {
     searchVal = $(this).val();
-    uiTBodyLoad();
+    uiTbodyLoad();
     handleBounce();
   });
 // limit
@@ -43,48 +44,53 @@ $("select#persediaan-limit")
   .on("change", function () {
     limitVal = parseInt($(this).val());
     uiInit();
-    uiTBodyLoad();
+    uiTbodyLoad();
     handleBounce();
   });
+
+// function
+getInitAsync();
+// 1. get total page and row
 async function getInitAsync() {
-  // 1.sum rupiah persediaan
-  const totalPrice = await getSumPrice();
-  const totalPriceRes = totalPrice.response;
-  const totalPriceStatus = totalPrice.status;
-  if (totalPriceStatus) {
-    const txt = formatRupiah2(totalPriceRes);
-    $("#persediaan-detail-totalrp").text(txt);
-  }
-  if (!totalPriceStatus) {
-    console.error(totalPriceRes);
-  }
-  // 2.get total row and page
   const req = {
     searchVal,
     limitVal,
     offsetVal,
   };
-  const init = await getPagination(req);
-  const initStatus = init.status;
-  const initRes = init.response;
-  if (initStatus) {
-    const { totalRow, totalPage } = initRes;
+  const { status, response } = await getPagination(req);
+  if (status) {
+    const { totalRow, totalPage } = response;
     // if it exist inventory
-    if (totalRow >= 1) {
+    const existed = totalRow >= 1;
+    if (existed) {
+      await getSummary();
       await getPersediaanPage(req);
       handlePagination(totalPage);
       $("#persediaan-pagination").removeClass("d-none");
     }
     // if it doesn't exist inventory
-    if (totalRow < 1) {
+    if (!existed) {
       uiTbodyEmpty(searchVal);
       $("#persediaan-pagination").addClass("d-none");
+      $("#persediaan-detail-totalrp").text(`Rp 0.00,-`);
     }
   }
-  if (!initStatus) {
-    console.error(initRes);
+  if (!status) {
+    console.error(response);
   }
 }
+// 2. get summary
+async function getSummary() {
+  const { status, response } = await getSumPrice();
+  if (status) {
+    const txt = formatRupiah2(response);
+    $("#persediaan-detail-totalrp").text(txt);
+  }
+  if (!status) {
+    console.error(response);
+  }
+}
+// 3. get persediaan by limit offset
 async function getPersediaanPage(req) {
   const { status, response } = await getAll(req);
   if (status) {
@@ -96,6 +102,7 @@ async function getPersediaanPage(req) {
     console.error(response);
   }
 }
+// 4. pagination
 function handlePagination(totalPage) {
   // for pagination
   uiBtnPage(totalPage);
@@ -166,46 +173,56 @@ function handlePagination(totalPage) {
       await getPersediaanPage(req);
     });
 }
+
 export const getPersediaanAgain = async () => {
   // reset ui
   uiInit();
-  // 1.sum rupiah persediaan
-  const totalPrice = await getSumPrice();
-  const totalPriceRes = totalPrice.response;
-  const totalPriceStatus = totalPrice.status;
-  if (totalPriceStatus) {
-    const txt = formatRupiah2(totalPriceRes);
-    $("#persediaan-detail-totalrp").text(txt);
-  }
-  if (!totalPriceStatus) {
-    console.error(totalPriceRes);
-  }
-  // 2.get total row and page
+
+  let searchVal = "";
+  let limitVal = parseInt($("#persediaan-limit").val());
+  let offsetVal = 1;
   const req = {
     searchVal,
     limitVal,
     offsetVal,
   };
-  const init = await getPagination(req);
-  const initStatus = init.status;
-  const initRes = init.response;
-  if (initStatus) {
-    const { totalRow, totalPage } = initRes;
+
+  // 1. get total page and row
+  const { status, response } = await getPagination(req);
+  if (status) {
+    const { totalRow, totalPage } = response;
     // if it exist inventory
-    if (totalRow >= 1) {
+    const existed = totalRow >= 1;
+    if (existed) {
+      await getSummary();
       await getPersediaanPage(req);
       handlePagination(totalPage);
       $("#persediaan-pagination").removeClass("d-none");
     }
     // if it doesn't exist inventory
-    if (totalRow < 1) {
+    if (!existed) {
       uiTbodyEmpty(searchVal);
       $("#persediaan-pagination").addClass("d-none");
+      $("#persediaan-detail-totalrp").text(`Rp 0.00,-`);
     }
   }
-  if (!initStatus) {
-    console.error(initRes);
+  if (!status) {
+    console.error(response);
   }
+
+  // 2. get summary
+  async function getSummary() {
+    const { status, response } = await getSumPrice();
+    if (status) {
+      const txt = formatRupiah2(response);
+      $("#persediaan-detail-totalrp").text(txt);
+    }
+    if (!status) {
+      console.error(response);
+    }
+  }
+
+  // 3. get persediaan by limit offset
   async function getPersediaanPage(req) {
     const { status, response } = await getAll(req);
     if (status) {
@@ -217,6 +234,8 @@ export const getPersediaanAgain = async () => {
       console.error(response);
     }
   }
+
+  // 4. pagination
   function handlePagination(totalPage) {
     // for pagination
     uiBtnPage(totalPage);

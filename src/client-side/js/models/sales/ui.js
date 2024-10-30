@@ -1,6 +1,6 @@
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import { formatWaktuIndo } from "../../utils/formatWaktu.js";
-export const uiTBody = (sales) => {
+export const uiTbody = (sales) => {
   let tr = ``;
   sales.forEach((el) => {
     const YMD = formatWaktuIndo(el.SalesYMD);
@@ -42,13 +42,13 @@ export const uiTBody = (sales) => {
   });
   $("tbody#sales-read-table").html(tr);
 };
-export const uiTrEmpty = (searchVal) => {
+export const uiTbodyEmpty = (searchVal) => {
   let search = `sales empty....`;
   if (searchVal !== "") {
     search = `${searchVal} - not found`;
   }
   const tr = `<tr>
-                <td class="text-center fst-italic" colspan="11">${search}</td>
+                <td class="text-center fst-italic fw-bold text-capitalize" colspan="11">${search}</td>
               </tr>`;
   $("tbody#sales-read-table").html(tr);
 };

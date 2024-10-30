@@ -454,3 +454,7 @@ export const queryDeleteSales = (req) => {
   let query = `DELETE FROM Sales WHERE SalesId = ${salesIdVal}`;
   return query;
 };
+export const queryDeleteAll = () => {
+  let query = `DELETE FROM Sales `;
+  return query;
+};

@@ -4,6 +4,7 @@ import { createCash } from "../cash/controller.js";
 import { createPersediaan1 } from "../persediaan/controller.js";
 import {
   queryCreateSales,
+  queryDeleteAll,
   queryDeleteSales,
   queryGetGroupCustomer,
   queryGetGroupPerson,
@@ -492,7 +493,7 @@ export const updateSales = (req, res) => {
   });
 };
 // delete
-export const deleteSales = (req, res) => {
+export const deleteSale = (req, res) => {
   const query = queryDeleteSales(req);
   db.run(query, (err) => {
     if (!err) {
@@ -501,5 +502,19 @@ export const deleteSales = (req, res) => {
     if (err) {
       return res(false, err);
     }
+  });
+};
+export const deleteSaleAll = () => {
+  const query = queryDeleteAll();
+  return new Promise((resolve, reject) => {
+    db.run(query, (err) => {
+      if (!err) {
+        const msg = `All of Data Sales Has been Deleted`;
+        resolve(msg);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };

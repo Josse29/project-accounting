@@ -64,8 +64,8 @@ $("button#persediaan-delete-all-yes")
   .on("click", async function () {
     const { status, response } = await deleteAll();
     if (status) {
-      uiSuccessActionPersediaan(response);
-      getPersediaanAgain();
+      uiAlertSuccess(response);
+      await getPersediaanAgain();
       $("#persediaanDeleteAllModal").modal("hide");
     }
     if (!status) {

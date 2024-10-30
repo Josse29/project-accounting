@@ -1,8 +1,9 @@
+import { getByDateCustomer, getSumByDateCustomer } from "./services.js";
+import { uiTbody, uiTbodyEmpty } from "./ui.js";
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import { formatWaktuIndo } from "../../utils/formatWaktu.js";
 import { animateFade } from "../../utils/updateUi.js";
-import { getByDateCustomer, getSumByDateCustomer } from "./services.js";
-import { uiTBody, uiTrEmpty } from "./ui.js";
+
 $("select#sales-read-customerid-date")
   .off("change")
   .on("change", async function () {
@@ -43,11 +44,11 @@ $("select#sales-read-customerid-date")
     if (status) {
       const existed = response.length >= 1;
       if (existed) {
-        uiTBody(response);
+        uiTbody(response);
       }
       if (!existed) {
-        const tr = uiTrEmpty(`${selectedText} , ${date}`);
-        $("tbody#sales-read-table").html(tr);
+        const txt = `${selectedText} , ${date}`;
+        uiTbodyEmpty(txt);
       }
     }
     if (!status) {

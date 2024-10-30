@@ -1,8 +1,8 @@
+import { getByDateProduct, getSumByDateProduct } from "./services.js";
+import { uiTbody, uiTbodyEmpty } from "./ui.js";
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import { formatWaktuIndo } from "../../utils/formatWaktu.js";
 import { animateFade } from "../../utils/updateUi.js";
-import { getByDateProduct, getSumByDateProduct } from "./services.js";
-import { uiTBody, uiTrEmpty } from "./ui.js";
 
 // by date and product
 $("select#sales-read-productid-date")
@@ -47,10 +47,11 @@ $("select#sales-read-productid-date")
     if (salesStatus) {
       const existed = salesReponse.length >= 1;
       if (existed) {
-        uiTBody(salesReponse);
+        uiTbody(salesReponse);
       }
       if (!existed) {
-        uiTrEmpty(`${selectedText} , ${date}`);
+        const txt = `${selectedText} , ${date}`;
+        uiTbodyEmpty(txt);
       }
     }
     if (!salesStatus) {

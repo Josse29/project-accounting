@@ -44,6 +44,7 @@ $("#persediaan-modal-convert-csv button#persediaan-convert-csv")
       }
       if (!existed) {
         uiAlertFail("uuppsss , sorry stock is still empty...");
+        $("#persediaan-modal-convert-csv").modal("hide");
       }
     }
     if (!status) {

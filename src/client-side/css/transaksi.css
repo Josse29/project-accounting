@@ -238,3 +238,6 @@ div#accounting-1-table::-webkit-scrollbar-thumb {
 div#accounting-1-table::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+th:hover {
+  text-wrap: wrap;
+}

@@ -23,3 +23,5 @@
 - fixing all ui minor
 - fixing ui card models persediaan 
 - refactoring accounting and fixing all ui
+- delete all model sales, fixing all ui minor bug
+- contiune renewing models accounting 

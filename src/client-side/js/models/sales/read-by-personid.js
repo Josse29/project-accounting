@@ -1,8 +1,9 @@
+import { getByPersonId, getSumPersonId } from "./services.js";
+import { uiTbody, uiTbodyEmpty } from "./ui.js";
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
-import { uiTBody, uiTrEmpty } from "./ui.js";
 import { listUserRefSalesRead } from "./../users/list.js";
 import { animateFade } from "../../utils/updateUi.js";
-import { getByPersonId, getSumPersonId } from "./services.js";
+
 listUserRefSalesRead();
 $("select#sales-read-personid")
   .off("change")
@@ -32,10 +33,10 @@ $("select#sales-read-personid")
     if (salesStatus) {
       const existed = salesResponse.length >= 1;
       if (existed) {
-        uiTBody(salesResponse);
+        uiTbody(salesResponse);
       }
       if (!existed) {
-        uiTrEmpty(selectedText);
+        uiTbodyEmpty(selectedText);
       }
     }
     if (!salesStatus) {

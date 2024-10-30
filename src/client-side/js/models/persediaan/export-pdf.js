@@ -10,6 +10,7 @@ import {
   getSumQtyDate,
 } from "./services.js";
 import {
+  uiAlertFail,
   uiAlertSuccess,
   uiTrCategorySum,
   uiTrPDF,
@@ -173,6 +174,10 @@ $("#persediaan-modal-convert-pdf #persediaan-convert-pdf")
             $("#persediaan-modal-convert-pdf").modal("hide");
           });
         }
+      }
+      if (!existed) {
+        uiAlertFail("uuppsss , sorry stock is still empty...");
+        $("#persediaan-modal-convert-pdf").modal("hide");
       }
     }
     if (!status) {

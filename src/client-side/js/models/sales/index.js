@@ -1,6 +1,6 @@
 import "./create.js";
 import "./read.js";
-
+import "./delete.js";
 import "./ui.js";
 import "./export-csv.js";
 import "./export-pdf.js";

@@ -28,6 +28,7 @@ export const createAccounting = (req) => {
     accountingRpVal,
     accountingInfoVal
   );
+  console.log(query);
   return new Promise((resolve, reject) => {
     db.run(query, (err) => {
       if (!err) {

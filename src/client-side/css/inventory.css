@@ -435,8 +435,8 @@ div#supplier-table-container::-webkit-scrollbar-thumb:hover {
   text-align: center;
   border-radius: 5px;
   padding: 5px 10px;
+  z-index: 99999 !important;
   position: absolute;
-  z-index: 9999 !important;
   top: 125%; /* Position below the text */
   left: 50%;
   transform: translateX(-50%);

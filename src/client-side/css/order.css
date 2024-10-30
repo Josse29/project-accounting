@@ -123,20 +123,6 @@ body::-webkit-scrollbar {
   /* border: 3px solid #0178bd; */
   box-shadow: 0 0 0 0.2rem #99a4f9;
 }
-.modal span.search-menu:hover {
-  cursor: pointer;
-  background-color: #0c6ea7;
-}
-.modal button:nth-child(2) {
-  background-color: #0178bd;
-  color: white;
-}
-.modal button:nth-child(2):hover {
-  background-color: #0c6ea7;
-}
-.list-number:hover {
-  cursor: pointer;
-}
 /* tooltip bottom */
 .tooltip-bottom-container {
   position: relative;
@@ -382,4 +368,12 @@ td:hover {
 }
 #dragWin {
   -webkit-app-region: drag; /* Allow dragging the window */
+}
+/* order */
+button#order-done {
+  background-color: #0178bd;
+  color: white;
+}
+button#order-done:hover {
+  background-color: #065a8b;
 }

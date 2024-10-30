@@ -1,6 +1,6 @@
+import { getStorageCart, setStorageCart } from "./../../utils/localStorage.js";
 import { disFormatRupiah1 } from "../../utils/formatRupiah.js";
 import { list } from "../list/index.js";
-import { getStorageCart, setStorageCart } from "./../../utils/localStorage.js";
 import { uiQty } from "./qty.js";
 
 $("div#product-refpersediaan-read")

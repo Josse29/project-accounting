@@ -9,13 +9,18 @@ import {
   uiCardEmpty,
   uiLoad,
 } from "./ui.js";
-let searchVal = $("input#order-search").val();
-let limitVal = 3;
-let offsetVal = 1;
-// searching
+
+// debouncing
 const handleBounce = debounce(() => {
   getInit();
 }, 1000);
+
+// get all
+let searchVal = $("input#order-search").val();
+let limitVal = 3;
+let offsetVal = 1;
+
+// searching
 $("input#order-search")
   .off("keyup")
   .on("keyup", function () {
@@ -23,6 +28,8 @@ $("input#order-search")
     uiLoad();
     handleBounce();
   });
+
+// function
 getInit();
 async function getInit() {
   const req = {
@@ -30,9 +37,7 @@ async function getInit() {
     limitVal,
     offsetVal,
   };
-  const rowPage = await getRowPage1(req);
-  const response = rowPage.response;
-  const status = rowPage.status;
+  const { status, response } = await getRowPage1(req);
   if (status) {
     const { totalPage, totalRow } = response;
     if (totalRow >= 1) {
@@ -51,8 +56,7 @@ async function getInit() {
 }
 async function getPage(req) {
   const stock = await getGroupProduct(req);
-  const response = stock.response;
-  const status = stock.status;
+  const { status, response } = stock;
   if (status) {
     uiCard(response);
     // update qty to card menu as well as btn plus/min triggered
@@ -143,39 +147,38 @@ function handlePagination(totalPage) {
 // get product again
 export const getGroupProductAgain = async () => {
   $("input#order-search").val("");
+
+  // get all
   let searchVal = $("input#order-search").val();
   let limitVal = 3;
   let offsetVal = 1;
-  await getInit();
-  async function getInit() {
-    const req = {
-      searchVal,
-      limitVal,
-      offsetVal,
-    };
-    const rowPage = await getRowPage1(req);
-    const response = rowPage.response;
-    const status = rowPage.status;
-    if (status) {
-      const { totalPage, totalRow } = response;
-      if (totalRow >= 1) {
-        await getPage(req);
-        handlePagination(totalPage);
-        $("div#product-refpersediaan-pagination").removeClass("d-none");
-      }
-      if (totalRow < 1) {
-        uiCardEmpty(req.searchVal);
-        $("div#product-refpersediaan-pagination").addClass("d-none");
-      }
+  const req = {
+    searchVal,
+    limitVal,
+    offsetVal,
+  };
+
+  // 1. get total page and  row
+  const { status, response } = await getRowPage1(req);
+  if (status) {
+    const { totalPage, totalRow } = response;
+    if (totalRow >= 1) {
+      await getPage(req);
+      handlePagination(totalPage);
+      $("div#product-refpersediaan-pagination").removeClass("d-none");
     }
-    if (!status) {
-      console.error(response);
+    if (totalRow < 1) {
+      uiCardEmpty(searchVal);
+      $("div#product-refpersediaan-pagination").addClass("d-none");
     }
   }
+  if (!status) {
+    console.error(response);
+  }
+  // 2.get stock by limit and offset
   async function getPage(req) {
     const stock = await getGroupProduct(req);
-    const response = stock.response;
-    const status = stock.status;
+    const { status, response } = stock;
     if (status) {
       uiCard(response);
       // update qty to card menu as well as btn plus/min triggered
@@ -189,6 +192,7 @@ export const getGroupProductAgain = async () => {
       console.error(response);
     }
   }
+  // handle pagination
   function handlePagination(totalPage) {
     // insert to html
     uiBtnPage1(totalPage);

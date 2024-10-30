@@ -1,5 +1,6 @@
 import {
   createSale,
+  deleteSaleAll,
   getSale,
   getSaleCustomerId,
   getSaleDate,
@@ -373,6 +374,18 @@ export const getSummary = async (req) => {
     };
     const summary = await getSaleSummary(payLoad);
     return { status: true, response: summary };
+  } catch (error) {
+    return { status: false, response: error };
+  }
+};
+// 24.endpoint : api/sale
+// method : DELETE
+// payLoad : ""
+// return : message delete all
+export const deleteAll = async () => {
+  try {
+    const msg = await deleteSaleAll();
+    return { status: true, response: msg };
   } catch (error) {
     return { status: false, response: error };
   }

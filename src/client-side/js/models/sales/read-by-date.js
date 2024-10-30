@@ -1,10 +1,11 @@
+import { getByDate, getSumDate } from "./services.js";
+import { uiTbody, uiTbodyEmpty } from "./ui.js";
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import { formatWaktuIndo } from "../../utils/formatWaktu.js";
 import { listProductRefSalesReadDate } from "../products/list.js";
 import { listUserRefSalesReadDate } from "../users/list.js";
-import { uiTBody, uiTrEmpty } from "./ui.js";
 import { animateFade } from "../../utils/updateUi.js";
-import { getByDate, getSumDate } from "./services.js";
+
 $("button#read-sales-date")
   .off("click")
   .on("click", async function () {
@@ -43,14 +44,14 @@ $("button#read-sales-date")
     if (salesStatus) {
       const existed = salesResponse.length >= 1;
       if (existed) {
-        uiTBody(salesResponse);
+        uiTbody(salesResponse);
         // select with date product, sales, customer
         listProductRefSalesReadDate();
         listUserRefSalesReadDate();
         $("div#sales-select-date").removeClass("d-none");
       }
       if (!existed) {
-        uiTrEmpty(date);
+        uiTbodyEmpty(date);
         $("div#sales-select-date").addClass("d-none");
       }
     }
