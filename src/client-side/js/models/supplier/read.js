@@ -14,12 +14,18 @@ import {
 } from "./list.js";
 import { getByLimitOffset, pagination } from "./services.js";
 import { debounce } from "../../utils/debounce.js";
-$("div#supplier-loading").html(uiLoad());
-$("div#supplier-done").hide();
-// search
+
+// debouncing
 const handleBounce = debounce(() => {
   getInit();
 }, 1000);
+
+// get value
+let searchVal = $("#supplier-search-input").val();
+let limitVal = parseInt($("#supplier-limit").val());
+let offsetVal = 1;
+
+// searching
 $("#supplier-search-input")
   .off("keyup")
   .on("keyup", function () {
@@ -35,9 +41,8 @@ $("#supplier-limit")
     uiTbodyLoad();
     handleBounce();
   });
-let searchVal = $("#supplier-search-input").val();
-let limitVal = parseInt($("#supplier-limit").val());
-let offsetVal = 1;
+
+// function
 getInit();
 // pagination
 async function getInit() {
@@ -256,6 +261,6 @@ export const getSupplierAgain = async () => {
 export const getSupplierRef = async () => {
   await getProductsAgain();
   await getPersediaanAgain();
-  listSupplierRefPersediaanRead();
-  listSupplierRefPersediaanReadDate();
+  await listSupplierRefPersediaanRead();
+  await listSupplierRefPersediaanReadDate();
 };

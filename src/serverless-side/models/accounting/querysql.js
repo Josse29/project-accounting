@@ -36,8 +36,8 @@ export const querySumDebt = () => {
 };
 export const querySumCredit = () => {
   let query = `SELECT
-                 SUM(AccountingRp) AS Total_Rp 
-                 FROM Accounting `;
+               SUM(AccountingRp) AS Total_Rp 
+               FROM Accounting `;
   query += `WHERE AccountingPosition = 'credit' `;
   return query;
 };

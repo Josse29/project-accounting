@@ -36,8 +36,8 @@ export const queryReadCash = (searchVal, limitVal, offsetVal) => {
 };
 export const querySumCash = () => {
   let query = `SELECT 
-                 SUM(Cash.CashRp) AS Total_Amount
-                 FROM Cash `;
+               SUM(Cash.CashRp) AS Total_Amount
+               FROM Cash `;
   return query;
 };
 // UPDATE

@@ -14,8 +14,12 @@
 - continue convert model sales pdf,csv with date part - 2 
 - continue convert model persediaan csv with date 
 - continue convert model persediaan pdf with date hufftt
-27/10/2024
+28/10/2024
 - continue convert model sales pdf,csv with date part - 3 
 - continue convert model persediaan csv with date part -2 
 - continue convert model persediaan pdf with date hufftt part -2 
 - fixing ui card...
+30/10/2024
+- fixing all ui minor
+- fixing ui card models persediaan 
+- refactoring accounting and fixing all ui

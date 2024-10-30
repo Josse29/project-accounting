@@ -44,7 +44,7 @@ export const getCategory = (req) => {
     });
   });
 };
-export const getListCategory = (categorySearch) => {
+export const getCategoryList = (categorySearch) => {
   const query = queryGetListCategory(categorySearch);
   return new Promise((resolve, reject) => {
     db.all(query, (err, res) => {

@@ -14,13 +14,18 @@ import {
 import { getCategoryAgain } from "../categories/read.js";
 import { getLimitOffset, getPagination } from "./services.js";
 import { debounce } from "../../utils/debounce.js";
-// loading
-$("div#product-loading").html(uiLoad());
-$("div#product-done").hide();
-// search
+
+// debouncing
 const handleBounce = debounce(() => {
   getInit();
 }, 1000);
+
+// get all value
+let searchVal = $("#product-search-input").val();
+let limitVal = parseInt($("#product-limit").val());
+let offsetVal = 1;
+
+// searching
 $("#product-search-input")
   .off("keyup")
   .on("keyup", function () {
@@ -36,9 +41,8 @@ $("#product-limit")
     uiTBodyLoad();
     handleBounce();
   });
-let searchVal = $("#product-search-input").val();
-let limitVal = parseInt($("#product-limit").val());
-let offsetVal = 1;
+
+// function
 getInit();
 async function getInit() {
   const req = {
@@ -60,9 +64,6 @@ async function getInit() {
       uiTBodyEmpty(searchVal);
       $("#product-pagination").addClass("d-none");
     }
-    // references and loading
-    $("div#product-loading").html("");
-    $("div#product-done").show();
   }
   if (!status) {
     console.error(response);

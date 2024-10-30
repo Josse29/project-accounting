@@ -374,160 +374,147 @@
             Products
           </div>
           <div class="card-body">
-            <div id="product-loading"></div>
-            <div id="product-done">
-              <!-- tambah. export products total -->
-              <div
-                class="d-flex justify-content-between align-items-center gap-2 mb-3"
-              >
-                <div class="btn-group gap-2">
-                  <!-- create-product -->
-                  <button
-                    type=" button"
-                    id="product-create"
-                    class="btn tooltip-bottom-container"
-                    data-bs-toggle="modal"
-                    data-bs-target="#productCreateModal"
-                  >
-                    <div class="tooltip-bottom-text">add-product</div>
-                    <span class="d-flex gap-2 align-items-center">
-                      <i class="fa-solid fa-folder-plus fs-4"></i>
-                      <span class="text-nowrap">Add Product</span>
-                    </span>
-                  </button>
-                  <!-- export product excel -->
-                  <button
-                    type=" button"
-                    class="btn btn-success tooltip-bottom-container"
-                    id="product-export-excel"
-                  >
-                    <div class="tooltip-bottom-text">excel-product</div>
-                    <i class="fa-solid fa-file-excel fs-4"></i>
-                  </button>
-                  <!-- export product pdf -->
-                  <button
-                    type="button"
-                    class="btn text-white tooltip-bottom-container"
-                    id="product-export-pdf"
-                  >
-                    <div class="tooltip-bottom-text">pdf-product</div>
-                    <i class="fa-solid fa-file-pdf fs-4"></i>
-                  </button>
-                </div>
-                <!-- total-row -->
-                <p class="fs-4 mb-0" id="product-total-row"></p>
-              </div>
-              <!-- search products & total row -->
-              <div class="d-flex mb-3 gap-2">
-                <!-- limit product -->
-                <select
-                  class="form-select focus-by-me w-auto"
-                  id="product-limit"
+            <!-- tambah. export products total -->
+            <div
+              class="d-flex justify-content-between align-items-center gap-2 mb-3"
+            >
+              <div class="btn-group gap-2">
+                <!-- create-product -->
+                <button
+                  type=" button"
+                  id="product-create"
+                  class="btn tooltip-bottom-container"
+                  data-bs-toggle="modal"
+                  data-bs-target="#productCreateModal"
                 >
-                  <option value="2">2</option>
-                  <option value="5">5</option>
-                  <option value="10">10</option>
-                  <option value="20">20</option>
-                  <option value="30">30</option>
-                  <option value="40">40</option>
-                </select>
-                <!-- search product -->
-                <div class="input-group" style="width: 680px">
-                  <input
-                    type="text"
-                    class="form-control focus-by-me"
-                    placeholder="masukkan nama product..."
-                    id="product-search-input"
-                  />
-                  <span
-                    class="input-group-text hover-by-me"
-                    style="background-color: #3c50e0; color: white"
-                    id="product-search-span"
-                    >Search</span
-                  >
-                </div>
+                  <div class="tooltip-bottom-text">add-product</div>
+                  <span class="d-flex gap-2 align-items-center">
+                    <i class="fa-solid fa-folder-plus fs-4"></i>
+                    <span class="text-nowrap">Add Product</span>
+                  </span>
+                </button>
+                <!-- export product excel -->
+                <button
+                  type=" button"
+                  class="btn btn-success tooltip-bottom-container"
+                  id="product-export-excel"
+                >
+                  <div class="tooltip-bottom-text">excel-product</div>
+                  <i class="fa-solid fa-file-excel fs-4"></i>
+                </button>
+                <!-- export product pdf -->
+                <button
+                  type="button"
+                  class="btn text-white tooltip-bottom-container"
+                  id="product-export-pdf"
+                >
+                  <div class="tooltip-bottom-text">pdf-product</div>
+                  <i class="fa-solid fa-file-pdf fs-4"></i>
+                </button>
               </div>
-              <!-- alert success -->
-              <div id="sectionSuccessActionProduct"></div>
-              <!-- tabel product -->
-              <div class="py-2" id="product-scroll-byme">
-                <table class="table table-striped" style="table-layout: fixed">
-                  <thead>
-                    <tr>
-                      <!-- # -->
-                      <th class="text-center" style="width: 100px">#</th>
-                      <!-- Product Name -->
-                      <th style="width: 200px" class="text-nowrap">
-                        Product Name
-                      </th>
-                      <!-- Price -->
-                      <th style="width: 200px" class="text-nowrap">
-                        Price Buy
-                      </th>
-                      <!-- Price -->
-                      <th style="width: 200px" class="text-nowrap">
-                        Price Sell
-                      </th>
-                      <!-- Category  -->
-                      <th style="width: 200px" class="text-nowrap">
-                        Category Name
-                      </th>
-                      <!-- Supplier  -->
-                      <th style="width: 200px" class="text-nowrap">
-                        Supplier Name
-                      </th>
-                      <!-- Action -->
-                      <th class="text-center text-nowrap" style="width: 220px">
-                        Action
-                      </th>
-                    </tr>
-                  </thead>
-                  <!-- from db -->
-                  <tbody id="product-table">
-                    <tr>
-                      <td colspan="7" class="fst-italic text-center fw-bold">
-                        loading...
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+              <!-- total-row -->
+              <p class="fs-4 mb-0" id="product-total-row"></p>
+            </div>
+            <!-- search products & total row -->
+            <div class="d-flex mb-3 gap-2">
+              <!-- limit product -->
+              <select class="form-select focus-by-me w-auto" id="product-limit">
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+              </select>
+              <!-- search product -->
+              <div class="input-group" style="width: 680px">
+                <input
+                  type="text"
+                  class="form-control focus-by-me"
+                  placeholder="masukkan nama product..."
+                  id="product-search-input"
+                />
+                <span
+                  class="input-group-text hover-by-me"
+                  style="background-color: #3c50e0; color: white"
+                  id="product-search-span"
+                  >Search</span
+                >
               </div>
-              <!-- pagination product -->
-              <div
-                class="w-100 d-flex justify-content-center py-2 pt-3 d-none"
-                id="product-pagination"
-              >
-                <div class="btn-group">
-                  <button
-                    type="button"
-                    class="btn border border-2"
-                    id="product-first-page"
-                  >
-                    <i class="fa-solid fa-backward-fast fs-6"></i>
-                  </button>
-                  <button
-                    type="button"
-                    class="btn border border-2"
-                    id="product-prev-page"
-                  >
-                    <i class="fa-solid fa-backward-step fs-6"></i>
-                  </button>
-                  <div id="product-number-page"></div>
-                  <button
-                    type="button"
-                    class="btn border border-2"
-                    id="product-next-page"
-                  >
-                    <i class="fa-solid fa-forward-step fs-6"></i>
-                  </button>
-                  <button
-                    type="button"
-                    class="btn border border-2"
-                    id="product-last-page"
-                  >
-                    <i class="fa-solid fa-forward-fast fs-6"></i>
-                  </button>
-                </div>
+            </div>
+            <!-- alert success -->
+            <div id="sectionSuccessActionProduct"></div>
+            <!-- tabel product -->
+            <div class="py-2" id="product-scroll-byme">
+              <table class="table table-striped" style="table-layout: fixed">
+                <thead>
+                  <tr>
+                    <!-- # -->
+                    <th class="text-center" style="width: 100px">#</th>
+                    <!-- Product Name -->
+                    <th style="width: 200px" class="text-nowrap">
+                      Product Name
+                    </th>
+                    <!-- Price -->
+                    <th style="width: 200px" class="text-nowrap">Price Buy</th>
+                    <!-- Price -->
+                    <th style="width: 200px" class="text-nowrap">Price Sell</th>
+                    <!-- Category  -->
+                    <th style="width: 200px" class="text-nowrap">
+                      Category Name
+                    </th>
+                    <!-- Supplier  -->
+                    <th style="width: 200px" class="text-nowrap">
+                      Supplier Name
+                    </th>
+                    <!-- Action -->
+                    <th class="text-center text-nowrap" style="width: 220px">
+                      Action
+                    </th>
+                  </tr>
+                </thead>
+                <!-- from db -->
+                <tbody id="product-table">
+                  <tr>
+                    <td colspan="7" class="fst-italic text-center fw-bold">
+                      loading...
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- pagination product -->
+            <div
+              class="w-100 d-flex justify-content-center py-2 pt-3 d-none"
+              id="product-pagination"
+            >
+              <div class="btn-group">
+                <button
+                  type="button"
+                  class="btn border border-2"
+                  id="product-first-page"
+                >
+                  <i class="fa-solid fa-backward-fast fs-6"></i>
+                </button>
+                <button
+                  type="button"
+                  class="btn border border-2"
+                  id="product-prev-page"
+                >
+                  <i class="fa-solid fa-backward-step fs-6"></i>
+                </button>
+                <div id="product-number-page"></div>
+                <button
+                  type="button"
+                  class="btn border border-2"
+                  id="product-next-page"
+                >
+                  <i class="fa-solid fa-forward-step fs-6"></i>
+                </button>
+                <button
+                  type="button"
+                  class="btn border border-2"
+                  id="product-last-page"
+                >
+                  <i class="fa-solid fa-forward-fast fs-6"></i>
+                </button>
               </div>
             </div>
           </div>
@@ -538,123 +525,108 @@
           <div class="card w-50" id="category-section">
             <div class="card-header text-white fs-3 bg-primary">Category</div>
             <div class="card-body">
-              <div id="category-loading"></div>
-              <div id="category-done">
-                <!-- tambah category, export pdf, total category -->
-                <div class="d-flex justify-content-between mb-3">
-                  <!-- create-category -->
-                  <button
-                    class="btn bg-primary text-white tooltip-bottom-container"
-                    id="btnCreateCategory"
-                    data-bs-toggle="modal"
-                    data-bs-target="#categoryModal"
-                  >
-                    <div class="tooltip-bottom-text">add-category</div>
-                    <span class="text-nowrap d-flex gap-2 align-items-center">
-                      <i class="fa-solid fa-folder-plus fs-4"></i>
-                      <span class="text-nowrap">Add Category</span>
-                    </span>
-                  </button>
-                  <p id="categories-total-row" class="mb-0 fs-4"></p>
-                </div>
-                <!-- alert success -->
-                <div id="sectionSuccessActionCategory"></div>
-                <!-- search & limit category -->
-                <div class="d-flex mb-3 gap-3">
-                  <select
-                    class="form-select w-auto"
-                    aria-label="Default select example"
-                    id="category-limit"
-                  >
-                    <option value="2">2</option>
-                    <option value="5">5</option>
-                    <option value="10">10</option>
-                    <option value="20">20</option>
-                    <option value="30">30</option>
-                    <option value="40">40</option>
-                  </select>
-                  <div class="input-group">
-                    <input
-                      type="text"
-                      class="form-control"
-                      placeholder="masukkan keyword kategori..."
-                      id="category-search-input"
-                    />
-                    <span
-                      class="input-group-text bg-primary text-white"
-                      id="category-search-btn"
-                      >Search</span
-                    >
-                  </div>
-                </div>
-                <!-- table category -->
-                <div class="py-2" id="category-table">
-                  <table
-                    class="table table-striped"
-                    style="table-layout: fixed"
-                  >
-                    <thead>
-                      <tr>
-                        <th
-                          class="text-center text-nowrap"
-                          style="width: 100px"
-                        >
-                          #
-                        </th>
-                        <th class="text-nowrap" style="width: 190px">Name</th>
-                        <th
-                          class="text-center text-nowrap"
-                          style="width: 220px"
-                        >
-                          Action
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody id="category-data">
-                      <tr>
-                        <td colspan="3" class="fst-italic text-center fw-bold">
-                          loading...
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <!-- pagination category-->
-                <div
-                  id="category-pagination"
-                  class="w-100 d-flex justify-content-center py-2 pt-3 d-none"
+              <!-- tambah category, export pdf, total category -->
+              <div class="d-flex justify-content-between mb-3">
+                <!-- create-category -->
+                <button
+                  class="btn bg-primary text-white tooltip-bottom-container"
+                  id="btnCreateCategory"
+                  data-bs-toggle="modal"
+                  data-bs-target="#categoryModal"
                 >
-                  <div class="btn-group">
-                    <button
-                      type="button"
-                      class="btn border border-2"
-                      id="category-first-page"
-                    >
-                      <i class="fa-solid fa-backward-fast fs-6"></i>
-                    </button>
-                    <button
-                      type="button"
-                      class="btn border border-2"
-                      id="category-prev-page"
-                    >
-                      <i class="fa-solid fa-backward-step fs-6"></i>
-                    </button>
-                    <div id="category-number-page"></div>
-                    <button
-                      type="button"
-                      class="btn border border-2"
-                      id="category-next-page"
-                    >
-                      <i class="fa-solid fa-forward-step fs-6"></i>
-                    </button>
-                    <button
-                      type="button"
-                      class="btn border border-2"
-                      id="category-last-page"
-                    >
-                      <i class="fa-solid fa-forward-fast fs-6"></i>
-                    </button>
-                  </div>
+                  <div class="tooltip-bottom-text">add-category</div>
+                  <span class="text-nowrap d-flex gap-2 align-items-center">
+                    <i class="fa-solid fa-folder-plus fs-4"></i>
+                    <span class="text-nowrap">Add Category</span>
+                  </span>
+                </button>
+                <p id="categories-total-row" class="mb-0 fs-4"></p>
+              </div>
+              <!-- alert success -->
+              <div id="sectionSuccessActionCategory"></div>
+              <!-- search & limit category -->
+              <div class="d-flex mb-3 gap-3">
+                <select
+                  class="form-select w-auto"
+                  aria-label="Default select example"
+                  id="category-limit"
+                >
+                  <option value="10">10</option>
+                  <option value="20">20</option>
+                  <option value="50">50</option>
+                </select>
+                <div class="input-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="masukkan keyword kategori..."
+                    id="category-search-input"
+                  />
+                  <span
+                    class="input-group-text bg-primary text-white"
+                    id="category-search-btn"
+                    >Search</span
+                  >
+                </div>
+              </div>
+              <!-- table category -->
+              <div class="py-2" id="category-table">
+                <table class="table table-striped" style="table-layout: fixed">
+                  <thead>
+                    <tr>
+                      <th class="text-center text-nowrap" style="width: 100px">
+                        #
+                      </th>
+                      <th class="text-nowrap" style="width: 190px">Name</th>
+                      <th class="text-center text-nowrap" style="width: 220px">
+                        Action
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody id="category-data">
+                    <tr>
+                      <td colspan="3" class="fst-italic text-center fw-bold">
+                        loading...
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- pagination category-->
+              <div
+                id="category-pagination"
+                class="w-100 d-flex justify-content-center py-2 pt-3 d-none"
+              >
+                <div class="btn-group">
+                  <button
+                    type="button"
+                    class="btn border border-2"
+                    id="category-first-page"
+                  >
+                    <i class="fa-solid fa-backward-fast fs-6"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn border border-2"
+                    id="category-prev-page"
+                  >
+                    <i class="fa-solid fa-backward-step fs-6"></i>
+                  </button>
+                  <div id="category-number-page"></div>
+                  <button
+                    type="button"
+                    class="btn border border-2"
+                    id="category-next-page"
+                  >
+                    <i class="fa-solid fa-forward-step fs-6"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn border border-2"
+                    id="category-last-page"
+                  >
+                    <i class="fa-solid fa-forward-fast fs-6"></i>
+                  </button>
                 </div>
               </div>
             </div>
@@ -668,129 +640,115 @@
               Supplier
             </div>
             <div class="card-body">
-              <div id="supplier-loading"></div>
-              <div id="supplier-done">
-                <!-- btn group & totalrow -->
-                <div class="d-flex justify-content-between mb-3">
-                  <!-- btn group create, pdf, print, excel, dll -->
-                  <div class="btn-group gap-2">
-                    <!-- tambah supplier -->
-                    <button
-                      id="btnCreateSupplier"
-                      class="btn text-white tooltip-bottom-container"
-                      style="background-color: #3b82f6"
-                      data-bs-toggle="modal"
-                      data-bs-target="#supplierCreate"
-                    >
-                      <div class="tooltip-bottom-text">add-supplier</div>
-                      <span class="d-flex gap-2 align-items-center">
-                        <i class="fa-solid fa-folder-plus fs-4"></i>
-                        <span class="text-nowrap">Add Supplier</span>
-                      </span>
-                    </button>
-                  </div>
-                  <!-- total row -->
-                  <p id="supplier-total-row" class="fs-4 mb-0"></p>
-                </div>
-                <!-- section limit and search -->
-                <div class="d-flex gap-2 mb-3">
-                  <!-- limit supplier -->
-                  <select
-                    class="form-select focus-by-me w-auto"
-                    aria-label="Default select example"
-                    id="supplier-limit"
+              <!-- btn group & totalrow -->
+              <div class="d-flex justify-content-between mb-3">
+                <!-- btn group create, pdf, print, excel, dll -->
+                <div class="btn-group gap-2">
+                  <!-- tambah supplier -->
+                  <button
+                    id="btnCreateSupplier"
+                    class="btn text-white tooltip-bottom-container"
+                    style="background-color: #3b82f6"
+                    data-bs-toggle="modal"
+                    data-bs-target="#supplierCreate"
                   >
-                    <option value="2">2</option>
-                    <option value="5">5</option>
-                    <option value="10">10</option>
-                    <option value="20">20</option>
-                    <option value="30">30</option>
-                    <option value="40">40</option>
-                  </select>
-                  <!-- search supplier -->
-                  <div class="input-group">
-                    <input
-                      type="text"
-                      class="form-control"
-                      placeholder="masukkan keyword supplier..."
-                      id="supplier-search-input"
-                    />
-                    <span
-                      class="input-group-text text-white"
-                      style="background-color: #3b82f6"
-                      id="supplier-search-btn"
-                      >Search</span
-                    >
-                  </div>
+                    <div class="tooltip-bottom-text">add-supplier</div>
+                    <span class="d-flex gap-2 align-items-center">
+                      <i class="fa-solid fa-folder-plus fs-4"></i>
+                      <span class="text-nowrap">Add Supplier</span>
+                    </span>
+                  </button>
                 </div>
-                <div id="sectionSuccessActionSupply"></div>
-                <!-- table supplier  -->
-                <div class="py-2" id="supplier-table-container">
-                  <table
-                    class="table table-striped"
-                    style="table-layout: fixed"
-                  >
-                    <thead>
-                      <tr>
-                        <th
-                          class="text-center text-nowrap"
-                          style="width: 100px"
-                        >
-                          #
-                        </th>
-                        <th class="text-nowrap" style="width: 200px">
-                          Supplier Name
-                        </th>
-                        <th class="text-center" style="width: 220px">
-                          Actions
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody id="supplier-table">
-                      <tr>
-                        <td colspan="3" class="fst-italic text-center fw-bold">
-                          loading....
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <!-- pagination supplier -->
-                <div
-                  class="w-100 d-flex justify-content-center py-2 pt-3 d-none"
-                  id="supplier-pagination"
+                <!-- total row -->
+                <p id="supplier-total-row" class="fs-4 mb-0"></p>
+              </div>
+              <!-- section limit and search -->
+              <div class="d-flex gap-2 mb-3">
+                <!-- limit supplier -->
+                <select
+                  class="form-select focus-by-me w-auto"
+                  aria-label="Default select example"
+                  id="supplier-limit"
                 >
-                  <div class="btn-group">
-                    <button
-                      type="button"
-                      class="btn border border-2"
-                      id="supplier-first-page"
-                    >
-                      <i class="fa-solid fa-backward-fast fs-6"></i>
-                    </button>
-                    <button
-                      type="button"
-                      class="btn border border-2"
-                      id="supplier-prev-page"
-                    >
-                      <i class="fa-solid fa-backward-step fs-6"></i>
-                    </button>
-                    <div id="supplier-number-page"></div>
-                    <button
-                      type="button"
-                      class="btn border border-2"
-                      id="supplier-next-page"
-                    >
-                      <i class="fa-solid fa-forward-step fs-6"></i>
-                    </button>
-                    <button
-                      type="button"
-                      class="btn border border-2"
-                      id="supplier-last-page"
-                    >
-                      <i class="fa-solid fa-forward-fast fs-6"></i>
-                    </button>
-                  </div>
+                  <option value="10">10</option>
+                  <option value="20">20</option>
+                  <option value="50">50</option>
+                </select>
+                <!-- search supplier -->
+                <div class="input-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="masukkan keyword supplier..."
+                    id="supplier-search-input"
+                  />
+                  <span
+                    class="input-group-text text-white"
+                    style="background-color: #3b82f6"
+                    id="supplier-search-btn"
+                    >Search</span
+                  >
+                </div>
+              </div>
+              <div id="sectionSuccessActionSupply"></div>
+              <!-- table supplier  -->
+              <div class="py-2" id="supplier-table-container">
+                <table class="table table-striped" style="table-layout: fixed">
+                  <thead>
+                    <tr>
+                      <th class="text-center text-nowrap" style="width: 100px">
+                        #
+                      </th>
+                      <th class="text-nowrap" style="width: 200px">
+                        Supplier Name
+                      </th>
+                      <th class="text-center" style="width: 220px">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="supplier-table">
+                    <tr>
+                      <td colspan="3" class="fst-italic text-center fw-bold">
+                        loading....
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- pagination supplier -->
+              <div
+                class="w-100 d-flex justify-content-center py-2 pt-3 d-none"
+                id="supplier-pagination"
+              >
+                <div class="btn-group">
+                  <button
+                    type="button"
+                    class="btn border border-2"
+                    id="supplier-first-page"
+                  >
+                    <i class="fa-solid fa-backward-fast fs-6"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn border border-2"
+                    id="supplier-prev-page"
+                  >
+                    <i class="fa-solid fa-backward-step fs-6"></i>
+                  </button>
+                  <div id="supplier-number-page"></div>
+                  <button
+                    type="button"
+                    class="btn border border-2"
+                    id="supplier-next-page"
+                  >
+                    <i class="fa-solid fa-forward-step fs-6"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn border border-2"
+                    id="supplier-last-page"
+                  >
+                    <i class="fa-solid fa-forward-fast fs-6"></i>
+                  </button>
                 </div>
               </div>
             </div>

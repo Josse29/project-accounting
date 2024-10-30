@@ -51,37 +51,42 @@ export const insertCash1 = (req) => {
   });
 };
 // read
-export const readInitCash = (req, res) => {
+export const getCashPagination = (req) => {
   const { searchVal, limitVal } = req;
   const query = queryReadInitCash(searchVal);
-  db.each(query, (err, result) => {
-    if (!err) {
-      let totalPage = ``;
-      let totalRow = parseInt(result.Total_Row);
-      if (totalRow % limitVal === 0) {
-        totalPage = totalRow / limitVal;
+  return new Promise((resolve, reject) => {
+    db.each(query, (err, result) => {
+      if (!err) {
+        let totalPage = ``;
+        const totalRow = parseInt(result.Total_Row);
+        const isInteger = totalRow % limitVal === 0;
+        if (isInteger) {
+          totalPage = totalRow / limitVal;
+        }
+        if (!isInteger) {
+          totalPage = parseInt(totalRow / limitVal) + 1;
+        }
+        resolve({ totalPage, totalRow });
       }
-      if (totalRow % limitVal !== 0) {
-        totalPage = parseInt(totalRow / limitVal) + 1;
+      if (err) {
+        reject(err);
       }
-      return res(true, { totalPage, totalRow });
-    }
-    if (err) {
-      return res(false, err);
-    }
+    });
   });
 };
-export const readCash = (req, res) => {
+export const getCash = (req) => {
   const { searchVal, limitVal, offsetVal } = req;
   const startOffsetVal = parseInt(parseInt(offsetVal - 1) * parseInt(limitVal));
   const query = queryReadCash(searchVal, limitVal, startOffsetVal);
-  db.all(query, (err, rows) => {
-    if (!err) {
-      return res(true, rows);
-    }
-    if (err) {
-      return res(true, err);
-    }
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, rows) => {
+      if (!err) {
+        resolve(rows);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
 export const readCash1 = (req) => {
@@ -98,16 +103,20 @@ export const readCash1 = (req) => {
     });
   });
 };
-export const sumCash = (res) => {
+export const getCashSum = (res) => {
   const query = querySumCash();
-  db.each(query, (err, result) => {
-    if (!err) {
-      const sum = result.Total_Amount ? result.Total_Amount : 0;
-      return res(true, parseInt(sum));
-    }
-    if (err) {
-      return res(false, err);
-    }
+  return new Promise((resolve, reject) => {
+    db.each(query, (err, result) => {
+      if (!err) {
+        const response = result.Total_Amount;
+        const sum = response ? response : 0;
+        resolve(sum);
+      }
+      if (err) {
+        reject(err);
+        return res(false, err);
+      }
+    });
   });
 };
 // update

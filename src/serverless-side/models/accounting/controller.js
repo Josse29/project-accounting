@@ -41,73 +41,86 @@ export const createAccounting = (req) => {
   });
 };
 // general-entries
-export const readInitAccounting = (req, res) => {
+export const getAccountingPagination = (req) => {
   const { searchVal, limitVal } = req;
   const query = queryInitAccounting();
-  db.each(query, (err, result) => {
-    if (!err) {
-      let totalPage = ``;
-      let totalRow = parseInt(result.Total_Row);
-      if (totalRow % limitVal === 0) {
-        totalPage = totalRow / limitVal;
+  return new Promise((resolve, reject) => {
+    db.each(query, (err, result) => {
+      if (!err) {
+        let totalPage = ``;
+        let totalRow = parseInt(result.Total_Row);
+        const isInt = totalRow % limitVal === 0;
+        if (isInt) {
+          totalPage = totalRow / limitVal;
+        }
+        if (!isInt) {
+          totalPage = parseInt(totalRow / limitVal) + 1;
+        }
+        resolve({ totalPage, totalRow });
       }
-      if (totalRow % limitVal !== 0) {
-        totalPage = parseInt(totalRow / limitVal) + 1;
+      if (err) {
+        reject(err);
       }
-      return res(true, { totalPage, totalRow });
-    }
-    if (err) {
-      return res(false, err);
-    }
+    });
   });
 };
-export const readAccounting = (req, res) => {
+export const getAccounting = (req) => {
   const { searchVal, limitVal, offsetVal } = req;
   const startOffsetVal = parseInt((offsetVal - 1) * limitVal);
   const query = queryReadAccounting(searchVal, limitVal, startOffsetVal);
-  db.all(query, (err, rows) => {
-    if (!err) {
-      return res(true, rows);
-    }
-    if (err) {
-      return res(false, err);
-    }
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, rows) => {
+      if (!err) {
+        resolve(rows);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
 // balance-sheet
-export const sumDebt = (res) => {
+export const getAccountingSumDebt = () => {
   const query = querySumDebt();
-  db.each(query, (err, result) => {
-    if (!err) {
-      const debt = result.Total_Rp ? result.Total_Rp : 0;
-      return res(true, parseInt(debt));
-    }
-    if (err) {
-      return res(false, err);
-    }
+  return new Promise((resolve, reject) => {
+    db.each(query, (err, result) => {
+      if (!err) {
+        const response = result.Total_Rp;
+        const debt = response ? response : 0;
+        resolve(debt);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
-export const sumCredit = (res) => {
+export const getAccountingSumCredit = () => {
   const query = querySumCredit();
-  db.each(query, (err, result) => {
-    if (!err) {
-      const credit = result.Total_Rp ? result.Total_Rp : 0;
-      return res(true, parseInt(credit));
-    }
-    if (err) {
-      return res(false, err);
-    }
+  return new Promise((resolve, reject) => {
+    db.each(query, (err, result) => {
+      if (!err) {
+        const response = result.Total_Rp;
+        const credit = response ? response : 0;
+        resolve(credit);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
-export const readAccounting1 = (res) => {
+export const getAccounting1 = () => {
   const query = queryReadAccounting1();
-  db.all(query, (err, rows) => {
-    if (!err) {
-      return res(true, rows);
-    }
-    if (err) {
-      return res(false, err);
-    }
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, rows) => {
+      if (!err) {
+        resolve(rows);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };
 export const updateAccounting = (req, res) => {

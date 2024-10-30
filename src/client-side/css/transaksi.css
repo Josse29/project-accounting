@@ -154,3 +154,87 @@ button.general-entries-page-active {
 #dragWin {
   -webkit-app-region: drag; /* Allow dragging the window */
 }
+td:hover {
+  text-wrap: wrap;
+}
+/* table */
+div#cash-table::-webkit-scrollbar {
+  height: 7px;
+}
+div#cash-table::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+div#cash-table::-webkit-scrollbar-thumb {
+  background: #888;
+}
+div#cash-table::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+/* card */
+div#cash-card::-webkit-scrollbar {
+  height: 7px;
+}
+div#cash-card::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+div#cash-card::-webkit-scrollbar-thumb {
+  background: #888;
+}
+div#cash-card::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+button.entry-sale:hover {
+  background-color: #3143c9 !important;
+}
+/* accounting-card */
+div#accounting-card::-webkit-scrollbar {
+  height: 7px;
+}
+div#accounting-card::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+div#accounting-card::-webkit-scrollbar-thumb {
+  background: #888;
+}
+div#accounting-card::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+/* accounting-table */
+div#accounting-table::-webkit-scrollbar {
+  height: 7px;
+}
+div#accounting-table::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+div#accounting-table::-webkit-scrollbar-thumb {
+  background: #888;
+}
+div#accounting-table::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+/* accounting-card */
+div#accounting-1-card::-webkit-scrollbar {
+  height: 7px;
+}
+div#accounting-1-card::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+div#accounting-1-card::-webkit-scrollbar-thumb {
+  background: #888;
+}
+div#accounting-1-card::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+/* accounting-table */
+div#accounting-1-table::-webkit-scrollbar {
+  height: 7px;
+}
+div#accounting-1-table::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+div#accounting-1-table::-webkit-scrollbar-thumb {
+  background: #888;
+}
+div#accounting-1-table::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

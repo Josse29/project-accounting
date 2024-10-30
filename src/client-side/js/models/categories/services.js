@@ -3,7 +3,7 @@ import {
   deleteCategory,
   getCategory,
   getCategoryInit,
-  getListCategory,
+  getCategoryList,
   updateCategory,
 } from "../../../../serverless-side/models/category/controller.js";
 // 1. endpoint : api/category
@@ -94,7 +94,7 @@ export const deleteById = async (req) => {
 // return : list category
 export const getList = async (req) => {
   try {
-    const list = await getListCategory(req);
+    const list = await getCategoryList(req);
     return { status: true, response: list };
   } catch (error) {
     return { status: false, response: error };

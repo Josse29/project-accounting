@@ -11,13 +11,18 @@ import { getPersediaanAgain } from "../persediaan/read.js";
 import { listCategoryRefPersediaanRead } from "./list.js";
 import { getByLimitOffset, getPagination } from "./services.js";
 import { debounce } from "../../utils/debounce.js";
-// loading
-$("div#category-loading").html(uiLoad());
-$("div#category-done").hide();
-// searching
+
+// debouncing
 const handleBounce = debounce(() => {
   getInit();
 }, 1000);
+
+// get all value
+let searchVal = $("#category-search-input").val();
+let limitVal = parseInt($("#category-limit").val());
+let offsetVal = 1;
+
+// searching
 $("#category-search-input")
   .off("keyup")
   .on("keyup", function () {
@@ -33,9 +38,8 @@ $("#category-limit")
     uiTbodyLoad();
     handleBounce();
   });
-let searchVal = $("#category-search-input").val();
-let limitVal = parseInt($("#category-limit").val());
-let offsetVal = 1;
+
+// function
 getInit();
 async function getInit() {
   const req = {
@@ -58,8 +62,6 @@ async function getInit() {
       uiTbodyEmpty(searchVal);
       $("div#category-pagination").addClass("d-none");
     }
-    $("div#category-loading").html("");
-    $("div#category-done").show();
   }
   if (!status) {
     console.error(response);
@@ -255,5 +257,5 @@ export const getCategoryAgain = async () => {
 export const getCategoryRef = async () => {
   await getProductsAgain();
   await getPersediaanAgain();
-  listCategoryRefPersediaanRead();
+  await listCategoryRefPersediaanRead();
 };

@@ -17,7 +17,6 @@
     <!-- my css -->
     <link rel="stylesheet" href="./../css/transaksi.css" />
   </head>
-
   <body>
     <div class="top-navigation">
       <h2 class="ms-3">Accounting Software</h2>
@@ -128,45 +127,48 @@
         <!-- section cash -->
         <div class="card w-100 mb-4">
           <div
-            class="card-header text-white d-flex justify-content-between align-items-center"
+            class="card-header text-white d-flex justify-content-between align-items-center py-3"
             style="background-color: #5c5cff"
           >
-            <h2>Cash</h2>
+            <h2 class="mb-0">Cash</h2>
             <span
               class="badge fs-5"
               style="background-color: #12b2a0"
               id="cash_sum"
-              >Rp. 100,000,00 ,-</span
+              >Rp.0,00 ,-</span
             >
           </div>
-          <div class="card-body overflow-auto">
+          <div class="card-body overflow-auto" id="cash-card">
             <!-- create, convert, etc -->
-            <div class="d-flex justify-content-end mb-2">
+            <div class="d-flex justify-content-end mb-3">
               <div class="btn-group gap-2">
                 <!-- excel -->
-                <button class="btn btn-success d-flex gap-2">
+                <button class="btn btn-success d-flex align-items-center gap-2">
                   <i class="fa-solid fa-file-excel fs-5"></i>
                   <span>Excel</span>
                 </button>
                 <!-- pdf -->
-                <button class="btn btn-primary d-flex gap-2">
+                <button class="btn btn-primary d-flex align-items-center gap-2">
                   <i class="fa-solid fa-file-pdf fs-5"></i>
                   <span>PDF</span>
                 </button>
                 <!-- delete -->
-                <button class="btn btn-danger d-flex gap-2">
+                <button class="btn btn-danger d-flex align-items-center gap-2">
                   <i class="fa-solid fa-trash fs-5"></i>
                   <span>Delete</span>
                 </button>
                 <!-- reset -->
-                <button class="btn btn-secondary" id="cash-read-reset">
-                  <i class="fa-solid fa-arrows-rotate fs-5 me-1"></i>
+                <button
+                  class="btn btn-secondary d-flex align-items-center gap-2"
+                  id="cash-read-reset"
+                >
+                  <i class="fa-solid fa-arrows-rotate fs-5"></i>
                   <span>Refresh</span>
                 </button>
               </div>
             </div>
             <!-- date -->
-            <div class="d-flex justify-content-end mb-2">
+            <div class="d-flex justify-content-end mb-3">
               <div class="input-group" style="width: max-content">
                 <input
                   type="date"
@@ -195,9 +197,9 @@
                 style="width: auto"
                 id="cash-read-limit"
               >
-                <option value="3">3</option>
-                <option value="5">5</option>
-                <option value="7">7</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
               </select>
               <div class="input-group" style="width: max-content">
                 <input
@@ -215,24 +217,30 @@
               </div>
             </div>
             <!-- tabel cash -->
-            <div style="overflow: auto">
-              <table class="table table-striped">
+            <div id="cash-table" class="overflow-x-auto mb-3">
+              <table class="table table-striped" style="table-layout: fixed">
                 <thead>
                   <tr>
-                    <th class="text-center">No</th>
+                    <th class="text-center" style="width: 120px">No</th>
                     <th style="width: 220px">Day / Date</th>
                     <th style="width: 110px">Hours</th>
-                    <th style="width: 180px">Name</th>
-                    <th class="text-center">Amount</th>
-                    <th class="text-center">Aksi</th>
+                    <th style="width: 230px">Name</th>
+                    <th class="text-center" style="width: 180px">Amount</th>
+                    <th class="text-center" style="width: 220px">Aksi</th>
                   </tr>
                 </thead>
-                <tbody id="cash"></tbody>
+                <tbody id="cash">
+                  <tr>
+                    <td class="text-center fw-bold fst-italic" colspan="6">
+                      loading...
+                    </td>
+                  </tr>
+                </tbody>
               </table>
             </div>
             <!-- pagination menu -->
             <div
-              class="w-100 d-flex justify-content-center"
+              class="w-100 d-flex justify-content-center d-none"
               id="cash-pagination-container"
             >
               <div class="btn-group">
@@ -270,38 +278,38 @@
           </div>
         </div>
         <!-- section general-entries -->
-        <div class="card w-100 mb-4 mt-4">
+        <div class="card w-100 mb-4 mb-4">
           <div
             class="card-header text-white fs-3"
-            style="background-color: #5c5cff"
+            style="background-color: #1c1cf0"
           >
             General Entries
           </div>
-          <div class="card-body">
+          <div class="card-body overflow-x-auto" id="accounting-card">
             <!-- entry all cases -->
-            <div class="btn-group gap-2">
+            <div class="btn-group gap-2 mb-3">
               <!-- entry - sales -->
               <button
-                class="btn d-flex gap-2"
+                class="btn d-flex gap-2 align-items-center entry-sale"
                 style="background-color: #3c50e0; color: white"
                 data-bs-toggle="modal"
                 data-bs-target="#entrySales"
               >
                 <i class="fa-solid fa-money-check-dollar fs-5"></i>
-                <span class="">Sales</span>
+                <span>Sales</span>
               </button>
               <!-- entry - purchase -->
               <button
-                class="btn d-flex gap-2 text-white bg-primary"
+                class="btn d-flex gap-2 align-items-center text-white bg-primary"
                 data-bs-toggle="modal"
                 data-bs-target="#entryPurchase"
               >
                 <i class="fa-solid fa-cart-shopping fs-5"></i>
-                <span class="">Purchase</span>
+                <span>Purchase</span>
               </button>
               <!-- cash-in -->
               <button
-                class="btn d-flex gap-2 text-white cash-in"
+                class="btn d-flex gap-2 align-items-center text-white cash-in"
                 style="background-color: #119687"
                 data-bs-toggle="modal"
                 data-bs-target="#cashInModal"
@@ -311,7 +319,7 @@
               </button>
               <!-- cashout -->
               <button
-                class="btn d-flex gap-2 text-white cash-out"
+                class="btn d-flex gap-2 align-items-center text-white cash-out"
                 style="background-color: #e11d48"
                 data-bs-toggle="modal"
                 data-bs-target="#cashOutModal"
@@ -321,24 +329,26 @@
               </button>
             </div>
             <!-- create, convert ,misc -->
-            <div class="d-flex gap-1 justify-content-end mb-2">
+            <div class="d-flex gap-1 justify-content-end mb-3">
               <div class="btn-group gap-2">
-                <button class="btn btn-success d-flex gap-2">
-                  <i class="fa-solid fa-file-excel fs-4"></i>
+                <button class="btn btn-success d-flex align-items-center gap-2">
+                  <i class="fa-solid fa-file-excel fs-5"></i>
                   <span>Excel</span>
                 </button>
-                <button class="btn btn-secondary d-flex gap-2">
-                  <i class="fa-solid fa-file-pdf fs-4"></i>
+                <button
+                  class="btn btn-secondary d-flex align-items-center gap-2"
+                >
+                  <i class="fa-solid fa-file-pdf fs-5"></i>
                   <span>PDF</span>
                 </button>
-                <button class="btn btn-danger d-flex gap-2">
-                  <i class="fa-solid fa-trash fs-4"></i>
+                <button class="btn btn-danger d-flex align-items-center gap-2">
+                  <i class="fa-solid fa-trash fs-5"></i>
                   <span>Delete</span>
                 </button>
               </div>
             </div>
             <!-- date -->
-            <div class="d-flex justify-content-end mb-2">
+            <div class="d-flex justify-content-end mb-3">
               <div class="input-group" style="width: max-content">
                 <input
                   type="date"
@@ -366,9 +376,9 @@
                 style="width: auto"
                 id="general-entries-limit"
               >
-                <option value="4">4</option>
-                <option value="6">6</option>
-                <option value="10">12</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
               </select>
               <div class="input-group" style="width: max-content">
                 <input
@@ -385,25 +395,29 @@
                 >
               </div>
             </div>
-            <!-- tabel jurnal-umum -->
-            <div style="overflow: auto">
-              <table class="table table-striped">
+            <!-- tabel general-entries -->
+            <div class="overflow-x-auto mb-3" id="accounting-table">
+              <table class="table table-striped" style="table-layout: fixed">
                 <thead>
                   <tr>
-                    <th class="text-center">Kode</th>
+                    <th class="text-center" style="width: 120px">Kode</th>
                     <th style="width: 220px">Day / Date</th>
                     <th style="width: 180px">Name</th>
-                    <th>Debt</th>
-                    <th>Credit</th>
-                    <th class="text-center">Aksi</th>
+                    <th style="width: 180px">Debt</th>
+                    <th style="width: 180px">Credit</th>
+                    <th class="text-center" style="width: 220px">Aksi</th>
                   </tr>
                 </thead>
-                <tbody id="general-entries"></tbody>
+                <tbody id="general-entries">
+                  <tr class="fw-bold text-center fst-italic">
+                    <td colspan="6">loading....</td>
+                  </tr>
+                </tbody>
               </table>
             </div>
             <!-- pagination general-entries -->
             <div
-              class="w-100 d-flex justify-content-center"
+              class="w-100 d-flex justify-content-center d-none"
               id="general-entries-pagination"
             >
               <div class="btn-group">
@@ -444,29 +458,32 @@
         <div class="card w-100 mb-4">
           <div
             class="card-header text-white fs-3"
-            style="background-color: #5c5cff"
+            style="background-color: #5c5ce8"
           >
             Balance Sheet
           </div>
-          <div class="card-body overflow-x-auto">
-            <div class="d-flex gap-1 justify-content-end mb-2">
+          <div class="card-body overflow-x-auto" id="accounting-1-card">
+            <!-- create - convert -->
+            <div class="d-flex gap-1 mb-2">
               <div class="d-flex gap-2">
-                <button class="btn btn-success d-flex gap-2">
-                  <i class="fa-solid fa-file-excel fs-4"></i>
+                <button class="btn btn-success d-flex align-items-center gap-2">
+                  <i class="fa-solid fa-file-excel fs-5"></i>
                   <span>Excel</span>
                 </button>
-                <button class="btn btn-secondary d-flex gap-2">
-                  <i class="fa-solid fa-file-pdf fs-4"></i>
+                <button
+                  class="btn btn-secondary d-flex align-items-center gap-2"
+                >
+                  <i class="fa-solid fa-file-pdf fs-5"></i>
                   <span>PDF</span>
                 </button>
-                <button class="btn btn-danger d-flex gap-2">
-                  <i class="fa-solid fa-trash fs-4"></i>
+                <button class="btn btn-danger d-flex align-items-center gap-2">
+                  <i class="fa-solid fa-trash fs-5"></i>
                   <span>Delete</span>
                 </button>
               </div>
             </div>
             <!-- date -->
-            <div class="d-flex justify-content-end gap-2 mb-2">
+            <div class="d-flex gap-2 mb-2">
               <div class="input-group" style="width: max-content">
                 <input
                   type="date"
@@ -489,7 +506,7 @@
               </div>
             </div>
             <!-- limit & search -->
-            <div class="d-flex justify-content-end gap-1 mb-3">
+            <div class="d-flex gap-1 mb-3">
               <select
                 class="form-select me-3"
                 aria-label="Default select example"
@@ -515,23 +532,39 @@
               </div>
             </div>
             <!-- tabel balace-sheet-->
-            <div style="overflow: auto">
-              <table class="table table-striped">
+            <div class="overflow-x-scroll mb-3 w-75" id="accounting-1-table">
+              <table class="table table-striped" style="table-layout: fixed">
                 <thead>
                   <tr>
-                    <th class="text-center align-content-center">Code</th>
-                    <th class="align-content-center">Name</th>
-                    <th class="text-center">Debt</th>
-                    <th class="text-center">Credit</th>
-                    <th class="text-center align-content-center">Action</th>
+                    <th
+                      class="text-center align-content-center"
+                      style="width: 110px"
+                    >
+                      Code
+                    </th>
+                    <th class="align-content-center" style="width: 170px">
+                      Name
+                    </th>
+                    <th class="text-center" style="width: 180px">Debt</th>
+                    <th class="text-center" style="width: 180px">Credit</th>
+                    <th
+                      class="text-center align-content-center"
+                      style="width: 210px"
+                    >
+                      Action
+                    </th>
                   </tr>
                 </thead>
-                <tbody id="balance-sheet"></tbody>
+                <tbody id="balance-sheet">
+                  <tr class="fw-bold text-center fst-italic">
+                    <td colspan="6">loading....</td>
+                  </tr>
+                </tbody>
                 <tfoot>
                   <tr>
                     <th colspan="2" class="text-end pe-5">Total</th>
-                    <th id="accounting-debt">Rp. 10,000,00 ,-</th>
-                    <th id="accounting-credit">Rp. 10,000,00 ,-</th>
+                    <th id="accounting-debt">Rp. 0,00,-</th>
+                    <th id="accounting-credit">Rp. 0,00,-</th>
                     <th></th>
                   </tr>
                 </tfoot>

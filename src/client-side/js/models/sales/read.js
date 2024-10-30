@@ -9,16 +9,17 @@ import {
   uiTBody,
   uiTrEmpty,
 } from "./ui.js";
+
 // Debounced event handler
 const handleDebounce = debounce(() => {
   getInit();
 }, 1000);
+
 // get all value
 let searchVal = $("input#sales-read-search").val();
 let limitVal = parseInt($("select#sales-read-limit").val());
 let offsetVal = 1;
-// fetch init
-getInit();
+
 // search
 $("input#sales-read-search")
   .off("keyup")
@@ -50,6 +51,9 @@ $("button#sales-read-reset")
     uiLoad();
     handleDebounce();
   });
+
+// fetch init
+getInit();
 async function getInit() {
   const req = {
     searchVal,
