@@ -11,18 +11,16 @@ export const uiTbody = (response) => {
     const accountingName = rows.AccountingName;
     // accountingRef
     const accountingRef = rows.AccountingRef;
-    // accountingPosition
-    const accountingPosition = rows.AccountingPosition;
-    const positionCredit = accountingPosition === "credit" ? "ps-4" : "";
-    // accountingRp
-    const accountingRp = rows.AccountingRp;
+    // accountingDebt
+    const accountingDebt = rows.AccountingDebt;
     const rupiahDebt =
-      accountingPosition === "debt"
-        ? formatRupiah2(accountingRp)
-        : formatRupiah2(0);
+      accountingDebt >= 1 ? formatRupiah2(accountingDebt) : formatRupiah2(0);
+    // accountingCredit
+    const accountingCredit = rows.AccountingCredit;
+    const positionCredit = accountingCredit >= 1 && "ps-4";
     const rupiahCredit =
-      accountingPosition === "credit"
-        ? formatRupiah2(accountingRp)
+      accountingCredit >= 1
+        ? formatRupiah2(accountingCredit)
         : formatRupiah2(0);
     tBody += `
     <tr>
@@ -95,14 +93,13 @@ export const uiTbody1 = (response) => {
     // accounting ref
     const accountingRef = rows.AccountingRef;
     // accountingPosition
-    const accountingPosition = rows.AccountingPosition;
+    const accountingDebt = rows.TotalDebt;
     const rupiahDebt =
-      accountingPosition === "debt"
-        ? formatRupiah2(rows.TotalRp)
-        : formatRupiah2(0);
+      accountingDebt >= 1 ? formatRupiah2(accountingDebt) : formatRupiah2(0);
+    const accountingCredit = rows.TotalCredit;
     const rupiahCredit =
-      accountingPosition === "credit"
-        ? formatRupiah2(rows.TotalRp)
+      accountingCredit >= 1
+        ? formatRupiah2(accountingCredit)
         : formatRupiah2(0);
     tbody += `
     <tr>

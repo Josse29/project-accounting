@@ -155,11 +155,16 @@ function handlePagination(totalPage) {
 export const getSupplierAgain = async () => {
   $("#supplier-search-input").val("");
   // pagination
+  // get value
+  let searchVal = $("#supplier-search-input").val();
+  let limitVal = parseInt($("#supplier-limit").val());
+  let offsetVal = 1;
   const req = {
     searchVal,
     limitVal,
     offsetVal,
   };
+
   const { status, response } = await pagination(req);
   if (status) {
     const { totalPage, totalRow } = response;
@@ -177,6 +182,7 @@ export const getSupplierAgain = async () => {
   if (!status) {
     console.error(response);
   }
+
   async function getSupplierPage(req) {
     const { status, response } = await getByLimitOffset(req);
     if (status) {
@@ -188,6 +194,7 @@ export const getSupplierAgain = async () => {
       console.error(response);
     }
   }
+
   function handlePagination(totalPage) {
     uiBtnPage(totalPage);
     // first page

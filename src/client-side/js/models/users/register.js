@@ -1,5 +1,5 @@
 import { previewLoadImg } from "../../utils/loadImg.js";
-import { getUserAgain } from "./read.js";
+import { get1 } from "./read.js";
 import { addUser } from "./services.js";
 import { uiAlertFail, uiAlertSuccess, uiReset } from "./ui.js";
 // init ui
@@ -71,11 +71,9 @@ $("#user-create button#send-to-db")
       UserPositionVal: userPositionVal,
     };
     // req-to-db
-    const registered = await addUser(req);
-    const status = registered.status;
-    const response = registered.response;
+    const { status, response } = await addUser(req);
     if (status) {
-      await getUserAgain();
+      await get1();
       const alert = uiAlertSuccess(response);
       $("#section-user #crud-success").html(alert);
       uiReset();

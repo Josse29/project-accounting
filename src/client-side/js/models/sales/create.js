@@ -9,10 +9,8 @@ import {
   removeStorageCartSUM,
 } from "../../utils/localStorage.js";
 import { listUserRefSalesCreate } from "../users/list.js";
-import { addCash } from "../cash/services.js";
 import { addSale } from "./services.js";
 import { getGroupProductAgain } from "../persediaan/read-by-group-product.js";
-import { addAccounting } from "../accounting/services.js";
 import { getSalesAgain } from "./read.js";
 
 // init table order

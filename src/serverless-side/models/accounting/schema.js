@@ -4,10 +4,10 @@ TABLE Accounting(
   AccountingId INTEGER PRIMARY KEY AUTOINCREMENT,                
   AccountingYMD VARCHAR(255),                
   AccountingHMS VARCHAR(255),                
-  AccountingRef VARCHAR(255),                
+  AccountingRef INTEGER,                
   AccountingName VARCHAR(255),                
-  AccountingPosition VARCHAR(255),                
-  AccountingRp INTEGER,                
+  AccountingDebt INTEGER,                
+  AccountingCredit INTEGER,                               
   AccountingImg BLOB,                
   AccountingInfo TEXT                
 )

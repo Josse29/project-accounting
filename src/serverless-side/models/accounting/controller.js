@@ -5,8 +5,7 @@ import {
   queryInitAccounting,
   queryReadAccounting,
   queryReadAccounting1,
-  querySumCredit,
-  querySumDebt,
+  querySum,
   queryUpdateAccounting,
 } from "./querysql.js";
 export const createAccounting = (req) => {
@@ -15,8 +14,8 @@ export const createAccounting = (req) => {
     accountingHMSVal,
     accountingRefVal,
     accountingNameVal,
-    accountingPositionVal,
-    accountingRpVal,
+    accountingDebtVal,
+    accountingCreditVal,
     accountingInfoVal,
   } = req;
   const query = queryCreateAccounting(
@@ -24,11 +23,10 @@ export const createAccounting = (req) => {
     accountingHMSVal,
     accountingRefVal,
     accountingNameVal,
-    accountingPositionVal,
-    accountingRpVal,
+    accountingDebtVal,
+    accountingCreditVal,
     accountingInfoVal
   );
-  console.log(query);
   return new Promise((resolve, reject) => {
     db.run(query, (err) => {
       if (!err) {
@@ -81,14 +79,14 @@ export const getAccounting = (req) => {
   });
 };
 // balance-sheet
-export const getAccountingSumDebt = () => {
-  const query = querySumDebt();
+export const getAccountingSum = () => {
+  const query = querySum();
   return new Promise((resolve, reject) => {
     db.each(query, (err, result) => {
       if (!err) {
-        const response = result.Total_Rp;
-        const debt = response ? response : 0;
-        resolve(debt);
+        const sumDebt = result.Total_Debt ? result.Total_Debt : 0;
+        const sumCredit = result.Total_Credit ? result.Total_Credit : 0;
+        resolve({ sumDebt, sumCredit });
       }
       if (err) {
         reject(err);
@@ -113,6 +111,7 @@ export const getAccountingSumCredit = () => {
 };
 export const getAccounting1 = () => {
   const query = queryReadAccounting1();
+  console.log(query);
   return new Promise((resolve, reject) => {
     db.all(query, (err, rows) => {
       if (!err) {

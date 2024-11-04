@@ -4,7 +4,7 @@ import { listSupplierRefPersediaanRead } from "../supplier/list.js";
 import { getBySupplierId, getSumPriceSupplierId } from "./services.js";
 import { uiTbody, uiTbodyEmpty } from "./ui.js";
 
-listSupplierRefPersediaanRead();
+await listSupplierRefPersediaanRead();
 $("select#persediaan-refsupplier-search")
   .off("change")
   .on("change", async function () {

@@ -4,7 +4,7 @@ import { listCategoryRefPersediaanRead } from "../categories/list.js";
 import { getByCategoryId, getSumPriceCategoryId } from "./services.js";
 import { uiTbody, uiTbodyEmpty } from "./ui.js";
 
-listCategoryRefPersediaanRead();
+await listCategoryRefPersediaanRead();
 $("select#persediaan-refcategory-search")
   .off("change")
   .on("change", async function () {

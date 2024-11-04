@@ -34,7 +34,6 @@ async function getInit() {
 async function readpage(req) {
   const { status, response } = await getGeneralEntry(req);
   if (status) {
-    console.log(response);
     uiTbody(response);
     uiBtnPageActived(req.offsetVal);
   }
@@ -63,7 +62,6 @@ function pagination(totalPage) {
         $("button.general-entries-page-active").text().trim()
       );
       let decrementPage = activePage - 1;
-      console.log(decrementPage);
       if (decrementPage < 1) {
         decrementPage = totalPage;
       }

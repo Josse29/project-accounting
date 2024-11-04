@@ -43,8 +43,7 @@ $("div#persediaan-date-all-search")
         reinitTooltip();
       }
       if (!existed) {
-        const tr = uiTbodyEmpty(selectedTxt);
-        $("#persediaan-table").html(tr);
+        uiTbodyEmpty(selectedTxt);
       }
     }
     if (!dateCategoryStatus) {

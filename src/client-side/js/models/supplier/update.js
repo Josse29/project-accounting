@@ -77,8 +77,8 @@ $("#supplier-table")
         };
         const { status, response } = await update(req);
         if (status) {
-          getSupplierAgain();
-          getSupplierRef();
+          await getSupplierAgain();
+          await getSupplierRef();
           uiAlertSuccess(response);
           $("#supplierUpdateModal").modal("hide");
         }

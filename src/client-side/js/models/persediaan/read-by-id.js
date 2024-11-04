@@ -20,18 +20,18 @@ $("tbody#persediaan-table")
     // qty
     const txtQty =
       persediaanQty < 1 ? `- ${Math.abs(persediaanQty)}` : `+ ${persediaanQty}`;
-    const spanQty = `<span class="badge ${
-      persediaanQty < 1 ? "text-bg-danger" : "text-bg-success"
-    }">${txtQty}</span>`;
-    $("td#persediaan-detail-productqty").html(spanQty);
+    const spanBg = persediaanQty < 1 ? "text-bg-danger" : "text-bg-success";
+    const spanQty = `
+    <span class="badge ${spanBg}">${txtQty}</span>`;
+    $("#persediaan-detail-productqty").html(spanQty);
     // product price
-    $("td#persediaan-detail-productprice").text(formatRupiah2(productPriceBuy));
+    $("#persediaan-detail-productprice").text(formatRupiah2(productPriceBuy));
     // persediaan rp
     const txtPersediaanRp =
       persediaaanRp < 1
         ? `- ${formatRupiah2(Math.abs(persediaaanRp))}`
         : `+ ${formatRupiah2(persediaaanRp)}`;
-    $("td#persediaan-detail-rp").text(txtPersediaanRp);
+    $("#persediaan-detail-rp").text(txtPersediaanRp);
     // information
     const persediaanInfoTxt = persediaanInfo !== "" ? persediaanInfo : "-";
     $("#persediaan-detail-info").text(persediaanInfoTxt);

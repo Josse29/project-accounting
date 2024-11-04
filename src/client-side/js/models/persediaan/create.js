@@ -7,8 +7,8 @@ import { addStock, getSumQty } from "./services.js";
 // 1.init-ui-modal-create
 $("button#btnpersediaanModal")
   .off("click")
-  .on("click", function () {
-    listProductRefPersediaanCreate();
+  .on("click", async function () {
+    await listProductRefPersediaanCreate();
     $("#sectionFailedActionPersediaan").html("");
     $("input#persediaan-create-qty").val(0);
     persediaanCreateQty = 0;

@@ -28,8 +28,8 @@ $("tbody#category-data")
         $("#categoryModalEdit").modal("hide");
       }
       if (!status) {
-        uiAlertFailUpdate(response);
         console.error(response);
+        uiAlertFailUpdate(response);
         const modalBody = $("#category-update-modal-body").get(0);
         modalBody.scrollTo({
           top: 0,

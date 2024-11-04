@@ -3,8 +3,7 @@ import {
   getAccounting,
   getAccounting1,
   getAccountingPagination,
-  getAccountingSumCredit,
-  getAccountingSumDebt,
+  getAccountingSum,
 } from "../../../../serverless-side/models/accounting/controller.js";
 
 // 1. endpoint = api/accounting/
@@ -73,26 +72,14 @@ export const getBalanceSheet = async () => {
     return { status: false, response: error };
   }
 };
-// 5.endpoint : api/accounting/sum-credit
+// 5.endpoint : api/accounting/summary
 // method : GET
 // payLoad : ""
 // return : summary credit
-export const getSumCredit = async () => {
+export const getSumDebtCredit = async () => {
   try {
-    const sumCredit = await getAccountingSumCredit();
-    return { status: true, response: sumCredit };
-  } catch (error) {
-    return { status: false, response: error };
-  }
-};
-// 6.endpoint : api/accounting/sum-debt
-// method : GET
-// payLoad : ""
-// return : summary debty
-export const getSumDebt = async () => {
-  try {
-    const sumDebt = await getAccountingSumDebt();
-    return { status: true, response: sumDebt };
+    const sumDebtCredit = await getAccountingSum();
+    return { status: true, response: sumDebtCredit };
   } catch (error) {
     return { status: false, response: error };
   }

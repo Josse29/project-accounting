@@ -9,8 +9,8 @@ $("tbody#product-table")
     const productName = product.productname;
     const productImg = product.productimage;
     const productInfo = product.productketerangan;
-    const productCategory = product.productcategory;
-    const productSupplier = product.productsupplier;
+    const productCategory = product.productcategoryname;
+    const productSupplier = product.productsuppliername;
     const productPriceBuy = parseInt(product.productpricebeli);
     const productPriceSell = parseInt(product.productpricejual);
     // 1.name product
@@ -75,23 +75,21 @@ $("tbody#product-table")
             persediaanQty >= 1
               ? `+ ${Math.abs(persediaanQty)}`
               : `- ${Math.abs(persediaanQty)}`;
-          const span = `
-          <span class="badge ${bg} ms-2">${qty}</span>`;
           listStock += `
           <li class="list-group-item">
-            <div class="mb-2 d-flex justify-content-between align-items-center">
-              <p class="fs-6 mb-0">Date : ${persediaanYMD}</p>
-              <p class="fs-6 mb-0">Hour : ${persediaanHMS}</p>
+            <div class="mb-1 d-flex justify-content-between align-items-center">
+              <p class="fs-6 mb-0">${persediaanYMD}</p>
+              <p class="fs-6 mb-0">${persediaanHMS}</p>
             </div>
             <div class="ms-2">
-              <p class="mb-2 fs-6">${productName} ${span}</p>
-              <p class="fs-6 mb-0">Total : ${totalPriceTxt}</p>
+              <span class="badge ${bg}">Qty : ${qty}</span>
+              <p class="fs-6 my-1">Total : ${totalPriceTxt}</p>
             </div>
           </li>`;
         });
         let listStock1 = `
         <div class="card">
-          <div class="card-header bg-secondary text-white fs-5">
+          <div class="card-header text-white fs-5" style="background-color: #3c50e0;">
             Table Stock ${productName}
           </div>
           <ul

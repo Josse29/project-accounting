@@ -23,9 +23,10 @@ $("#supplier-table")
         };
         const { status, response } = await deleteById(req);
         if (status) {
-          getSupplierAgain();
-          getSupplierRef();
+          await getSupplierAgain();
+          await getSupplierRef();
           uiAlertSuccess(response);
+          $("#supplierDeleteModal").modal("hide");
         }
         if (!status) {
           console.error(response);

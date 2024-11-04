@@ -136,6 +136,7 @@ export const updateProduct = async (req) => {
     imgBase64,
     productCancelImg
   );
+  console.log(query);
   return new Promise((resolve, reject) => {
     db.run(query, (err) => {
       if (!err) {

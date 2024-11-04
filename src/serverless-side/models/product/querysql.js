@@ -22,22 +22,22 @@ export const queryGetProducts = (
   productOffset
 ) => {
   let query = `SELECT *
-                 FROM Product
-                 LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
-                 LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId `;
+               FROM Product
+               LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
+               LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId `;
   //  with search value
   if (productSearch !== "") {
     query += `WHERE Product.ProductName LIKE '%${productSearch}%' ESCAPE '!' OR
-                      Product.ProductPriceBeli LIKE '%${productSearch}%' ESCAPE '!' OR
-                      Product.ProductPriceJual LIKE '%${productSearch}%' ESCAPE '!' OR
-                      Product.ProductInfo LIKE '%${productSearch}%' ESCAPE '!' OR
-                      Category.CategoryName LIKE '%${productSearch}%' ESCAPE '!' OR 
-                      Supplier.SupplierName LIKE '%${productSearch}%' ESCAPE '!' `;
+                    Product.ProductPriceBeli LIKE '%${productSearch}%' ESCAPE '!' OR
+                    Product.ProductPriceJual LIKE '%${productSearch}%' ESCAPE '!' OR
+                    Product.ProductInfo LIKE '%${productSearch}%' ESCAPE '!' OR
+                    Category.CategoryName LIKE '%${productSearch}%' ESCAPE '!' OR 
+                    Supplier.SupplierName LIKE '%${productSearch}%' ESCAPE '!' `;
   }
   // witth order limit offset
   query += `ORDER BY Product.ProductName ASC
-              LIMIT ${productLimit} 
-              OFFSET ${productOffset}`;
+            LIMIT ${productLimit} 
+            OFFSET ${productOffset}`;
   return query;
 };
 export const queryGetListProduct = (productSearch) => {
@@ -94,15 +94,15 @@ export const queryUpdateProduct = (
                      ProductPriceJual = ${productPriceSell},
                      ProductCategoryId = ${productCategoryId},
                      ProductSupplierId = ${productSupplierId}, 
-                     ProductInfo = '${productInfo}', `;
+                     ProductInfo = '${productInfo}' `;
   // condition image
   //  1. if remove image
   if (productCancelImg) {
-    query += `ProductImage = 'null' `;
+    query += `, ProductImage = 'null' `;
   }
   //  2. if change image
   if (!productCancelImg && imgBase64 !== "null") {
-    query += `ProductImage = '${imgBase64}' `;
+    query += `, ProductImage = '${imgBase64}' `;
   }
   // 3. if it isn't change img or remove img , nothing do column image
   query += `WHERE ProductId = ${productId} `;

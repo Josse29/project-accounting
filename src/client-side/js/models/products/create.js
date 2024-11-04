@@ -10,10 +10,10 @@ import { addProduct } from "./services.js";
 
 $("button#product-create")
   .off("click")
-  .on("click", function () {
+  .on("click", async function () {
     $("div#productCreateFailed").html("");
-    listCategoryRefProductCreate();
-    listSupplierRefProductCreate();
+    await listCategoryRefProductCreate();
+    await listSupplierRefProductCreate();
   });
 // Format as Rupiah when input
 $("input#product-price-beli")
@@ -64,9 +64,9 @@ $("#submit_product")
     };
     const { status, response } = await addProduct(req);
     if (status) {
-      uiAlertSuccess(response);
       await getProductsAgain();
       await getProductRef();
+      uiAlertSuccess(response);
       uiBlankVal();
       listProductRefPersediaanCreate();
       $("#productCreateModal").modal("hide");

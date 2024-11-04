@@ -77,10 +77,10 @@ export const queryUpdate = (
                    UserFullname = '${UserFullnameVal}',
                    UserPosition = '${UserPositionVal}' `;
   if (!CancelImg && imgBase64 !== "null") {
-    query += `UserImg = '${imgBase64}' `;
+    query += `, UserImg = '${imgBase64}' `;
   }
   if (CancelImg) {
-    query += `UserImg = 'null' `;
+    query += `, UserImg = 'null' `;
   }
   query += `WHERE UserId = ${UserIdVal} `;
   return query;

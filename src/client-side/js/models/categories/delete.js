@@ -26,6 +26,7 @@ $("tbody#category-data")
           await getCategoryAgain();
           await getCategoryRef();
           uiAlertSuccess(response);
+          $("#confirmDeleteCategoryModal").modal("hide");
         }
         if (!status) {
           console.error(response);

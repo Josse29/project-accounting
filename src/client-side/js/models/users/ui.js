@@ -31,7 +31,7 @@ export const uiTbody = (response) => {
               class="fa-solid fa-eye"
               data-bs-toggle="tooltip"
               data-bs-html="true"
-              data-bs-title="<span>Update-${el.UserFullname}</span>"
+              data-bs-title="<span>See-${el.UserFullname}</span>"
               data-bs-placement="bottom"
             ></i>
           </button>
@@ -80,21 +80,19 @@ export const uiTbodyEmpty = (searchVal) => {
                 </td>
               </tr>`;
   $("tbody#user").html(tr);
+  $("div#user-pagination").addClass("d-none");
 };
-export const uiTrSearching = () => {
-  const tr = `<tr>
-                <td class="animate-load text-center fst-italic fw-bold" colspan="5">
-                  loading....
-                </td>
-              </tr>`;
-  return tr;
-};
-export const uiBtnPage = (i) => {
-  let actived = `${i === 1 ? "user-page-active" : ""}`;
-  const btn = `<button type="button" class="btn border border-2 fs-6 ${actived}">
-                 ${i}
-               </button> `;
-  return btn;
+export const uiBtnPage = (totalPage) => {
+  let btn = ``;
+  for (let i = 1; i <= totalPage; i++) {
+    const actived = i === 1 ? "user-page-active" : "";
+    btn += `<button type="button"
+              class="btn border border-2 fs-6 ${actived}">
+              ${i}
+            </button> `;
+  }
+  $("#user-page-number").html(btn);
+  $("div#user-pagination").removeClass("d-none");
 };
 export const uiBtnPageActive = (page) => {
   const btnPage = $("#user-page-number button");
@@ -138,7 +136,11 @@ export const uiReset = () => {
   $("#user-create input#userimg").val("");
 };
 export const uiLoad = () => {
-  $("div#user-pagination").addClass("d-none");
-  const tr = uiTrSearching();
+  const tr = `<tr>
+                <td class="text-center fst-italic fw-bold" colspan="5">
+                  loading....
+                </td>
+              </tr>`;
   $("tbody#user").html(tr);
+  $("div#user-pagination").addClass("d-none");
 };

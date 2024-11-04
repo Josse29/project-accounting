@@ -153,12 +153,19 @@ function handlePagination(totalPage) {
 export const getProductsAgain = async () => {
   // reset-search
   $("#product-search-input").val("");
+
   // 1. init
+  // get all value
+  let searchVal = $("#product-search-input").val();
+  let limitVal = parseInt($("#product-limit").val());
+  let offsetVal = 1;
   const req = {
     searchVal,
     limitVal,
     offsetVal,
   };
+
+  // pagination and total row
   const pagination = await getPagination(req);
   const { status, response } = pagination;
   if (status) {
@@ -180,6 +187,8 @@ export const getProductsAgain = async () => {
   if (!status) {
     console.error(response);
   }
+
+  // by page
   async function getProductPage(req) {
     const { status, response } = await getLimitOffset(req);
     if (status) {
@@ -191,6 +200,8 @@ export const getProductsAgain = async () => {
       console.error(response);
     }
   }
+
+  // button page
   function handlePagination(totalPage) {
     uiBtnPage(totalPage);
     // first page

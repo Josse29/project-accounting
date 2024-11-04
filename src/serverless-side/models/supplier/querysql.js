@@ -68,14 +68,14 @@ export const queryUpdateSupplier = (
   let query = `UPDATE 
                Supplier
                SET SupplierName = '${supplierName}',
-                   SupplierInfo = '${supplierInfo}', `;
+                   SupplierInfo = '${supplierInfo}' `;
   //  if remove image
   if (supplierCancelImg) {
-    query += `SupplierImg = 'null' `;
+    query += `, SupplierImg = 'null' `;
   }
   // if change image
   if (!supplierCancelImg && imgBase64 !== "null") {
-    query += `SupplierImg = '${imgBase64}' `;
+    query += `, SupplierImg = '${imgBase64}' `;
   }
   // if it doesn't change image , do nothing
   query += `WHERE SupplierId = ${supplierId}`;

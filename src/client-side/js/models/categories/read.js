@@ -147,13 +147,20 @@ function handlePagination(totalPage) {
       await getCategoryPage(req);
     });
 }
+
 export const getCategoryAgain = async () => {
   $("#category-search-input").val("");
+  // get all value
+  let searchVal = $("#category-search-input").val();
+  let limitVal = parseInt($("#category-limit").val());
+  let offsetVal = 1;
   const req = {
     searchVal,
     limitVal,
     offsetVal,
   };
+
+  // pagination and total row
   const { status, response } = await getPagination(req);
   if (status) {
     const { totalPage, totalRow } = response;
@@ -173,6 +180,8 @@ export const getCategoryAgain = async () => {
   if (!status) {
     console.error(response);
   }
+
+  // by page
   async function getCategoryPage(req) {
     const { status, response } = await getByLimitOffset(req);
     if (status) {
@@ -184,6 +193,8 @@ export const getCategoryAgain = async () => {
       console.error(response);
     }
   }
+
+  // handle pagination
   function handlePagination(totalPage) {
     uiBtnPage(totalPage);
     // first page

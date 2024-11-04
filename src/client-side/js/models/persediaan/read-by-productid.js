@@ -4,7 +4,7 @@ import { listProductRefPersediaanRead } from "../products/list.js";
 import { getByProductId2, getSumQty } from "./services.js";
 import { uiTbody, uiTbodyEmpty } from "./ui.js";
 
-listProductRefPersediaanRead();
+await listProductRefPersediaanRead();
 $("select#persediaan-refproduct-search")
   .off("change")
   .on("change", async function () {

@@ -1,5 +1,5 @@
 import { getImageBase64, validateImg } from "../../utils/loadImg.js";
-import { getUserAgain } from "./read.js";
+import { get1 } from "./read.js";
 import { update } from "./services.js";
 import { uiAlertFail, uiAlertSuccess } from "./ui.js";
 
@@ -89,10 +89,9 @@ $("tbody#user")
           cancelImg,
         };
         const updated = await update(req);
-        const status = updated.status;
-        const response = updated.response;
+        const { status, response } = updated;
         if (status) {
-          await getUserAgain();
+          await get1();
           const uiSuccess = uiAlertSuccess(response);
           $("#crud-success").html(uiSuccess);
           $("#user-update-modal").modal("hide");
@@ -105,7 +104,6 @@ $("tbody#user")
             top: 0,
             behavior: "smooth",
           });
-          console.error(response);
         }
       });
   });

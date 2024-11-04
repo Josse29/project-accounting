@@ -3,14 +3,14 @@ export const queryCreateAccounting = (
   accountingHMSVal,
   accountingRefVal,
   accountingNameVal,
-  accountingPositionVal,
-  accountingRpVal,
+  accountingDebtVal,
+  accountingCreditVal,
   accountingInfoVal
 ) => {
   let query = `INSERT INTO Accounting
-               (AccountingYMD, AccountingHMS, AccountingRef, AccountingName, AccountingPosition, AccountingRp, AccountingInfo)
+               (AccountingYMD, AccountingHMS, AccountingRef, AccountingName, AccountingDebt, AccountingCredit, AccountingInfo)
                VALUES
-               ('${accountingYMDVal}', '${accountingHMSVal}', '${accountingRefVal}', '${accountingNameVal}', '${accountingPositionVal}', ${accountingRpVal}, '${accountingInfoVal}')`;
+               ('${accountingYMDVal}', '${accountingHMSVal}', '${accountingRefVal}', '${accountingNameVal}', '${accountingDebtVal}', ${accountingCreditVal}, '${accountingInfoVal}')`;
   return query;
 };
 export const queryInitAccounting = () => {
@@ -21,34 +21,26 @@ export const queryInitAccounting = () => {
 };
 export const queryReadAccounting = (searchVal, limitVal, startoffsetVal) => {
   let query = `SELECT * FROM Accounting `;
-  query += `ORDER BY Accounting.AccountingYMD DESC, 
-                     Accounting.AccountingHMS DESC, 
-                     Accounting.AccountingRef ASC  
+  query += `ORDER BY AccountingYMD DESC, 
+                     AccountingHMS DESC
             LIMIT ${limitVal}
             OFFSET ${startoffsetVal} `;
   return query;
 };
 // balance sheet
-export const querySumDebt = () => {
+export const querySum = () => {
   let query = `SELECT
-                 SUM(AccountingRp) AS Total_Rp 
-                 FROM Accounting `;
-  query += `WHERE AccountingPosition = 'debt' `;
-  return query;
-};
-export const querySumCredit = () => {
-  let query = `SELECT
-               SUM(AccountingRp) AS Total_Rp 
+               SUM(AccountingDebt) AS Total_Debt,
+               SUM(AccountingCredit) AS Total_Credit
                FROM Accounting `;
-  query += `WHERE AccountingPosition = 'credit' `;
   return query;
 };
 export const queryReadAccounting1 = () => {
   let query = `SELECT 
-               AccountingRef, 
                AccountingName, 
-               AccountingPosition, 
-               SUM(AccountingRp) AS TotalRp
+               AccountingRef, 
+               SUM(AccountingDebt) AS TotalDebt,
+               SUM(AccountingCredit) AS TotalCredit
                FROM Accounting `;
   query += `GROUP BY Accounting.AccountingRef
             ORDER BY Accounting.AccountingRef ASC `;
@@ -78,6 +70,6 @@ export const queryUpdateAccounting = (req) => {
 };
 export const queryDeleteAccounting = (accountingIdVal) => {
   let query = `DELETE FROM Accounting 
-                 WHERE AccountingId = ${accountingIdVal}`;
+               WHERE AccountingId = ${accountingIdVal}`;
   return query;
 };

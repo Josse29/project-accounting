@@ -74,8 +74,8 @@ export const createSale = async (req) => {
     accountingHMSVal: formattedHMS,
     accountingRefVal: 111,
     accountingNameVal: "Cash",
-    accountingPositionVal: "debt",
-    accountingRpVal: parseFloat(ProductPriceSell * ProductQtyVal),
+    accountingDebtVal: parseFloat(ProductPriceSell * ProductQtyVal),
+    accountingCreditVal: 0,
     accountingInfoVal: `${ProductName} has been sold with qty ${parseFloat(
       ProductQtyVal
     )}`,
@@ -86,8 +86,8 @@ export const createSale = async (req) => {
     accountingHMSVal: formattedHMS,
     accountingRefVal: 411,
     accountingNameVal: "Sales",
-    accountingPositionVal: "credit",
-    accountingRpVal: parseFloat(ProductPriceSell * ProductQtyVal),
+    accountingDebtVal: 0,
+    accountingCreditVal: parseFloat(ProductPriceSell * ProductQtyVal),
     accountingInfoVal: `${ProductName} has been sold with qty ${parseFloat(
       ProductQtyVal
     )}`,

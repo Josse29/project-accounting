@@ -913,38 +913,23 @@
                     class="fs-4 ms-3 text-capitalize mb-0"
                   ></p>
                 </div>
+                <!-- qty -->
+                <div class="mb-3">
+                  <div class="fs-4 mb-1">Qty</div>
+                  <div
+                    id="persediaan-detail-productqty"
+                    class="fs-5 ms-3"
+                  ></div>
+                </div>
+                <!-- Price -->
+                <div class="mb-3">
+                  <div class="fs-4">Price</div>
+                  <div id="persediaan-detail-rp" class="fs-5 ms-3"></div>
+                </div>
                 <!-- info product -->
                 <div class="mb-3">
                   <p class="fs-4 mb-1">Keterangan</p>
                   <p id="persediaan-detail-info" class="fs-5 ms-3 mb-0"></p>
-                </div>
-                <!-- table total price & qty -->
-                <div>
-                  <table class="table table-striped">
-                    <thead>
-                      <tr>
-                        <th scope="col" class="fs-5">#</th>
-                        <th scope="col" class="fs-5">Qty</th>
-                        <th scope="col" class="fs-5">Harga</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <th scope="row" class="fs-5">1</th>
-                        <td id="persediaan-detail-productqty" class="fs-5"></td>
-                        <td
-                          id="persediaan-detail-productprice"
-                          class="fs-5"
-                        ></td>
-                      </tr>
-                      <tr>
-                        <td class="fs-5 fw-bold text-center" colspan="2">
-                          Total
-                        </td>
-                        <td id="persediaan-detail-rp" class="fs-5">120000</td>
-                      </tr>
-                    </tbody>
-                  </table>
                 </div>
               </div>
             </div>
@@ -1852,7 +1837,6 @@
                   type="button"
                   class="btn btn-danger d-flex align-items-center gap-2"
                   id="sure-delete-category"
-                  data-bs-dismiss="modal"
                 >
                   <i class="fa-solid fa-check me-1 fs-4"></i>
                   <span class="fs-5">Yes</span>
@@ -2133,7 +2117,6 @@
                   type="button"
                   class="btn btn-danger d-flex align-items-center gap-2"
                   id="supplier-delete-submit"
-                  data-bs-dismiss="modal"
                 >
                   <i class="fa-solid fa-check me-1 fs-4"></i>
                   <span class="fs-5">Yes</span>

@@ -161,9 +161,9 @@
                 style="width: auto"
                 id="user-limit"
               >
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="15">15</option>
+                <option value="1">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
               </select>
               <!-- search -->
               <div class="input-group" style="width: 580px">
@@ -201,7 +201,7 @@
                 </thead>
                 <tbody id="user">
                   <tr>
-                    <td colspan="5" class="fst-italic text-center">
+                    <td colspan="5" class="fst-italic text-center fw-bold">
                       loading....
                     </td>
                   </tr>
@@ -230,7 +230,9 @@
                 >
                   <i class="fa-solid fa-backward-step fs-6"></i>
                 </button>
+                <!-- by number -->
                 <div id="user-page-number" class="btn-group"></div>
+                <!-- next -->
                 <button
                   type="button"
                   class="btn border border-2"
@@ -238,6 +240,7 @@
                 >
                   <i class="fa-solid fa-forward-step fs-6"></i>
                 </button>
+                <!-- last -->
                 <button
                   type="button"
                   class="btn border border-2"
@@ -422,6 +425,7 @@
                 type="button"
                 class="btn text-white"
                 style="background-color: #4338ca"
+                data-bs-dismiss="modal"
               >
                 Save changes
               </button>

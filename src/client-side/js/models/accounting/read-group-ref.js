@@ -1,13 +1,12 @@
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
-import { getBalanceSheet, getSumCredit, getSumDebt } from "./services.js";
+import { getBalanceSheet, getSumDebtCredit } from "./services.js";
 import { uiTbody1, uiTbodyZero1 } from "./ui.js";
 
 const { status, response } = await getBalanceSheet();
 if (status) {
   const existed = response.length >= 1;
   if (existed) {
-    await summaryCredit();
-    await summaryDebt();
+    await sumDebtCredit();
     uiTbody1(response);
   }
   if (!existed) {
@@ -17,21 +16,12 @@ if (status) {
 if (!status) {
   console.error(response);
 }
-async function summaryCredit() {
-  const { status, response } = await getSumCredit();
+async function sumDebtCredit() {
+  const { status, response } = await getSumDebtCredit();
   if (status) {
-    const rupiah = formatRupiah2(response);
-    $("th#accounting-credit").text(rupiah);
-  }
-  if (!status) {
-    console.error(response);
-  }
-}
-async function summaryDebt() {
-  const { status, response } = await getSumDebt();
-  if (status) {
-    const rupiah = formatRupiah2(response);
-    $("th#accounting-debt").text(rupiah);
+    const { sumDebt, sumCredit } = response;
+    $("th#accounting-debt").text(formatRupiah2(sumDebt));
+    $("th#accounting-credit").text(formatRupiah2(sumCredit));
   }
   if (!status) {
     console.error(response);

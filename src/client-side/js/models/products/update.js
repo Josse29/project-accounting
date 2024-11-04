@@ -139,9 +139,9 @@ $("tbody#product-table")
         };
         const { status, response } = await update(req);
         if (status) {
+          await getProductsAgain();
+          await getProductRef();
           $("#edit-product-image-file").val("");
-          getProductsAgain();
-          getProductRef();
           uiAlertSuccess(response);
           $("#editProductModal").modal("hide");
         }

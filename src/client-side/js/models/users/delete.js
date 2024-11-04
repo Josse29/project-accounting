@@ -1,4 +1,4 @@
-import { getUserAgain } from "./read.js";
+import { get1 } from "./read.js";
 import { deleteById } from "./services.js";
 import { uiAlertSuccess } from "./ui.js";
 
@@ -21,16 +21,11 @@ $("tbody#user")
           userId,
           userFullname,
         };
-        const deleted = await deleteById(req);
-        const status = deleted.status;
-        const response = deleted.response;
+        const { status, response } = await deleteById(req);
         if (status) {
-          console.log(response);
-          //   ui alert
+          await get1();
           const alert = uiAlertSuccess(response);
           $("#section-user #crud-success").html(alert);
-          console.log("test-1");
-          getUserAgain();
           $("#user-delete-modal").modal("hide");
         }
         if (!status) {

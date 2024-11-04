@@ -1,10 +1,10 @@
 import { getList } from "./services.js";
-// function to update list supplier ref product create action
-export const listSupplierRefProductCreate = async () => {
+
+const supplierList = async () => {
   const { status, response } = await getList("");
   if (status) {
     const existed = response.length >= 1;
-    let option = `<option selected value="null">Choose One Of Suppliers</option>`;
+    let option = `<option selected disabled>Choose One Of Suppliers</option>`;
     if (existed) {
       response.forEach((el) => {
         option += `<option value=${el.SupplierId}>${el.SupplierName}</option>`;
@@ -12,14 +12,13 @@ export const listSupplierRefProductCreate = async () => {
     } else {
       option += `<option disabled class="fst-italic text-center">Supplier Empty.....</option>`;
     }
-    $("select#product-refsupplier-create").html(option);
+    return option;
   }
   if (!status) {
     console.error(response);
   }
 };
-// function to update when create list product ref categories
-export const listSupplierRefProductUpdate = async (selected) => {
+const supplierList1 = async (selected) => {
   const { status, response } = await getList("");
   if (status) {
     const existed = response.length >= 1;
@@ -33,47 +32,28 @@ export const listSupplierRefProductUpdate = async (selected) => {
     } else {
       option += `<option disabled class="fst-italic text-center">Supplier Empty.....</option>`;
     }
-    $("select#product-refsupplier-update").html(option);
   }
   if (!status) {
     console.error(response);
   }
+};
+// function to update list supplier ref product create action
+export const listSupplierRefProductCreate = async () => {
+  const option = await supplierList();
+  $("select#product-refsupplier-create").html(option);
+};
+// function to update when create list product ref categories
+export const listSupplierRefProductUpdate = async (selected) => {
+  const option = await supplierList1(selected);
+  $("select#product-refsupplier-update").html(option);
 };
 // function to update html list when read persediaan
 export const listSupplierRefPersediaanRead = async () => {
-  const { status, response } = await getList("");
-  if (status) {
-    const existed = response.length >= 1;
-    let option = `<option selected disabled>Choose One Of Suppliers</option>`;
-    if (existed) {
-      response.forEach((row) => {
-        option += `<option value=${row.SupplierId}>${row.SupplierName}</option>`;
-      });
-    } else {
-      option += `<option disabled class="fst-italic text-center">Supplier Empty.....</option>`;
-    }
-    $("select#persediaan-refsupplier-search").html(option);
-  }
-  if (!status) {
-    console.error(response);
-  }
+  const option = await supplierList();
+  $("select#persediaan-refsupplier-search").html(option);
 };
 // function to update html list when read persediaanDate
 export const listSupplierRefPersediaanReadDate = async () => {
-  const { status, response } = await getList("");
-  if (status) {
-    const existed = response.length >= 1;
-    let option = `<option selected disabled>Choose One Of Suppliers</option>`;
-    if (existed) {
-      response.forEach((row) => {
-        option += `<option value=${row.SupplierId}>${row.SupplierName}</option>`;
-      });
-    } else {
-      option += `<option disabled class="fst-italic text-center">Supplier Empty.....</option>`;
-    }
-    $("select#persediaan-date-supplier").html(option);
-  }
-  if (!status) {
-    console.error(response);
-  }
+  const option = await supplierList();
+  $("select#persediaan-date-supplier").html(option);
 };
