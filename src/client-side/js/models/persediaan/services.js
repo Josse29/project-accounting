@@ -83,7 +83,7 @@ export const getSumPrice = async () => {
 // method : GET
 // payload : 1.searchVal, 2.limitVal,
 // return : get all persediaan with search, limit, offset
-export const getAll = async (req) => {
+export const getAll1 = async (req) => {
   try {
     const payLoad = {
       searchVal: req.searchVal,

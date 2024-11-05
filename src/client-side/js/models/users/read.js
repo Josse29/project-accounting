@@ -8,16 +8,18 @@ get1();
 
 // 1. init & pagination
 export async function get1() {
-  // request
+  // reset search
+  $("input#user-search").val("");
+  // value
   const searchVal = $("input#user-search").val();
   const limitVal = parseInt($("select#user-limit").val());
   const offsetVal = 1;
+  // request
   const req = {
     searchVal,
     limitVal,
     offsetVal,
   };
-  console.log(req);
   // execute
   const { status, response } = await fetchRowPage(req);
   if (status) {
@@ -45,9 +47,9 @@ export async function get2(req) {
   const { status, response } = await fetchLimitOffset(req);
   if (status) {
     uiTbody(response);
-    reinitTooltip();
     // active page
     uiBtnPageActive(req.offsetVal);
+    reinitTooltip();
   }
   if (!status) {
     console.error(response);

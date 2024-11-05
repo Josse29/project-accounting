@@ -81,7 +81,6 @@ export const getUser = (req) => {
 export const getUserPageRow = (req) => {
   const { searchVal, limitVal } = req;
   const query = queryGetTotal(searchVal);
-  console.log(query);
   return new Promise((resolve, reject) => {
     db.each(query, (err, res) => {
       if (!err) {

@@ -1,5 +1,6 @@
-import { getSupplierAgain, getSupplierRef } from "./read.js";
 import { deleteById } from "./services.js";
+import { getSupplier1 } from "./read.js";
+import { getSupplierRef } from "./utils.js";
 import { uiAlertSuccess } from "./ui.js";
 
 $("#supplier-table")
@@ -23,7 +24,7 @@ $("#supplier-table")
         };
         const { status, response } = await deleteById(req);
         if (status) {
-          await getSupplierAgain();
+          await getSupplier1();
           await getSupplierRef();
           uiAlertSuccess(response);
           $("#supplierDeleteModal").modal("hide");

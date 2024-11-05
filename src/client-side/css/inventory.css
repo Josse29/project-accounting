@@ -275,7 +275,17 @@ tbody#persediaan-table::-webkit-scrollbar-thumb:hover {
 }
 /* #persediaan-detial-stock*/
 ul#product-detail-stock::-webkit-scrollbar {
-  display: none;
+  /* Width of the vertical scrollbar */
+  width: 5px;
+}
+ul#product-detail-stock::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+ul#product-detail-stock::-webkit-scrollbar-thumb {
+  background: #afaeae;
+}
+ul#product-detail-stock::-webkit-scrollbar-thumb:hover {
+  background: #9c9b9b;
 }
 /* persediaan-section */
 div#persediaan-section {

@@ -1,4 +1,4 @@
-import { getProductRef, getProductsAgain } from "./read.js";
+import { addProduct } from "./services.js";
 import { uiAlertFailCreate, uiAlertSuccess, uiBlankVal } from "./ui.js";
 import { listCategoryRefProductCreate } from "./../categories/list.js";
 import { listSupplierRefProductCreate } from "../supplier/list.js";
@@ -6,7 +6,8 @@ import { disFormatRupiah1, formatRupiah1 } from "../../utils/formatRupiah.js";
 import { capitalizeWord } from "../../utils/formatCapitalize.js";
 import { listProductRefPersediaanCreate } from "./list.js";
 import { previewLoadImg } from "../../utils/loadImg.js";
-import { addProduct } from "./services.js";
+import { getProductRef } from "./utils.js";
+import { getProduct1 } from "./read.js";
 
 $("button#product-create")
   .off("click")
@@ -64,7 +65,7 @@ $("#submit_product")
     };
     const { status, response } = await addProduct(req);
     if (status) {
-      await getProductsAgain();
+      await getProduct1();
       await getProductRef();
       uiAlertSuccess(response);
       uiBlankVal();

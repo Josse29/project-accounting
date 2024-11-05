@@ -1,4 +1,5 @@
-import { getCategoryAgain, getCategoryRef } from "./read.js";
+import { getCategory1 } from "./read.js";
+import { getCategoryRef } from "./utils.js";
 import { deleteById } from "./services.js";
 import { uiAlertSuccess } from "./ui.js";
 
@@ -23,7 +24,7 @@ $("tbody#category-data")
         };
         const { status, response } = await deleteById(req);
         if (status) {
-          await getCategoryAgain();
+          await getCategory1();
           await getCategoryRef();
           uiAlertSuccess(response);
           $("#confirmDeleteCategoryModal").modal("hide");

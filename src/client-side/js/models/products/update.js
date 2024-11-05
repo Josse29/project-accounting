@@ -1,11 +1,12 @@
+import { update } from "./services.js";
 import { listCategoryRefProductUpdate } from "../categories/list.js";
 import { listSupplierRefProductUpdate } from "../supplier/list.js";
-import { getProductRef, getProductsAgain } from "./read.js";
 import { uiAlertSuccess, uiAlertFailUpdate } from "./ui.js";
 import { capitalizeWord } from "../../utils/formatCapitalize.js";
 import { disFormatRupiah1, formatRupiah1 } from "../../utils/formatRupiah.js";
 import { getImageBase64, validateImg } from "../../utils/loadImg.js";
-import { update } from "./services.js";
+import { getProduct1 } from "./read.js";
+import { getProductRef } from "./utils.js";
 // upadte | event binding
 $("tbody#product-table")
   .off("click", "#editProduct")
@@ -139,7 +140,7 @@ $("tbody#product-table")
         };
         const { status, response } = await update(req);
         if (status) {
-          await getProductsAgain();
+          await getProduct1();
           await getProductRef();
           $("#edit-product-image-file").val("");
           uiAlertSuccess(response);

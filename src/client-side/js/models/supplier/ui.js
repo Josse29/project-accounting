@@ -98,6 +98,7 @@ export const uiTbodyZero = (searchVal) => {
       </td>
     </tr>`;
   $("#supplier-table").html(tr);
+  $("div#supplier-pagination").addClass("d-none");
 };
 export const uiTbodyLoad = () => {
   const tr = `
@@ -117,13 +118,15 @@ export const uiTbodyLoad = () => {
 export const uiBtnPage = (totalPage) => {
   let btn = "";
   for (let i = 1; i <= totalPage; i++) {
+    const actived = i === 1 ? "supplier-active-page" : "";
     btn += `<button 
-            type="button" 
-            class="supplier-btn-page ${i === 1 ? "supplier-active-page" : ""} ">
-              ${i}
-          </button>`;
+              type="button" 
+              class="supplier-btn-page ${actived}">
+                ${i}
+            </button>`;
   }
   $("#supplier-number-page").html(btn);
+  $("div#supplier-pagination").removeClass("d-none");
 };
 // update active pagination
 export function uiBtnPageActive(pageNumber) {

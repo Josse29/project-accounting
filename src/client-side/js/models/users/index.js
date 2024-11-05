@@ -6,3 +6,4 @@ import "./update.js";
 import "./read-id.js";
 import "./pagination.js";
 import "./search.js";
+import "./limit.js";

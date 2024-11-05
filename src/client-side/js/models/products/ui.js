@@ -105,6 +105,7 @@ export const uiTBodyEmpty = (searchVal) => {
                 <td colspan="7" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">${search}</td>
               </tr>`;
   $("#product-table").html(tr);
+  $("#product-pagination").addClass("d-none");
 };
 export const uiTBodyLoad = () => {
   const tr = `<tr>
@@ -136,6 +137,7 @@ export const uiBtnPage = (totalPage) => {
             </button>`;
   }
   $("#product-number-page").html(btn);
+  $("#product-pagination").removeClass("d-none");
 };
 // Function to update active page button
 export const uiBtnPageActive = (numberPage) => {

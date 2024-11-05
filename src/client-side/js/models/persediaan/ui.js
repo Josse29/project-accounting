@@ -181,6 +181,7 @@ export const uiBtnPage = (totalPage) => {
             </button>`;
   }
   $("#persediaan-number-page").html(btn);
+  $("#persediaan-pagination").removeClass("d-none");
 };
 // Function to update active page button
 export const uiBtnPageActive = (activePage) => {
@@ -207,6 +208,7 @@ export const uiTbodyEmpty = (searchVal) => {
       </td>
     </tr>`;
   $("tbody#persediaan-table").html(tr);
+  $("#persediaan-pagination").addClass("d-none");
 };
 export const uiTbodyLoad = () => {
   const tr = `<tr>
@@ -228,6 +230,7 @@ export const uiSumPersediaanDate = () => {
   $("#persediaanList").addClass("d-none");
 };
 export const uiInit = () => {
+  // reset - search
   $("input#persediaan-search").val("");
   $("#persediaanLimitSearch").removeClass("d-none");
   // reset all select

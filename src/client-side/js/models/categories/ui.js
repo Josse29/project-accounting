@@ -80,6 +80,7 @@ export const uiTbodyEmpty = (searchVal) => {
                 class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">${search}</td>
               </tr>`;
   $("#category-data").html(tr);
+  $("div#category-pagination").addClass("d-none");
 };
 export const uiTbodyLoad = () => {
   const tr = `<tr>
@@ -105,6 +106,7 @@ export const uiBtnPage = (totalPage) => {
                 </button>`;
   }
   $("#category-number-page").html(btnPage);
+  $("div#category-pagination").removeClass("d-none");
 };
 // Function to update active page button
 export const uiBtnPageActive = (pageActive) => {

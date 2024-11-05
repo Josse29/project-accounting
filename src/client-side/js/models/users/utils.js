@@ -1,4 +1,47 @@
-import { debounce } from "../../utils/debounce.js";
+import { reinitTooltip } from "../../utils/updateUi.js";
+import { handlePagination } from "./pagination.js";
+import { fetchLimitOffset, fetchRowPage } from "./services.js";
+import { uiBtnPageActive, uiTbody, uiTbodyEmpty } from "./ui.js";
 
-// Debounced event handler
-// export
+export const executeRead = async (data) => {
+  // request
+  const req = {
+    searchVal: data.searchVal,
+    limitVal: data.limitVal,
+    offsetVal: data.offsetVal,
+  };
+  // 1. execute pagination
+  const { status, response } = await fetchRowPage(req);
+  if (status) {
+    // total row
+    const { totalPage, totalRow } = response;
+    $("span#user-total-row").text(totalRow);
+    // totalPage
+    const existed = totalRow >= 1;
+    // existed
+    if (existed) {
+      await get2(req);
+      handlePagination(totalPage);
+    }
+    // non-exsited
+    if (!existed) {
+      uiTbodyEmpty(req.searchVal);
+    }
+  }
+  if (!status) {
+    console.error(response);
+  }
+  // 2. execute user
+  async function get2(req) {
+    const { status, response } = await fetchLimitOffset(req);
+    if (status) {
+      uiTbody(response);
+      // active page
+      uiBtnPageActive(req.offsetVal);
+      reinitTooltip();
+    }
+    if (!status) {
+      console.error(response);
+    }
+  }
+};

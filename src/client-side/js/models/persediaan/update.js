@@ -1,5 +1,5 @@
 import { getTimeNow } from "../../utils/formatWaktu.js";
-import { getPersediaanAgain } from "./read.js";
+import { getPersediaan1 } from "./read.js";
 import { getSumQty, updateId } from "./services.js";
 import { uiAlertFailUpdate, uiAlertSuccess } from "./ui.js";
 
@@ -87,8 +87,8 @@ $("tbody#persediaan-table")
         // req-to-db
         const { status, response } = await updateId(req);
         if (status) {
+          await getPersediaan1();
           uiAlertSuccess(response);
-          await getPersediaanAgain();
           $("#persediaanUpdateModal").modal("hide");
         }
         if (!status) {

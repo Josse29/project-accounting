@@ -1,8 +1,9 @@
-import { getSupplierAgain, getSupplierRef } from "./read.js";
 import { uiAlertFailCreate, uiAlertSuccess, uiBlankVal } from "./ui.js";
 import { capitalizeWord } from "../../utils/formatCapitalize.js";
 import { previewLoadImg } from "../../utils/loadImg.js";
 import { create } from "./services.js";
+import { getSupplier1 } from "./read.js";
+import { getSupplierRef } from "./utils.js";
 // supplier-create-name
 $("button#btnCreateSupplier")
   .off("click")
@@ -40,7 +41,7 @@ $("#supplier-create-submit")
     };
     const { status, response } = await create(req);
     if (status) {
-      await getSupplierAgain();
+      await getSupplier1();
       await getSupplierRef();
       uiAlertSuccess(response);
       uiBlankVal();

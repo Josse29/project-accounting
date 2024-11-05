@@ -57,6 +57,7 @@ $("tbody#product-table")
     const stockRes = persediaanProduct.response;
     if (stockStatus) {
       const existedStock = stockRes.length >= 1;
+      let listStockHTML = ``;
       if (existedStock) {
         let listStock = ``;
         stockRes.forEach((row) => {
@@ -100,13 +101,12 @@ $("tbody#product-table")
             ${listStock}
           </ul>
         </div>`;
-        const stockAllHtml = `${summary} ${listStock1}`;
-        $("div#product-detail-stock").html(stockAllHtml);
+        listStockHTML = `${summary} ${listStock1}`;
       }
       if (!existedStock) {
-        const emptyHtml = `<p class="text-muted fst-italic fs-5 text-center">stock empty.....</p>`;
-        $("div#product-detail-stock").html(emptyHtml);
+        listStockHTML = `<p class="text-muted fst-italic fs-5 text-center">stock empty.....</p>`;
       }
+      $("div#product-detail-stock-container").html(listStockHTML);
     }
     if (!stockStatus) {
       console.error(stockRes);

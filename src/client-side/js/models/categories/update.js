@@ -1,7 +1,9 @@
-import { getCategoryAgain, getCategoryRef } from "./read.js";
 import { uiAlertFailUpdate, uiAlertSuccess } from "./ui.js";
 import { capitalizeWord } from "../../utils/formatCapitalize.js";
 import { update } from "./services.js";
+import { getCategory1 } from "./read.js";
+import { getCategoryRef } from "./utils.js";
+
 $("tbody#category-data")
   .off("click", "#editCategory")
   .on("click", "#editCategory", function () {
@@ -22,7 +24,7 @@ $("tbody#category-data")
       };
       const { status, response } = await update(req);
       if (status) {
-        await getCategoryAgain();
+        await getCategory1();
         await getCategoryRef();
         uiAlertSuccess(response);
         $("#categoryModalEdit").modal("hide");

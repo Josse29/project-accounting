@@ -1,7 +1,8 @@
 import { deleteByProductId } from "../persediaan/services.js";
-import { getProductRef, getProductsAgain } from "./read.js";
+import { getProduct1 } from "./read.js";
 import { deletedById } from "./services.js";
 import { uiAlertSuccess } from "./ui.js";
+import { getProductRef } from "./utils.js";
 
 // Delete Product event binding mckkkk
 $("tbody#product-table")
@@ -24,7 +25,7 @@ $("tbody#product-table")
         await deleteByProductId(productid);
         const { status, response } = await deletedById(req);
         if (status) {
-          await getProductsAgain();
+          await getProduct1();
           await getProductRef();
           uiAlertSuccess(response);
           $("#confirmDeleteProductModal").modal("hide");

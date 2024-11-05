@@ -600,13 +600,13 @@
                   <option value="2">Kredit</option>
                 </select>
               </div>
+              <!-- metode -->
               <div class="mb-3">
-                <label class="form-label fs-4">Jenis Akun</label>
+                <label class="form-label fs-4">Methode</label>
                 <select class="form-select" aria-label="Default select example">
-                  <option selected>Open this select menu</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
+                  <option selected disabled>Open this select menu</option>
+                  <option value="cash">Cash</option>
+                  <option value="credit">Credit</option>
                 </select>
               </div>
               <div class="mb-3">
@@ -653,7 +653,7 @@
           </div>
         </div>
       </div>
-      <!-- Modal Sales-->
+      <!-- Modal Purchase -->
       <div class="modal fade" id="entryPurchase" tabindex="-1">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
           <div class="modal-content">
@@ -711,11 +711,7 @@
               >
                 Close
               </button>
-              <button
-                type="button"
-                class="btn text-white"
-                style="background-color: #119687"
-              >
+              <button type="button" class="btn btn-primary text-white">
                 Save changes
               </button>
             </div>

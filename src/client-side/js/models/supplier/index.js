@@ -5,3 +5,5 @@ import "./delete.js";
 
 import "./ui.js";
 import "./read-by-id.js";
+import "./limit.js";
+import "./search.js";

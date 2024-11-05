@@ -130,7 +130,7 @@ export const uiAlertSuccess = (res) => {
 export const uiReset = () => {
   $("#user-create #useremail").val("");
   $("#user-create #userfullname").val("");
-  $("#user-create #userposition").val("");
+  $("#user-create #userposition").val("Open this select position");
   $("#user-create #userpassword").val("");
   $("#user-create #userpassword1").val("");
   $("#user-create input#userimg").val("");
