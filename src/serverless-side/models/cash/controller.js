@@ -3,8 +3,11 @@ import {
   queryDeleteCash,
   queryInsertCash,
   queryReadCash,
+  queryReadCash1,
+  queryReadCash2,
   queryReadInitCash,
   querySumCash,
+  querySumCash1,
   queryUpdateCash,
 } from "./querysql.js";
 // create
@@ -103,7 +106,7 @@ export const readCash1 = (req) => {
     });
   });
 };
-export const getCashSum = (res) => {
+export const getCashSum = () => {
   const query = querySumCash();
   return new Promise((resolve, reject) => {
     db.each(query, (err, result) => {
@@ -114,7 +117,22 @@ export const getCashSum = (res) => {
       }
       if (err) {
         reject(err);
-        return res(false, err);
+      }
+    });
+  });
+};
+export const getCashSum1 = (req) => {
+  const { startDateVal, endDateVal } = req;
+  const query = querySumCash1(startDateVal, endDateVal);
+  return new Promise((resolve, reject) => {
+    db.each(query, (err, result) => {
+      if (!err) {
+        const response = result.Total_Amount;
+        const sum = response ? response : 0;
+        resolve(sum);
+      }
+      if (err) {
+        reject(err);
       }
     });
   });
@@ -142,5 +160,35 @@ export const deleteKas = (cashId, callback) => {
     if (err) {
       return callback(false, err);
     }
+  });
+};
+// export csv
+export const getCash1 = (req) => {
+  const { startDateVal, endDateVal } = req;
+  const query = queryReadCash1(startDateVal, endDateVal);
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, res) => {
+      if (!err) {
+        resolve(res);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
+  });
+};
+// export to pdf
+export const getCash2 = (req) => {
+  const { startDateVal, endDateVal } = req;
+  const query = queryReadCash2(startDateVal, endDateVal);
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, res) => {
+      if (!err) {
+        resolve(res);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
   });
 };

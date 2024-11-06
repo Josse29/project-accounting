@@ -1,8 +1,24 @@
-import { getAll1, getPagination, getSumPrice } from "./services.js";
+import {
+  getAll1,
+  getGroupProduct,
+  getPagination,
+  getRowPage1,
+  getSumPrice,
+} from "./services.js";
 import { handlePagination } from "./pagination.js";
-import { uiBtnPageActive, uiTbody, uiTbodyEmpty } from "./ui.js";
+import {
+  uiBtnPageActive,
+  uiBtnPageActive1,
+  uiCard,
+  uiCardEmpty,
+  uiTbody,
+  uiTbodyEmpty,
+} from "./ui.js";
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import { reinitTooltip } from "../../utils/updateUi.js";
+import { list } from "../../component/list/index.js";
+import { uiQty } from "../../component/card/qty.js";
+import { handlePagination1 } from "./pagination-1.js";
 
 export const getAll = async (data) => {
   // 1. get total page and row
@@ -48,6 +64,45 @@ export const getAll = async (data) => {
       uiTbody(response);
       uiBtnPageActive(req.offsetVal);
       reinitTooltip();
+    }
+    if (!status) {
+      console.error(response);
+    }
+  }
+};
+// by group product
+export const getAll2 = async (data) => {
+  // 1. get total page and row
+  const req = {
+    searchVal: data.searchVal,
+    limitVal: data.limitVal,
+    offsetVal: data.offsetVal,
+  };
+  const { status, response } = await getRowPage1(req);
+  if (status) {
+    const { totalPage, totalRow } = response;
+    if (totalRow >= 1) {
+      await getPage(req);
+      handlePagination1(totalPage);
+    }
+    if (totalRow < 1) {
+      uiCardEmpty(req.searchVal);
+    }
+  }
+  if (!status) {
+    console.error(response);
+  }
+  async function getPage(req) {
+    const stock = await getGroupProduct(req);
+    const { status, response } = stock;
+    if (status) {
+      uiCard(response);
+      // update qty to card menu as well as btn plus/min triggered
+      uiQty();
+      // update list cart menu as well as btn plus/min triggered
+      list();
+      // update active page
+      uiBtnPageActive1(req.offsetVal);
     }
     if (!status) {
       console.error(response);

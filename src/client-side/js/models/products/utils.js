@@ -1,5 +1,4 @@
 import { getLimitOffset, getPagination } from "./services.js";
-import { handlePagination } from "./pagination.js";
 import { uiBtnPageActive, uiTbody, uiTBodyEmpty } from "./ui.js";
 import { reinitTooltip } from "../../utils/updateUi.js";
 import { getPersediaan1 } from "../persediaan/read.js";
@@ -8,7 +7,7 @@ import {
   listProductRefPersediaanRead,
   listProductRefSalesRead,
 } from "./list.js";
-
+import { handlePagination } from "./pagination.js";
 export const getProductAll = async (data) => {
   const req = {
     searchVal: data.searchVal,

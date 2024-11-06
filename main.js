@@ -280,6 +280,7 @@ ipcMain.on("load:about-page", () => {
   }
 });
 // export-pdf
+// 1.product
 let productPDF;
 let isProductPDF = false;
 ipcMain.on("pdf:product", (event, tbody, file_path) => {
@@ -318,6 +319,7 @@ ipcMain.on("pdf:product", (event, tbody, file_path) => {
     });
   }
 });
+// 2. persediaan
 let persediaanPdf;
 let ispersediaanPdf = false;
 ipcMain.on(
@@ -384,6 +386,7 @@ ipcMain.on(
     }
   }
 );
+// 3. sales
 let salesPDF;
 let isSalesPDF = false;
 ipcMain.on(
@@ -433,6 +436,44 @@ ipcMain.on(
     }
   }
 );
+// 4.cash
+let cashPDF;
+let isCashPDF = false;
+ipcMain.on("pdf:cash", (event, tr, summary, file_path) => {
+  cashPDF = new BrowserWindow({
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+    },
+  });
+  remote.enable(cashPDF.webContents);
+  cashPDF.loadFile("./src/client-side/pdf/cash.html");
+  cashPDF.webContents.on("dom-ready", () => {
+    cashPDF.webContents.send("table:cash", tr, summary, file_path);
+  });
+  if (!isCashPDF) {
+    ipcMain.on("create:pdf-cash", (event, file_path) => {
+      cashPDF.webContents
+        .printToPDF({
+          marginsType: 0,
+          printBackground: true,
+          printSelectionOnly: false,
+          landscape: true,
+        })
+        .then((data) => {
+          fs.writeFile(file_path, data, (err) => {
+            if (err) throw err;
+            cashPDF.close();
+            transaksiPage.webContents.send("success:pdf-cash", file_path);
+            isCashPDF = true;
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    });
+  }
+});
 // read-apps
 app.whenReady().then(() => {
   createLoginPage();

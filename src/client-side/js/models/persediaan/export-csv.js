@@ -7,7 +7,11 @@ $("#persediaan-modal-convert-csv button#persediaan-convert-csv")
     const startDateVal = $("input#persediaan-start-date-csv").val();
     const endDateVal = $("input#persediaan-end-date-csv").val();
     const req = { startDateVal, endDateVal };
-    if (startDateVal > endDateVal) {
+    if (
+      startDateVal > endDateVal ||
+      (startDateVal !== "" && endDateVal === "") ||
+      (startDateVal === "" && endDateVal !== "")
+    ) {
       return false;
     }
     const { status, response } = await getCSV(req);

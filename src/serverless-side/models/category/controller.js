@@ -60,7 +60,6 @@ export const getCategoryList = (categorySearch) => {
 export const getCategoryInit = (req) => {
   const { searchVal, limitVal } = req;
   const query = queryTotalRowCategory(searchVal);
-  console.log(query);
   return new Promise((resolve, reject) => {
     db.each(query, (err, res) => {
       if (!err) {

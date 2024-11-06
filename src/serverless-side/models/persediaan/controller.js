@@ -1,5 +1,7 @@
 import db from "../../database/config.js";
 import { validateProductAdd, validateQty } from "../../utils/validation.js";
+import { createAccounting } from "../accounting/controller.js";
+import { createCash } from "../cash/controller.js";
 import {
   queryDeletePersediaan,
   queryDeletePersediaanAll,
@@ -56,6 +58,40 @@ export const createPersediaan = async (req) => {
   validateQty(valPersediaanQty);
   // 3.validate qty product
   await getPersediaanQtyValidate(req);
+  // 4.effect to db.cash
+  const qty =
+    valPersediaanQty >= 1
+      ? `+ ${valPersediaanQty}`
+      : `- ${Math.abs(valPersediaanQty)}`;
+  const reqCash = {
+    CashYYYYMMDDVal: valPersediaanDDMY,
+    CashHMSVal: valPersediaanHMS,
+    CashNameVal: `Merchandise Inventory - ${valProductName}`,
+    CashRpVal: valPersediaanTotalRp * -1,
+    CashInfoVal: `${valProductName} has been stored ${qty}`,
+  };
+  await createCash(reqCash);
+  // 5.effect to db.acounting credit and debt
+  const debtEntry = {
+    accountingYMDVal: valPersediaanDDMY,
+    accountingHMSVal: valPersediaanHMS,
+    accountingRefVal: 113,
+    accountingNameVal: `Merchandise Inventory`,
+    accountingDebtVal: valPersediaanTotalRp,
+    accountingCreditVal: 0,
+    accountingInfoVal: `${valProductName} has been stored ${qty}`,
+  };
+  await createAccounting(debtEntry);
+  const creditEntry = {
+    accountingYMDVal: valPersediaanDDMY,
+    accountingHMSVal: valPersediaanHMS,
+    accountingRefVal: 111,
+    accountingNameVal: "Cash",
+    accountingDebtVal: 0,
+    accountingCreditVal: valPersediaanTotalRp,
+    accountingInfoVal: `${valProductName} has been stored ${qty}`,
+  };
+  await createAccounting(creditEntry);
   // execute insert
   const query = queryInsertPersediaan(
     valPersediaanDDMY,

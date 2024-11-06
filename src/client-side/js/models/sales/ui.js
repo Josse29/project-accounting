@@ -51,6 +51,7 @@ export const uiTbodyEmpty = (searchVal) => {
                 <td class="text-center fst-italic fw-bold text-capitalize" colspan="11">${search}</td>
               </tr>`;
   $("tbody#sales-read-table").html(tr);
+  $("div#sales-page-container").addClass("d-none");
 };
 export const uiBtnPage = (totalPage) => {
   let btn = ``;
@@ -63,6 +64,7 @@ export const uiBtnPage = (totalPage) => {
            </button>`;
   }
   $("div#sales-read-numberpage").html(btn);
+  $("div#sales-page-container").removeClass("d-none");
 };
 export const uiBtnPageActive = (pageNumber) => {
   const btnPage = $("button.sales-page");

@@ -8,10 +8,10 @@ export const queryInsertPersediaan = (
   valPersediaanInfo
 ) => {
   let query = `INSERT 
-                 INTO Persediaan 
-                 (PersediaanDDMY,PersediaanHMS,PersediaanProductId,PersediaanQty,PersediaanRp,PersediaanInfo) 
-                 VALUES 
-                 ('${valPersediaanDDMY}', '${valPersediaanHMS}',${valPersediaanProductId},${valPersediaanQty},${valPersediaanRp},'${valPersediaanInfo}')`;
+               INTO Persediaan 
+               (PersediaanDDMY,PersediaanHMS,PersediaanProductId,PersediaanQty,PersediaanRp,PersediaanInfo) 
+               VALUES 
+               ('${valPersediaanDDMY}', '${valPersediaanHMS}',${valPersediaanProductId},${valPersediaanQty},${valPersediaanRp},'${valPersediaanInfo}')`;
   return query;
 };
 export const queryInsertPersediaan1 = (req) => {
@@ -560,17 +560,19 @@ export const queryGetPersediaanDateSUM = (startDate, endDate) => {
 // references order and cart
 export const queryGetPersediaanTotalRow1 = (searchVal) => {
   let query = `SELECT
-                 COUNT(*) AS TotalRow
-                 FROM (
-                  SELECT
-                  Product.ProductId,
-                  SUM(Persediaan.PersediaanQty) AS TotalQty
-                  FROM Persediaan
-                  LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
-                  WHERE Product.ProductName LIKE '%${searchVal}%' ESCAPE '!'
-                  GROUP BY Persediaan.PersediaanProductId
-                  HAVING TotalQty >= 1
-                ) AS SUBSQUERY `;
+               COUNT(*) AS TotalRow 
+               FROM `;
+  // subquery
+  query += `(
+              SELECT
+              Product.ProductId,
+              SUM(Persediaan.PersediaanQty) AS TotalQty
+              FROM Persediaan
+                LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
+                WHERE Product.ProductName LIKE '%${searchVal}%' ESCAPE '!'
+                GROUP BY Persediaan.PersediaanProductId
+                HAVING TotalQty >= 1
+            ) AS SUBSQUERY`;
   return query;
 };
 export const queryGetPersediaanProductGroup1 = (

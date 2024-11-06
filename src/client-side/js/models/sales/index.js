@@ -11,3 +11,7 @@ import "./read-by-date-personid.js";
 import "./read-by-date-productid.js";
 import "./read-by-product-id.js";
 import "./read-by-personid.js";
+
+import "./search.js";
+import "./limit.js";
+import "./reset.js";

@@ -94,24 +94,8 @@ export const getAccountingSum = () => {
     });
   });
 };
-export const getAccountingSumCredit = () => {
-  const query = querySumCredit();
-  return new Promise((resolve, reject) => {
-    db.each(query, (err, result) => {
-      if (!err) {
-        const response = result.Total_Rp;
-        const credit = response ? response : 0;
-        resolve(credit);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
-};
 export const getAccounting1 = () => {
   const query = queryReadAccounting1();
-  console.log(query);
   return new Promise((resolve, reject) => {
     db.all(query, (err, rows) => {
       if (!err) {

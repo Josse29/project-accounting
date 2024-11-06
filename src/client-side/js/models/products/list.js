@@ -6,7 +6,12 @@ const productList = async () => {
     let option = `<option selected disabled>Choose One Of Products</option>`;
     if (existed) {
       response.forEach((row) => {
-        option += `<option value=${row.ProductId} data-pricebuy=${row.ProductPriceBeli}>${row.ProductName}</option>`;
+        option += `<option 
+                      value=${row.ProductId} 
+                      data-pricebuy=${row.ProductPriceBeli} 
+                      data-pricesell=${row.ProductPriceJual}>
+                        ${row.ProductName}
+                  </option>`;
       });
     }
     if (!existed) {

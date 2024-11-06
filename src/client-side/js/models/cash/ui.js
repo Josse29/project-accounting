@@ -14,7 +14,11 @@ export const uiTbody = (response) => {
     const cashName = rows.CashName;
     // cashRp
     const cashRp = rows.CashRp;
-    const rupiah = formatRupiah2(cashRp);
+    const bgCashRp = cashRp >= 1 ? "#119687" : "#e11d48";
+    const rupiah =
+      cashRp >= 1
+        ? `+ ${formatRupiah2(cashRp)}`
+        : `- ${formatRupiah2(Math.abs(cashRp))}`;
     tbody += `
     <tr>
       <td class="text-center align-content-center">${cashId}</td>
@@ -26,7 +30,7 @@ export const uiTbody = (response) => {
       </td>
       <td class="text-truncate align-content-center pe-3">${cashName}</td>
       <td class="text-truncate align-content-center text-center pe-3">
-        <span class="badge fs-6" style="background-color: #119687"
+        <span class="badge fs-6" style="background-color: ${bgCashRp}"
           >${rupiah}</span
         >
       </td>
@@ -63,6 +67,7 @@ export const uiTbodyEmpty = (searchVal) => {
       </td>
     </tr>`;
   $("tbody#cash").html(tr);
+  $("div#cash-pagination-container").addClass("d-none");
 };
 export const uiTbodyLoad = () => {
   const tr = `
@@ -88,10 +93,38 @@ export const uiBtnPage = (totalPage) => {
   for (let i = 1; i <= totalPage; i++) {
     const actived = i === 1 && "cash-page-active";
     btn += `<button 
-            type="button" 
-            class="btn border border-2 fs-6 cash-page-number ${actived}">
+              type="button" 
+              class="btn border border-2 fs-6 cash-page-number ${actived}">
              ${i}
             </button>`;
   }
   $("div#cash-pagination").html(btn);
+  $("div#cash-pagination-container").removeClass("d-none");
+};
+export const uiAlertSuccess = (res) => {
+  const alert = `<div class="alert alert-success alert-dismissible fade show text-start" role="alert">
+                    <strong class="text-capitalize">${res}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                 </div>`;
+  $("#section-alert").html(alert);
+};
+// for pdf
+export const uiTr1 = (response) => {
+  let ui = ``;
+  let no = 1;
+  response.forEach((row) => {
+    const cashRp = row.CashRp;
+    const cashPrice =
+      cashRp >= 1
+        ? `+ ${formatRupiah2(cashRp)}`
+        : `- ${formatRupiah2(Math.abs(cashRp))}`;
+    ui += `<tr>
+            <td>${no++}</td>
+            <td>${row.CashYYYYMMDD}</td>
+            <td>${row.CashName}</td>
+            <td>${cashPrice}</td>
+           </tr>`;
+    no++;
+  });
+  return ui;
 };

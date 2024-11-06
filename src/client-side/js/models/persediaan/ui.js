@@ -458,16 +458,18 @@ export const uiCardEmpty = (searchVal) => {
   </div>
   `;
   $("div#product-refpersediaan-read").html(emptyP);
+  $("div#product-refpersediaan-pagination").addClass("d-none");
 };
 export const uiBtnPage1 = (totalPage) => {
   let btn = ``;
   for (let i = 1; i <= totalPage; i++) {
     const activePage = i === 1 ? "product-ref-persediaan-page-active" : "";
     btn += `<button 
-                type="button" 
-                class="btn fs-4 product-ref-persediaan-page border border-1 ${activePage}">${i}</button>`;
+              type="button" 
+              class="btn fs-4 product-ref-persediaan-page border border-1 ${activePage}">${i}</button>`;
   }
   $("div#product-ref-persediaan-page-number").html(btn);
+  $("div#product-refpersediaan-pagination").removeClass("d-none");
 };
 // update ui Active
 export const uiBtnPageActive1 = (pageNumber) => {

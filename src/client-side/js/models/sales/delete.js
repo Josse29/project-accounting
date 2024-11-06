@@ -1,4 +1,4 @@
-import { getSalesAgain } from "./read.js";
+import { getSales1 } from "./read.js";
 import { deleteAll } from "./services.js";
 import { uiSuccess } from "./ui.js";
 
@@ -7,8 +7,8 @@ $("button#sale-delete-all")
   .on("click", async function () {
     const { status, response } = await deleteAll();
     if (status) {
+      await getSales1();
       uiSuccess(response);
-      await getSalesAgain();
       $("#modal-sales-delete-all").modal("hide");
     }
     if (!status) {

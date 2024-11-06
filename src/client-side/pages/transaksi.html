@@ -124,7 +124,7 @@
       </div>
       <!-- section second -->
       <div class="bg-white d-flex flex-column rounded-3 shadow-sm px-4 py-4">
-        <!-- section cash -->
+        <!-- cash-section  -->
         <div class="card w-100 mb-4">
           <div
             class="card-header text-white d-flex justify-content-between align-items-center py-3"
@@ -143,12 +143,20 @@
             <div class="d-flex justify-content-end mb-3">
               <div class="btn-group gap-2">
                 <!-- excel -->
-                <button class="btn btn-success d-flex align-items-center gap-2">
+                <button
+                  class="btn btn-success d-flex align-items-center gap-2"
+                  data-bs-toggle="modal"
+                  data-bs-target="#cash-modal-convert-csv"
+                >
                   <i class="fa-solid fa-file-excel fs-5"></i>
                   <span>Excel</span>
                 </button>
                 <!-- pdf -->
-                <button class="btn btn-primary d-flex align-items-center gap-2">
+                <button
+                  class="btn btn-primary d-flex align-items-center gap-2"
+                  data-bs-toggle="modal"
+                  data-bs-target="#cash-modal-convert-pdf"
+                >
                   <i class="fa-solid fa-file-pdf fs-5"></i>
                   <span>PDF</span>
                 </button>
@@ -191,6 +199,7 @@
             </div>
             <!-- limit and search -->
             <div class="d-flex justify-content-end mb-3">
+              <!-- limit -->
               <select
                 class="form-select me-3"
                 aria-label="Default select example"
@@ -201,6 +210,7 @@
                 <option value="20">20</option>
                 <option value="50">50</option>
               </select>
+              <!-- search -->
               <div class="input-group" style="width: max-content">
                 <input
                   type="text"
@@ -216,6 +226,8 @@
                 >
               </div>
             </div>
+            <!-- section after action -->
+            <div id="section-alert"></div>
             <!-- tabel cash -->
             <div id="cash-table" class="overflow-x-auto mb-3">
               <table class="table table-striped" style="table-layout: fixed">
@@ -277,7 +289,7 @@
             </div>
           </div>
         </div>
-        <!-- section general-entries -->
+        <!-- general-entries-section  -->
         <div class="card w-100 mb-4 mb-4">
           <div
             class="card-header text-white fs-3"
@@ -454,7 +466,7 @@
             </div>
           </div>
         </div>
-        <!-- section balance sheet -->
+        <!-- balance-sheet-section  -->
         <div class="card w-100 mb-4">
           <div
             class="card-header text-white fs-3"
@@ -580,296 +592,448 @@
     </div>
     <!-- all modals -->
     <div>
-      <!-- Modal Sales-->
-      <div class="modal fade" id="entrySales" tabindex="-1">
-        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
-          <div class="modal-content">
-            <div
-              class="modal-header text-white"
-              style="background-color: #3c50e0; color: white"
-            >
-              <h1 class="modal-title fs-2">Sale</h1>
-            </div>
-            <div class="modal-body">
-              <!-- product name -->
-              <div class="mb-3">
-                <label class="form-label fs-4">Product</label>
-                <select class="form-select" aria-label="Default select example">
-                  <option selected>Open this select menu</option>
-                  <option value="cash">Tunai</option>
-                  <option value="2">Kredit</option>
-                </select>
+      <!-- accounting -->
+      <div>
+        <!-- Modal Sales-->
+        <div class="modal fade" id="entrySales" tabindex="-1">
+          <div
+            class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
+          >
+            <div class="modal-content">
+              <div
+                class="modal-header text-white"
+                style="background-color: #3c50e0; color: white"
+              >
+                <h1 class="modal-title fs-2">Sale</h1>
               </div>
-              <!-- metode -->
-              <div class="mb-3">
-                <label class="form-label fs-4">Methode</label>
-                <select class="form-select" aria-label="Default select example">
-                  <option selected disabled>Open this select menu</option>
-                  <option value="cash">Cash</option>
-                  <option value="credit">Credit</option>
-                </select>
+              <div class="modal-body">
+                <!-- product name -->
+                <div class="mb-3">
+                  <label class="form-label fs-4">Product</label>
+                  <select
+                    class="form-select"
+                    aria-label="Default select example"
+                  >
+                    <option selected>Open this select menu</option>
+                    <option value="cash">Tunai</option>
+                    <option value="2">Kredit</option>
+                  </select>
+                </div>
+                <!-- metode -->
+                <div class="mb-3">
+                  <label class="form-label fs-4">Methode</label>
+                  <select
+                    class="form-select"
+                    aria-label="Default select example"
+                  >
+                    <option selected disabled>Open this select menu</option>
+                    <option value="cash">Cash</option>
+                    <option value="credit">Credit</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="nominal" class="form-label fs-4">Nominal</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="nominal"
+                    placeholder="40,000,00 ,-"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="bukti" class="form-label fs-4">Bukti</label>
+                  <input class="form-control" type="file" id="bukti" />
+                </div>
+                <div class="mb-3">
+                  <label for="keterangan" class="form-label fs-4"
+                    >Keterangan</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="keterangan"
+                    placeholder="40,000,00 ,-"
+                  />
+                </div>
               </div>
-              <div class="mb-3">
-                <label for="nominal" class="form-label fs-4">Nominal</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="nominal"
-                  placeholder="40,000,00 ,-"
-                />
-              </div>
-              <div class="mb-3">
-                <label for="bukti" class="form-label fs-4">Bukti</label>
-                <input class="form-control" type="file" id="bukti" />
-              </div>
-              <div class="mb-3">
-                <label for="keterangan" class="form-label fs-4"
-                  >Keterangan</label
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
                 >
-                <input
-                  type="text"
-                  class="form-control"
-                  id="keterangan"
-                  placeholder="40,000,00 ,-"
-                />
+                  Close
+                </button>
+                <button
+                  type="button"
+                  class="btn text-white"
+                  style="background-color: #3c50e0"
+                >
+                  Save changes
+                </button>
               </div>
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-              <button
-                type="button"
-                class="btn text-white"
-                style="background-color: #3c50e0"
-              >
-                Save changes
-              </button>
             </div>
           </div>
         </div>
-      </div>
-      <!-- Modal Purchase -->
-      <div class="modal fade" id="entryPurchase" tabindex="-1">
-        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header text-white bg-primary">
-              <h1 class="modal-title fs-2">Cash in</h1>
-            </div>
-            <div class="modal-body">
-              <div class="mb-3">
-                <label class="form-label fs-4">Metode</label>
-                <select class="form-select" aria-label="Default select example">
-                  <option selected>Open this select menu</option>
-                  <option value="cash">Tunai</option>
-                  <option value="2">Kredit</option>
-                </select>
+        <!-- Modal Purchase -->
+        <div class="modal fade" id="entryPurchase" tabindex="-1">
+          <div
+            class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
+          >
+            <div class="modal-content">
+              <div class="modal-header text-white bg-primary">
+                <h1 class="modal-title fs-2">Cash in</h1>
               </div>
-              <div class="mb-3">
-                <label class="form-label fs-4">Jenis Akun</label>
-                <select class="form-select" aria-label="Default select example">
-                  <option selected>Open this select menu</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
-                </select>
+              <div class="modal-body">
+                <div class="mb-3">
+                  <label class="form-label fs-4">Metode</label>
+                  <select
+                    class="form-select"
+                    aria-label="Default select example"
+                  >
+                    <option selected>Open this select menu</option>
+                    <option value="cash">Tunai</option>
+                    <option value="2">Kredit</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fs-4">Jenis Akun</label>
+                  <select
+                    class="form-select"
+                    aria-label="Default select example"
+                  >
+                    <option selected>Open this select menu</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="nominal" class="form-label fs-4">Nominal</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="nominal"
+                    placeholder="40,000,00 ,-"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="bukti" class="form-label fs-4">Bukti</label>
+                  <input class="form-control" type="file" id="bukti" />
+                </div>
+                <div class="mb-3">
+                  <label for="keterangan" class="form-label fs-4"
+                    >Keterangan</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="keterangan"
+                    placeholder="40,000,00 ,-"
+                  />
+                </div>
               </div>
-              <div class="mb-3">
-                <label for="nominal" class="form-label fs-4">Nominal</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="nominal"
-                  placeholder="40,000,00 ,-"
-                />
-              </div>
-              <div class="mb-3">
-                <label for="bukti" class="form-label fs-4">Bukti</label>
-                <input class="form-control" type="file" id="bukti" />
-              </div>
-              <div class="mb-3">
-                <label for="keterangan" class="form-label fs-4"
-                  >Keterangan</label
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
                 >
-                <input
-                  type="text"
-                  class="form-control"
-                  id="keterangan"
-                  placeholder="40,000,00 ,-"
-                />
+                  Close
+                </button>
+                <button type="button" class="btn btn-primary text-white">
+                  Save changes
+                </button>
               </div>
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-              <button type="button" class="btn btn-primary text-white">
-                Save changes
-              </button>
             </div>
           </div>
         </div>
-      </div>
-      <!-- Modal Cash in -->
-      <div
-        class="modal fade"
-        id="cashInModal"
-        tabindex="-1"
-        aria-labelledby="cashInModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
-          <div class="modal-content">
-            <div
-              class="modal-header text-white"
-              style="background-color: #119687"
-            >
-              <h1 class="modal-title fs-2" id="cashInModal">Cash in</h1>
-            </div>
-            <div class="modal-body">
-              <div class="mb-3">
-                <label class="form-label fs-4">Metode</label>
-                <select class="form-select" aria-label="Default select example">
-                  <option selected>Open this select menu</option>
-                  <option value="cash">Tunai</option>
-                  <option value="2">Kredit</option>
-                </select>
-              </div>
-              <div class="mb-3">
-                <label class="form-label fs-4">Jenis Akun</label>
-                <select class="form-select" aria-label="Default select example">
-                  <option selected>Open this select menu</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
-                </select>
-              </div>
-              <div class="mb-3">
-                <label for="nominal" class="form-label fs-4">Nominal</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="nominal"
-                  placeholder="40,000,00 ,-"
-                />
-              </div>
-              <div class="mb-3">
-                <label for="bukti" class="form-label fs-4">Bukti</label>
-                <input class="form-control" type="file" id="bukti" />
-              </div>
-              <div class="mb-3">
-                <label for="keterangan" class="form-label fs-4"
-                  >Keterangan</label
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  id="keterangan"
-                  placeholder="40,000,00 ,-"
-                />
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-              <button
-                type="button"
-                class="btn text-white"
+        <!-- Modal Cash in -->
+        <div
+          class="modal fade"
+          id="cashInModal"
+          tabindex="-1"
+          aria-labelledby="cashInModalLabel"
+          aria-hidden="true"
+        >
+          <div
+            class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
+          >
+            <div class="modal-content">
+              <div
+                class="modal-header text-white"
                 style="background-color: #119687"
               >
-                Save changes
-              </button>
+                <h1 class="modal-title fs-2" id="cashInModal">Cash in</h1>
+              </div>
+              <div class="modal-body">
+                <div class="mb-3">
+                  <label class="form-label fs-4">Metode</label>
+                  <select
+                    class="form-select"
+                    aria-label="Default select example"
+                  >
+                    <option selected>Open this select menu</option>
+                    <option value="cash">Tunai</option>
+                    <option value="2">Kredit</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fs-4">Jenis Akun</label>
+                  <select
+                    class="form-select"
+                    aria-label="Default select example"
+                  >
+                    <option selected>Open this select menu</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="nominal" class="form-label fs-4">Nominal</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="nominal"
+                    placeholder="40,000,00 ,-"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="bukti" class="form-label fs-4">Bukti</label>
+                  <input class="form-control" type="file" id="bukti" />
+                </div>
+                <div class="mb-3">
+                  <label for="keterangan" class="form-label fs-4"
+                    >Keterangan</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="keterangan"
+                    placeholder="40,000,00 ,-"
+                  />
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button
+                  type="button"
+                  class="btn text-white"
+                  style="background-color: #119687"
+                >
+                  Save changes
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Modal Cash Out -->
+        <div
+          class="modal fade"
+          id="cashOutModal"
+          tabindex="-1"
+          aria-labelledby="cashOutModalLabel"
+          aria-hidden="true"
+        >
+          <div
+            class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
+          >
+            <div class="modal-content">
+              <div
+                class="modal-header text-white"
+                style="background-color: #e11d48"
+              >
+                <h1 class="modal-title fs-2" id="cashOutModal">Cash OUt</h1>
+              </div>
+              <div class="modal-body">
+                <div class="mb-3">
+                  <label class="form-label fs-4">Metode</label>
+                  <select
+                    class="form-select"
+                    aria-label="Default select example"
+                  >
+                    <option selected>Open this select menu</option>
+                    <option value="cash">Tunai</option>
+                    <option value="2">Kredit</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fs-4">Jenis Akun</label>
+                  <select
+                    class="form-select"
+                    aria-label="Default select example"
+                  >
+                    <option selected>Open this select menu</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="nominal" class="form-label fs-4">Nominal</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="nominal"
+                    placeholder="40,000,00 ,-"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="bukti" class="form-label fs-4">Bukti</label>
+                  <input class="form-control" type="file" id="bukti" />
+                </div>
+                <div class="mb-3">
+                  <label for="keterangan" class="form-label fs-4"
+                    >Keterangan</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="keterangan"
+                    placeholder="40,000,00 ,-"
+                  />
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button
+                  type="button"
+                  class="btn text-white"
+                  style="background-color: #e11d48"
+                >
+                  Save changes
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <!-- Modal Cash Out -->
-      <div
-        class="modal fade"
-        id="cashOutModal"
-        tabindex="-1"
-        aria-labelledby="cashOutModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
-          <div class="modal-content">
-            <div
-              class="modal-header text-white"
-              style="background-color: #e11d48"
-            >
-              <h1 class="modal-title fs-2" id="cashOutModal">Cash OUt</h1>
-            </div>
-            <div class="modal-body">
-              <div class="mb-3">
-                <label class="form-label fs-4">Metode</label>
-                <select class="form-select" aria-label="Default select example">
-                  <option selected>Open this select menu</option>
-                  <option value="cash">Tunai</option>
-                  <option value="2">Kredit</option>
-                </select>
+      <!-- cash -->
+      <div>
+        <!-- cash - csv -->
+        <div
+          class="modal fade"
+          id="cash-modal-convert-csv"
+          tabindex="-1"
+          aria-labelledby="sales-create-modalLabel"
+          aria-hidden="true"
+        >
+          <div
+            class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
+          >
+            <div class="modal-content">
+              <div class="modal-header px-3 py-2 bg-success">
+                <i class="fa-solid fa-file-excel fs-4 text-white"></i>
+                <h3 class="modal-title text-white ms-3">Excel</h3>
               </div>
-              <div class="mb-3">
-                <label class="form-label fs-4">Jenis Akun</label>
-                <select class="form-select" aria-label="Default select example">
-                  <option selected>Open this select menu</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
-                </select>
+              <div class="modal-body">
+                <!-- start date -->
+                <div class="mb-3">
+                  <label for="cash-start-date" class="fs-4 mb-2"
+                    >Start Date :</label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="cash-start-date"
+                  />
+                </div>
+                <!-- endate -->
+                <div class="mb-3">
+                  <label for="cash-end-date" class="fs-4 mb-2"
+                    >End Date :</label
+                  >
+                  <input type="date" class="form-control" id="cash-end-date" />
+                </div>
               </div>
-              <div class="mb-3">
-                <label for="nominal" class="form-label fs-4">Nominal</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="nominal"
-                  placeholder="40,000,00 ,-"
-                />
-              </div>
-              <div class="mb-3">
-                <label for="bukti" class="form-label fs-4">Bukti</label>
-                <input class="form-control" type="file" id="bukti" />
-              </div>
-              <div class="mb-3">
-                <label for="keterangan" class="form-label fs-4"
-                  >Keterangan</label
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn bg-danger text-white"
+                  data-bs-dismiss="modal"
                 >
-                <input
-                  type="text"
-                  class="form-control"
-                  id="keterangan"
-                  placeholder="40,000,00 ,-"
-                />
+                  Close
+                </button>
+                <button
+                  type="button"
+                  class="btn bg-success text-white"
+                  id="cash-convert-csv"
+                >
+                  Convert
+                </button>
               </div>
             </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-              <button
-                type="button"
-                class="btn text-white"
-                style="background-color: #e11d48"
-              >
-                Save changes
-              </button>
+          </div>
+        </div>
+        <!-- cash -pdf -->
+        <div
+          class="modal fade"
+          id="cash-modal-convert-pdf"
+          tabindex="-1"
+          aria-labelledby="sales-create-modalLabel"
+          aria-hidden="true"
+        >
+          <div
+            class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
+          >
+            <div class="modal-content">
+              <div class="modal-header px-3 py-2 bg-primary">
+                <i class="fa-solid fa-file-pdf fs-4 text-white"></i>
+                <h3 class="modal-title text-white ms-3">PDF</h3>
+              </div>
+              <div class="modal-body">
+                <!-- start date -->
+                <div class="mb-3">
+                  <label for="sale-start-date-1" class="fs-4 mb-2"
+                    >Start Date :</label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="sale-start-date-1"
+                  />
+                </div>
+                <!-- endate -->
+                <div class="mb-3">
+                  <label for="sale-end-date-1" class="fs-4 mb-2"
+                    >End Date :</label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="sale-end-date-1"
+                  />
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn bg-danger text-white"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  id="cash-convert-pdf"
+                >
+                  Convert
+                </button>
+              </div>
             </div>
           </div>
         </div>

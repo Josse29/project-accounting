@@ -42,13 +42,13 @@ export const queryGetProducts = (
 };
 export const queryGetListProduct = (productSearch) => {
   let query = `SELECT 
-                 Product.ProductId,
-                 Product.ProductName,
-                 Product.ProductPriceBeli,
-                 Product.ProductPriceJual
-                 FROM Product
-                 LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
-                 LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId `;
+               Product.ProductId,
+               Product.ProductName,
+               Product.ProductPriceBeli,
+               Product.ProductPriceJual
+               FROM Product
+               LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
+               LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId `;
   //  with search value
   if (productSearch !== "") {
     query += `WHERE Product.ProductName LIKE '%${productSearch}%' ESCAPE '!' OR

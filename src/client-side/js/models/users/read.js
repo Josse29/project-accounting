@@ -1,6 +1,6 @@
 import { fetchLimitOffset, fetchRowPage } from "./services.js";
 import { reinitTooltip } from "../../utils/updateUi.js";
-import { handlePagination } from "./pagination.js";
+import handlePagination from "./pagination.js";
 import { uiBtnPageActive, uiTbody, uiTbodyEmpty } from "./ui.js";
 
 // execute

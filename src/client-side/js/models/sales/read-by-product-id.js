@@ -4,7 +4,7 @@ import { listProductRefSalesRead } from "../products/list.js";
 import { formatRupiah2 } from "./../../utils/formatRupiah.js";
 import { animateFade } from "../../utils/updateUi.js";
 
-listProductRefSalesRead();
+await listProductRefSalesRead();
 $("select#sales-read-productid")
   .off("change")
   .on("change", async function () {

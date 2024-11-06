@@ -1,4 +1,5 @@
 import { get3 } from "./read.js";
+
 import { uiBtnPage } from "./ui.js";
 
 export const handlePagination = (totalPage) => {

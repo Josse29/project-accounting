@@ -42,6 +42,8 @@ export const addSale = async (req) => {
       ProductQtyVal: req.ProductQtyVal,
     };
     const response = await createSale(payLoad);
+    // send to db.piutang|| it credit comingsooon
+    // comingsoonn....
     return { status: true, response };
   } catch (error) {
     return { status: false, response: error };

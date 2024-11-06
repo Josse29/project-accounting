@@ -23,7 +23,9 @@ $("select#sales-read-productid-date")
     const date = `${formatWaktuIndo(startDateVal)} - ${formatWaktuIndo(
       endDateVal
     )}`;
-    const selectedText = $(this).find("option:selected").text();
+    const selected = $(this).find("option:selected");
+    const selectedText = selected.text();
+    const priceSellRp = formatRupiah2(selected.data("pricesell"));
     // req-to-db || summary
     const summary = await getSumByDateProduct(req);
     const resSum = summary.response;
@@ -33,6 +35,7 @@ $("select#sales-read-productid-date")
       const qty = resSum.qty;
       // inserthtml-summary
       const newContent = `<p class="fs-5 mb-1 fw-bold text-capitalize">${selectedText} | ${date}</p>
+                          <p class="fs-5 ms-1 mb-1">Price Sell : ${priceSellRp}</p>
                           <p class="fs-5 ms-1 mb-1">Qty : ${qty}</p>
                           <p class="fs-5 ms-1 mb-1">Total : ${rupiah}</p> `;
       $("div#summary").html(newContent);

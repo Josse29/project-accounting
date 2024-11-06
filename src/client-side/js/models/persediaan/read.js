@@ -3,7 +3,6 @@ import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import { reinitTooltip } from "../../utils/updateUi.js";
 import { getAll1, getPagination, getSumPrice } from "./services.js";
 import { handlePagination } from "./pagination.js";
-
 // function
 getPersediaan1();
 // 1. get total page and row

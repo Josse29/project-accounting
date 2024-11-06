@@ -29,15 +29,49 @@ export const queryReadCash = (searchVal, limitVal, offsetVal) => {
     query += `WHERE CashName LIKE '%${searchVal}%'`;
   }
   // with order limit offset
-  query += `ORDER BY Cash.CashYYYYMMDD DESC, Cash.CashHMS DESC
-              LIMIT ${limitVal}
-              OFFSET ${offsetVal}`;
+  query += `ORDER BY Cash.CashYYYYMMDD DESC, 
+                     Cash.CashHMS DESC
+            LIMIT ${limitVal}
+            OFFSET ${offsetVal}`;
+  return query;
+};
+export const queryReadCash1 = (startDateVal, endDateVal) => {
+  let query = `SELECT * FROM Cash `;
+  // with search Value
+  if (startDateVal !== "" && endDateVal !== "") {
+    query += `WHERE CashYYYYMMDD BETWEEN '${startDateVal}' AND '${endDateVal}' `;
+  }
+  // order date
+  query += `ORDER BY CashYYYYMMDD DESC `;
+  return query;
+};
+export const queryReadCash2 = (startDateVal, endDateVal) => {
+  let query = `SELECT
+               CashYYYYMMDD,
+               CashName,
+               CashRp
+               FROM Cash `;
+  // with search Value
+  if (startDateVal !== "" && endDateVal !== "") {
+    query += `WHERE CashYYYYMMDD BETWEEN '${startDateVal}' AND '${endDateVal}' `;
+  }
+  // order date
+  query += `ORDER BY CashYYYYMMDD DESC `;
   return query;
 };
 export const querySumCash = () => {
   let query = `SELECT 
                SUM(Cash.CashRp) AS Total_Amount
                FROM Cash `;
+  return query;
+};
+export const querySumCash1 = (startDateVal, endDateVal) => {
+  let query = `SELECT 
+               SUM(Cash.CashRp) AS Total_Amount
+               FROM Cash `;
+  if (startDateVal !== "" && endDateVal !== "") {
+    query += `WHERE CashYYYYMMDD BETWEEN '${startDateVal}' AND '${endDateVal}' `;
+  }
   return query;
 };
 // UPDATE

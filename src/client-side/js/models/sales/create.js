@@ -10,15 +10,15 @@ import {
 } from "../../utils/localStorage.js";
 import { listUserRefSalesCreate } from "../users/list.js";
 import { addSale } from "./services.js";
-import { getGroupProductAgain } from "../persediaan/read-by-group-product.js";
-import { getSalesAgain } from "./read.js";
+import { getSales1 } from "./read.js";
+import { getPersediaan2 } from "../persediaan/read-by-group-product.js";
 
 // init table order
 $(".card-footer ")
   .off("click")
-  .on("click", function () {
+  .on("click", async function () {
     table();
-    listUserRefSalesCreate();
+    await listUserRefSalesCreate();
   });
 // for change result
 $("input#order-payment")
@@ -110,11 +110,9 @@ $("button#order-done")
       };
       const { status, response } = await addSale(reqSales);
       if (status) {
-        // send to db.piutang|| it credit comingsooon
-        // comingsoonn....
         // get all ref from orders and sales
-        await getGroupProductAgain();
-        await getSalesAgain();
+        await getPersediaan2();
+        await getSales1();
         // remove storage cart and sum storage card
         removeStorageCart();
         removeStorageCartSUM();

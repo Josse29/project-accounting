@@ -241,3 +241,31 @@ div#accounting-1-table::-webkit-scrollbar-thumb:hover {
 th:hover {
   text-wrap: wrap;
 }
+input#cash-start-date {
+  outline: none;
+}
+input#cash-start-date:focus {
+  outline: #4caf50 solid 2px;
+  box-shadow: none;
+}
+input#cash-end-date {
+  outline: none;
+}
+input#cash-end-date:focus {
+  box-shadow: none;
+  outline: #4caf50 solid 2px;
+}
+input#sale-start-date-1 {
+  outline: none;
+}
+input#sale-start-date-1:focus {
+  outline: #4c75af solid 2px;
+  box-shadow: none;
+}
+input#sale-end-date-1 {
+  outline: none;
+}
+input#sale-end-date-1:focus {
+  box-shadow: none;
+  outline: #4c75af solid 2px;
+}

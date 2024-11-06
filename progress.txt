@@ -32,3 +32,10 @@
 - refactoring user
 11/5/2024
 - refactoring search and pagination all models hufft last 
+11/6/2024
+- functoion function create integrated with accounting and cash
+- contineu function crud cash integrated with accounting
+- refactoring search and pagination all models hufft last part 2
+- convert pdf, excel, models cash with date
+- fixing ui minor 
+

@@ -58,7 +58,7 @@ $("#persediaan-create-submit")
   .off("click")
   .on("click", async () => {
     const { formattedDDMY, formattedHMS } = getTimeNow();
-    const valProductName = $("#persediaan-refproduct-create-name").val();
+    const valProductName = $("#persediaan-refproduct-create-name").val().trim();
     const valPersediaanDDMY = formattedDDMY;
     const valPersediaanHMS = formattedHMS;
     const valPersediaanProductId = parseInt(

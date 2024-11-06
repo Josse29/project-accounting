@@ -20,5 +20,6 @@ import "./read-by-supplierid.js";
 
 import "./limit.js";
 import "./search.js";
+import "./search-1.js";
 import "./pagination.js";
 import "./refresh.js";

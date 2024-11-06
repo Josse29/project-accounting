@@ -1,8 +1,11 @@
 import {
   createCash,
   getCash,
+  getCash1,
+  getCash2,
   getCashPagination,
   getCashSum,
+  getCashSum1,
 } from "../../../../serverless-side/models/cash/controller.js";
 
 // 1. endpoint = /api/cash/create/
@@ -65,6 +68,54 @@ export const getCashByLimitOffset = async (req) => {
     };
     const cash = await getCash(payLoad);
     return { status: true, response: cash };
+  } catch (error) {
+    return { status: false, response: error };
+  }
+};
+// 5. ednpoint : api/cash/convert-csv
+// method : GET
+// payLoad : 1.startdate, 2.endate
+// return : cash
+export const getCSV = async (req) => {
+  try {
+    const payLoad = {
+      startDateVal: req.startDateVal,
+      endDateVal: req.endDateVal,
+    };
+    const cash = await getCash1(payLoad);
+    return { status: true, response: cash };
+  } catch (error) {
+    return { status: false, response: error };
+  }
+};
+// 6. ednpoint : api/cash/convert-pdf
+// method : GET
+// payLoad : 1.startdate, 2.endate
+// return : cash
+export const getPDF = async (req) => {
+  try {
+    const payLoad = {
+      startDateVal: req.startDateVal,
+      endDateVal: req.endDateVal,
+    };
+    const cash = await getCash2(payLoad);
+    return { status: true, response: cash };
+  } catch (error) {
+    return { status: false, response: error };
+  }
+};
+// 7.endpoint : api/cash/summary-date
+// method : GET
+// payload : ""
+// return : summary of cash by date
+export const getSum1 = async (req) => {
+  try {
+    const payLoad = {
+      startDateVal: req.startDateVal,
+      endDateVal: req.endDateVal,
+    };
+    const summary = await getCashSum1(payLoad);
+    return { status: true, response: summary };
   } catch (error) {
     return { status: false, response: error };
   }
