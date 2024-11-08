@@ -4,13 +4,13 @@ import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import { formatWaktuIndo } from "../../utils/formatWaktu.js";
 import { animateFade } from "../../utils/updateUi.js";
 
-// by date and user
+// 1. by date and user
 $("select#sales-read-personid-date")
   .off("change")
   .on("change", async function () {
-    // animate
+    // 2. animate
     animateFade("#sales-card-body");
-    // req-params
+    // 3. req-params
     const startDateVal = $("input#sales-read-startDate").val();
     const endDateVal = $("input#sales-read-endDate").val();
     const selectedPersonId = parseInt($(this).val());
@@ -19,12 +19,12 @@ $("select#sales-read-personid-date")
       endDateVal,
       selectedPersonId,
     };
-    // caption
+    // 4. caption
     const date = `${formatWaktuIndo(startDateVal)} - ${formatWaktuIndo(
       endDateVal
     )}`;
     const selectedText = $(this).find("option:selected").text();
-    // req-to=db-summary
+    // 5. req-to=db-summary
     const summary = await getSumByDatePerson(req);
     const resStatus = summary.status;
     const resSum = summary.response;
@@ -37,7 +37,7 @@ $("select#sales-read-personid-date")
     if (!resStatus) {
       console.error(resSum);
     }
-    // req-to=db=table
+    // 6. req-to=db=table
     const sales = await getByDatePerson(req);
     const response = sales.response;
     const status = sales.status;

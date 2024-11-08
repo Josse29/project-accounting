@@ -175,30 +175,8 @@
                 </button>
               </div>
             </div>
-            <!-- date -->
-            <div class="d-flex justify-content-end mb-3">
-              <div class="input-group" style="width: max-content">
-                <input
-                  type="date"
-                  class="form-control"
-                  id="startDate"
-                  style="width: 300px"
-                />
-                <span
-                  class="text-center align-content-center p-2 bg-body-secondary"
-                  >s/d</span
-                >
-                <input
-                  type="date"
-                  class="form-control"
-                  id="endDate"
-                  style="width: 300px"
-                />
-                <button class="btn btn-primary">Search</button>
-              </div>
-            </div>
             <!-- limit and search -->
-            <div class="d-flex justify-content-end mb-3">
+            <div class="d-flex justify-content-start mb-3" id="limit-search">
               <!-- limit -->
               <select
                 class="form-select me-3"
@@ -226,18 +204,44 @@
                 >
               </div>
             </div>
+            <!-- date -->
+            <div class="d-flex justify-content-start mb-3" id="cash-read-date">
+              <div class="input-group" style="width: max-content">
+                <!-- startdate -->
+                <input
+                  type="date"
+                  class="form-control"
+                  id="startDate"
+                  style="width: 300px"
+                />
+                <span
+                  class="text-center align-content-center p-2 bg-body-secondary"
+                  >s/d</span
+                >
+                <!-- end date -->
+                <input
+                  type="date"
+                  class="form-control"
+                  id="endDate"
+                  style="width: 300px"
+                />
+                <button class="btn btn-primary">Search</button>
+              </div>
+            </div>
             <!-- section after action -->
             <div id="section-alert"></div>
+            <!-- summary -->
+            <div id="cash-summary" class="ms-3 mb-3"></div>
             <!-- tabel cash -->
             <div id="cash-table" class="overflow-x-auto mb-3">
               <table class="table table-striped" style="table-layout: fixed">
                 <thead>
                   <tr>
                     <th class="text-center" style="width: 120px">No</th>
-                    <th style="width: 220px">Day / Date</th>
-                    <th style="width: 110px">Hours</th>
-                    <th style="width: 230px">Name</th>
-                    <th class="text-center" style="width: 180px">Amount</th>
+                    <th style="width: 200px">Day / Date</th>
+                    <th style="width: 100px">Hours</th>
+                    <th style="width: 310px">Name</th>
+                    <th class="text-center" style="width: 160px">Amount</th>
                     <th class="text-center" style="width: 220px">Aksi</th>
                   </tr>
                 </thead>
@@ -300,25 +304,6 @@
           <div class="card-body overflow-x-auto" id="accounting-card">
             <!-- entry all cases -->
             <div class="btn-group gap-2 mb-3">
-              <!-- entry - sales -->
-              <button
-                class="btn d-flex gap-2 align-items-center entry-sale"
-                style="background-color: #3c50e0; color: white"
-                data-bs-toggle="modal"
-                data-bs-target="#entrySales"
-              >
-                <i class="fa-solid fa-money-check-dollar fs-5"></i>
-                <span>Sales</span>
-              </button>
-              <!-- entry - purchase -->
-              <button
-                class="btn d-flex gap-2 align-items-center text-white bg-primary"
-                data-bs-toggle="modal"
-                data-bs-target="#entryPurchase"
-              >
-                <i class="fa-solid fa-cart-shopping fs-5"></i>
-                <span>Purchase</span>
-              </button>
               <!-- cash-in -->
               <button
                 class="btn d-flex gap-2 align-items-center text-white cash-in"
@@ -338,6 +323,25 @@
               >
                 <i class="fa-solid fa-square-minus fs-5"></i>
                 <span class="">Cash-out</span>
+              </button>
+              <!-- entry - sales -->
+              <button
+                class="btn d-flex gap-2 align-items-center entry-sale"
+                style="background-color: #3c50e0; color: white"
+                data-bs-toggle="modal"
+                data-bs-target="#entrySales"
+              >
+                <i class="fa-solid fa-money-check-dollar fs-5"></i>
+                <span>Sales</span>
+              </button>
+              <!-- entry - purchase -->
+              <button
+                class="btn d-flex gap-2 align-items-center text-white bg-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#entryPurchase"
+              >
+                <i class="fa-solid fa-cart-shopping fs-5"></i>
+                <span>Purchase</span>
               </button>
             </div>
             <!-- create, convert ,misc -->

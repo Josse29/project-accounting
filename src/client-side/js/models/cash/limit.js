@@ -1,6 +1,6 @@
 import { debounce } from "../../utils/debounce.js";
-import { getCash1 } from "./read.js";
 import { uiTbodyLoad } from "./ui.js";
+import { getAll } from "./utils.js";
 
 // get value
 let searchVal = $("input#cash-read-search").val();
@@ -14,7 +14,7 @@ const handleBounce = debounce(() => {
     limitVal,
     offsetVal,
   };
-  getCash1(req);
+  getAll(req);
 }, 1000);
 
 // search

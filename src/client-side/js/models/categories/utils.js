@@ -3,16 +3,24 @@ import { handlePagination } from "./pagination.js";
 import { getByLimitOffset, getPagination } from "./services.js";
 import { uiBtnPageActive, uiTbody, uiTbodyEmpty } from "./ui.js";
 import { listCategoryRefPersediaanRead } from "./list.js";
-import { getProduct1 } from "../products/read.js";
-import { getPersediaan1 } from "../persediaan/read.js";
+import { getProductAll } from "../products/utils.js";
+import { getAll } from "../persediaan/utils.js";
 
+// get pagination
 export const executeRead = async (data) => {
-  const req = {
-    searchVal: data.searchVal,
-    limitVal: data.limitVal,
-    offsetVal: data.offsetVal,
-  };
-  console.log(req);
+  // get all value
+  const req =
+    data !== undefined
+      ? {
+          searchVal: data.searchVal,
+          limitVal: data.limitVal,
+          offsetVal: data.offsetVal,
+        }
+      : {
+          searchVal: "",
+          limitVal: parseInt($("select#category-limit").val()),
+          offsetVal: 1,
+        };
   const { status, response } = await getPagination(req);
   if (status) {
     const { totalPage, totalRow } = response;
@@ -30,20 +38,21 @@ export const executeRead = async (data) => {
   if (!status) {
     console.error(response);
   }
-  async function get2(req) {
-    const { status, response } = await getByLimitOffset(req);
-    if (status) {
-      uiTbody(response);
-      reinitTooltip();
-      uiBtnPageActive(req.offsetVal);
-    }
-    if (!status) {
-      console.error(response);
-    }
-  }
 };
+// get category by limit offset
+export async function get2(req) {
+  const { status, response } = await getByLimitOffset(req);
+  if (status) {
+    uiTbody(response);
+    reinitTooltip();
+    uiBtnPageActive(req.offsetVal);
+  }
+  if (!status) {
+    console.error(response);
+  }
+}
 export const getCategoryRef = async () => {
-  await getProduct1();
-  await getPersediaan1();
+  await getProductAll();
+  await getAll();
   await listCategoryRefPersediaanRead();
 };

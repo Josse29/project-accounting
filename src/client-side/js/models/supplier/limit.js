@@ -1,4 +1,4 @@
-import { getAll } from "./utils.js";
+import { getSupplier1 } from "./utils.js";
 import { uiTbodyLoad } from "./ui.js";
 import { debounce } from "../../utils/debounce.js";
 
@@ -13,7 +13,7 @@ const handleBounce = debounce(() => {
     limitVal,
     offsetVal,
   };
-  getAll(req);
+  getSupplier1(req);
 }, 1000);
 // limit
 $("#supplier-limit")

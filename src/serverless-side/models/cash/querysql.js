@@ -35,6 +35,15 @@ export const queryReadCash = (searchVal, limitVal, offsetVal) => {
             OFFSET ${offsetVal}`;
   return query;
 };
+export const queryReadByDate = (startDateVal, endDateVal) => {
+  let query = `SELECT * FROM Cash `;
+  // condition date
+  query += `WHERE CashYYYYMMDD BETWEEN '${startDateVal}' AND '${endDateVal}'`;
+  // with order limit offset
+  query += `ORDER BY Cash.CashYYYYMMDD DESC, 
+                     Cash.CashHMS DESC`;
+  return query;
+};
 export const queryReadCash1 = (startDateVal, endDateVal) => {
   let query = `SELECT * FROM Cash `;
   // with search Value

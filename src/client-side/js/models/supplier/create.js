@@ -2,8 +2,8 @@ import { uiAlertFailCreate, uiAlertSuccess, uiBlankVal } from "./ui.js";
 import { capitalizeWord } from "../../utils/formatCapitalize.js";
 import { previewLoadImg } from "../../utils/loadImg.js";
 import { create } from "./services.js";
-import { getSupplier1 } from "./read.js";
-import { getSupplierRef } from "./utils.js";
+import { getSupplier1, getSupplierRef } from "./utils.js";
+
 // supplier-create-name
 $("button#btnCreateSupplier")
   .off("click")

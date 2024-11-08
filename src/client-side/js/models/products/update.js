@@ -5,8 +5,8 @@ import { uiAlertSuccess, uiAlertFailUpdate } from "./ui.js";
 import { capitalizeWord } from "../../utils/formatCapitalize.js";
 import { disFormatRupiah1, formatRupiah1 } from "../../utils/formatRupiah.js";
 import { getImageBase64, validateImg } from "../../utils/loadImg.js";
-import { getProduct1 } from "./read.js";
-import { getProductRef } from "./utils.js";
+import { getProductAll, getProductRef } from "./utils.js";
+
 // upadte | event binding
 $("tbody#product-table")
   .off("click", "#editProduct")
@@ -124,9 +124,7 @@ $("tbody#product-table")
           productSupplierId = "null";
         }
         // image
-        const productImgVal = document.getElementById(
-          "edit-product-image-file"
-        ).files;
+        const productImgVal = $("#edit-product-image-file")[0].files;
         const req = {
           productId,
           productName,
@@ -140,7 +138,7 @@ $("tbody#product-table")
         };
         const { status, response } = await update(req);
         if (status) {
-          await getProduct1();
+          await getProductAll();
           await getProductRef();
           $("#edit-product-image-file").val("");
           uiAlertSuccess(response);

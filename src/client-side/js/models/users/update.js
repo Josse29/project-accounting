@@ -1,7 +1,7 @@
 import { getImageBase64, validateImg } from "../../utils/loadImg.js";
-import { get1 } from "./read.js";
 import { update } from "./services.js";
 import { uiAlertFail, uiAlertSuccess } from "./ui.js";
+import { executeRead } from "./utils.js";
 
 $("tbody#user")
   .off("click", "button#user-update")
@@ -91,7 +91,7 @@ $("tbody#user")
         const updated = await update(req);
         const { status, response } = updated;
         if (status) {
-          await get1();
+          await executeRead();
           const uiSuccess = uiAlertSuccess(response);
           $("#crud-success").html(uiSuccess);
           $("#user-update-modal").modal("hide");

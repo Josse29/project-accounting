@@ -1,8 +1,8 @@
 import { getTimeNow } from "../../utils/formatWaktu.js";
 import { uiBlankValue, uiAlertFailCreate, uiAlertSuccess } from "./ui.js";
 import { listProductRefPersediaanCreate } from "../products/list.js";
-import { getPersediaan1 } from "./read.js";
 import { addStock, getSumQty } from "./services.js";
+import { getAll } from "./utils.js";
 
 // 1.init-ui-modal-create
 $("button#btnpersediaanModal")
@@ -81,7 +81,7 @@ $("#persediaan-create-submit")
     };
     const { status, response } = await addStock(req);
     if (status) {
-      await getPersediaan1();
+      await getAll();
       uiAlertSuccess(response);
       uiBlankValue();
       persediaanCreateQty = 0; //hufft

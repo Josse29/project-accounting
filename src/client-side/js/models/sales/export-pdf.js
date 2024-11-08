@@ -114,6 +114,7 @@ const txtSummary = async (req) => {
     console.error(response);
   }
 };
+// action
 $("#modal-sales-convert-pdf button#sale-convert-pdf")
   .off("click")
   .on("click", async function () {

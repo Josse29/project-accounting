@@ -1,4 +1,4 @@
-import { get2 } from "./read.js";
+import { get2 } from "./utils.js";
 import { uiBtnPage } from "./ui.js";
 
 export const handlePagination = (totalPage) => {

@@ -1,5 +1,5 @@
-import { getCashPage } from "./read.js";
 import { uiBtnPage } from "./ui.js";
+import { getCashPage } from "./utils.js";
 
 const handlePagination = (totalPage) => {
   // insert html

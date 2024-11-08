@@ -18,7 +18,6 @@ import {
   uiTrSupplierSum,
 } from "./ui.js";
 
-// export pdf persediaan
 // product
 const groupProduct = async (req) => {
   const { status, response } = await getByGroupProduct1(req);
@@ -124,6 +123,7 @@ const sumPrice = async (req) => {
     console.error(response);
   }
 };
+
 // actions
 $("#persediaan-modal-convert-pdf #persediaan-convert-pdf")
   .off("click")

@@ -370,7 +370,7 @@
                 style="width: auto"
                 id="sales-read-limit"
               >
-                <option value="10">10</option>
+                <option value="1">10</option>
                 <option value="30">30</option>
                 <option value="50">50</option>
               </select>
@@ -559,256 +559,276 @@
         </div>
       </div>
     </div>
-    <!-- sales-create -->
-    <div
-      class="modal fade"
-      id="sales-create-modal"
-      tabindex="-1"
-      aria-labelledby="sales-create-modalLabel"
-      aria-hidden="true"
-    >
+    <!-- all modals -->
+    <div>
+      <!-- sales-create -->
       <div
-        class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered"
+        class="modal fade"
+        id="sales-create-modal"
+        tabindex="-1"
+        aria-labelledby="sales-create-modalLabel"
+        aria-hidden="true"
       >
-        <div class="modal-content">
-          <div class="modal-header px-3 py-2" style="background-color: #0178bd">
-            <i class="fa-solid fa-cart-shopping fs-4 text-white"></i>
-            <h3 class="modal-title text-white ms-3">Cart</h3>
-          </div>
-          <div class="modal-body" id="order-create-modalBody">
-            <div class="mb-2">
-              <div
-                class="d-flex justify-content-end align-items-center gap-2 mb-1"
-              >
-                <i class="fa-solid fa-user"></i>
-                <span class="fs-5" style="font-weight: 600">Mr. Pinem</span>
-              </div>
-              <div class="d-flex justify-content-end align-items-center gap-2">
-                <i class="fa-regular fa-calendar" style="color: #4e5d66"></i>
-                <span
-                  class="fs-6 hari-tanggal-tahun"
-                  style="color: #4e5d66"
-                ></span>
-              </div>
-              <div class="d-flex justify-content-end align-items-center gap-2">
-                <i class="fa-regular fa-clock" style="color: #4e5d66"></i>
-                <span class="fs-6 fw-lighter" style="color: #4e5d66"
-                  ><span class="jam"></span><span class="menit"></span
-                  ><span class="detik"></span
-                ></span>
-              </div>
-            </div>
-            <!-- sales & customer -->
-            <div class="d-flex gap-4 mb-4">
-              <!-- Sales -->
-              <div class="form-floating">
-                <select
-                  class="form-select w-auto text-capitalize overflow-y-auto"
-                  id="order-create-usersalesid"
-                >
-                  <option>loading....</option>
-                </select>
-                <label for="order-create-usersalesid">Sales</label>
-              </div>
-              <!-- Customer -->
-              <div class="form-floating">
-                <select
-                  class="form-select w-auto text-capitalize"
-                  id="order-create-usercustomerid"
-                >
-                  <option>loading....</option>
-                </select>
-                <label for="order-create-usercustomerid">Customer</label>
-              </div>
-            </div>
-            <!-- table-order -->
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th class="text-center">No</th>
-                  <th>Name</th>
-                  <th>Price</th>
-                  <th>Qty</th>
-                  <th>Total</th>
-                </tr>
-              </thead>
-              <tbody id="orders-done">
-                <tr>
-                  <td colspan="5" class="fst-italic text-center">
-                    order is still empty
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            <!-- Total cart and terbilang -->
-            <div class="text-end mb-3">
-              <div>
-                <span>Total : </span>
-                <span class="fw-bold" id="order-total-cart">Rp.0,00-</span>
-              </div>
-              <div>
-                <span>Terbilang : </span>
-                <span id="order-terbilang" class="text-capitalize"
-                  >Nol Rupiah...</span
-                >
-              </div>
-            </div>
-            <!-- Payment and Change -->
-            <div class="m-2 d-flex gap-4">
-              <div class="d-flex flex-column">
-                <label for="order-payment">Total Cash</label>
-                <span>Total Payment </span>
-                <span class="">Change</span>
-              </div>
-              <div class="d-flex flex-column">
-                <div>
-                  : &nbsp; <input type="text" value="0" id="order-payment" />
-                </div>
-                <div>: &nbsp; <span id="order-total-cart">0</span></div>
-                <div>: &nbsp; <span id="order-change">Rp.0</span></div>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn bg-danger text-white"
-              data-bs-dismiss="modal"
-            >
-              Close
-            </button>
-            <button type="button" class="btn" id="order-done">
-              Save changes
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- sales-csv -->
-    <div
-      class="modal fade"
-      id="modal-sales-convert-csv"
-      tabindex="-1"
-      aria-labelledby="sales-create-modalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header px-3 py-2 bg-success">
-            <i class="fa-solid fa-file-excel fs-4 text-white"></i>
-            <h3 class="modal-title text-white ms-3">Excel</h3>
-          </div>
-          <div class="modal-body">
-            <!-- start date -->
-            <div class="mb-3">
-              <label for="sale-start-date" class="fs-4 mb-2"
-                >Start Date :</label
-              >
-              <input type="date" class="form-control" id="sale-start-date" />
-            </div>
-            <!-- endate -->
-            <div class="mb-3">
-              <label for="sale-end-date" class="fs-4 mb-2">End Date :</label>
-              <input type="date" class="form-control" id="sale-end-date" />
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn bg-danger text-white"
-              data-bs-dismiss="modal"
-            >
-              Close
-            </button>
-            <button
-              type="button"
-              class="btn bg-success text-white"
-              id="sale-convert-csv"
-            >
-              Convert
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- sales-pdf -->
-    <div
-      class="modal fade"
-      id="modal-sales-convert-pdf"
-      tabindex="-1"
-      aria-labelledby="sales-create-modalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header px-3 py-2 bg-primary">
-            <i class="fa-solid fa-file-pdf fs-4 text-white"></i>
-            <h3 class="modal-title text-white ms-3">PDF</h3>
-          </div>
-          <div class="modal-body">
-            <!-- start date -->
-            <div class="mb-3">
-              <label for="sale-start-date-1" class="fs-4 mb-2"
-                >Start Date :</label
-              >
-              <input type="date" class="form-control" id="sale-start-date-1" />
-            </div>
-            <!-- endate -->
-            <div class="mb-3">
-              <label for="sale-end-date-1" class="fs-4 mb-2">End Date :</label>
-              <input type="date" class="form-control" id="sale-end-date-1" />
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn bg-danger text-white"
-              data-bs-dismiss="modal"
-            >
-              Close
-            </button>
-            <button type="button" class="btn btn-primary" id="sale-convert-pdf">
-              Convert
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- sales-delete -->
-    <div class="modal fade" id="modal-sales-delete-all" tabindex="-1">
-      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content">
-          <div class="modal-header bg-danger">
+        <div
+          class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered"
+        >
+          <div class="modal-content">
             <div
-              class="modal-title fs-2 text-white text-capitalize d-flex justify-content-between w-100"
+              class="modal-header px-3 py-2"
+              style="background-color: #0178bd"
             >
-              <div>Delete All</div>
+              <i class="fa-solid fa-cart-shopping fs-4 text-white"></i>
+              <h3 class="modal-title text-white ms-3">Cart</h3>
+            </div>
+            <div class="modal-body" id="order-create-modalBody">
+              <div class="mb-2">
+                <div
+                  class="d-flex justify-content-end align-items-center gap-2 mb-1"
+                >
+                  <i class="fa-solid fa-user"></i>
+                  <span class="fs-5" style="font-weight: 600">Mr. Pinem</span>
+                </div>
+                <div
+                  class="d-flex justify-content-end align-items-center gap-2"
+                >
+                  <i class="fa-regular fa-calendar" style="color: #4e5d66"></i>
+                  <span
+                    class="fs-6 hari-tanggal-tahun"
+                    style="color: #4e5d66"
+                  ></span>
+                </div>
+                <div
+                  class="d-flex justify-content-end align-items-center gap-2"
+                >
+                  <i class="fa-regular fa-clock" style="color: #4e5d66"></i>
+                  <span class="fs-6 fw-lighter" style="color: #4e5d66"
+                    ><span class="jam"></span><span class="menit"></span
+                    ><span class="detik"></span
+                  ></span>
+                </div>
+              </div>
+              <!-- sales & customer -->
+              <div class="d-flex gap-4 mb-4">
+                <!-- Sales -->
+                <div class="form-floating">
+                  <select
+                    class="form-select w-auto text-capitalize overflow-y-auto"
+                    id="order-create-usersalesid"
+                  >
+                    <option>loading....</option>
+                  </select>
+                  <label for="order-create-usersalesid">Sales</label>
+                </div>
+                <!-- Customer -->
+                <div class="form-floating">
+                  <select
+                    class="form-select w-auto text-capitalize"
+                    id="order-create-usercustomerid"
+                  >
+                    <option>loading....</option>
+                  </select>
+                  <label for="order-create-usercustomerid">Customer</label>
+                </div>
+              </div>
+              <!-- table-order -->
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th class="text-center">No</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Qty</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody id="orders-done">
+                  <tr>
+                    <td colspan="5" class="fst-italic text-center">
+                      order is still empty
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <!-- Total cart and terbilang -->
+              <div class="text-end mb-3">
+                <div>
+                  <span>Total : </span>
+                  <span class="fw-bold" id="order-total-cart">Rp.0,00-</span>
+                </div>
+                <div>
+                  <span>Terbilang : </span>
+                  <span id="order-terbilang" class="text-capitalize"
+                    >Nol Rupiah...</span
+                  >
+                </div>
+              </div>
+              <!-- Payment and Change -->
+              <div class="m-2 d-flex gap-4">
+                <div class="d-flex flex-column">
+                  <label for="order-payment">Total Cash</label>
+                  <span>Total Payment </span>
+                  <span class="">Change</span>
+                </div>
+                <div class="d-flex flex-column">
+                  <div>
+                    : &nbsp; <input type="text" value="0" id="order-payment" />
+                  </div>
+                  <div>: &nbsp; <span id="order-total-cart">0</span></div>
+                  <div>: &nbsp; <span id="order-change">Rp.0</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn bg-danger text-white"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button type="button" class="btn" id="order-done">
+                Save changes
+              </button>
             </div>
           </div>
-          <div class="modal-body text-center">
-            <i
-              class="fa-solid fa-triangle-exclamation text-danger"
-              style="font-size: 120px"
-            ></i>
-            <p class="my-3 lh-base fs-4 fw-semibold">
-              Are you sure to delete all data sales ?
-            </p>
+        </div>
+      </div>
+      <!-- sales-csv -->
+      <div
+        class="modal fade"
+        id="modal-sales-convert-csv"
+        tabindex="-1"
+        aria-labelledby="sales-create-modalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header px-3 py-2 bg-success">
+              <i class="fa-solid fa-file-excel fs-4 text-white"></i>
+              <h3 class="modal-title text-white ms-3">Excel</h3>
+            </div>
+            <div class="modal-body">
+              <!-- start date -->
+              <div class="mb-3">
+                <label for="sale-start-date" class="fs-4 mb-2"
+                  >Start Date :</label
+                >
+                <input type="date" class="form-control" id="sale-start-date" />
+              </div>
+              <!-- endate -->
+              <div class="mb-3">
+                <label for="sale-end-date" class="fs-4 mb-2">End Date :</label>
+                <input type="date" class="form-control" id="sale-end-date" />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn bg-danger text-white"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                class="btn bg-success text-white"
+                id="sale-convert-csv"
+              >
+                Convert
+              </button>
+            </div>
           </div>
-          <div class="modal-footer">
-            <button
-              class="btn btn-secondary d-flex align-items-center gap-3"
-              data-bs-dismiss="modal"
-            >
-              <i class="fa-solid fa-times fs-4"></i>
-              <span class="fs-5">No</span>
-            </button>
-            <button
-              class="btn btn-danger d-flex align-items-center gap-2"
-              id="sale-delete-all"
-            >
-              <i class="fa-solid fa-check me-1 fs-4"></i>
-              <span class="fs-5">Yes</span>
-            </button>
+        </div>
+      </div>
+      <!-- sales-pdf -->
+      <div
+        class="modal fade"
+        id="modal-sales-convert-pdf"
+        tabindex="-1"
+        aria-labelledby="sales-create-modalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header px-3 py-2 bg-primary">
+              <i class="fa-solid fa-file-pdf fs-4 text-white"></i>
+              <h3 class="modal-title text-white ms-3">PDF</h3>
+            </div>
+            <div class="modal-body">
+              <!-- start date -->
+              <div class="mb-3">
+                <label for="sale-start-date-1" class="fs-4 mb-2"
+                  >Start Date :</label
+                >
+                <input
+                  type="date"
+                  class="form-control"
+                  id="sale-start-date-1"
+                />
+              </div>
+              <!-- endate -->
+              <div class="mb-3">
+                <label for="sale-end-date-1" class="fs-4 mb-2"
+                  >End Date :</label
+                >
+                <input type="date" class="form-control" id="sale-end-date-1" />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn bg-danger text-white"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                class="btn btn-primary"
+                id="sale-convert-pdf"
+              >
+                Convert
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- sales-delete -->
+      <div class="modal fade" id="modal-sales-delete-all" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header bg-danger">
+              <div
+                class="modal-title fs-2 text-white text-capitalize d-flex justify-content-between w-100"
+              >
+                <div>Delete All</div>
+              </div>
+            </div>
+            <div class="modal-body text-center">
+              <i
+                class="fa-solid fa-triangle-exclamation text-danger"
+                style="font-size: 120px"
+              ></i>
+              <p class="my-3 lh-base fs-4 fw-semibold">
+                Are you sure to delete all data sales ?
+              </p>
+            </div>
+            <div class="modal-footer">
+              <button
+                class="btn btn-secondary d-flex align-items-center gap-3"
+                data-bs-dismiss="modal"
+              >
+                <i class="fa-solid fa-times fs-4"></i>
+                <span class="fs-5">No</span>
+              </button>
+              <button
+                class="btn btn-danger d-flex align-items-center gap-2"
+                id="sale-delete-all"
+              >
+                <i class="fa-solid fa-check me-1 fs-4"></i>
+                <span class="fs-5">Yes</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>

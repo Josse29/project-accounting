@@ -1,22 +1,28 @@
+// function crud
 import "./create.js";
 import "./read.js";
 import "./update.js";
 import "./delete.js";
 
-import "./ui.js";
-
 import "./export-pdf.js";
 import "./export-csv.js";
 
+import "./read-by-id.js";
+
+// by category
 import "./read-by-categoryid.js";
 import "./read-by-date-category.js";
-import "./read-by-date-product.js";
-import "./read-by-date-supplier.js";
+// by date
 import "./read-by-date.js";
-import "./read-by-group-product.js";
-import "./read-by-id.js";
+// by product
 import "./read-by-productid.js";
+import "./read-by-date-product.js";
+// by supplier
+import "./read-by-date-supplier.js";
 import "./read-by-supplierid.js";
+
+// by group-product
+import "./read-by-group-product.js";
 
 import "./limit.js";
 import "./search.js";

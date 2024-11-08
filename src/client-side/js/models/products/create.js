@@ -6,8 +6,7 @@ import { disFormatRupiah1, formatRupiah1 } from "../../utils/formatRupiah.js";
 import { capitalizeWord } from "../../utils/formatCapitalize.js";
 import { listProductRefPersediaanCreate } from "./list.js";
 import { previewLoadImg } from "../../utils/loadImg.js";
-import { getProductRef } from "./utils.js";
-import { getProduct1 } from "./read.js";
+import { getProductAll, getProductRef } from "./utils.js";
 
 $("button#product-create")
   .off("click")
@@ -53,7 +52,7 @@ $("#submit_product")
     const productInfo = $("#product-keterangan").val();
     const productCategoryId = $("#product-refcategory-create").val();
     const productSupplierId = $("#product-refsupplier-create").val();
-    const productImg = document.getElementById("create-image-product").files;
+    const productImg = $("#create-image-product")[0].files;
     const req = {
       productName,
       productPriceBuy,
@@ -65,7 +64,7 @@ $("#submit_product")
     };
     const { status, response } = await addProduct(req);
     if (status) {
-      await getProduct1();
+      await getProductAll();
       await getProductRef();
       uiAlertSuccess(response);
       uiBlankVal();

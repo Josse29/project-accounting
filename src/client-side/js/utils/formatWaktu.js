@@ -21,20 +21,28 @@ export const timeIndonesian = () => {
 // version2
 export const formatWaktuIndo = (objectDate) => {
   const dateObject = new Date(objectDate);
-  const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+  const days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
   const months = [
-    "Januari",
-    "Februari",
-    "Maret",
+    "January",
+    "February",
+    "March",
     "April",
-    "Mei",
-    "Juni",
-    "Juli",
-    "Agustus",
+    "May",
+    "June",
+    "July",
+    "August",
     "September",
-    "Oktober",
+    "October",
     "November",
-    "Desember",
+    "December",
   ];
   const dayOfWeek = days[dateObject.getDay()];
   const dayOfMonth = dateObject.getDate();

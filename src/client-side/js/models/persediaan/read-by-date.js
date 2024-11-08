@@ -18,7 +18,12 @@ $("button#persediaan-date-search")
       endDate,
     };
     // 2. validation date
-    if (startDate === "" || endDate === "" || startDate > endDate) {
+    if (
+      startDate > endDate ||
+      (startDate !== "" && endDate === "") ||
+      (startDate === "" && endDate !== "") ||
+      (startDate === "" && endDate === "")
+    ) {
       return false;
     }
     animateFade("#persediaan-section");

@@ -22,15 +22,16 @@ export const uiTbody = (response) => {
     tbody += `
     <tr>
       <td class="text-center align-content-center">${cashId}</td>
-      <td class="text-nowrap align-content-center">
+      <td class="text-truncate align-content-center pe-3">
         ${formatYMD}
       </td>
-      <td class="text-nowrap align-content-center">
+      <td class="text-truncate align-content-center pe-3">
         ${HMS}
       </td>
       <td class="text-truncate align-content-center pe-3">${cashName}</td>
       <td class="text-truncate align-content-center text-center pe-3">
-        <span class="badge fs-6" style="background-color: ${bgCashRp}"
+        <span class="text-truncate badge fs-6" 
+              style="background-color: ${bgCashRp}; max-width: 100%"
           >${rupiah}</span
         >
       </td>

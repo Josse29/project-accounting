@@ -1,5 +1,5 @@
-import { getPage } from "./read-by-group-product.js";
 import { uiBtnPage1 } from "./ui.js";
+import { getPage1 } from "./utils.js";
 
 export const handlePagination1 = (totalPage) => {
   // insert to html
@@ -16,7 +16,7 @@ export const handlePagination1 = (totalPage) => {
         limitVal,
         offsetVal: 1,
       };
-      await getPage(req);
+      await getPage1(req);
     });
   // prev page
   $("button#product-ref-persediaan-prev-page")
@@ -34,7 +34,7 @@ export const handlePagination1 = (totalPage) => {
         limitVal,
         offsetVal: decrement,
       };
-      await getPage(req);
+      await getPage1(req);
     });
   // by click
   $("div#product-ref-persediaan-page-number")
@@ -46,7 +46,7 @@ export const handlePagination1 = (totalPage) => {
         limitVal,
         offsetVal: pageNumber,
       };
-      await getPage(req);
+      await getPage1(req);
     });
   // next page
   $("button#product-ref-persediaan-next-page")
@@ -64,7 +64,7 @@ export const handlePagination1 = (totalPage) => {
         limitVal,
         offsetVal: increment,
       };
-      await getPage(req);
+      await getPage1(req);
     });
   // last page
   $("button#product-ref-persediaan-last-page")
@@ -75,6 +75,6 @@ export const handlePagination1 = (totalPage) => {
         limitVal,
         offsetVal: totalPage,
       };
-      await getPage(req);
+      await getPage1(req);
     });
 };

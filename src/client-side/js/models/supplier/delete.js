@@ -1,6 +1,5 @@
 import { deleteById } from "./services.js";
-import { getSupplier1 } from "./read.js";
-import { getSupplierRef } from "./utils.js";
+import { getSupplier1, getSupplierRef } from "./utils.js";
 import { uiAlertSuccess } from "./ui.js";
 
 $("#supplier-table")

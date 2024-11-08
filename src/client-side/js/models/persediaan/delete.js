@@ -1,7 +1,7 @@
 import { formatWaktuIndo } from "../../utils/formatWaktu.js";
-import { getPersediaan1 } from "./read.js";
 import { deleteAll, deleteById } from "./services.js";
 import { uiAlertFailDelete, uiAlertSuccess } from "./ui.js";
+import { getAll } from "./utils.js";
 
 // 1.delete by-id
 $("tbody#persediaan-table")
@@ -42,7 +42,7 @@ $("tbody#persediaan-table")
         };
         const { status, response } = await deleteById(req);
         if (status) {
-          await getPersediaan1();
+          await getAll();
           uiAlertSuccess(response);
           $("#persediaanDeleteModal").modal("hide");
         }

@@ -4,28 +4,27 @@ import { listProductRefSalesRead } from "../products/list.js";
 import { formatRupiah2 } from "./../../utils/formatRupiah.js";
 import { animateFade } from "../../utils/updateUi.js";
 
+// 1. get list
 await listProductRefSalesRead();
+
 $("select#sales-read-productid")
   .off("change")
   .on("change", async function () {
-    // animate
+    // 1. animate
     animateFade("#sales-card-body");
+    // 2. selected
     const seletedProductId = parseInt($(this).val());
     const selectedOption = $(this).find("option:selected");
-    // name
     const productName = selectedOption.text();
-    // product sell
     const priceSell = selectedOption.data("pricesell");
     const priceSellRp = formatRupiah2(priceSell);
-    // 1. totalrp
+    // 3. summary
     const sum = await getSumProductId(seletedProductId);
     const sumStatus = sum.status;
     const sumRes = sum.response;
     if (sumStatus) {
       const rupiah = formatRupiah2(sumRes.rupiah);
-      // qty
       const qty = sumRes.qty;
-      // inserthtml
       const summary = `<p class="fs-4 mb-1 fw-bold text-capitalize">${productName}</p>
                        <p class="fs-5 ms-1 mb-1">Price Sell : ${priceSellRp}</p>
                        <p class="fs-5 ms-1 mb-1">Qty : ${qty}</p>
@@ -35,7 +34,7 @@ $("select#sales-read-productid")
     if (!sumStatus) {
       console.error(sumRes);
     }
-    // 2. getAll
+    // 4. getAll
     const sales = await getByProductId(seletedProductId);
     const salesStatus = sales.status;
     const salesRes = sales.response;
@@ -51,7 +50,7 @@ $("select#sales-read-productid")
     if (!salesStatus) {
       console.error(salesRes);
     }
-    // references callback ui
+    // 5. references callback ui
     // 1.limit-search
     $("div#sales-limit-search").addClass("d-none");
     // 2.select-adjacent

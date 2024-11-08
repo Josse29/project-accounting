@@ -1,6 +1,6 @@
 import { debounce } from "../../utils/debounce.js";
-import { getSales1 } from "./read.js";
 import { uiLoad, uiReset } from "./ui.js";
+import { getAll } from "./utils.js";
 
 // get all value
 let searchVal = $("input#sales-read-search").val();
@@ -14,7 +14,7 @@ const handleDebounce = debounce(() => {
     limitVal,
     offsetVal,
   };
-  getSales1(req);
+  getAll(req);
 }, 1000);
 
 // reset

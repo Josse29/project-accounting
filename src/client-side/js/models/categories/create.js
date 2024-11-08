@@ -1,5 +1,4 @@
-import { getCategory1 } from "./read.js";
-import { getCategoryRef } from "./utils.js";
+import { executeRead, getCategoryRef } from "./utils.js";
 import { uiAlertFailCreate, uiAlertSuccess, uiBlankVal } from "./ui.js";
 import { capitalizeWord } from "../../utils/formatCapitalize.js";
 import { create } from "./services.js";
@@ -21,7 +20,7 @@ $("#category-submit")
     };
     const { status, response } = await create(req);
     if (status) {
-      await getCategory1();
+      await executeRead();
       await getCategoryRef();
       uiAlertSuccess(response);
       uiBlankVal();

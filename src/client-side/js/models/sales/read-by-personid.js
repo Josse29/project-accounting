@@ -4,16 +4,18 @@ import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import { listUserRefSalesRead } from "./../users/list.js";
 import { animateFade } from "../../utils/updateUi.js";
 
-listUserRefSalesRead();
+// 1. get list
+await listUserRefSalesRead();
+
 $("select#sales-read-personid")
   .off("change")
   .on("change", async function () {
-    // animate
+    // 2. animate
     animateFade("#sales-card-body");
+    // 3. selected
     const seletedPersonId = parseInt($(this).val());
-    // name
     const selectedText = $(this).find("option:selected").text();
-    // 1.summary
+    // 4. summary
     const sum = await getSumPersonId(seletedPersonId);
     const sumStatus = sum.status;
     const sumRes = sum.response;
@@ -26,7 +28,7 @@ $("select#sales-read-personid")
     if (!sumStatus) {
       console.error(sumRes);
     }
-    // 2.get all
+    // 5. get all
     const sales = await getByPersonId(seletedPersonId);
     const salesStatus = sales.status;
     const salesResponse = sales.response;
@@ -42,7 +44,7 @@ $("select#sales-read-personid")
     if (!salesStatus) {
       console.error(salesResponse);
     }
-    // references callback ui
+    // 6. references callback ui
     // 1.limit-search
     $("div#sales-limit-search").addClass("d-none");
     // 2.select-adjacent

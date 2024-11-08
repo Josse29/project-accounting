@@ -15,7 +15,6 @@ $("#minimize-window")
 $("#restore-window")
   .off("click")
   .on("click", () => {
-    console.log("restore-from-client");
     ipcRenderer.send("restore-window:transkasi-page");
   });
 $("#close-window")

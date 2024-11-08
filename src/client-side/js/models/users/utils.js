@@ -5,11 +5,18 @@ import { uiBtnPageActive, uiTbody, uiTbodyEmpty } from "./ui.js";
 
 export const executeRead = async (data) => {
   // request
-  const req = {
-    searchVal: data.searchVal,
-    limitVal: data.limitVal,
-    offsetVal: data.offsetVal,
-  };
+  const req =
+    data !== undefined
+      ? {
+          searchVal: data.searchVal,
+          limitVal: data.limitVal,
+          offsetVal: data.offsetVal,
+        }
+      : {
+          searchVal: "",
+          limitVal: parseInt($("select#user-limit").val()),
+          offsetVal: 1,
+        };
   // 1. execute pagination
   const { status, response } = await fetchRowPage(req);
   if (status) {
@@ -31,17 +38,17 @@ export const executeRead = async (data) => {
   if (!status) {
     console.error(response);
   }
-  // 2. execute user
-  async function get2(req) {
-    const { status, response } = await fetchLimitOffset(req);
-    if (status) {
-      uiTbody(response);
-      // active page
-      uiBtnPageActive(req.offsetVal);
-      reinitTooltip();
-    }
-    if (!status) {
-      console.error(response);
-    }
-  }
 };
+// 2. execute user
+export async function get2(req) {
+  const { status, response } = await fetchLimitOffset(req);
+  if (status) {
+    uiTbody(response);
+    // active page
+    uiBtnPageActive(req.offsetVal);
+    reinitTooltip();
+  }
+  if (!status) {
+    console.error(response);
+  }
+}

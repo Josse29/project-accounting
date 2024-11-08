@@ -2,6 +2,7 @@ import db from "../../database/config.js";
 import {
   queryDeleteCash,
   queryInsertCash,
+  queryReadByDate,
   queryReadCash,
   queryReadCash1,
   queryReadCash2,
@@ -130,6 +131,20 @@ export const getCashSum1 = (req) => {
         const response = result.Total_Amount;
         const sum = response ? response : 0;
         resolve(sum);
+      }
+      if (err) {
+        reject(err);
+      }
+    });
+  });
+};
+export const getCashDate = (req) => {
+  const { startDateVal, endDateVal } = req;
+  const query = queryReadByDate(startDateVal, endDateVal);
+  return new Promise((resolve, reject) => {
+    db.all(query, (err, res) => {
+      if (!err) {
+        resolve(res);
       }
       if (err) {
         reject(err);

@@ -1,6 +1,6 @@
 import { debounce } from "../../utils/debounce.js";
 import { uiTbodyLoad } from "./ui.js";
-import { getAll } from "./utils.js";
+import { getSupplier1 } from "./utils.js";
 // get value
 let searchVal = $("#supplier-search-input").val();
 let limitVal = parseInt($("#supplier-limit").val());
@@ -12,7 +12,7 @@ const handleBounce = debounce(() => {
     limitVal,
     offsetVal,
   };
-  getAll(req);
+  getSupplier1(req);
 }, 1000);
 // searching
 $("#supplier-search-input")

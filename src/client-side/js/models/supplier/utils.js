@@ -6,15 +6,22 @@ import {
 import { handlePagination } from "./pagination.js";
 import { getByLimitOffset, pagination } from "./services.js";
 import { uiBtnPageActive, uiTbody, uiTbodyZero } from "./ui.js";
-import { getProduct1 } from "../products/read.js";
-import { getPersediaan1 } from "../persediaan/read.js";
+import { getProductAll } from "../products/utils.js";
+import { getAll } from "./../persediaan/utils.js";
 
-export const getAll = async (data) => {
-  const req = {
-    searchVal: data.searchVal,
-    limitVal: data.limitVal,
-    offsetVal: data.offsetVal,
-  };
+export const getSupplier1 = async (data) => {
+  const req =
+    data !== undefined
+      ? {
+          searchVal: data.searchVal,
+          limitVal: data.limitVal,
+          offsetVal: data.offsetVal,
+        }
+      : {
+          searchVal: "",
+          limitVal: parseInt($("select#supplier-limit").val()),
+          offsetVal: 1,
+        };
   const { status, response } = await pagination(req);
   if (status) {
     const { totalPage, totalRow } = response;
@@ -30,22 +37,23 @@ export const getAll = async (data) => {
   if (!status) {
     console.error(response);
   }
-  async function get2(req) {
-    const { status, response } = await getByLimitOffset(req);
-    if (status) {
-      uiTbody(response);
-      reinitTooltip();
-      uiBtnPageActive(req.offsetVal);
-    }
-    if (!status) {
-      console.error(response);
-    }
-  }
 };
-
+export async function get2(req) {
+  const { status, response } = await getByLimitOffset(req);
+  if (status) {
+    uiTbody(response);
+    reinitTooltip();
+    uiBtnPageActive(req.offsetVal);
+  }
+  if (!status) {
+    console.error(response);
+  }
+}
 export const getSupplierRef = async () => {
-  await getProduct1();
-  await getPersediaan1();
+  // get product again
+  await getProductAll();
+  // get persediaan again
+  await getAll();
   await listSupplierRefPersediaanRead();
   await listSupplierRefPersediaanReadDate();
 };

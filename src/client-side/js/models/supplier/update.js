@@ -2,8 +2,7 @@ import { uiAlertFailUpdate, uiAlertSuccess } from "./ui.js";
 import { capitalizeWord } from "../../utils/formatCapitalize.js";
 import { getImageBase64, validateImg } from "../../utils/loadImg.js";
 import { update } from "./services.js";
-import { getSupplier1 } from "./read.js";
-import { getSupplierRef } from "./utils.js";
+import { getSupplier1, getSupplierRef } from "./utils.js";
 
 $("#supplier-table")
   .off("click", "#supplierUpdate")

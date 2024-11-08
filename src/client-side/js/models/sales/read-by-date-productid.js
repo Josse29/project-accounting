@@ -4,13 +4,13 @@ import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import { formatWaktuIndo } from "../../utils/formatWaktu.js";
 import { animateFade } from "../../utils/updateUi.js";
 
-// by date and product
+// 1. triggered event button
 $("select#sales-read-productid-date")
   .off("change")
   .on("change", async function () {
-    // animate
+    // 2. animate
     animateFade("#sales-card-body");
-    // request-params
+    // 3. request-params
     const startDateVal = $("input#sales-read-startDate").val();
     const endDateVal = $("input#sales-read-endDate").val();
     const selectedProductId = parseInt($(this).val());
@@ -19,14 +19,14 @@ $("select#sales-read-productid-date")
       endDateVal,
       selectedProductId,
     };
-    // caption
+    // 4. caption
     const date = `${formatWaktuIndo(startDateVal)} - ${formatWaktuIndo(
       endDateVal
     )}`;
     const selected = $(this).find("option:selected");
     const selectedText = selected.text();
     const priceSellRp = formatRupiah2(selected.data("pricesell"));
-    // req-to-db || summary
+    // 5. req-to-db || summary
     const summary = await getSumByDateProduct(req);
     const resSum = summary.response;
     const resSumStatus = summary.status;
@@ -43,7 +43,7 @@ $("select#sales-read-productid-date")
     if (!resSumStatus) {
       console.error(resSum);
     }
-    // req-to-db || tables
+    // 6. req-to-db || tables
     const sales = await getByDateProduct(req);
     const salesStatus = sales.status;
     const salesReponse = sales.response;

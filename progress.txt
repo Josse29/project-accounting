@@ -24,7 +24,7 @@
 - fixing ui card models persediaan 
 - refactoring accounting and fixing all ui
 - delete all model sales, fixing all ui minor bug
-- contiune renewing models accounting 
+- continue renewing models accounting 
 
 11/4/2024
 - refactoring get again 
@@ -38,4 +38,5 @@
 - refactoring search and pagination all models hufft last part 2
 - convert pdf, excel, models cash with date
 - fixing ui minor 
-
+11/8/2024
+- refactoring lastkal pagination, search, and read all models

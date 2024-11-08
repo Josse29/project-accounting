@@ -10,8 +10,8 @@ import {
 } from "../../utils/localStorage.js";
 import { listUserRefSalesCreate } from "../users/list.js";
 import { addSale } from "./services.js";
-import { getSales1 } from "./read.js";
-import { getPersediaan2 } from "../persediaan/read-by-group-product.js";
+import { getAll2 } from "../persediaan/utils.js";
+import { getAll } from "./utils.js";
 
 // init table order
 $(".card-footer ")
@@ -89,12 +89,13 @@ $("button#order-done")
     if (customerId !== null) {
       $("select#order-create-usercustomerid").removeClass("is-invalid");
     }
-    // req-to-db
+    // 3. validattion total price
     if (totalPaid < totalCart) {
       const span = `<span class='fst-italic text-danger'>cash in must be greater than total cart</span>`;
       $("span#order-change").html(span);
       return false;
     }
+    // loop data and req-to-db
     for (const el of storageCart) {
       const reqSales = {
         SalesPersonId: userSalesId,
@@ -110,9 +111,11 @@ $("button#order-done")
       };
       const { status, response } = await addSale(reqSales);
       if (status) {
-        // get all ref from orders and sales
-        await getPersediaan2();
-        await getSales1();
+        // get again sales
+        await getAll();
+        // get again persediaan
+        await getAll2();
+
         // remove storage cart and sum storage card
         removeStorageCart();
         removeStorageCartSUM();

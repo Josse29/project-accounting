@@ -1,6 +1,6 @@
-import { get1 } from "./read.js";
 import { deleteById } from "./services.js";
 import { uiAlertSuccess } from "./ui.js";
+import { executeRead } from "./utils.js";
 
 $("tbody#user")
   .off("click", "button#user-delete")
@@ -23,7 +23,7 @@ $("tbody#user")
         };
         const { status, response } = await deleteById(req);
         if (status) {
-          await get1();
+          await executeRead();
           const alert = uiAlertSuccess(response);
           $("#section-user #crud-success").html(alert);
           $("#user-delete-modal").modal("hide");

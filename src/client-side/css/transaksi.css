@@ -269,3 +269,18 @@ input#sale-end-date-1:focus {
   box-shadow: none;
   outline: #4c75af solid 2px;
 }
+td,
+span:hover {
+  text-wrap: wrap;
+}
+.opacityMe {
+  animation: myopacity 1s ease-in-out;
+}
+@keyframes myopacity {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

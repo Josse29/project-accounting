@@ -1,6 +1,5 @@
-import { get3 } from "./read.js";
-
 import { uiBtnPage } from "./ui.js";
+import { get3 } from "./utils.js";
 
 export const handlePagination = (totalPage) => {
   // for pagination to insert html

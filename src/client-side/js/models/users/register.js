@@ -1,7 +1,7 @@
-import { previewLoadImg } from "../../utils/loadImg.js";
-import { get1 } from "./read.js";
 import { addUser } from "./services.js";
+import { previewLoadImg } from "../../utils/loadImg.js";
 import { uiAlertFail, uiAlertSuccess, uiReset } from "./ui.js";
+import { executeRead } from "./utils.js";
 // init ui
 $("#section-user button#create")
   .off("click")
@@ -73,7 +73,7 @@ $("#user-create button#send-to-db")
     // req-to-db
     const { status, response } = await addUser(req);
     if (status) {
-      await get1();
+      await executeRead();
       const alert = uiAlertSuccess(response);
       $("#section-user #crud-success").html(alert);
       uiReset();

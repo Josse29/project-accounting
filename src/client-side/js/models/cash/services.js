@@ -3,6 +3,7 @@ import {
   getCash,
   getCash1,
   getCash2,
+  getCashDate,
   getCashPagination,
   getCashSum,
   getCashSum1,
@@ -116,6 +117,22 @@ export const getSum1 = async (req) => {
     };
     const summary = await getCashSum1(payLoad);
     return { status: true, response: summary };
+  } catch (error) {
+    return { status: false, response: error };
+  }
+};
+// 8.endpoint : api/cash/:startdateval/:enddateval
+// method : GET
+// payload : 1.startdateval, 2.enddateval
+// return cash with date
+export const getByDate = async (req) => {
+  try {
+    const payLoad = {
+      startDateVal: req.startDateVal,
+      endDateVal: req.endDateVal,
+    };
+    const cash = await getCashDate(payLoad);
+    return { status: true, response: cash };
   } catch (error) {
     return { status: false, response: error };
   }

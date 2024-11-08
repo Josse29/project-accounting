@@ -466,7 +466,7 @@ export const uiBtnPage1 = (totalPage) => {
     const activePage = i === 1 ? "product-ref-persediaan-page-active" : "";
     btn += `<button 
               type="button" 
-              class="btn fs-4 product-ref-persediaan-page border border-1 ${activePage}">${i}</button>`;
+              class="btn fs-4 product-ref-persediaan-page border border-2 ${activePage}">${i}</button>`;
   }
   $("div#product-ref-persediaan-page-number").html(btn);
   $("div#product-refpersediaan-pagination").removeClass("d-none");

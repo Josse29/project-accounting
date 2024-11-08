@@ -3,8 +3,8 @@ import { debounce } from "../../utils/debounce.js";
 import { uiTbodyLoad } from "./ui.js";
 
 // get value
-let searchVal = $("#category-search-input").val();
-let limitVal = parseInt($("#category-limit").val());
+let searchVal = $("input#category-search-input").val();
+let limitVal = parseInt($("select#category-limit").val());
 let offsetVal = 1;
 
 // debouncing

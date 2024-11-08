@@ -6,6 +6,7 @@ import { listProductRefSalesReadDate } from "../products/list.js";
 import { listUserRefSalesReadDate } from "../users/list.js";
 import { animateFade } from "../../utils/updateUi.js";
 
+// 1. triggered event button
 $("button#read-sales-date")
   .off("click")
   .on("click", async function () {
@@ -19,7 +20,13 @@ $("button#read-sales-date")
       startDateVal,
       endDateVal,
     };
-    if (startDateVal === "" || endDateVal === "" || startDateVal > endDateVal) {
+    // validation date
+    if (
+      startDateVal > endDateVal ||
+      (startDateVal !== "" && endDateVal === "") ||
+      (startDateVal === "" && endDateVal !== "") ||
+      (startDateVal === "" && endDateVal === "")
+    ) {
       return;
     }
     // animate
@@ -46,8 +53,8 @@ $("button#read-sales-date")
       if (existed) {
         uiTbody(salesResponse);
         // select with date product, sales, customer
-        listProductRefSalesReadDate();
-        listUserRefSalesReadDate();
+        await listProductRefSalesReadDate();
+        await listUserRefSalesReadDate();
         $("div#sales-select-date").removeClass("d-none");
       }
       if (!existed) {

@@ -3,14 +3,17 @@ import { uiTbody, uiTbodyEmpty } from "./ui.js";
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import { animateFade } from "../../utils/updateUi.js";
 
+// 1. get list already there in personid
+
 $("select#sales-read-customerid")
   .off("change")
   .on("change", async function () {
-    // animate
+    // 2. animate
     animateFade("#sales-card-body");
+    // 3. selected
     const seletedPersonId = parseInt($(this).val());
     const selectedText = $(this).find("option:selected").text();
-    // sum
+    // 4. summary
     const sum = await getSumCustomerId(seletedPersonId);
     const sumStatus = sum.status;
     const sumResponse = sum.response;
@@ -23,7 +26,7 @@ $("select#sales-read-customerid")
     if (!sumStatus) {
       console.error(sumResponse);
     }
-    // table
+    // 5. get-all
     const sales = await getByCustomerId(seletedPersonId);
     const status = sales.status;
     const response = sales.response;
@@ -39,7 +42,7 @@ $("select#sales-read-customerid")
     if (!status) {
       console.error(response);
     }
-    // references ui
+    // 6. references ui
     // 1.limit-search
     $("div#sales-limit-search").addClass("d-none");
     // 2.select-adjacent

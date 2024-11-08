@@ -58,7 +58,7 @@ export const queryUpdateCategory = (categoryId, categoryName, categoryInfo) => {
                Category
                SET CategoryName = '${categoryName}',
                    CategoryInfo = '${categoryInfo}'
-               WHERE CategoryId = '${categoryId}'`;
+               WHERE CategoryId = ${categoryId} `;
   return query;
 };
 // 4.DELETE

@@ -1,7 +1,7 @@
-import { get2 } from "./read.js";
 import { uiBtnPage } from "./ui.js";
+import { get2 } from "./utils.js";
 
-const handlePagination = (totalPage) => {
+export const handlePagination = (totalPage) => {
   // insertBtn
   uiBtnPage(totalPage);
 
@@ -76,4 +76,3 @@ const handlePagination = (totalPage) => {
       await get2(req);
     });
 };
-export default handlePagination;
