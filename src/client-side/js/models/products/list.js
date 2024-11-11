@@ -21,6 +21,7 @@ const productList = async () => {
   }
   if (!status) {
     console.error(response);
+    throw new Error(response);
   }
 };
 // function to update when create list product ref persediaan
@@ -33,8 +34,12 @@ export const listProductRefPersediaanRead = async () => {
   $("select#persediaan-refproduct-search").html(option);
 };
 export const listProductRefPersediaanReadDate = async () => {
-  const option = await productList();
-  $("select#persediaan-date-product").html(option);
+  const list = await productList();
+  const option = `
+  <select class="form-control w-auto mb-3" id="persediaan-date-product">
+    ${list}
+  </select>`;
+  return option;
 };
 export const listProductRefSalesRead = async () => {
   const option = await productList();

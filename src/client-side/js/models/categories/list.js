@@ -17,6 +17,7 @@ const categoryList = async () => {
   }
   if (!status) {
     console.error(response);
+    throw new Error(response);
   }
 };
 const categoryList1 = async (selected) => {
@@ -38,6 +39,7 @@ const categoryList1 = async (selected) => {
   }
   if (!status) {
     console.error(response);
+    throw new Error(response);
   }
 };
 // function to update when create list product ref categories
@@ -56,5 +58,9 @@ export const listCategoryRefPersediaanRead = async () => {
 };
 export const listCategoryRefPersediaanReadDate = async () => {
   const list = await categoryList();
-  $("select#persediaan-date-category").html(list);
+  const option = `
+  <select class="form-control w-auto mb-3" id="persediaan-date-category">
+    ${list}
+  </select>`;
+  return option;
 };

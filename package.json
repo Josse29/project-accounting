@@ -6,6 +6,7 @@
   "scripts": {
     "start": "electron ."
   },
+  "type": "module",
   "author": "josse",
   "license": "ISC",
   "devDependencies": {
@@ -15,12 +16,8 @@
     "@electron/remote": "^2.1.2",
     "@fortawesome/fontawesome-free": "^6.6.0",
     "bootstrap": "^5.3.3",
-    "fs": "^0.0.1-security",
-    "imask": "^7.6.0",
     "jquery": "^3.7.1",
-    "path": "^0.12.7",
     "sqlite3": "^5.1.7",
-    "sweetalert2": "^11.14.2",
-    "url": "^0.11.3"
+    "sweetalert2": "^11.14.2"
   }
 }

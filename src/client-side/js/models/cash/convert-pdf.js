@@ -34,8 +34,8 @@ $("#cash-modal-convert-pdf button#cash-convert-pdf")
           ipcRenderer.send("pdf:cash", tr, summary, file_path);
           ipcRenderer.on("success:pdf-cash", (e, file_path) => {
             uiAlertSuccess(`File PDF Save on ${file_path}`);
-            $("#cash-modal-convert-pdf input#sale-start-date").val("");
-            $("#cash-modal-convert-pdf input#sale-end-date").val("");
+            $("#cash-modal-convert-pdf input#sale-start-date-1").val("");
+            $("#cash-modal-convert-pdf input#sale-end-date-1").val("");
             $("#cash-modal-convert-pdf").modal("hide");
           });
         }

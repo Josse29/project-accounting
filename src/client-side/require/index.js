@@ -1,6 +1,6 @@
 // electron [ipcRenderer]
 const electron = require("electron");
-const { ipcRenderer } = electron;
+const { contextBridge, ipcRenderer } = electron;
 
 // dialog
 const { dialog } = require("@electron/remote");

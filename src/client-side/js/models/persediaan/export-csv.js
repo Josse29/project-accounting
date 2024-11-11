@@ -1,3 +1,4 @@
+import convertCSV from "../../utils/convertcsv.js";
 import { getCSV } from "./services.js";
 import { uiAlertFail, uiAlertSuccess } from "./ui.js";
 
@@ -18,33 +19,11 @@ $("#persediaan-modal-convert-csv button#persediaan-convert-csv")
     if (status) {
       const existed = response.length >= 1;
       if (existed) {
-        let file_path = dialog.showSaveDialogSync({
-          title: "Export Data",
-          filters: [{ name: "microsoft-excel", extensions: ["csv"] }],
-        });
-        if (file_path) {
-          file_path = file_path.replace(/\\/g, "/");
-          let tHead = [Object.keys(response[0])];
-          let tBody = response;
-          let table = tHead.concat(tBody);
-          let csvString = table
-            .map((item) => {
-              return Object.values(item).toString();
-            })
-            .join("\r\n");
-          fs.writeFile(file_path, csvString, (err) => {
-            if (!err) {
-              uiAlertSuccess(`File Excel Save On ${file_path}`);
-              $("input#persediaan-start-date-csv").val("");
-              $("input#persediaan-end-date-csv").val("");
-              $("#persediaan-modal-convert-csv").modal("hide");
-            }
-            if (err) {
-              console.error(err);
-              throw err;
-            }
-          });
-        }
+        const filePath = await convertCSV(response);
+        uiAlertSuccess(`File Excel Save On ${filePath}`);
+        $("input#persediaan-start-date-csv").val("");
+        $("input#persediaan-end-date-csv").val("");
+        $("#persediaan-modal-convert-csv").modal("hide");
       }
       if (!existed) {
         uiAlertFail("uuppsss , sorry stock is still empty...");

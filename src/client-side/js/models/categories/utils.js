@@ -5,6 +5,7 @@ import { uiBtnPageActive, uiTbody, uiTbodyEmpty } from "./ui.js";
 import { listCategoryRefPersediaanRead } from "./list.js";
 import { getProductAll } from "../products/utils.js";
 import { getAll } from "../persediaan/utils.js";
+import { uiInit } from "../persediaan/ui.js";
 
 // get pagination
 export const executeRead = async (data) => {
@@ -52,7 +53,10 @@ export async function get2(req) {
   }
 }
 export const getCategoryRef = async () => {
+  // product
   await getProductAll();
+  // persediaan
   await getAll();
+  uiInit();
   await listCategoryRefPersediaanRead();
 };

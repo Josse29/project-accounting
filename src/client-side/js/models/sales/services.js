@@ -3,6 +3,7 @@ import {
   deleteSaleAll,
   getSale,
   getSaleCustomerId,
+  getSaleCustomerIdDate,
   getSaleDate,
   getSaleDateProductId,
   getSaleGroupCustomer,

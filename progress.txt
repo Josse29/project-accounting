@@ -40,3 +40,6 @@
 - fixing ui minor 
 11/8/2024
 - refactoring lastkal pagination, search, and read all models
+11/11/2024
+- refactoring export pdf all models 
+- reseacrh navigtion path

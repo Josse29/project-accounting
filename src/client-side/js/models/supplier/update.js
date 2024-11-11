@@ -63,7 +63,9 @@ $("#supplier-table")
       .off("click")
       .on("click", async () => {
         const supplierId = parseInt(supplier.supplierid);
-        const supplierName = capitalizeWord($("#supplier-update-name").val());
+        const supplierName = capitalizeWord(
+          $("#supplier-update-name").val().trim()
+        );
         const supplierInfo = $("#supplier-update-info").val();
         const supplierImgVal = document.getElementById(
           "supplier-update-img"

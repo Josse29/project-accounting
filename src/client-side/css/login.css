@@ -8,7 +8,7 @@
 body::-webkit-scrollbar {
   display: none;
 }
-#dragWin {
+.section-first {
   -webkit-app-region: drag; /* Allow dragging the window */
 }
 div.icon-me {
@@ -17,7 +17,6 @@ div.icon-me {
   align-items: center;
   width: 28px;
   height: 28px;
-  cursor: pointer;
 }
 img.custome-me {
   width: 30px;
@@ -29,16 +28,8 @@ img.custome-me {
 }
 .section-first {
   width: 60vw;
-  background-image: url("./../images/export.jpg");
+  background-image: url("./../images/accounting.jpg");
   background-position: bottom;
-  background-repeat: no-repeat;
-  background-size: cover;
-  transition: background-position 0.5s ease-in-out;
-  cursor: pointer;
-}
-.section-first:hover {
-  background-image: url("./../images/export.jpg");
-  background-position: top;
   background-repeat: no-repeat;
   background-size: cover;
 }

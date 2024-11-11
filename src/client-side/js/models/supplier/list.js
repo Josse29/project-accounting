@@ -16,6 +16,7 @@ const supplierList = async () => {
   }
   if (!status) {
     console.error(response);
+    throw new Error(response);
   }
 };
 const supplierList1 = async (selected) => {
@@ -35,6 +36,7 @@ const supplierList1 = async (selected) => {
   }
   if (!status) {
     console.error(response);
+    throw new Error(response);
   }
 };
 // function to update list supplier ref product create action
@@ -54,6 +56,11 @@ export const listSupplierRefPersediaanRead = async () => {
 };
 // function to update html list when read persediaanDate
 export const listSupplierRefPersediaanReadDate = async () => {
-  const option = await supplierList();
-  $("select#persediaan-date-supplier").html(option);
+  const list = await supplierList();
+  const option = `
+  <select class="form-control w-auto mb-3" id="persediaan-date-supplier">
+    ${list}
+  </select>
+  `;
+  return option;
 };

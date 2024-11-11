@@ -12,7 +12,7 @@ $("button#btnCreateCategory")
 $("#category-submit")
   .off("click")
   .on("click", async () => {
-    const categoryName = capitalizeWord($("#category-nama").val());
+    const categoryName = capitalizeWord($("#category-nama").val().trim());
     const categoryInfo = $("#category-keterangan").val();
     const req = {
       categoryName,

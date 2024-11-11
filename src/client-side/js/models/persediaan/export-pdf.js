@@ -175,6 +175,8 @@ $("#persediaan-modal-convert-pdf #persediaan-convert-pdf")
           );
           ipcRenderer.on("success:pdf-persediaan", (e, file_path) => {
             uiAlertSuccess(`File Save On ${file_path}`);
+            $("input#persediaan-start-date-pdf").val("");
+            $("input#persediaan-end-date-pdf").val("");
             $("#persediaan-modal-convert-pdf").modal("hide");
           });
         }

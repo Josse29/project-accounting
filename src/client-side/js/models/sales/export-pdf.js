@@ -118,12 +118,14 @@ const txtSummary = async (req) => {
 $("#modal-sales-convert-pdf button#sale-convert-pdf")
   .off("click")
   .on("click", async function () {
+    // 1. get request
     const startDateVal = $("input#sale-start-date-1").val();
     const endDateVal = $("input#sale-end-date-1").val();
     const req = {
       startDateVal,
       endDateVal,
     };
+    // 2. validation date
     if (
       startDateVal > endDateVal ||
       (startDateVal !== "" && endDateVal === "") ||

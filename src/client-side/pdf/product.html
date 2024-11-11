@@ -79,27 +79,9 @@
     </script>
     <!-- Impor JS Bootstrap -->
     <script src="./../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- jquery -->
-    <script>
-      if (typeof module === "object") {
-        window.module = module;
-        module = undefined;
-      }
-    </script>
-    <script src="./../../../node_modules/jquery/dist/jquery.min.js"></script>
-    <script>
-      if (window.module) module = window.module;
-    </script>
-    <!-- Impor JS Bootstrap -->
-    <script src="./../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <!-- myscript -->
     <script src="./../require/index.js"></script>
     <script type="module" src="./../js/utils/updateUi.js"></script>
-    <script>
-      ipcRenderer.on("tables:product", (e, tbody, filePath) => {
-        $("#tbody-pdf").html(tbody);
-        ipcRenderer.send("create:pdf-product", filePath);
-      });
-    </script>
+    <script type="module" src="./product.js"></script>
   </body>
 </html>

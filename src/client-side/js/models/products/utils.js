@@ -8,6 +8,7 @@ import {
 import { handlePagination } from "./pagination.js";
 import { getAll } from "../persediaan/utils.js";
 import { executeRead } from "../categories/utils.js";
+import { uiInit } from "../persediaan/ui.js";
 
 // get only paginaton and by page
 export const getProductAll = async (data) => {
@@ -57,6 +58,7 @@ export async function get2(req) {
 export const getProductRef = async () => {
   // get persediaan again
   await getAll();
+  uiInit();
   // get category again
   await executeRead();
   await listProductRefPersediaanRead();

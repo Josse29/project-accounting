@@ -8,6 +8,7 @@ import { getByLimitOffset, pagination } from "./services.js";
 import { uiBtnPageActive, uiTbody, uiTbodyZero } from "./ui.js";
 import { getProductAll } from "../products/utils.js";
 import { getAll } from "./../persediaan/utils.js";
+import { uiInit } from "../persediaan/ui.js";
 
 export const getSupplier1 = async (data) => {
   const req =
@@ -54,6 +55,7 @@ export const getSupplierRef = async () => {
   await getProductAll();
   // get persediaan again
   await getAll();
+  uiInit();
   await listSupplierRefPersediaanRead();
   await listSupplierRefPersediaanReadDate();
 };

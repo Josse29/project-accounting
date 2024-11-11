@@ -30,7 +30,9 @@ $("#supplier-create-submit")
   .off("click")
   .on("click", async () => {
     // get all value
-    const supplierName = capitalizeWord($("#supplier-create-name").val());
+    const supplierName = capitalizeWord(
+      $("#supplier-create-name").val().trim()
+    );
     const supplierInfo = $("#supplier-create-info").val();
     const supplierImg = document.getElementById("supplier-create-img").files;
     // action createSupplier

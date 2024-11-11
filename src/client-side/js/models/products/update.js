@@ -10,7 +10,7 @@ import { getProductAll, getProductRef } from "./utils.js";
 // upadte | event binding
 $("tbody#product-table")
   .off("click", "#editProduct")
-  .on("click", "#editProduct", function () {
+  .on("click", "#editProduct", async function () {
     // init ui
     $("#product-update-failed").html("");
     $("#edit-product-image-file").val("");
@@ -24,8 +24,8 @@ $("tbody#product-table")
     const productSupplierId = parseInt(product.productsupplierid);
     const productInfo = product.productketerangan;
     // list option
-    listCategoryRefProductUpdate(productCategoryId);
-    listSupplierRefProductUpdate(productSupplierId);
+    await listCategoryRefProductUpdate(productCategoryId);
+    await listSupplierRefProductUpdate(productSupplierId);
     // all-input-product
     $("#editProductModalLabel").html(productName);
     $("#edit-product-name").val(productName);
@@ -94,7 +94,9 @@ $("tbody#product-table")
         // productid
         const productId = parseInt(product.productid);
         // productname
-        const productName = capitalizeWord($("#edit-product-name").val());
+        const productName = capitalizeWord(
+          $("#edit-product-name").val().trim()
+        );
         // price buy
         const productPriceBuy = disFormatRupiah1(
           $("#edit-product-price-buy").val()

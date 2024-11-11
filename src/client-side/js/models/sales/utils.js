@@ -15,7 +15,6 @@ export const getAll = async (data) => {
     offsetVal: data.offsetVal,
   };
   const req = data === undefined ? data1 : data2;
-  console.log(req);
   const { status, response } = await getRowPage(req);
   const { totalPage, totalRow } = response;
   if (status) {

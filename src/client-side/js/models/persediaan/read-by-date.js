@@ -53,23 +53,18 @@ $("button#persediaan-date-search")
     if (byDateStatus) {
       const existed = byDateRes.length >= 1;
       if (existed) {
+        // list with date
+        const productListDate = await listProductRefPersediaanReadDate();
+        const supplierListDate = await listSupplierRefPersediaanReadDate();
+        const categoryListDate = await listCategoryRefPersediaanReadDate();
+        const allListDate = `
+          ${productListDate}
+          ${supplierListDate}
+          ${categoryListDate}
+        `;
+        $("#persediaan-date-all-search").html(allListDate);
         uiTbody(byDateRes);
         reinitTooltip();
-        // list with date
-        listProductRefPersediaanReadDate();
-        listSupplierRefPersediaanReadDate();
-        listCategoryRefPersediaanReadDate();
-        const select = `
-        <select class="form-control w-auto mb-3" id="persediaan-date-product">
-          <option value="test" class="fs-6">Product</option>
-        </select>
-        <select class="form-control w-auto mb-3" id="persediaan-date-supplier">
-          <option value="test" class="fs-6">Supplier</option>
-        </select>
-        <select class="form-control w-auto mb-3" id="persediaan-date-category">
-          <option value="test" class="fs-6">Kategori</option>
-        </select>`;
-        $("div#persediaan-date-all-search").html(select);
       }
       if (!existed) {
         uiTbodyEmpty(rangeDateTxt);

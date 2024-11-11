@@ -15,7 +15,9 @@ $("tbody#category-data")
       .off("click")
       .on("click", async () => {
         const categoryId = parseInt(category.categoryid);
-        const categoryName = capitalizeWord($("#edit-category-nama").val());
+        const categoryName = capitalizeWord(
+          $("#edit-category-nama").val().trim()
+        );
         const categoryInfo = $("#edit-category-keterangan").val();
         const req = {
           categoryId,
