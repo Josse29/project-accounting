@@ -1,0 +1,54 @@
+button#category-export-pdf {
+  color: white;
+  background-color: rgb(223, 41, 21);
+}
+button#category-export-pdf:hover {
+  background-color: rgb(194, 29, 10);
+}
+
+.category-btn-page {
+  background-color: #fff;
+  color: black;
+  font-size: 18px;
+  border: 2px solid #e1e1e1;
+  outline: none;
+  padding: 8px 12px;
+}
+.category-active-page {
+  background-color: #007bff;
+  color: white;
+  border: 1px solid #007bff;
+  outline: none;
+}
+div#category-section {
+  overflow: auto;
+}
+div#category-section::-webkit-scrollbar {
+  /* Width of the vertical scrollbar */
+  height: 8px;
+}
+div#category-section::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+div#category-section::-webkit-scrollbar-thumb {
+  background: #888;
+}
+div#category-section::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+div#category-table {
+  overflow: auto;
+}
+div#category-table::-webkit-scrollbar {
+  /* Width of the vertical scrollbar */
+  height: 8px;
+}
+div#category-table::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+div#category-table::-webkit-scrollbar-thumb {
+  background: #888;
+}
+div#category-table::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

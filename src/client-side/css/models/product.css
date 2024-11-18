@@ -1,0 +1,119 @@
+span.hover-by-me:hover {
+  background-color: #273ce1 !important;
+  box-shadow: 0px 0px 0px 0.4px #4c61ff;
+  cursor: pointer;
+}
+input.focus-by-me:focus {
+  box-shadow: 0px 0px 0px 0.2rem #959fe8;
+}
+select.focus-by-me:focus {
+  box-shadow: 0px 0px 0px 0.2rem #959fe8;
+}
+button#product-create {
+  background-color: #3c50e0;
+  color: white;
+}
+button#product-create:hover {
+  background-color: #1d2da4 !important;
+  box-shadow: 0px 0px 0px 0.4px #4c61ff;
+}
+button#product-export-pdf {
+  color: white;
+  background-color: rgb(249, 97, 46);
+}
+button#product-export-pdf:hover {
+  color: white;
+  background-color: rgb(236, 71, 17);
+}
+button#product-export-print {
+  color: white;
+  background-color: rgb(249, 66, 46);
+}
+button#product-export-print:hover {
+  background-color: rgb(212, 54, 36);
+}
+button#edit-product-submit {
+  background-color: #273eec;
+}
+button#edit-product-submit:hover {
+  background-color: #112ae9;
+}
+i#cancel-image {
+  position: absolute;
+  right: -10px;
+  top: -22px;
+  font-size: 32px;
+  cursor: pointer;
+}
+i#edit-product-cancel-image {
+  position: absolute;
+  right: -10px;
+  top: -22px;
+  font-size: 32px;
+  cursor: pointer;
+}
+button#submit_product {
+  background-color: #3c50e0;
+}
+button#submit_product:hover {
+  background-color: #3445c7;
+}
+.product-btn-page {
+  background-color: #fff;
+  color: black;
+  font-size: 18px;
+  border: 2px solid #e1e1e1;
+  outline: none;
+  padding: 8px 12px;
+}
+.product-active-page {
+  background-color: #273eec;
+  color: white;
+  border: 2px solid #273eec;
+  outline: none;
+}
+ul#product-detail-stock::-webkit-scrollbar {
+  /* Width of the vertical scrollbar */
+  width: 5px;
+}
+ul#product-detail-stock::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+ul#product-detail-stock::-webkit-scrollbar-thumb {
+  background: #afaeae;
+}
+ul#product-detail-stock::-webkit-scrollbar-thumb:hover {
+  background: #9c9b9b;
+}
+div#product-section {
+  overflow: auto;
+}
+div#product-section::-webkit-scrollbar {
+  /* Width of the vertical scrollbar */
+  height: 8px;
+}
+div#product-section::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+div#product-section::-webkit-scrollbar-thumb {
+  background: #888;
+}
+div#product-section::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+div#product-scroll-byme {
+  overflow: auto;
+}
+div#product-scroll-byme::-webkit-scrollbar {
+  /* Width of the vertical scrollbar */
+  height: 8px;
+}
+div#product-scroll-byme::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+div#product-scroll-byme::-webkit-scrollbar-thumb {
+  background: #888;
+}
+div#product-scroll-byme::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

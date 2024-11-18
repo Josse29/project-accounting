@@ -1,5 +1,6 @@
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import { formatWaktuIndo } from "../../utils/formatWaktu.js";
+
 export const uiTbody = (sales) => {
   let tr = ``;
   sales.forEach((el) => {

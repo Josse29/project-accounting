@@ -1,0 +1,20 @@
+.top-navigation {
+  position: fixed;
+  left: 100px;
+  right: 0px;
+  top: 0px;
+  background-color: #262848;
+  color: white;
+  padding: 15px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 9999;
+}
+.top-navigation i.custome-me {
+  font-size: 25px;
+  margin-right: 12px;
+}
+.top-navigation i.custome-me:hover {
+  cursor: pointer;
+}

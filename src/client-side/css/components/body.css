@@ -1,0 +1,12 @@
+body {
+  width: 100vw;
+  background-color: #eeeeee;
+}
+body::-webkit-scrollbar {
+  display: none;
+}
+.container-custome-me {
+  margin-left: 100px;
+  margin-top: 80px;
+  padding: 30px 50px;
+}

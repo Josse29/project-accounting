@@ -1,0 +1,28 @@
+@import "./../components/top.css";
+@import "./../components/body.css";
+@import "./../components/left-side.css";
+@import "./../components/text.css";
+@import "./../components/tooltip-bottom.css";
+@import "./../components/tooltip-right.css";
+@import "./../components/drag.css";
+
+@import "./../models/cash.css";
+@import "./../models/accounting.css";
+
+.border-l-custome-me {
+  border-left: 15px solid #5c5cff;
+}
+td:hover {
+  text-wrap: wrap;
+}
+
+button.entry-sale:hover {
+  background-color: #3143c9 !important;
+}
+td,
+span:hover {
+  text-wrap: wrap;
+}
+th:hover {
+  text-wrap: wrap;
+}

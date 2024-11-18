@@ -83,11 +83,18 @@ export async function get3(req) {
 // get pagination by group product and all
 export const getAll2 = async (data) => {
   // 1. get total page and row
-  const req = {
-    searchVal: data.searchVal,
-    limitVal: data.limitVal,
-    offsetVal: data.offsetVal,
-  };
+  const req =
+    data !== undefined
+      ? {
+          searchVal: data.searchVal,
+          limitVal: data.limitVal,
+          offsetVal: data.offsetVal,
+        }
+      : {
+          searchVal: "",
+          limitVal: 3,
+          offsetVal: 1,
+        };
   const { status, response } = await getRowPage1(req);
   if (status) {
     const { totalPage, totalRow } = response;

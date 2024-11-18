@@ -1,5 +1,3 @@
-import { fetchLimitOffset } from "./services.js";
-
 $("#email").focus();
 $("#toggle-password").on("change", function () {
   // show password
@@ -10,7 +8,6 @@ $("#toggle-password").on("change", function () {
                           ></label>`;
     $(".toggle-password").html(showPassword);
     $("#password").attr("type", "text");
-    console.log("tset");
   } else {
     // hide password
     let hidePassword = `<label
@@ -21,21 +18,3 @@ $("#toggle-password").on("change", function () {
     $("#password").attr("type", "password");
   }
 });
-// 2. get user based on page
-const req = {
-  searchVal: "",
-  limitVal: 2,
-  offsetVal: 1,
-};
-getByPage(req);
-async function getByPage(req) {
-  const users = await fetchLimitOffset(req);
-  const status = users.status;
-  if (status) {
-    const response = users.response;
-    console.log(response);
-  }
-  if (!status) {
-    console.error(users.response);
-  }
-}

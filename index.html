@@ -15,7 +15,7 @@
       href="./node_modules/@fortawesome/fontawesome-free/css/all.min.css"
     />
     <!-- my css -->
-    <link rel="stylesheet" href="./src/client-side/css/login.css" />
+    <link rel="stylesheet" href="./src/client-side/css/pages/login.css" />
   </head>
   <body>
     <!-- Nav -->
@@ -60,54 +60,50 @@
         <div class="d-flex flex-column w-100">
           <h1>Login Here</h1>
           <h5>Welcome back you’ve been missed !</h5>
-          <form>
-            <!-- email -->
-            <div class="mb-3">
-              <label for="email" class="form-label custome-me"
-                >Email address</label
-              >
-              <input
-                type="email"
-                class="form-control custome-me"
-                id="email"
-                placeholder="input your email..."
-              />
-            </div>
-            <!-- password -->
-            <div class="mb-4">
-              <div
-                class="d-flex justify-content-between align-items-center w-100"
-              >
-                <label for="password" class="form-label custome-me"
-                  >Password</label
-                >
-                <div class="toggle-password">
-                  <label
-                    class="fa-solid fa-eye me-2 hide-password"
-                    for="toggle-password"
-                  ></label>
-                </div>
-                <input type="checkbox" id="toggle-password" class="d-none" />
-              </div>
-              <input
-                type="password"
-                class="form-control custome-me"
-                id="password"
-                placeholder="********"
-              />
-            </div>
-            <!-- submit -->
-            <button
-              type="submit"
-              class="btn w-100 text-white custome-me"
-              id="login"
+          <!-- email -->
+          <div class="mb-3">
+            <label for="email" class="form-label custome-me"
+              >Email address</label
             >
-              Submit
-            </button>
-          </form>
+            <input
+              type="email"
+              class="form-control custome-me"
+              id="email"
+              placeholder="input your email..."
+            />
+          </div>
+          <!-- password -->
+          <div class="mb-4">
+            <div
+              class="d-flex justify-content-between align-items-center w-100"
+            >
+              <label for="password" class="form-label custome-me"
+                >Password</label
+              >
+              <div class="toggle-password">
+                <label
+                  class="fa-solid fa-eye me-2 hide-password"
+                  for="toggle-password"
+                ></label>
+              </div>
+              <input type="checkbox" id="toggle-password" class="d-none" />
+            </div>
+            <input
+              type="password"
+              class="form-control custome-me"
+              id="password"
+              placeholder="********"
+            />
+          </div>
+          <!-- submit -->
+          <button id="login" class="btn w-100 text-white custome-me">
+            Submit
+          </button>
         </div>
       </div>
     </div>
+    <!-- requirement -->
+    <script src="./src/client-side/require/index.js"></script>
     <!-- import jquery -->
     <script>
       if (typeof module === "object") {
@@ -121,8 +117,6 @@
     </script>
     <!-- Impor JS Bootstrap -->
     <script src="./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- myscript -->
-    <script src="./src/client-side/require/index.js"></script>
     <script
       type="module"
       src="./src/client-side/js/navigation/login.js"

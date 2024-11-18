@@ -1,0 +1,124 @@
+.card-header.custome-color-me {
+  background-color: #0178bd;
+  color: white;
+  font-size: 25px;
+}
+.card-footer.custome-color-me {
+  background-color: #0178bd;
+  color: white;
+  font-size: 18px;
+}
+.card-footer:hover {
+  cursor: pointer;
+}
+button#order-done {
+  background-color: #0178bd;
+  color: white;
+}
+button#order-done:hover {
+  background-color: #065a8b;
+}
+input#order-payment {
+  border: none;
+  border-bottom: 2px solid transparent;
+  outline: none;
+  box-shadow: none;
+  transition: border-bottom-color 0.3s ease-in-out;
+}
+input#order-payment:focus {
+  box-shadow: none;
+  border-bottom-color: blue;
+}
+span#order-change-result {
+  border-radius: 4px;
+  position: absolute;
+}
+span#order-change-result:hover {
+  cursor: pointer;
+}
+
+input#sale-start-date {
+  outline: none;
+}
+input#sale-start-date:focus {
+  outline: #4caf50 solid 2px;
+  box-shadow: none;
+}
+input#sale-end-date {
+  outline: none;
+}
+input#sale-end-date:focus {
+  box-shadow: none;
+  outline: #4caf50 solid 2px;
+}
+input#sale-start-date-1 {
+  outline: none;
+}
+input#sale-start-date-1:focus {
+  outline: #4c75af solid 2px;
+  box-shadow: none;
+}
+input#sale-end-date-1 {
+  outline: none;
+}
+input#sale-end-date-1:focus {
+  box-shadow: none;
+  outline: #4c75af solid 2px;
+}
+div#sales-read-salesproductname:hover {
+  cursor: pointer;
+  text-wrap: wrap;
+}
+div#sales-read-salescustomername:hover {
+  cursor: pointer;
+  text-wrap: wrap;
+}
+div#sales-read-salespersonname:hover {
+  cursor: pointer;
+  text-wrap: wrap;
+}
+div#sales-read-rupiah:hover {
+  cursor: pointer;
+  text-wrap: wrap;
+}
+div#sales-read-rupiah1:hover {
+  cursor: pointer;
+  text-wrap: wrap;
+}
+div#sales-scroll-byme::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+div#sales-scroll-byme::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+div#sales-scroll-byme::-webkit-scrollbar-thumb {
+  background: #888;
+}
+div#sales-scroll-byme::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+div#sales-card-body {
+  transition: all 2s ease-in-out;
+}
+div#sales-card-body::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+div#sales-card-body::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+div#sales-card-body::-webkit-scrollbar-thumb {
+  background: #888;
+}
+div#sales-card-body::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+button.sales-active-page {
+  background-color: #273eec !important;
+  color: white !important;
+  border: 4px solid #99a4f9 !important;
+}
+span#sales-search {
+  cursor: pointer;
+}

@@ -1,0 +1,3 @@
+#dragWin {
+  -webkit-app-region: drag; /* Allow dragging the window */
+}

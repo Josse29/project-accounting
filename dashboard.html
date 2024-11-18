@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>dashboard</title>
+  </head>
+  <body>
+    <h1>Dashboard</h1>
+    <button id="btnHome">Home</button>
+    <button id="btnDashboard">Dashboard</button>
+    <button id="button1">test</button>
+    <script>
+      document.getElementById("btnHome").addEventListener("click", () => {
+        // ipcRenderer.send("navigate", "home");
+        window.electron.navigate("home");
+      });
+      document.getElementById("btnDashboard").addEventListener("click", () => {
+        // ipcRenderer.send("navigate", "dashboard");
+        window.electron.navigate("dashboard");
+      });
+    </script>
+  </body>
+</html>

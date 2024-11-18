@@ -1,0 +1,31 @@
+@import "./../components/top.css";
+@import "./../components/left-side.css";
+@import "./../components/body.css";
+@import "./../components/text.css";
+@import "./../components/tooltip-bottom.css";
+@import "./../components/tooltip-right.css";
+@import "./../components/drag.css";
+
+.container-custome-me .cash div.custome-me {
+  border-radius: 0px 28px 28px 0px;
+  border-left: 20px solid #14b8a6;
+  box-sizing: border-box;
+}
+.container-custome-me .cash i.custome-me {
+  color: #14b8a6;
+  font-size: 115px;
+}
+.container-custome-me .cash h1 {
+  font-size: 40px;
+}
+.container-custome-me .user div.custome-me {
+  border-radius: 0px 32px 32px 0px;
+  border-left: 20px solid #0891b2;
+}
+.container-custome-me .user i.custome-me {
+  color: #0891b2;
+  font-size: 115px;
+}
+.container-custome-me .user h1 {
+  font-size: 40px;
+}

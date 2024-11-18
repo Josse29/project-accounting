@@ -1,0 +1,29 @@
+@import "./../components/top.css";
+@import "./../components/body.css";
+@import "./../components/left-side.css";
+
+@import "./../components/tooltip-bottom.css";
+@import "./../components/tooltip-right.css";
+@import "./../components/text.css";
+
+@import "./../components/animation.css";
+@import "./../components/loading.css";
+
+@import "./../components/drag.css";
+
+@import "./../models/persediaan.css";
+@import "./../models/sales.css";
+
+.container-by-me {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 22px;
+  margin-bottom: 22px;
+}
+.border-l-custome-me {
+  border-left: 15px solid #0178bd;
+}
+
+td:hover {
+  text-wrap: wrap;
+}

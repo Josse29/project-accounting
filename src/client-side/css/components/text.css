@@ -1,0 +1,7 @@
+@font-face {
+  font-family: "poppins";
+  src: url("./../../third-party/Poppins-Regular.ttf");
+}
+* {
+  font-family: "poppins";
+}

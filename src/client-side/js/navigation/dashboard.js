@@ -1,57 +1,43 @@
-import {
-  sendIpcHideDash,
-  sendIpcLoadAbout,
-  sendIpcLoadInventory,
-  sendIpcLoadOrder,
-  sendIpcLoadTransaksi,
-  sendIpcLoadUser,
-} from "../utils/ipc.js";
-
 // top
-$("#restore-window")
-  .off("click")
-  .on("click", () => {
-    console.log("Restore window clicked");
-    ipcRenderer.send("restore-window:dashboard-page");
-  });
 $("#minimize-window")
   .off("click")
   .on("click", () => {
-    ipcRenderer.send("minimize-window:dashboard-page");
+    ipcRenderer.send("minimize-apps");
+  });
+$("#restore-window")
+  .off("click")
+  .on("click", () => {
+    ipcRenderer.send("restore-apps");
   });
 $("#close-window")
   .off("click")
   .on("click", () => {
-    ipcRenderer.send("close-window:dashboard-page");
+    ipcRenderer.send("logout-apps");
   });
+
 // side
 $("#orderWindow")
   .off("click")
   .on("click", () => {
-    sendIpcLoadOrder();
-    sendIpcHideDash();
+    ipcRenderer.send("navigate", "order");
   });
 $("#inventoryWindow")
   .off("click")
   .on("click", () => {
-    sendIpcLoadInventory();
-    sendIpcHideDash();
+    ipcRenderer.send("navigate", "inventory");
   });
 $("#transaksiWindow")
   .off("click")
   .on("click", () => {
-    sendIpcLoadTransaksi();
-    sendIpcHideDash();
+    ipcRenderer.send("navigate", "transaksi");
   });
 $("#usersWindow")
   .off("click")
   .on("click", () => {
-    sendIpcLoadUser();
-    sendIpcHideDash();
+    ipcRenderer.send("navigate", "users");
   });
 $("#aboutWindow")
   .off("click")
   .on("click", () => {
-    sendIpcLoadAbout();
-    sendIpcHideDash();
+    ipcRenderer.send("navigate", "about");
   });

@@ -43,3 +43,7 @@
 11/11/2024
 - refactoring export pdf all models 
 - reseacrh navigtion path
+==== resarch webpack ====
+11/18/2024 : 
+- refactoring navigation path
+- researc webpack hufttt
