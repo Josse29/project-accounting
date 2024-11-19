@@ -17,100 +17,11 @@
     <!-- my css -->
     <link rel="stylesheet" href="./../css/pages/dashboard.css" />
   </head>
-
   <body>
-    <div class="top-navigation">
-      <h2 class="ms-3">Accounting Software</h2>
-      <div class="d-flex gap-2">
-        <div class="d-flex me-4">
-          <i class="fa-solid fa-user custome-me"></i>
-          <h5>Josse Surya Pinem</h5>
-        </div>
-        <div class="d-flex gap-2">
-          <!-- minimize window -->
-          <i
-            id="minimize-window"
-            class="fa-solid fa-minus text-white custome-me tooltip-bottom-container"
-          >
-            <div class="tooltip-bottom-text fs-5 p-2">Minimize</div></i
-          >
-          <!-- restore-window -->
-          <i
-            id="restore-window"
-            class="fa-regular fa-window-restore custome-me tooltip-bottom-container"
-          >
-            <div class="tooltip-bottom-text fs-5 p-2">Restore</div></i
-          >
-          <!-- close-window -->
-          <i
-            class="fa-solid fa-right-from-bracket custome-me tooltip-bottom-container"
-            id="close-window"
-          >
-            <div class="tooltip-bottom-text fs-5 p-2">Close</div></i
-          >
-        </div>
-      </div>
-    </div>
-    <div class="side-navigation">
-      <div class="logo" id="dragWin">
-        <img src="./../images/import.png" alt="" />
-      </div>
-      <!-- links -->
-      <div class="text-white mt-5">
-        <!-- dashboard -->
-        <div class="text-center mb-5 custome-me tooltip-right-container">
-          <i class="fa-solid fa-house fs-3 custome-me-active">
-            <div class="tooltip-right-text fs-4 p-2 px-3" style="top: 32px">
-              Dashboard
-            </div>
-          </i>
-        </div>
-        <!-- order -->
-        <div
-          class="text-center mb-5 custome-me tooltip-right-container"
-          id="orderWindow"
-        >
-          <i class="fa-solid fa-cart-shopping fs-3">
-            <div class="tooltip-right-text fs-4 p-2 px-3">Order</div>
-          </i>
-        </div>
-        <!-- inventory -->
-        <div
-          class="text-center mb-5 custome-me tooltip-right-container"
-          id="inventoryWindow"
-        >
-          <i class="fa-solid fa-file-circle-plus fs-3">
-            <div class="tooltip-right-text fs-4 p-2 px-3">Inventory</div>
-          </i>
-        </div>
-        <!-- transaksi -->
-        <div
-          class="text-center mb-5 custome-me tooltip-right-container"
-          id="transaksiWindow"
-        >
-          <i class="fa-solid fa-chart-simple fs-3">
-            <div class="tooltip-right-text fs-4 p-2 px-3">Transaction</div>
-          </i>
-        </div>
-        <!-- users -->
-        <div
-          class="text-center mb-5 custome-me tooltip-right-container"
-          id="usersWindow"
-        >
-          <i class="fa-solid fa-users fs-3">
-            <div class="tooltip-right-text fs-4 p-2 px-3">User</div>
-          </i>
-        </div>
-        <!-- about -->
-        <div
-          class="text-center mb-5 custome-me tooltip-right-container"
-          id="aboutWindow"
-        >
-          <i class="fa-solid fa-city fs-3">
-            <div class="tooltip-right-text fs-4 p-2 px-3">About</div>
-          </i>
-        </div>
-      </div>
+    <!-- navigation -->
+    <div class="navigation-container">
+      <div class="top-navigation"></div>
+      <div class="side-navigation"></div>
     </div>
     <div class="container-custome-me">
       <div class="d-flex w-100 gap-4 mt-2">
@@ -157,6 +68,6 @@
     <script src="./../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <!-- myscript -->
     <script src="./../require/index.js"></script>
-    <script type="module" src="./../js/navigation/dashboard.js"></script>
+    <script type="module" src="./../js/navigation/index.js"></script>
   </body>
 </html>

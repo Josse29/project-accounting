@@ -9,16 +9,30 @@
     <h1>Dashboard</h1>
     <button id="btnHome">Home</button>
     <button id="btnDashboard">Dashboard</button>
-    <button id="button1">test</button>
+    <button id="saveButton">test</button>
     <script>
-      document.getElementById("btnHome").addEventListener("click", () => {
-        // ipcRenderer.send("navigate", "home");
-        window.electron.navigate("home");
+      document.addEventListener("DOMContentLoaded", async () => {
+        const response = await window.electronAPI.myDbSql();
+        console.log(response);
       });
-      document.getElementById("btnDashboard").addEventListener("click", () => {
-        // ipcRenderer.send("navigate", "dashboard");
-        window.electron.navigate("dashboard");
-      });
+      document
+        .getElementById("saveButton")
+        .addEventListener("click", async () => {
+          const options = {
+            title: "Save File",
+            defaultPath: "myFile.txt",
+            filters: [
+              { name: "Text Files", extensions: ["txt"] },
+              { name: "All Files", extensions: ["*"] },
+            ],
+          };
+          const result = await window.electronAPI.showSaveDialog(options);
+          if (!result.canceled) {
+            console.log(`File path: ${result.filePath}`);
+          } else {
+            console.log("User canceled the save dialog.");
+          }
+        });
     </script>
   </body>
 </html>

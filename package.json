@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "name": "3.pos-kasir-electron",
   "version": "1.0.0",
   "description": "",

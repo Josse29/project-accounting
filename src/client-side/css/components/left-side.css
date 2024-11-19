@@ -23,3 +23,6 @@
   border-radius: 12px;
   color: #009ef7;
 }
+.side-navigation i.custome-me-active div {
+  top: 32px;
+}

@@ -1,20 +1,20 @@
 $("#minimize-window")
   .off("click")
   .on("click", () => {
-    ipcRenderer.send("minimize-apps");
+    window.electronAPI.minimize();
   });
 $("#restore-window")
   .off("click")
   .on("click", () => {
-    ipcRenderer.send("restore-apps");
+    window.electronAPI.restore();
   });
 $("#close-window")
   .off("click")
   .on("click", () => {
-    ipcRenderer.send("quit-apps");
+    window.electronAPI.close();
   });
 $("button#login")
   .off("click")
   .on("click", () => {
-    ipcRenderer.send("navigate", "dashboard");
+    window.electronAPI.navigateTo("dashboard");
   });
