@@ -33,6 +33,7 @@ const supplierList1 = async (selected) => {
     } else {
       option += `<option disabled class="fst-italic text-center">Supplier Empty.....</option>`;
     }
+    return option;
   }
   if (!status) {
     console.error(response);
@@ -47,6 +48,7 @@ export const listSupplierRefProductCreate = async () => {
 // function to update when create list product ref categories
 export const listSupplierRefProductUpdate = async (selected) => {
   const option = await supplierList1(selected);
+  console.log(option);
   $("select#product-refsupplier-update").html(option);
 };
 // function to update html list when read persediaan

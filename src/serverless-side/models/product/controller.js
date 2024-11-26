@@ -1,4 +1,3 @@
-import db from "../../database/config.js";
 import {
   validateLoadImg,
   validatePrice,
@@ -42,68 +41,28 @@ export const createProduct = async (req) => {
     productSupplierId,
     imgBase64
   );
-  return new Promise((resolve, reject) => {
-    db.run(query, (err) => {
-      if (!err) {
-        const msg = `Product <b class='text-capitalize'>${productName}</b> has been added `;
-        resolve(msg);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const msg = `Product <b class='text-capitalize'>${productName}</b> has been added `;
+  const created = await window.electronAPI.sqliteApi.run(query, msg);
+  return created;
 };
 // 2.READ
-export const getProductPagination = (req) => {
+export const getProductPagination = async (req) => {
   const { searchVal, limitVal } = req;
   const query = queryTotalRowProducts(searchVal);
-  return new Promise((resolve, reject) => {
-    db.each(query, (err, res) => {
-      if (!err) {
-        let totalPage;
-        let totalRow = parseInt(res.TOTAL_ROW);
-        const isEven = totalRow % limitVal === 0;
-        if (isEven) {
-          totalPage = parseInt(totalRow / limitVal);
-        } else {
-          totalPage = parseInt(totalRow / limitVal) + 1;
-        }
-        resolve({ totalPage, totalRow });
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const totalPageRow = await window.electronAPI.sqliteApi.each(query, limitVal);
+  return totalPageRow;
 };
-export const getProduct = (req) => {
+export const getProduct = async (req) => {
   const { searchVal, limitVal, offsetVal } = req;
   const startOffset = (offsetVal - 1) * limitVal;
   const query = queryGetProducts(searchVal, limitVal, startOffset);
-  return new Promise((resolve, reject) => {
-    db.all(query, (err, res) => {
-      if (!err) {
-        resolve(res);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const products = await window.electronAPI.sqliteApi.all(query);
+  return products;
 };
-export const getProductList = (productSearch) => {
+export const getProductList = async (productSearch) => {
   const query = queryGetListProduct(productSearch);
-  return new Promise((resolve, reject) => {
-    db.all(query, (err, res) => {
-      if (!err) {
-        resolve(res);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const product = await window.electronAPI.sqliteApi.all(query);
+  return product;
 };
 // 3.UPDATE
 export const updateProduct = async (req) => {
@@ -136,58 +95,26 @@ export const updateProduct = async (req) => {
     imgBase64,
     productCancelImg
   );
-  console.log(query);
-  return new Promise((resolve, reject) => {
-    db.run(query, (err) => {
-      if (!err) {
-        const msg = `Product <b class='text-capitalize'>${productName}</b> has been updated`;
-        resolve(msg);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const msg = `Product <b class='text-capitalize'>${productName}</b> has been updated`;
+  const updated = await window.electronAPI.sqliteApi.run(query, msg);
+  return updated;
 };
 // 4.DELETE
-export const deleteProductId = (req) => {
+export const deleteProductId = async (req) => {
   const { productid, productName } = req;
-  return new Promise((resolve, reject) => {
-    db.run(queryDeleteProductId(productid), (err) => {
-      if (!err) {
-        const msg = `Product <b class='text-capitalize'>${productName}</b> has been deleted`;
-        resolve(msg);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const query = queryDeleteProductId(productid);
+  const msg = `Product <b class='text-capitalize'>${productName}</b> has been deleted`;
+  const updated = await window.electronAPI.sqliteApi.run(query, msg);
+  return updated;
 };
 // convert | PDF
-export const getProductReport = () => {
+export const getProductReport = async () => {
   const query = queryGetProductPDF();
-  return new Promise((resolve, reject) => {
-    db.all(query, (err, res) => {
-      if (!err) {
-        resolve(res);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const product = await window.electronAPI.sqliteApi.all(query);
+  return product;
 };
-export const getProductReport1 = () => {
+export const getProductReport1 = async () => {
   const query = queryGetProductCSV();
-  return new Promise((resolve, reject) => {
-    db.all(query, (err, res) => {
-      if (!err) {
-        resolve(res);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const product = await window.electronAPI.sqliteApi.all(query);
+  return product;
 };

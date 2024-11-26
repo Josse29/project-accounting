@@ -1,7 +1,7 @@
 import { app, BrowserWindow, dialog, ipcMain } from "electron";
 import path from "path";
 import sqlite3 from "sqlite3";
-import getCategory from "./category.js";
+import DbHandlers from "./src/serverless-side/database/config.js";
 
 let mainWindow;
 function createWindow() {
@@ -75,12 +75,4 @@ const dbPath = path.join(
   "myapps.db"
 );
 const db = new sqlite3.Database(dbPath);
-ipcMain.handle("db-apps", async () => {
-  try {
-    const categories = await getCategory(db); // Mendapatkan hasil query
-    return categories; // Mengembalikan hasil ke renderer
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    return []; // Kembalikan array kosong jika error
-  }
-});
+DbHandlers(ipcMain, db);

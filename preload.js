@@ -10,4 +10,10 @@ contextBridge.exposeInMainWorld("electronAPI", {
   minimize: () => ipcRenderer.send("minimize-apps"),
   restore: () => ipcRenderer.send("restore-apps"),
   getCurrentPage: () => ipcRenderer.invoke("get-current-page"),
+  sqliteApi: {
+    all: (...args) => ipcRenderer.invoke("db-all", ...args),
+    run: (...args) => ipcRenderer.invoke("db-run", ...args),
+    get: (...args) => ipcRenderer.invoke("db-get", ...args),
+    each: (...args) => ipcRenderer.invoke("db-each", ...args),
+  },
 });

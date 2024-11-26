@@ -1,4 +1,3 @@
-import db from "../../database/config.js";
 import {
   validateLoadImg,
   validateSupplierName,
@@ -21,69 +20,29 @@ export const createSupplier = async (req) => {
   const imgBase64 = await validateLoadImg(supplierImg);
   // 3.execute
   const query = queryInsertSupplier(supplierName, supplierInfo, imgBase64);
-  return new Promise((resolve, reject) => {
-    db.run(query, (err) => {
-      if (!err) {
-        const msg = `Supplier <b class='text-capitalize'>${supplierName}</b> has been added`;
-        resolve(msg);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const msg = `Supplier <b class='text-capitalize'>${supplierName}</b> has been added`;
+  const created = await window.electronAPI.sqliteApi.run(query, msg);
+  return created;
 };
 // 2.READ
-export const getSupplier = (req) => {
+export const getSupplier = async (req) => {
   const { searchVal, limitVal, offsetVal } = req;
   const startOffset = (offsetVal - 1) * limitVal;
   const query = queryGetSupplier(searchVal, limitVal, startOffset);
-  return new Promise((resolve, reject) => {
-    db.all(query, (err, res) => {
-      if (!err) {
-        resolve(res);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const suppliers = await window.electronAPI.sqliteApi.all(query);
+  return suppliers;
 };
-export const getSupplierInit = (req) => {
+export const getSupplierInit = async (req) => {
   const { searchVal, limitVal } = req;
   const query = queryTotalRowSupplier(searchVal);
-  return new Promise((resolve, reject) => {
-    db.each(query, (err, res) => {
-      if (!err) {
-        let totalPage;
-        let totalRow = parseInt(res.TOTAL_ROW);
-        const isEven = totalRow % limitVal === 0;
-        if (isEven) {
-          totalPage = totalRow / limitVal;
-        }
-        if (!isEven) {
-          totalPage = parseInt(totalRow / limitVal) + 1;
-        }
-        resolve({ totalRow, totalPage });
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const totalPageRow = await window.electronAPI.sqliteApi.each(query, limitVal);
+  return totalPageRow;
 };
-export const getSupplierList = (supplierSearch) => {
+export const getSupplierList = async (supplierSearch) => {
   const query = queryGetListSupplier(supplierSearch);
-  return new Promise((resolve, reject) => {
-    db.all(query, (err, res) => {
-      if (!err) {
-        resolve(res);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  console.log(query);
+  const suppliers = await window.electronAPI.sqliteApi.all(query);
+  return suppliers;
 };
 // 3.UPDATE
 export const updateSupplier = async (req) => {
@@ -105,31 +64,15 @@ export const updateSupplier = async (req) => {
     imgBase64,
     supplierCancelImg
   );
-  return new Promise((resolve, reject) => {
-    db.run(query, (err) => {
-      if (!err) {
-        const msg = `Supplier <b>${supplierName}</b> has been updated`;
-        resolve(msg);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const msg = `Supplier <b>${supplierName}</b> has been updated`;
+  const updated = await window.electronAPI.sqliteApi.run(query, msg);
+  return updated;
 };
 // 4.DELETE
-export const deleteSupplier = (req) => {
+export const deleteSupplier = async (req) => {
   const { supplierId, supplierName } = req;
   const query = queryDeleteSupplier(supplierId);
-  return new Promise((resolve, reject) => {
-    db.run(query, (err) => {
-      if (!err) {
-        const msg = `Supplier <b class= 'text-capitalize'>${supplierName}</b> has been deleted`;
-        resolve(msg);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const msg = `Supplier <b class= 'text-capitalize'>${supplierName}</b> has been deleted`;
+  const deleted = await window.electronAPI.sqliteApi.run(query, msg);
+  return deleted;
 };

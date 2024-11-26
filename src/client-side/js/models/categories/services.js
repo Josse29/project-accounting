@@ -32,8 +32,8 @@ export const getPagination = async (req) => {
       searchVal: req.searchVal,
       limitVal: req.limitVal,
     };
-    const totalPage = await getCategoryInit(payLoad);
-    return { status: true, response: totalPage };
+    const totalPageRow = await getCategoryInit(payLoad);
+    return { status: true, response: totalPageRow };
   } catch (error) {
     return { status: false, response: error };
   }
