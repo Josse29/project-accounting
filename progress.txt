@@ -47,3 +47,6 @@
 11/18/2024 : 
 - refactoring navigation path
 - researc webpack hufttt
+11/19-26/2024: 
+- research webpack hufttt
+- refactor db handlers
