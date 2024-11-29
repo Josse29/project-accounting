@@ -11,26 +11,26 @@ $("button#persediaan-date-search")
   .off("click")
   .on("click", async function () {
     // 1. request
-    const startDate = $("input#persediaan-start-date").val();
-    const endDate = $("input#persediaan-end-date").val();
+    const startDateVal = $("input#persediaan-start-date").val();
+    const endDateVal = $("input#persediaan-end-date").val();
     const req = {
-      startDate,
-      endDate,
+      startDateVal,
+      endDateVal,
     };
     // 2. validation date
     if (
-      startDate > endDate ||
-      (startDate !== "" && endDate === "") ||
-      (startDate === "" && endDate !== "") ||
-      (startDate === "" && endDate === "")
+      startDateVal > endDateVal ||
+      (startDateVal !== "" && endDateVal === "") ||
+      (startDateVal === "" && endDateVal !== "") ||
+      (startDateVal === "" && endDateVal === "")
     ) {
       return false;
     }
     animateFade("#persediaan-section");
     // 3. caption-selected
-    const startDateTxt = formatWaktuIndo(startDate);
-    const endDateTxt = formatWaktuIndo(endDate);
-    const rangeDateTxt = `All Product | ${startDateTxt} - ${endDateTxt} `;
+    const startDateValTxt = formatWaktuIndo(startDateVal);
+    const endDateValTxt = formatWaktuIndo(endDateVal);
+    const rangeDateTxt = `All Product | ${startDateValTxt} - ${endDateValTxt} `;
     // 4. sum rupiah
     const sumRp = await getSumPriceDate(req);
     const sumRpRes = sumRp.response;

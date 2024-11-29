@@ -40,7 +40,6 @@ export const getSupplierInit = async (req) => {
 };
 export const getSupplierList = async (supplierSearch) => {
   const query = queryGetListSupplier(supplierSearch);
-  console.log(query);
   const suppliers = await window.electronAPI.sqliteApi.all(query);
   return suppliers;
 };

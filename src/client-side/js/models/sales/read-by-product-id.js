@@ -23,8 +23,8 @@ $("select#sales-read-productid")
     const sumStatus = sum.status;
     const sumRes = sum.response;
     if (sumStatus) {
-      const rupiah = formatRupiah2(sumRes.rupiah);
-      const qty = sumRes.qty;
+      const rupiah = formatRupiah2(sumRes * priceSell);
+      const qty = sumRes;
       const summary = `<p class="fs-4 mb-1 fw-bold text-capitalize">${productName}</p>
                        <p class="fs-5 ms-1 mb-1">Price Sell : ${priceSellRp}</p>
                        <p class="fs-5 ms-1 mb-1">Qty : ${qty}</p>

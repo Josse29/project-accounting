@@ -1,4 +1,3 @@
-import db from "../../database/config.js";
 import { validateProductAdd, validateQty } from "../../utils/validation.js";
 import { createAccounting } from "../accounting/controller.js";
 import { createCash } from "../cash/controller.js";
@@ -17,7 +16,6 @@ import {
   queryGetPersediaanDateRpCategoryId,
   queryGetPersediaanDateRpSupplierId,
   queryGetPersediaanDateSUM,
-  queryGetPersediaanDateSumProduct,
   queryGetPersediaanDateSupplierId,
   queryGetPersediaanProductGroup,
   queryGetPersediaanProductGroup1,
@@ -132,46 +130,18 @@ export const createPersediaan1 = (request) => {
   });
 };
 // 2.READ
-export const getPersediaanPagination = (req) => {
+export const getPersediaanPagination = async (req) => {
   const { searchVal, limitVal } = req;
   const query = queryGetPersediaanTotalRow(searchVal);
-  return new Promise((resolve, reject) => {
-    db.each(query, (err, res) => {
-      if (!err) {
-        let totalRow = parseInt(res.TOTAL_ROW);
-        let totalPage;
-        const isEven = totalRow % limitVal === 0;
-        if (isEven) {
-          totalPage = parseInt(totalRow / limitVal);
-        } else {
-          totalPage = parseInt(totalRow / limitVal) + 1;
-        }
-        const rowAndPage = {
-          totalRow,
-          totalPage,
-        };
-        resolve(rowAndPage);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const totalPageRow = await window.electronAPI.sqliteApi.each(query, limitVal);
+  return totalPageRow;
 };
-export const getPersediaan = (req) => {
+export const getPersediaan = async (req) => {
   const { searchVal, limitVal, offsetVal } = req;
   const offsetStartVal = (offsetVal - 1) * limitVal;
   const query = queryGetPersediaan(searchVal, limitVal, offsetStartVal);
-  return new Promise((resolve, reject) => {
-    db.all(query, (err, res) => {
-      if (!err) {
-        resolve(res);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const persediaan = await window.electronAPI.sqliteApi.all(query);
+  return persediaan;
 };
 export const getPersediaanQtyValidate = (req) => {
   const { valProductName, valPersediaanProductId, valPersediaanQty } = req;
@@ -231,19 +201,11 @@ export const getPersediaanQtyValidate = (req) => {
     });
   });
 };
-export const getPersediaanSumQty = (valPersediaanProductId) => {
+export const getPersediaanSumQty = async (valPersediaanProductId) => {
   const query = queryGetPersediaanQty(valPersediaanProductId);
-  return new Promise((resolve, reject) => {
-    db.each(query, (err, res) => {
-      if (!err) {
-        const totalQty = res.TotalQty ? res.TotalQty : 0;
-        resolve(totalQty);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const sumQty = await window.electronAPI.sqliteApi.each1(query);
+  const resSumQty = sumQty.TotalQty ? sumQty.TotalQty : 0;
+  return resSumQty;
 };
 export const getPersediaanSumQtyDate = (req) => {
   const { startDateVal, endDateVal } = req;
@@ -261,87 +223,39 @@ export const getPersediaanSumQtyDate = (req) => {
     });
   });
 };
-export const getPersediaanSumPrice = () => {
+export const getPersediaanSumPrice = async () => {
   const query = queryGetPersediaanRpSum();
-  return new Promise((resolve, reject) => {
-    db.each(query, (err, res) => {
-      if (!err) {
-        const response = res.TotalRp;
-        const totalRp = response ? response : 0;
-        resolve(totalRp);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const sumRp = await window.electronAPI.sqliteApi.each1(query);
+  const resSumRp = sumRp.TotalRp ? sumRp.TotalRp : 0;
+  return resSumRp;
 };
-export const getPersediaanSumPriceCategoryId = (valPersediaanCategoryId) => {
+export const getPersediaanSumPriceCategoryId = async (
+  valPersediaanCategoryId
+) => {
   const query = queryGetPersediaanRpSumCategoryId(valPersediaanCategoryId);
-  return new Promise((resolve, reject) => {
-    db.each(query, (err, res) => {
-      if (!err) {
-        const response = res.TotalRp;
-        const totalRp = response ? response : 0;
-        resolve(totalRp);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const sumRp = await window.electronAPI.sqliteApi.each1(query);
+  const resSumRp = sumRp.TotalRp ? sumRp.TotalRp : 0;
+  return resSumRp;
 };
-export const getPersediaanProductId = (valPersediaanProductId) => {
+export const getPersediaanProductId = async (valPersediaanProductId) => {
   const query = queryGetPersediaanProductId(valPersediaanProductId);
-  return new Promise((resolve, reject) => {
-    db.all(query, (err, res) => {
-      if (!err) {
-        resolve(res);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const persediaanProduct = await window.electronAPI.sqliteApi.all(query);
+  return persediaanProduct;
 };
-export const getPersediaanCategoryId = (valPersediaanCategoryId) => {
+export const getPersediaanCategoryId = async (valPersediaanCategoryId) => {
   const query = queryGetPersediaanCategoryId(valPersediaanCategoryId);
-  return new Promise((resolve, reject) => {
-    db.all(query, (err, res) => {
-      if (!err) {
-        resolve(res);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const persediaanCategory = await window.electronAPI.sqliteApi.all(query);
+  return persediaanCategory;
 };
-export const getPersediaanSupplierId = (valSupplierId) => {
+export const getPersediaanSupplierId = async (valSupplierId) => {
   const query = queryGetPersediaanSupplierId(valSupplierId);
-  return new Promise((resolve, reject) => {
-    db.all(query, (err, res) => {
-      if (!err) {
-        resolve(res);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const persediaanSupplier = await window.electronAPI.sqliteApi.all(query);
+  return persediaanSupplier;
 };
-export const getPersediaanProductId1 = (valPersediaanProductId) => {
+export const getPersediaanProductId1 = async (valPersediaanProductId) => {
   const query = queryGetPersediaanProductId2(valPersediaanProductId);
-  return new Promise((resolve, reject) => {
-    db.all(query, (err, res) => {
-      if (!err) {
-        resolve(res);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const persediaanProduct = await window.electronAPI.sqliteApi.all(query);
+  return persediaanProduct;
 };
 export const getPersediaanReport1 = (req) => {
   const { startDateVal, endDateVal } = req;
@@ -400,185 +314,82 @@ export const getPersediaanReport = (req) => {
     });
   });
 };
-export const getPersediaanDate = (req) => {
-  const { startDate, endDate } = req;
-  const query = queryGetPersediaanDate(startDate, endDate);
-  return new Promise((resolve, reject) => {
-    db.all(query, (err, res) => {
-      if (!err) {
-        resolve(res);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+export const getPersediaanDate = async (req) => {
+  const { startDateVal, endDateVal } = req;
+  const query = queryGetPersediaanDate(startDateVal, endDateVal);
+  const persediaanByDate = await window.electronAPI.sqliteApi.all(query);
+  return persediaanByDate;
 };
-export const getPersediaanSumPriceDate = (req) => {
+export const getPersediaanSumPriceDate = async (req) => {
   const { startDateVal, endDateVal } = req;
   const query = queryGetPersediaanDateSUM(startDateVal, endDateVal);
-  return new Promise((resolve, reject) => {
-    db.each(query, (err, res) => {
-      if (!err) {
-        const response = res.TotalRp;
-        const totalRp = response ? response : 0;
-        resolve(totalRp);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const sumRp = await window.electronAPI.sqliteApi.each1(query);
+  const resSumRp = sumRp.TotalRp ? sumRp.TotalRp : 0;
+  return resSumRp;
 };
-export const getPersediaanSumQtyDateProductId = (req) => {
+export const getPersediaanSumQtyDateProductId = async (req) => {
   const { startDateVal, endDateVal, productId } = req;
   const query = queryGetPersediaanDateQtyProductId(
     startDateVal,
     endDateVal,
     productId
   );
-  return new Promise((resolve, reject) => {
-    db.each(query, (err, res) => {
-      if (!err) {
-        const response = res.TotalQty;
-        const totalQty = response ? response : 0;
-        resolve(totalQty);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const sumQty = await window.electronAPI.sqliteApi.each1(query);
+  const resSumQty = sumQty.TotalQty ? sumQty.TotalQty : 0;
+  return resSumQty;
 };
-export const getPersediaanDateProductId = (req) => {
+export const getPersediaanDateProductId = async (req) => {
   const { startDateVal, endDateVal, productId } = req;
   const query = queryGetPersediaanDateProductId(
     startDateVal,
     endDateVal,
     productId
   );
-  return new Promise((resolve, reject) => {
-    db.all(query, (err, res) => {
-      if (!err) {
-        resolve(res);
-      }
-      if (err) {
-        reject(res);
-      }
-    });
-  });
+  const persediaanByDate = await window.electronAPI.sqliteApi.all(query);
+  return persediaanByDate;
 };
-export const getPersediaanDateSumProduct = (req) => {
-  const { startDateVal, endDateVal, productId } = req;
-  const query = queryGetPersediaanDateSumProduct(
-    startDateVal,
-    endDateVal,
-    productId
-  );
-  return new Promise((resolve, reject) => {
-    db.each(query, (err, res) => {
-      if (!err) {
-        let totalRp = ``;
-        if (res.TotalRp !== null) {
-          totalRp = parseFloat(res.TotalRp);
-        }
-        if (res.TotalRp === null) {
-          totalRp = 0;
-        }
-        resolve(totalRp);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
-};
-export const getPersediaanDateSupplierId = (req) => {
+
+export const getPersediaanDateSupplierId = async (req) => {
   const { startDateVal, endDateVal, supplierId } = req;
   const query = queryGetPersediaanDateSupplierId(
     startDateVal,
     endDateVal,
     supplierId
   );
-  return new Promise((resolve, reject) => {
-    db.all(query, (err, res) => {
-      if (!err) {
-        resolve(res);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const persediaanByDate = await window.electronAPI.sqliteApi.all(query);
+  return persediaanByDate;
 };
-export const getPersediaanSumPriceDateSupplierId = (req) => {
+export const getPersediaanSumPriceDateSupplierId = async (req) => {
   const { startDateVal, endDateVal, supplierId } = req;
   const query = queryGetPersediaanDateRpSupplierId(
     startDateVal,
     endDateVal,
     supplierId
   );
-  return new Promise((resolve, reject) => {
-    db.each(query, (err, res) => {
-      if (!err) {
-        let totalRp = ``;
-        if (res.TotalRp !== null) {
-          totalRp = parseFloat(res.TotalRp);
-        }
-        if (res.TotalRp === null) {
-          totalRp = 0;
-        }
-        resolve(totalRp);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const sumRp = await window.electronAPI.sqliteApi.each1(query);
+  const resSumRp = sumRp.TotalRp ? sumRp.TotalRp : 0;
+  return resSumRp;
 };
-export const getPersediaanDateCategoryId = (req) => {
+export const getPersediaanDateCategoryId = async (req) => {
   const { startDateVal, endDateVal, categoryId } = req;
   const query = queryGetPersediaanDateCategoryId(
     startDateVal,
     endDateVal,
     categoryId
   );
-  return new Promise((resolve, reject) => {
-    db.all(query, (err, res) => {
-      if (!err) {
-        resolve(res);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const persediaanByDate = await window.electronAPI.sqliteApi.all(query);
+  return persediaanByDate;
 };
-export const getPersediaanSumPriceDateCategoryId = (req) => {
+export const getPersediaanSumPriceDateCategoryId = async (req) => {
   const { startDateVal, endDateVal, categoryId } = req;
   const query = queryGetPersediaanDateRpCategoryId(
     startDateVal,
     endDateVal,
     categoryId
   );
-  return new Promise((resolve, reject) => {
-    db.each(query, (err, res) => {
-      if (!err) {
-        const result = res.TotalRp !== null;
-        let totalRp = ``;
-        if (result) {
-          totalRp = parseFloat(res.TotalRp);
-        }
-        if (!result) {
-          totalRp = 0;
-        }
-        resolve(totalRp);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const sumRp = await window.electronAPI.sqliteApi.each1(query);
+  const resSumRp = sumRp.TotalRp ? sumRp.TotalRp : 0;
+  return resSumRp;
 };
 export const getPersediaanGroupCategory = (req) => {
   const { startDateVal, endDateVal } = req;
@@ -610,20 +421,11 @@ export const getPersediaanSumPriceSupplier = (req) => {
     });
   });
 };
-export const getPersediaanSumPriceSupplierId = (supplierId) => {
+export const getPersediaanSumPriceSupplierId = async (supplierId) => {
   const query = queryGetPersediaanRpSupplier(supplierId);
-  return new Promise((resolve, reject) => {
-    db.each(query, (err, res) => {
-      if (!err) {
-        const response = res.TotalRp;
-        const totalRp = response ? response : 0;
-        resolve(totalRp);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const sumRp = await window.electronAPI.sqliteApi.each1(query);
+  const resSumRp = sumRp.TotalRp ? sumRp.TotalRp : 0;
+  return resSumRp;
 };
 export const getPersediaanSumPriceCategory = (req) => {
   const { startDateVal, endDateVal } = req;
@@ -647,28 +449,13 @@ export const getPersediaanSumPriceCategory = (req) => {
   });
 };
 // references order
-export const getPersediaanPagination1 = (req) => {
+export const getPersediaanPagination1 = async (req) => {
   const { searchVal, limitVal } = req;
   const query = queryGetPersediaanTotalRow1(searchVal);
-  return new Promise((resolve, reject) => {
-    db.each(query, (err, res) => {
-      if (!err) {
-        let totalPage;
-        const totalRow = parseInt(res.TotalRow);
-        if (totalRow % limitVal === 0) {
-          totalPage = parseInt(totalRow / limitVal);
-        } else {
-          totalPage = parseInt(totalRow / limitVal) + 1;
-        }
-        resolve({ totalPage, totalRow });
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const totalPageRow = await window.electronAPI.sqliteApi.each(query, limitVal);
+  return totalPageRow;
 };
-export const getPersediaanGroupProduct = (req) => {
+export const getPersediaanGroupProduct = async (req) => {
   const { searchVal, limitVal, offsetVal } = req;
   const startOffsetVal = parseInt((offsetVal - 1) * limitVal);
   const query = queryGetPersediaanProductGroup1(
@@ -676,16 +463,8 @@ export const getPersediaanGroupProduct = (req) => {
     limitVal,
     startOffsetVal
   );
-  return new Promise((resolve, reject) => {
-    db.all(query, (err, res) => {
-      if (!err) {
-        resolve(res);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const persedianProductGroup = await window.electronAPI.sqliteApi.all(query);
+  return persedianProductGroup;
 };
 // 3.UPDATE
 export const updatePersediaan = async (req) => {

@@ -117,42 +117,18 @@ export const createSale = async (req) => {
   });
 };
 // read
-export const getSale = (req) => {
+export const getSale = async (req) => {
   const { searchVal, limitVal, offsetVal } = req;
   const startOffsetVal = parseInt(parseInt(offsetVal - 1) * parseInt(limitVal));
   const query = queryGetSales(searchVal, limitVal, startOffsetVal);
-  return new Promise((resolve, reject) => {
-    db.all(query, (err, res) => {
-      if (!err) {
-        resolve(res);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const sales = await window.electronAPI.sqliteApi.all(query);
+  return sales;
 };
-export const getSaleRowPage = (req) => {
+export const getSaleRowPage = async (req) => {
   const { searchVal, limitVal } = req;
   const query = queryGetSalesRowPage(searchVal);
-  return new Promise((resolve, reject) => {
-    db.each(query, (err, result) => {
-      if (!err) {
-        const totalRow = parseInt(result.TOTAL_ROW);
-        let totalPage = ``;
-        if (totalRow % limitVal === 0) {
-          totalPage = parseInt(totalRow / limitVal);
-        }
-        if (totalRow % limitVal !== 0) {
-          totalPage = parseInt(totalRow / limitVal) + 1;
-        }
-        resolve({ totalRow, totalPage });
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const totalPageRow = await window.electronAPI.sqliteApi.each(query, limitVal);
+  return totalPageRow;
 };
 export const getSaleReport = (req) => {
   const { startDateVal, endDateVal } = req;
@@ -168,20 +144,11 @@ export const getSaleReport = (req) => {
     });
   });
 };
-export const getSaleSum = () => {
+export const getSaleSum = async () => {
   const query = queryGetSalesSum();
-  return new Promise((resolve, reject) => {
-    db.each(query, (err, result) => {
-      if (!err) {
-        const response = result.Total_Rp;
-        const totalRp = response ? response : 0;
-        resolve(totalRp);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const sumRp = await window.electronAPI.sqliteApi.each1(query);
+  const resSumRp = sumRp.Total_Rp ? sumRp.Total_Rp : 0;
+  return resSumRp;
 };
 export const getSaleGroupPerson = (req) => {
   const { startDateVal, endDateVal } = req;
@@ -200,7 +167,6 @@ export const getSaleGroupPerson = (req) => {
 export const getSaleGroupCustomer = (req) => {
   const { startDateVal, endDateVal } = req;
   const query = queryGetGroupCustomer(startDateVal, endDateVal);
-  console.log(query);
   return new Promise((resolve, reject) => {
     db.all(query, (err, res) => {
       if (!err) {
@@ -227,37 +193,16 @@ export const getSaleGroupProduct = (req) => {
   });
 };
 // product
-export const getSaleSumProductId = (req) => {
+export const getSaleSumProductId = async (req) => {
   const query = queryGetSalesSumProductId(req);
-  return new Promise((resolve, reject) => {
-    db.each(query, (err, rows) => {
-      if (!err) {
-        // total rp
-        const result1 = rows.Total_Rp;
-        const rupiah = result1 ? result1 : 0;
-        // total qty
-        const result2 = rows.Total_Qty;
-        const qty = result2 ? result2 : 0;
-        resolve({ rupiah, qty });
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const sumQty = await window.electronAPI.sqliteApi.each1(query);
+  const resSumQty = sumQty.Total_Qty ? sumQty.Total_Qty : 0;
+  return resSumQty;
 };
-export const getSaleProductId = (req) => {
+export const getSaleProductId = async (req) => {
   const query = queryGetSalesProductId(req);
-  return new Promise((resolve, reject) => {
-    db.all(query, (err, rows) => {
-      if (!err) {
-        resolve(rows);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const saleProductId = await window.electronAPI.sqliteApi.all(query);
+  return saleProductId;
 };
 // person
 export const getSalePersonId = (req) => {

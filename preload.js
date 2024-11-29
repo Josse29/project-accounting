@@ -15,5 +15,6 @@ contextBridge.exposeInMainWorld("electronAPI", {
     run: (...args) => ipcRenderer.invoke("db-run", ...args),
     get: (...args) => ipcRenderer.invoke("db-get", ...args),
     each: (...args) => ipcRenderer.invoke("db-each", ...args),
+    each1: (...args) => ipcRenderer.invoke("db-each-1", ...args),
   },
 });

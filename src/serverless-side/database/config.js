@@ -27,7 +27,20 @@ const DbHandlers = (ipcMain, db) => {
           } else {
             totalPage = parseInt(totalRow / limitVal) + 1;
           }
+          console.log(res);
           resolve({ totalPage, totalRow });
+        }
+        if (err) {
+          reject(err);
+        }
+      });
+    });
+  });
+  ipcMain.handle("db-each-1", async (event, query) => {
+    return new Promise((resolve, reject) => {
+      db.each(query, (err, res) => {
+        if (!err) {
+          resolve(res);
         }
         if (err) {
           reject(err);

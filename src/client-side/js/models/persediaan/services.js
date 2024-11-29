@@ -207,8 +207,8 @@ export const getSumPriceDate = async (req) => {
 export const getByDate = async (req) => {
   try {
     const payLoad = {
-      startDate: req.startDate,
-      endDate: req.endDate,
+      startDateVal: req.startDateVal,
+      endDateVal: req.endDateVal,
     };
     const stock = await getPersediaanDate(payLoad);
     return { status: true, response: stock };

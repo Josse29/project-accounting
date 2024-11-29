@@ -100,31 +100,15 @@ export const getUserPageRow = (req) => {
     });
   });
 };
-export const getUserCustomer = () => {
+export const getUserCustomer = async () => {
   const query = queryGetCustomer();
-  return new Promise((resolve, reject) => {
-    db.all(query, (err, res) => {
-      if (!err) {
-        resolve(res);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const userCustomer = await window.electronAPI.sqliteApi.all(query);
+  return userCustomer;
 };
-export const getUserSale = () => {
+export const getUserSale = async () => {
   const query = queryGetSales();
-  return new Promise((resolve, reject) => {
-    db.all(query, (err, res) => {
-      if (!err) {
-        resolve(res);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const userSale = await window.electronAPI.sqliteApi.all(query);
+  return userSale;
 };
 export const updateUser = async (req) => {
   const {

@@ -155,7 +155,6 @@ export const queryGetSalesProductId = (productIdVal) => {
 
 export const queryGetSalesSumProductId = (productIdVal) => {
   let query = `SELECT 
-               SUM(SalesProductRp) AS Total_Rp,
                SUM(SalesProductQty) AS Total_Qty
                FROM Sales `;
   query += `WHERE SalesProductId = ${productIdVal}`;

@@ -50,3 +50,5 @@
 11/19-26/2024: 
 - research webpack hufttt
 - refactor db handlers
+11/29/2024 : 
+- refactor db handlers part 2 huffffrf

@@ -524,26 +524,12 @@ export const queryGetPersediaanSupplierSum = (startDateVal, endDateVal) => {
 };
 export const queryGetPersediaanRpSupplier = (supplierIdVal) => {
   const query = `SELECT
-                   SUM(Persediaan.PersediaanRp) AS TotalRp
-                   FROM Persediaan
-                   LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
-                   LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId
-                   WHERE Supplier.SupplierId IS NOT NULL 
-                         AND Supplier.SupplierId = ${supplierIdVal}`;
-  return query;
-};
-export const queryGetPersediaanDateSumProduct = (
-  startDate,
-  endDate,
-  valProductId
-) => {
-  let query = `SELECT 
                  SUM(Persediaan.PersediaanRp) AS TotalRp
-                 FROM Persediaan `;
-  //  with valstartDate - endDate
-  query += `WHERE Persediaan.PersediaanDDMY BETWEEN  '${startDate}' AND '${endDate}' `;
-  // with product id
-  query += `AND Persediaan.PersediaanProductId = ${valProductId}`;
+                 FROM Persediaan
+                 LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
+                 LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId
+                 WHERE Supplier.SupplierId IS NOT NULL 
+                       AND Supplier.SupplierId = ${supplierIdVal}`;
   return query;
 };
 export const queryGetPersediaanDateSUM = (startDate, endDate) => {
@@ -560,7 +546,7 @@ export const queryGetPersediaanDateSUM = (startDate, endDate) => {
 // references order and cart
 export const queryGetPersediaanTotalRow1 = (searchVal) => {
   let query = `SELECT
-               COUNT(*) AS TotalRow 
+               COUNT(*) AS TOTAL_ROW 
                FROM `;
   // subquery
   query += `(
