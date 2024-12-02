@@ -188,8 +188,8 @@ export const queryGetSalesPersonId = (personIdVal) => {
 };
 export const queryGetSalesSumPersonId = (personIdVal) => {
   let query = `SELECT 
-                 SUM(SalesProductRp) AS Total_Rp
-                 FROM Sales `;
+               SUM(SalesProductRp) AS Total_Rp
+               FROM Sales `;
   query += `WHERE SalesPersonId = ${personIdVal}`;
   return query;
 };
@@ -295,9 +295,8 @@ export const queryGetSalesSumDateProductId = (
   selectedProductId
 ) => {
   let query = `SELECT 
-                 SUM(Sales.SalesProductRp) AS Total_Rp,
-                 SUM(Sales.SalesProductQty) AS Total_Qty
-                 FROM Sales `;
+               SUM(Sales.SalesProductQty) AS Total_Qty
+               FROM Sales `;
   query += `LEFT JOIN Product ON Sales.SalesProductId = Product.ProductId `;
   query += `WHERE Sales.SalesYMD BETWEEN '${startDateVal}' AND '${endDateVal}' 
               AND Product.ProductId = ${selectedProductId}`;

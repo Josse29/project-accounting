@@ -14,7 +14,6 @@ const handleBounce = debounce(() => {
     limitVal,
     offsetVal,
   };
-  console.log(req);
   getAll(req);
 }, 1000);
 

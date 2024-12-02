@@ -1,7 +1,23 @@
 import { app, BrowserWindow, dialog, ipcMain } from "electron";
+import fs from "fs";
+import convertCSV from "./src/client-side/js/utils/convertcsv.js";
 import path from "path";
 import sqlite3 from "sqlite3";
 import DbHandlers from "./src/serverless-side/database/config.js";
+
+// db
+const dbPath = path.join(
+  app.getAppPath(),
+  "src",
+  "serverless-side",
+  "database",
+  "myapps.db"
+);
+const db = new sqlite3.Database(dbPath);
+DbHandlers(ipcMain, db);
+
+// export-csv
+convertCSV(ipcMain, dialog, fs, path, app);
 
 let mainWindow;
 function createWindow() {
@@ -10,6 +26,7 @@ function createWindow() {
     height: 850,
     webPreferences: {
       preload: path.join(app.getAppPath(), "preload.js"),
+      contextIsolation: true,
     },
     frame: false,
   });
@@ -52,8 +69,6 @@ ipcMain.on("navigate", (event, page) => {
     path.join(app.getAppPath(), "src", "client-side", "pages", `${page}.html`)
   );
 });
-// get currentPage
-ipcMain.handle("get-current-page", () => currentPage);
 // minimze
 ipcMain.on("minimize-apps", () => {
   mainWindow.minimize();
@@ -66,13 +81,3 @@ ipcMain.on("restore-apps", () => {
     mainWindow.maximize();
   }
 });
-// db
-const dbPath = path.join(
-  app.getAppPath(),
-  "src",
-  "serverless-side",
-  "database",
-  "myapps.db"
-);
-const db = new sqlite3.Database(dbPath);
-DbHandlers(ipcMain, db);

@@ -22,7 +22,6 @@ export const getAll = async (data) => {
           limitVal: parseInt($("select#cash-read-limit").val()),
           offsetVal: 1,
         };
-  console.log(req);
   const { status, response } = await getPagination(req);
   if (status) {
     const { totalPage, totalRow } = response;

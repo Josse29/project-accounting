@@ -50,3 +50,15 @@ const convertpdf1 = () => {
 };
 
 module.exports = convertPdf;
+import { jsPDF } from "jspdf";
+import "jspdf-autotable"; // Memasukkan plugin autoTable untuk jsPDF
+document.getElementById("convert-to-pdf").addEventListener("click", () => {
+  // Mengambil elemen tabel
+  const table = document.getElementById("data-table");
+  // Membuat objek jsPDF
+  const doc = new jsPDF();
+  // Menambahkan tabel dari DOM ke PDF
+  doc.autoTable({ html: table });
+  // Menyimpan PDF ke file
+  doc.save("table-data.pdf");
+});

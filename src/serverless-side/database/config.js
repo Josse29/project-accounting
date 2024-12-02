@@ -27,7 +27,6 @@ const DbHandlers = (ipcMain, db) => {
           } else {
             totalPage = parseInt(totalRow / limitVal) + 1;
           }
-          console.log(res);
           resolve({ totalPage, totalRow });
         }
         if (err) {

@@ -1,5 +1,6 @@
 $(async () => {
-  const currentPage = await window.electronAPI.getCurrentPage();
+  // const currentPage = await window.electronAPI.getCurrentPage();
+  const currentPage = document.title;
   const ui = `
         <div class="logo" id="dragWin">
           <img src="./../images/import.png" alt="" />
@@ -12,7 +13,7 @@ $(async () => {
             onClick='window.electronAPI.navigateTo("dashboard")'
           >
             <i class="fa-solid fa-house fs-3 ${
-              currentPage === "dashboard" && "custome-me-active"
+              currentPage === "Dashboard" && "custome-me-active"
             }">
               <div class="tooltip-right-text fs-4 p-2 px-3">Dashboard</div>
             </i>
@@ -23,7 +24,7 @@ $(async () => {
             onClick='window.electronAPI.navigateTo("order")'
           >
             <i class="fa-solid fa-utensils fs-3 ${
-              currentPage === "order" && "custome-me-active"
+              currentPage === "Order" && "custome-me-active"
             }">
               <div class="tooltip-right-text fs-4 p-2 px-3">Order</div>
             </i>
@@ -34,7 +35,7 @@ $(async () => {
             onClick='window.electronAPI.navigateTo("inventory")'
           >
             <i class="fa-solid fa-file-circle-plus fs-3 ${
-              currentPage === "inventory" && "custome-me-active"
+              currentPage === "Inventory" && "custome-me-active"
             }">
               <div class="tooltip-right-text fs-4 p-2 px-3">Inventory</div>
             </i>
@@ -45,7 +46,7 @@ $(async () => {
             onClick='window.electronAPI.navigateTo("transaksi")'
           >
             <i class="fa-solid fa-chart-simple fs-3 ${
-              currentPage === "transaksi" && "custome-me-active"
+              currentPage === "Transaksi" && "custome-me-active"
             }">
               <div class="tooltip-right-text fs-4 p-2 px-3">Transaction</div>
             </i>
@@ -55,7 +56,7 @@ $(async () => {
             class="text-center mb-5 custome-me tooltip-right-container"
             onClick='window.electronAPI.navigateTo("users")'>
             <i class="fa-solid fa-users fs-3 ${
-              currentPage === "users" && "custome-me-active"
+              currentPage === "Users" && "custome-me-active"
             }">
               <div class="tooltip-right-text fs-4 p-2 px-3">Users</div>
             </i>
@@ -65,7 +66,7 @@ $(async () => {
             class="text-center mb-5 custome-me tooltip-right-container"
             onClick='window.electronAPI.navigateTo("about-us")'>
             <i class="fa-solid fa-city fs-3 ${
-              currentPage === "about-us" && "custome-me-active"
+              currentPage === "About" && "custome-me-active"
             }">
               <div class="tooltip-right-text fs-4 p-2 px-3">About</div>
             </i>

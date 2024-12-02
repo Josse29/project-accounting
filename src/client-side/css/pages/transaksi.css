@@ -5,6 +5,7 @@
 @import "./../components/tooltip-bottom.css";
 @import "./../components/tooltip-right.css";
 @import "./../components/drag.css";
+@import "./../components/animation.css";
 
 @import "./../models/cash.css";
 @import "./../models/accounting.css";

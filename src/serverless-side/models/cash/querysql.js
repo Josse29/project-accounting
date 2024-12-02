@@ -15,8 +15,8 @@ export const queryInsertCash = (
 };
 // READ
 export const queryReadInitCash = (searchVal) => {
-  let query = `SELECT COUNT(*) AS Total_Row
-                 FROM Cash `;
+  let query = `SELECT COUNT(*) AS TOTAL_ROW
+               FROM Cash `;
   if (searchVal !== "") {
     query += `WHERE Cash.CashName LIKE '%${searchVal}%' `;
   }

@@ -68,11 +68,12 @@ $("button#read-sales-date")
     // references-callback-ui
     // 1.limit-search
     $("div#sales-limit-search").addClass("d-none");
-    // 2.select-adjacent without date and date
-    $("div#sales-select").addClass("d-none");
+    // 2.select-adjacent without
     $("select#sales-read-productid-date").val("Choose One Of Products");
     $("select#sales-read-personid-date").val("Choose One Of Sales");
     $("select#sales-read-customerid-date").val("Choose One Of Customers");
-    // 3.pagination
+    // 3.date and date
+    $("div#sales-select").addClass("d-none");
+    // 4.pagination
     $("div#sales-page-container").addClass("d-none");
   });

@@ -13,7 +13,9 @@ export const queryRegister = (
   return query;
 };
 export const queryGetTotal = (searchVal) => {
-  let query = `SELECT COUNT(*) AS Total_Row FROM User `;
+  let query = `SELECT 
+               COUNT(*) AS TOTAL_ROW 
+               FROM User `;
   if (searchVal !== "") {
     query += `WHERE User.UserFullname LIKE '%${searchVal}%' ESCAPE '!' OR 
                     User.UserEmail LIKE '%${searchVal}%' ESCAPE '!' OR  

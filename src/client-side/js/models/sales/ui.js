@@ -88,6 +88,14 @@ export const uiSuccess = (res) => {
   </div>`;
   $("div#sales-success-container").html(alert);
 };
+export const uiFailed = (res) => {
+  const alert = `
+  <div class="alert alert-danger alert-dismissible fade show text-start" role="alert">
+    <strong class="text-capitalize">${res}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>`;
+  $("div#modal-sales-convert-csv #failed").html(alert);
+};
 export const uiReset = () => {
   // reset search
   $("input#sales-read-search").val("");

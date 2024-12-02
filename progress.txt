@@ -52,3 +52,7 @@
 - refactor db handlers
 11/29/2024 : 
 - refactor db handlers part 2 huffffrf
+12/2/2024 : 
+- refactor db handlers part 3 huffffrf
+- refactor csv handlers and research pdf huffffrf
+- research webpack huftttt more and more lastt

@@ -56,6 +56,8 @@ $("select#sales-read-productid")
     // 2.select-adjacent
     $("select#sales-read-personid").val("Choose One Of Sales");
     $("select#sales-read-customerid").val("Choose One Of Customers");
-    // 3.pagination
+    // 3. remove date
+    $("div#sales-date").addClass("d-none");
+    // 4 .pagination
     $("div#sales-page-container").addClass("d-none");
   });

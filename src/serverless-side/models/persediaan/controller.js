@@ -300,19 +300,11 @@ export const getPersediaanGroupSupplier = (req) => {
     });
   });
 };
-export const getPersediaanReport = (req) => {
+export const getPersediaanReport = async (req) => {
   const { startDateVal, endDateVal } = req;
   const query = queryGetPersediaanReport(startDateVal, endDateVal);
-  return new Promise((resolve, reject) => {
-    db.all(query, (err, res) => {
-      if (!err) {
-        resolve(res);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const persediaan = await window.electronAPI.sqliteApi.all(query);
+  return persediaan;
 };
 export const getPersediaanDate = async (req) => {
   const { startDateVal, endDateVal } = req;

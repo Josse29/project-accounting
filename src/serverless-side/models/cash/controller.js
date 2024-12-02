@@ -55,43 +55,18 @@ export const insertCash1 = (req) => {
   });
 };
 // read
-export const getCashPagination = (req) => {
+export const getCashPagination = async (req) => {
   const { searchVal, limitVal } = req;
   const query = queryReadInitCash(searchVal);
-  return new Promise((resolve, reject) => {
-    db.each(query, (err, result) => {
-      if (!err) {
-        let totalPage = ``;
-        const totalRow = parseInt(result.Total_Row);
-        const isInteger = totalRow % limitVal === 0;
-        if (isInteger) {
-          totalPage = totalRow / limitVal;
-        }
-        if (!isInteger) {
-          totalPage = parseInt(totalRow / limitVal) + 1;
-        }
-        resolve({ totalPage, totalRow });
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const totalPageRow = await window.electronAPI.sqliteApi.each(query, limitVal);
+  return totalPageRow;
 };
-export const getCash = (req) => {
+export const getCash = async (req) => {
   const { searchVal, limitVal, offsetVal } = req;
   const startOffsetVal = parseInt(parseInt(offsetVal - 1) * parseInt(limitVal));
   const query = queryReadCash(searchVal, limitVal, startOffsetVal);
-  return new Promise((resolve, reject) => {
-    db.all(query, (err, rows) => {
-      if (!err) {
-        resolve(rows);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const cash = await window.electronAPI.sqliteApi.all(query);
+  return cash;
 };
 export const readCash1 = (req) => {
   const { searchVal, limitVal, offsetVal } = req;
@@ -107,50 +82,24 @@ export const readCash1 = (req) => {
     });
   });
 };
-export const getCashSum = () => {
+export const getCashSum = async () => {
   const query = querySumCash();
-  return new Promise((resolve, reject) => {
-    db.each(query, (err, result) => {
-      if (!err) {
-        const response = result.Total_Amount;
-        const sum = response ? response : 0;
-        resolve(sum);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const response = await window.electronAPI.sqliteApi.each1(query);
+  const totalCash = response.Total_Amount ? response.Total_Amount : 0;
+  return totalCash;
 };
-export const getCashSum1 = (req) => {
+export const getCashSum1 = async (req) => {
   const { startDateVal, endDateVal } = req;
   const query = querySumCash1(startDateVal, endDateVal);
-  return new Promise((resolve, reject) => {
-    db.each(query, (err, result) => {
-      if (!err) {
-        const response = result.Total_Amount;
-        const sum = response ? response : 0;
-        resolve(sum);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const response = await window.electronAPI.sqliteApi.each1(query);
+  const totalCash = response.Total_Amount ? response.Total_Amount : 0;
+  return totalCash;
 };
-export const getCashDate = (req) => {
+export const getCashDate = async (req) => {
   const { startDateVal, endDateVal } = req;
   const query = queryReadByDate(startDateVal, endDateVal);
-  return new Promise((resolve, reject) => {
-    db.all(query, (err, res) => {
-      if (!err) {
-        resolve(res);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const cashByDate = await window.electronAPI.sqliteApi.all(query);
+  return cashByDate;
 };
 // update
 export const updateCash = (req, res) => {

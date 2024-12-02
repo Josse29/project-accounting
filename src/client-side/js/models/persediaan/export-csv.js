@@ -1,4 +1,3 @@
-import convertCSV from "../../utils/convertcsv.js";
 import { getCSV } from "./services.js";
 import { uiAlertFail, uiAlertSuccess } from "./ui.js";
 
@@ -19,11 +18,13 @@ $("#persediaan-modal-convert-csv button#persediaan-convert-csv")
     if (status) {
       const existed = response.length >= 1;
       if (existed) {
-        const filePath = await convertCSV(response);
-        uiAlertSuccess(`File Excel Save On ${filePath}`);
-        $("input#persediaan-start-date-csv").val("");
-        $("input#persediaan-end-date-csv").val("");
-        $("#persediaan-modal-convert-csv").modal("hide");
+        const savedPath = await window.electronAPI.saveCSV(response);
+        if (savedPath) {
+          uiAlertSuccess(`File Excel Save On ${savedPath}`);
+          $("input#persediaan-start-date-csv").val("");
+          $("input#persediaan-end-date-csv").val("");
+          $("#persediaan-modal-convert-csv").modal("hide");
+        }
       }
       if (!existed) {
         uiAlertFail("uuppsss , sorry stock is still empty...");

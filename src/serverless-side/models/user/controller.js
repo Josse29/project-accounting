@@ -63,42 +63,18 @@ export const register = async (req) => {
     throw new Error(erroMsg);
   }
 };
-export const getUser = (req) => {
+export const getUser = async (req) => {
   const { searchVal, limitVal, offsetVal } = req;
   const startOffsetVal = (offsetVal - 1) * limitVal;
   const query = queryGet(searchVal, limitVal, startOffsetVal);
-  return new Promise((resolve, reject) => {
-    db.all(query, (err, res) => {
-      if (!err) {
-        resolve(res);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const user = await window.electronAPI.sqliteApi.all(query);
+  return user;
 };
-export const getUserPageRow = (req) => {
+export const getUserPageRow = async (req) => {
   const { searchVal, limitVal } = req;
   const query = queryGetTotal(searchVal);
-  return new Promise((resolve, reject) => {
-    db.each(query, (err, res) => {
-      if (!err) {
-        let totalPage;
-        let totalRow = res.Total_Row;
-        if (totalRow % limitVal === 0) {
-          totalPage = totalRow / limitVal;
-        }
-        if (totalRow % limitVal !== 0) {
-          totalPage = parseInt(totalRow / limitVal) + 1;
-        }
-        resolve({ totalPage, totalRow });
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const totalPageRow = await window.electronAPI.sqliteApi.each(query, limitVal);
+  return totalPageRow;
 };
 export const getUserCustomer = async () => {
   const query = queryGetCustomer();
