@@ -99,35 +99,15 @@ export const createPersediaan = async (req) => {
     valPersediaanTotalRp,
     valPersediaanInfo
   );
-  return new Promise((resolve, reject) => {
-    db.run(query, (err) => {
-      if (!err) {
-        const qty =
-          valPersediaanQty >= 1
-            ? `+ ${valPersediaanQty}`
-            : `- ${Math.abs(valPersediaanQty)}`;
-        const msg = `Product - <b class='text-capitalize'>${valProductName} ${qty}</b> has been stored`;
-        resolve(msg);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const msg = `Product - <b class='text-capitalize'>${valProductName} ${qty}</b> has been stored`;
+  const created = await window.electronAPI.sqliteApi.run(query, msg);
+  return created;
 };
-export const createPersediaan1 = (request) => {
+export const createPersediaan1 = async (request) => {
   const query = queryInsertPersediaan1(request);
-  return new Promise((resolve, reject) => {
-    db.run(query, (err) => {
-      if (!err) {
-        const msg = "Stock has been stored";
-        resolve(msg);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const msg = "Stock has been stored";
+  const created = await window.electronAPI.sqliteApi.run(query, msg);
+  return created;
 };
 // 2.READ
 export const getPersediaanPagination = async (req) => {
@@ -143,63 +123,55 @@ export const getPersediaan = async (req) => {
   const persediaan = await window.electronAPI.sqliteApi.all(query);
   return persediaan;
 };
-export const getPersediaanQtyValidate = (req) => {
+export const getPersediaanQtyValidate = async (req) => {
   const { valProductName, valPersediaanProductId, valPersediaanQty } = req;
   const query = queryGetPersediaanQty(valPersediaanProductId);
-  return new Promise((resolve, reject) => {
-    db.all(query, (err, rows) => {
-      if (!err) {
-        const res = rows[0];
-        const existItem = res.TotalQty >= 1;
-        // Produk sudah terdaftar ke tablePersediaan
-        if (existItem) {
-          // barang masuk
-          const stockQty = parseFloat(res.TotalQty);
-          if (valPersediaanQty >= 1) {
-            resolve();
-          }
-          // barang keluar
-          if (valPersediaanQty < 0) {
-            // barang keluar tapi persediaan masih ada
-            if (stockQty >= 1) {
-              // change min to positive value
-              const qtyOutAbs = Math.abs(parseFloat(valPersediaanQty));
-              // stock sufficient
-              if (qtyOutAbs <= stockQty) {
-                resolve();
-              }
-              // stock unsufficient
-              if (qtyOutAbs > stockQty) {
-                const msg = `Upppss Sorry, ${valProductName} only available : ${stockQty}`;
-                reject(msg);
-              }
-            }
-            // barang keluar tapi persediaan masih kosong
-            if (stockQty < 1) {
-              const msg = `${valProductName} is still empty....`;
-              reject(msg);
-            }
-          }
+  const response = await window.electronAPI.sqliteApi.all(query);
+  const res = response[0];
+  const existItem = res.TotalQty >= 1;
+  // Produk has listed
+  if (existItem) {
+    // goods in
+    const stockQty = parseFloat(res.TotalQty);
+    if (valPersediaanQty >= 1) {
+      return true;
+    }
+    // goods out
+    if (valPersediaanQty < 0) {
+      // barang keluar tapi persediaan masih ada
+      if (stockQty >= 1) {
+        // change min to positive value
+        const qtyOutAbs = Math.abs(parseFloat(valPersediaanQty));
+        // stock sufficient
+        if (qtyOutAbs <= stockQty) {
+          return true;
         }
-        // Produk belum terdaftar ke tablePersediaan
-        if (!existItem) {
-          // barang masuk
-          if (valPersediaanQty >= 1) {
-            const msg = `${valProductName} has been added with qty : ${valPersediaanQty}`;
-            resolve(msg);
-          }
-          // barang keluar
-          if (valPersediaanQty < 1) {
-            const msg = `Upppsss Sorry... ${valProductName} is'nt listed`;
-            reject(msg);
-          }
+        // stock unsufficient
+        if (qtyOutAbs > stockQty) {
+          const msg = `Upppss Sorry, ${valProductName} only available : ${stockQty}`;
+          throw new Error(msg);
         }
       }
-      if (err) {
-        reject(err);
+      // barang keluar tapi persediaan masih kosong
+      if (stockQty < 1) {
+        const msg = `${valProductName} is still empty....`;
+        throw new Error(msg);
       }
-    });
-  });
+    }
+  }
+  // Product hasn't listed yet
+  if (!existItem) {
+    // barang masuk
+    if (valPersediaanQty >= 1) {
+      const msg = `${valProductName} has been added with qty : ${valPersediaanQty}`;
+      return msg;
+    }
+    // barang keluar
+    if (valPersediaanQty < 1) {
+      const msg = `Upppsss Sorry... ${valProductName} is'nt listed`;
+      throw new Error(msg);
+    }
+  }
 };
 export const getPersediaanSumQty = async (valPersediaanProductId) => {
   const query = queryGetPersediaanQty(valPersediaanProductId);

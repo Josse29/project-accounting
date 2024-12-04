@@ -110,8 +110,9 @@ export const uiAlertSuccess = (res) => {
   $("#section-alert").html(alert);
 };
 // for pdf
+
 export const uiTr1 = (response) => {
-  let ui = ``;
+  let tr = ``;
   let no = 1;
   response.forEach((row) => {
     const cashRp = row.CashRp;
@@ -119,7 +120,7 @@ export const uiTr1 = (response) => {
       cashRp >= 1
         ? `+ ${formatRupiah2(cashRp)}`
         : `- ${formatRupiah2(Math.abs(cashRp))}`;
-    ui += `<tr>
+    tr += `<tr>
             <td>${no++}</td>
             <td>${row.CashYYYYMMDD}</td>
             <td>${row.CashName}</td>
@@ -127,5 +128,67 @@ export const uiTr1 = (response) => {
            </tr>`;
     no++;
   });
-  return ui;
+  const html = `
+    <div class="d-flex justify-content-center">
+      <div style="width: 90%">
+        <div class="card my-2">
+          <div
+            class="card-header text-center text-white fs-3"
+            style="background-color: #273eec"
+          >
+            PT. ABC, T.bk
+          </div>
+          <div class="card-body overflow-x-auto">
+            <div>
+              <h3>Table-Cash</h3>
+              <h6 class="hari-tanggal-tahun">Jumat, 17-05-2024</h6>
+              <div class="d-flex gap-1">
+                <h6 class="jam">H</h6>
+                <h6 class="menit">M</h6>
+                <h6 class="detik">S</h6>
+              </div>
+            </div>
+            <div class="mb-3">
+              <table class="table table-striped" style="width: auto">
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Date</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                  </tr>
+                </thead>
+                <tbody >
+                  ${tr}
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <th colspan="3" class="text-center">Total</th>
+                    <td id="cash-sum">Rp 341.000,00</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  return html;
+};
+export const uiAlertFailed = (res) => {
+  const alert = `
+  <div class="alert alert-danger alert-dismissible fade show text-start" role="alert">
+    <strong class="text-capitalize">${res}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>`;
+  $("#cash-modal-convert-csv .failed").html(alert);
+};
+export const uiAlertFailed1 = (res) => {
+  const alert = `
+  <div class="alert alert-danger alert-dismissible fade show text-start" role="alert">
+    <strong class="text-capitalize">${res}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>`;
+  $("#cash-modal-convert-pdf .failed").html(alert);
 };

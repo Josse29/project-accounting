@@ -123,3 +123,16 @@ export const validateCategoryName = (categoryName) => {
     throw new Error(msg);
   }
 };
+export const validateDate = (startDateVal, endDateVal) => {
+  if (
+    (startDateVal !== "" && endDateVal === "") ||
+    (startDateVal === "" && endDateVal !== "")
+  ) {
+    const msg = "Start Date And End Date must be filled...";
+    throw new Error(msg);
+  }
+  if (startDateVal > endDateVal) {
+    const msg = "Start Date value must be lesser than End Date";
+    throw new Error(msg);
+  }
+};

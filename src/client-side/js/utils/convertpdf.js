@@ -1,64 +1,33 @@
-const convertPdf = (pagePDF) => {
-  return new Promise((resolve, reject) => {
-    let file_path = dialog.showSaveDialogSync({
-      title: "Export Data",
-      filters: [{ name: "pdf", extensions: ["pdf"] }],
-    });
-    if (file_path) {
-      file_path = file_path.replace(/\\/g, "/");
-      pagePDF.webContents
-        .printToPDF({
-          marginsType: 0,
-          printBackground: true,
-          printSelectionOnly: false,
-          landscape: true,
-        })
-        .then((data) => {
-          fs.writeFile(file_path, data, (err) => {
-            if (!err) {
-              resolve();
-            }
-            if (err) {
-              reject();
-            }
-          });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+const convertPDF = (ipcMain, BrowserWindow, dialog, fs) => {
+  ipcMain.handle("save-pdf", async (event, selectedHtml) => {
+    try {
+      const filePath = await dialog.showSaveDialog({
+        filters: [{ name: "PDF", extensions: ["pdf"] }],
+      });
+      if (filePath.canceled) return null;
+      const temporaryWindow = new BrowserWindow({
+        show: false, // Tidak menampilkan jendela baru
+        webPreferences: {
+          nodeIntegration: true,
+        },
+      });
+      temporaryWindow.loadURL(
+        "data:text/html;charset=utf-8," + encodeURIComponent(selectedHtml)
+      );
+      await new Promise((resolve) => {
+        temporaryWindow.webContents.once("did-finish-load", resolve);
+      });
+      const pdfData = await temporaryWindow.webContents.printToPDF({
+        pageSize: "A4",
+      });
+      // Menyimpan PDF ke lokasi yang dipilih
+      await fs.promises.writeFile(filePath.filePath, pdfData);
+      temporaryWindow.close(); // Tutup jendela sementara setelah selesai
+      return filePath.filePath; // Mengembalikan lokasi file PDF yang disimpan
+    } catch (error) {
+      console.error("Failed to convert to PDF:", error);
+      return null;
     }
   });
 };
-const convertpdf1 = () => {
-  let file_path = dialog.showSaveDialogSync({
-    title: "Export Data",
-    filters: [{ name: "pdf", extensions: ["pdf"] }],
-  });
-  if (file_path) {
-    file_path = file_path.replace(/\\/g, "/");
-    let no = 1;
-    let tbody = ``;
-    response.forEach((row) => {
-      tbody += uiTrPDf(no, row);
-      no++;
-    });
-    ipcRenderer.send("pdf:product", tbody, file_path);
-    ipcRenderer.on("success:pdf-product", (e, file_path) => {
-      uiAlertSuccess(`File PDF tersimpan di ${file_path}`);
-    });
-  }
-};
-
-module.exports = convertPdf;
-import { jsPDF } from "jspdf";
-import "jspdf-autotable"; // Memasukkan plugin autoTable untuk jsPDF
-document.getElementById("convert-to-pdf").addEventListener("click", () => {
-  // Mengambil elemen tabel
-  const table = document.getElementById("data-table");
-  // Membuat objek jsPDF
-  const doc = new jsPDF();
-  // Menambahkan tabel dari DOM ke PDF
-  doc.autoTable({ html: table });
-  // Menyimpan PDF ke file
-  doc.save("table-data.pdf");
-});
+export default convertPDF;

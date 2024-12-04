@@ -139,8 +139,6 @@ $("tbody#product-table")
           productImgVal,
           productCancelImg,
         };
-        console.log(req);
-        return false;
         const { status, response } = await update(req);
         if (status) {
           await getProductAll();

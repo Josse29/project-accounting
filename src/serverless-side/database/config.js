@@ -1,4 +1,12 @@
-const DbHandlers = (ipcMain, db) => {
+const DbHandlers = (ipcMain, app, path, sqlite3) => {
+  const dbPath = path.join(
+    app.getAppPath(),
+    "src",
+    "serverless-side",
+    "database",
+    "myapps.db"
+  );
+  const db = new sqlite3.Database(dbPath);
   ipcMain.handle("db-all", async (event, query) => {
     return new Promise((resolve, reject) => {
       db.all(query, (err, rows) => {

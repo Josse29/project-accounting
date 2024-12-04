@@ -104,7 +104,7 @@ $("tbody#product-table")
         listStockHTML = `${summary} ${listStock1}`;
       }
       if (!existedStock) {
-        listStockHTML = `<p class="text-muted fst-italic fs-5 text-center">stock empty.....</p>`;
+        listStockHTML = `<p class="text-muted fst-italic fs-5 ms-2">stock empty.....</p>`;
       }
       $("div#product-detail-stock-container").html(listStockHTML);
     }

@@ -104,17 +104,9 @@ export const createSale = async (req) => {
     parseInt(SalesCustomerId),
     SalesStatusVal
   );
-  return new Promise((resolve, reject) => {
-    db.run(query, (err) => {
-      if (!err) {
-        const msg = "Sales Has been Added";
-        resolve(msg);
-      }
-      if (err) {
-        reject();
-      }
-    });
-  });
+  const msg = "Sales Has been Added";
+  const created = await window.electronAPI.sqliteApi.run(query, msg);
+  return created;
 };
 // read
 export const getSale = async (req) => {

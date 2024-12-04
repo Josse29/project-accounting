@@ -12,7 +12,13 @@ import { listUserRefSalesCreate } from "../users/list.js";
 import { addSale } from "./services.js";
 import { getAll2 } from "../persediaan/utils.js";
 import { getAll } from "./utils.js";
-
+// sweet alert
+Swal.fire({
+  title: "Success!",
+  text: "The Order has been successfully completed.",
+  icon: "success",
+  confirmButtonText: "OK",
+});
 // init table order
 $(".card-footer ")
   .off("click")
@@ -115,7 +121,6 @@ $("button#order-done")
         await getAll();
         // get again persediaan
         await getAll2();
-
         // remove storage cart and sum storage card
         removeStorageCart();
         removeStorageCartSUM();
@@ -132,7 +137,7 @@ $("button#order-done")
         // sweet alert
         Swal.fire({
           title: "Success!",
-          text: "The Order was completed successfully.",
+          text: "The Order has been successfully completed.",
           icon: "success",
           confirmButtonText: "OK",
         });

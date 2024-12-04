@@ -1,4 +1,5 @@
 import db from "../../database/config.js";
+import { validateDate } from "../../utils/validation.js";
 import {
   queryDeleteCash,
   queryInsertCash,
@@ -12,7 +13,7 @@ import {
   queryUpdateCash,
 } from "./querysql.js";
 // create
-export const createCash = (req) => {
+export const createCash = async (req) => {
   const { CashYYYYMMDDVal, CashHMSVal, CashNameVal, CashRpVal, CashInfoVal } =
     req;
   const query = queryInsertCash(
@@ -22,16 +23,9 @@ export const createCash = (req) => {
     CashRpVal,
     CashInfoVal
   );
-  return new Promise((resolve, reject) => {
-    db.run(query, (err) => {
-      if (!err) {
-        resolve();
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const msg = `cash has been added `;
+  const created = await window.electronAPI.sqliteApi.run(query, msg);
+  return created;
 };
 export const insertCash1 = (req) => {
   const { CashYYYYMMDDVal, CashHMSVal, CashNameVal, CashRpVal, CashInfoVal } =
@@ -127,32 +121,21 @@ export const deleteKas = (cashId, callback) => {
   });
 };
 // export csv
-export const getCash1 = (req) => {
+export const getCash1 = async (req) => {
   const { startDateVal, endDateVal } = req;
+  // validate by date
+  validateDate(startDateVal, endDateVal);
+  // query
   const query = queryReadCash1(startDateVal, endDateVal);
-  return new Promise((resolve, reject) => {
-    db.all(query, (err, res) => {
-      if (!err) {
-        resolve(res);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const cash = await window.electronAPI.sqliteApi.all(query);
+  return cash;
 };
 // export to pdf
-export const getCash2 = (req) => {
+export const getCash2 = async (req) => {
   const { startDateVal, endDateVal } = req;
+  // validate by date
+  validateDate(startDateVal, endDateVal);
   const query = queryReadCash2(startDateVal, endDateVal);
-  return new Promise((resolve, reject) => {
-    db.all(query, (err, res) => {
-      if (!err) {
-        resolve(res);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const cash = await window.electronAPI.sqliteApi.all(query);
+  return cash;
 };

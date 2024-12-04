@@ -23,10 +23,6 @@ img.custome-me {
 }
 .section-first {
   width: 60vw;
-  background-image: url("./../../images/accounting.jpg");
-  background-position: bottom;
-  background-repeat: no-repeat;
-  background-size: cover;
 }
 .section-second {
   width: 40vw;

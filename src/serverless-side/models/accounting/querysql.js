@@ -15,7 +15,7 @@ export const queryCreateAccounting = (
 };
 export const queryInitAccounting = () => {
   let query = `SELECT 
-               COUNT(*) AS Total_Row
+               COUNT(*) AS TOTAL_ROW
                FROM Accounting `;
   return query;
 };

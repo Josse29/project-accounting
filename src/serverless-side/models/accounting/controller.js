@@ -8,7 +8,7 @@ import {
   querySum,
   queryUpdateAccounting,
 } from "./querysql.js";
-export const createAccounting = (req) => {
+export const createAccounting = async (req) => {
   const {
     accountingYMDVal,
     accountingHMSVal,
@@ -27,56 +27,23 @@ export const createAccounting = (req) => {
     accountingCreditVal,
     accountingInfoVal
   );
-  return new Promise((resolve, reject) => {
-    db.run(query, (err) => {
-      if (!err) {
-        const msg = "accounting has been added";
-        resolve(msg);
-      }
-      if (err) {
-        reject();
-      }
-    });
-  });
+  const msg = "accounting has been added";
+  const created = await window.electronAPI.sqliteApi.run(query, msg);
+  return created;
 };
 // general-entries
-export const getAccountingPagination = (req) => {
+export const getAccountingPagination = async (req) => {
   const { searchVal, limitVal } = req;
   const query = queryInitAccounting();
-  return new Promise((resolve, reject) => {
-    db.each(query, (err, result) => {
-      if (!err) {
-        let totalPage = ``;
-        let totalRow = parseInt(result.Total_Row);
-        const isInt = totalRow % limitVal === 0;
-        if (isInt) {
-          totalPage = totalRow / limitVal;
-        }
-        if (!isInt) {
-          totalPage = parseInt(totalRow / limitVal) + 1;
-        }
-        resolve({ totalPage, totalRow });
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const totalPageRow = await window.electronAPI.sqliteApi.each(query, limitVal);
+  return totalPageRow;
 };
-export const getAccounting = (req) => {
+export const getAccounting = async (req) => {
   const { searchVal, limitVal, offsetVal } = req;
   const startOffsetVal = parseInt((offsetVal - 1) * limitVal);
   const query = queryReadAccounting(searchVal, limitVal, startOffsetVal);
-  return new Promise((resolve, reject) => {
-    db.all(query, (err, rows) => {
-      if (!err) {
-        resolve(rows);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const accounting = await window.electronAPI.sqliteApi.all(query);
+  return accounting;
 };
 // balance-sheet
 export const getAccountingSum = () => {

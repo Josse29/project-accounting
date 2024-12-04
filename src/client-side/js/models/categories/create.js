@@ -1,7 +1,7 @@
+import { create } from "./services.js";
 import { executeRead, getCategoryRef } from "./utils.js";
 import { uiAlertFailCreate, uiAlertSuccess, uiBlankVal } from "./ui.js";
 import { capitalizeWord } from "../../utils/formatCapitalize.js";
-import { create } from "./services.js";
 
 $("button#btnCreateCategory")
   .off("click")
