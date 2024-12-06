@@ -1,4 +1,4 @@
-const convertCSV = async (ipcMain, dialog, fs, path, app) => {
+const convertCSV = async (ipcMain, dialog, fs, appPath) => {
   ipcMain.handle("save-csv", async (event, data) => {
     try {
       // 1. convert JSON to CSV
@@ -10,16 +10,17 @@ const convertCSV = async (ipcMain, dialog, fs, path, app) => {
         return [headers.join(","), ...rows].join("\n");
       };
       const csv = jsonToCsv(data);
-      // Mengonversi JSON ke CSV
-      const filePath = await dialog.showSaveDialog({
-        defaultPath: path.join(app.getAppPath(), "data.csv"),
+      // 2. get destination directory with dialog
+      const { canceled, filePath } = await dialog.showSaveDialog({
+        defaultPath: appPath("data.csv"),
         filters: [{ name: "CSV Files", extensions: ["csv"] }],
       });
-      if (filePath.canceled) {
-        return null; // Jika pengguna membatalkan
+      if (canceled) {
+        return null;
       }
-      await fs.promises.writeFile(filePath.filePath, csv); // Menggunakan fs.promises
-      return filePath.filePath; // Mengembalikan path file yang disimpan
+      // 3. write file as extension
+      await fs.promises.writeFile(filePath, csv);
+      return filePath;
     } catch (error) {
       console.error("Error saving CSV: ", error);
       throw new Error("Failed to save CSV file");

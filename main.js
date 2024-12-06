@@ -5,42 +5,40 @@ import sqlite3 from "sqlite3";
 
 import DbHandlers from "./src/serverless-side/database/config.js";
 import convertCSV from "./src/client-side/js/utils/convertCSV.js";
-import lodashAPI from "./lodashApi.js";
 import convertPDF from "./src/client-side/js/utils/convertPDF.js";
 
 let mainWindow;
 function createWindow() {
+  const appPath = (...paths) => {
+    return path.join(app.getAppPath(), ...paths);
+  };
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 850,
     webPreferences: {
-      preload: path.join(app.getAppPath(), "preload.js"),
+      preload: path.join(appPath("preload.js")),
       contextIsolation: true,
     },
     frame: false,
   });
-  mainWindow.loadFile(path.join(app.getAppPath(), "index.html"));
+  mainWindow.loadFile(appPath("index.html"));
   // db
-  DbHandlers(ipcMain, app, path, sqlite3);
+  DbHandlers(ipcMain, appPath, sqlite3);
   // export-csv
-  convertCSV(ipcMain, dialog, fs, path, app);
-  // lodash
-  lodashAPI(ipcMain);
+  convertCSV(ipcMain, dialog, fs, appPath);
   // convertpdf
-  convertPDF(ipcMain, BrowserWindow, dialog, fs);
+  convertPDF(ipcMain, BrowserWindow, dialog, fs, appPath);
   // close apps
   ipcMain.on("close-apps", () => {
     app.quit();
   });
   // logout apps
   ipcMain.on("logout-apps", () => {
-    mainWindow.loadFile(path.join(app.getAppPath(), "index.html"));
+    mainWindow.loadFile(appPath("index.html"));
   });
   // navigate page
   ipcMain.on("navigate", (event, page) => {
-    mainWindow.loadFile(
-      path.join(app.getAppPath(), "src", "client-side", "pages", `${page}.html`)
-    );
+    mainWindow.loadFile(appPath("src", "client-side", "pages", `${page}.html`));
   });
   // minimze
   ipcMain.on("minimize-apps", () => {

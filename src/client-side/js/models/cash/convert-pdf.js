@@ -1,6 +1,6 @@
 import { getPDF } from "./services.js";
-import { uiAlertFailed1, uiAlertSuccess, uiTr1 } from "./ui.js";
-import { getSumPDF } from "./utils.js";
+import { summary1 } from "./utils.js";
+import { uiAlertFailed1, uiAlertSuccess, uiPDF } from "./ui.js";
 
 $("#cash-modal-convert-pdf button#cash-convert-pdf")
   .off("click")
@@ -17,17 +17,17 @@ $("#cash-modal-convert-pdf button#cash-convert-pdf")
     if (status) {
       const existed = response.length >= 1;
       if (existed) {
-        const summary = await getSumPDF(req);
-        console.log(summary);
-        // const html = uiTr1(response);
-        const htmlContent = document.documentElement.outerHTML;
-        console.log(htmlContent);
-        const filePath = await window.electronAPI.savePDF(htmlContent);
+        // summary cash
+        const sumCash1 = await summary1(req);
+        const htlmContent = uiPDF(response, sumCash1);
+        const filePath = await window.electronAPI.savePDF(htlmContent);
         if (filePath) {
           uiAlertSuccess(`File PDF Save on ${filePath}`);
           $("#cash-modal-convert-pdf input#cash-start-date-1").val("");
           $("#cash-modal-convert-pdf input#cash-end-date-1").val("");
           $("#cash-modal-convert-pdf").modal("hide");
+        } else {
+          console.error(filePath);
         }
       }
       if (!existed) {

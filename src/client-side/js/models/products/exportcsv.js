@@ -1,4 +1,3 @@
-import convertCSV from "../../utils/convertcsv.js";
 import { getCSV } from "./services.js";
 import { uiAlertFail, uiAlertSuccess } from "./ui.js";
 
@@ -9,8 +8,10 @@ $("#product-export-excel")
     if (status) {
       const existed = response.length >= 1;
       if (existed) {
-        const filePath = await convertCSV(response);
-        uiAlertSuccess(`File Save On ${filePath}`);
+        const savedPath = await window.electronAPI.saveCSV(response);
+        if (savedPath) {
+          uiAlertSuccess(`File Save On ${savedPath}`);
+        }
       } else {
         uiAlertFail("upppps Product is still empty...");
       }

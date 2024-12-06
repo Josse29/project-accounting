@@ -58,3 +58,6 @@
 - research webpack huftttt more and more lastt
 12/4/2024
 - refactor db handlers part 4 huffffrf
+12/6/2024
+- refactor csv handlers part 2 huffffrf
+- refactor pdf handlers part 2 huffffrf

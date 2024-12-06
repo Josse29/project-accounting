@@ -58,14 +58,16 @@ export async function getCashPage(req) {
     console.error(response);
   }
 }
-export const getSumPDF = async (req) => {
-  const { status, response } = await getSum1(req);
-  if (status) {
-    const rupiah = formatRupiah2(response);
-    return rupiah;
+export async function summary1(req) {
+  const sumCash = await getSum1(req);
+  const statusSumCash = sumCash.status;
+  const resSumCash = sumCash.response;
+  let sumCash1 = ``;
+  if (statusSumCash) {
+    sumCash1 = resSumCash;
+  } else {
+    sumCash1 = resSumCash;
+    console.error(sumCash1);
   }
-  if (!status) {
-    console.error(response);
-    return response;
-  }
-};
+  return sumCash1;
+}

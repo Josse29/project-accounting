@@ -1,5 +1,5 @@
 import { formatRupiah2 } from "../../utils/formatRupiah.js";
-import { formatWaktuIndo } from "../../utils/formatWaktu.js";
+import { formatWaktuIndo, timeIndonesian } from "../../utils/formatWaktu.js";
 
 export const uiTbody = (response) => {
   let tbody = ``;
@@ -111,9 +111,10 @@ export const uiAlertSuccess = (res) => {
 };
 // for pdf
 
-export const uiTr1 = (response) => {
+export const uiPDF = (response, sumCash) => {
   let tr = ``;
   let no = 1;
+  // tbody
   response.forEach((row) => {
     const cashRp = row.CashRp;
     const cashPrice =
@@ -128,53 +129,56 @@ export const uiTr1 = (response) => {
            </tr>`;
     no++;
   });
+  const sum = `<td id="cash-sum">${formatRupiah2(sumCash)}</td>`;
+  const { indonesiaDDMY, indonesiaHour, indonesiaMinute, indonesiaSecond } =
+    timeIndonesian();
   const html = `
-    <div class="d-flex justify-content-center">
-      <div style="width: 90%">
-        <div class="card my-2">
-          <div
-            class="card-header text-center text-white fs-3"
-            style="background-color: #273eec"
-          >
-            PT. ABC, T.bk
-          </div>
-          <div class="card-body overflow-x-auto">
-            <div>
-              <h3>Table-Cash</h3>
-              <h6 class="hari-tanggal-tahun">Jumat, 17-05-2024</h6>
-              <div class="d-flex gap-1">
-                <h6 class="jam">H</h6>
-                <h6 class="menit">M</h6>
-                <h6 class="detik">S</h6>
-              </div>
-            </div>
-            <div class="mb-3">
-              <table class="table table-striped" style="width: auto">
-                <thead>
-                  <tr>
-                    <th>No</th>
-                    <th>Date</th>
-                    <th>Name</th>
-                    <th>Price</th>
-                  </tr>
-                </thead>
-                <tbody >
-                  ${tr}
-                </tbody>
-                <tfoot>
-                  <tr>
-                    <th colspan="3" class="text-center">Total</th>
-                    <td id="cash-sum">Rp 341.000,00</td>
-                  </tr>
-                </tfoot>
-              </table>
-            </div>
-          </div>
-        </div>
+  <h3>Table Cash</h3>
+  <h6>${indonesiaDDMY}</h6>
+  <div class="d-flex gap-1">
+    <h6 class="jam">${indonesiaHour} :</h6>
+    <h6 class="menit">${indonesiaMinute}</h6>
+    <h6 class="detik">${indonesiaSecond}</h6>
+  </div>
+  `;
+  const html1 = `
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Date</th>
+            <th>Name</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${tr}
+        </tbody>
+        <tfoot>
+          <tr>
+            <th colspan="3" class="text-center">Total</th>
+            ${sum}
+          </tr>
+        </tfoot>
+      </table>
+  `;
+  const html2 = `          
+  <div class="d-flex justify-content-center">
+    <div class="card my-2">
+      <!--  cardheader -->
+      <div
+        class="card-header text-center text-white fs-3"
+        style="background-color: #273eec">
+        PT. ABC, T.bk
+      </div>
+      <!--  cardBody -->
+      <div class="card-body">
+        ${html}
+        ${html1}
       </div>
     </div>
-  `;
-  return html;
+  </div>`;
+  return html2;
 };
 export const uiAlertFailed = (res) => {
   const alert = `

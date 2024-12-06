@@ -1,33 +1,79 @@
-const convertPDF = (ipcMain, BrowserWindow, dialog, fs) => {
-  ipcMain.handle("save-pdf", async (event, selectedHtml) => {
-    try {
-      const filePath = await dialog.showSaveDialog({
-        filters: [{ name: "PDF", extensions: ["pdf"] }],
-      });
-      if (filePath.canceled) return null;
-      const temporaryWindow = new BrowserWindow({
-        show: false, // Tidak menampilkan jendela baru
-        webPreferences: {
-          nodeIntegration: true,
-        },
-      });
-      temporaryWindow.loadURL(
-        "data:text/html;charset=utf-8," + encodeURIComponent(selectedHtml)
-      );
-      await new Promise((resolve) => {
-        temporaryWindow.webContents.once("did-finish-load", resolve);
-      });
-      const pdfData = await temporaryWindow.webContents.printToPDF({
-        pageSize: "A4",
-      });
-      // Menyimpan PDF ke lokasi yang dipilih
-      await fs.promises.writeFile(filePath.filePath, pdfData);
-      temporaryWindow.close(); // Tutup jendela sementara setelah selesai
-      return filePath.filePath; // Mengembalikan lokasi file PDF yang disimpan
-    } catch (error) {
-      console.error("Failed to convert to PDF:", error);
+const convertPDF = (ipcMain, BrowserWindow, dialog, fs, appPath) => {
+  ipcMain.handle("generate-pdf", async (event, section) => {
+    const { canceled, filePath } = await dialog.showSaveDialog({
+      title: "Save PDF",
+      defaultPath: "output.pdf",
+      filters: [{ name: "PDF Files", extensions: ["pdf"] }],
+    });
+
+    if (canceled) {
       return null;
     }
+    const cssPath = appPath(
+      "src",
+      "client-side",
+      "css",
+      "components",
+      "text.css"
+    );
+    const bootstrapPath = appPath(
+      "node_modules",
+      "bootstrap",
+      "dist",
+      "css",
+      "bootstrap.min.css"
+    );
+    const fontAwesomePath = appPath(
+      "node_modules",
+      "@fortawesome",
+      "fontawesome-free",
+      "css",
+      "all.min.css"
+    );
+    const fullHtml = `
+      <html>
+        <link rel="stylesheet" href="${cssPath}" />
+        <link
+          rel="stylesheet"
+          href="${bootstrapPath}"
+        />
+        <link
+          rel="stylesheet"
+          href="${fontAwesomePath}"
+        />
+        <body>
+          ${section}
+        </body>
+      </html>
+    `;
+
+    // save html in a filetemporary
+    const tempPath = appPath("data.html");
+    await fs.promises.writeFile(tempPath, fullHtml);
+
+    // load file
+    const pdfWin = new BrowserWindow({ show: true });
+    pdfWin.loadFile(tempPath);
+
+    //  change destination directory
+    return new Promise((resolve, reject) => {
+      pdfWin.webContents.on("did-finish-load", async () => {
+        try {
+          const pdfData = await pdfWin.webContents.printToPDF({
+            marginsType: 1,
+            printBackground: true,
+            pageSize: "A4",
+          });
+          await fs.promises.writeFile(filePath, pdfData);
+          await fs.promises.unlink(tempPath);
+          resolve(filePath);
+        } catch (error) {
+          reject(error);
+        } finally {
+          pdfWin.close();
+        }
+      });
+    });
   });
 };
 export default convertPDF;
