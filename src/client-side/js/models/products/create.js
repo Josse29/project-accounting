@@ -2,7 +2,7 @@ import { addProduct } from "./services.js";
 import { uiAlertFailCreate, uiAlertSuccess, uiBlankVal } from "./ui.js";
 import { listCategoryRefProductCreate } from "./../categories/list.js";
 import { listSupplierRefProductCreate } from "../supplier/list.js";
-import { disFormatRupiah1, formatRupiah1 } from "../../utils/formatRupiah.js";
+import { disFormatRupiah1, formatRupiah1 } from "../../utils/formatPrice.js";
 import { capitalizeWord } from "../../utils/formatCapitalize.js";
 import { listProductRefPersediaanCreate } from "./list.js";
 import { previewLoadImg } from "../../utils/loadImg.js";

@@ -1,4 +1,4 @@
-import { formatWaktuIndo } from "../../utils/formatWaktu.js";
+import { formatWaktuIndo } from "../../utils/formatTime.js";
 // ui tr supplier from db
 export const uiTbody = (response) => {
   let tr = ``;

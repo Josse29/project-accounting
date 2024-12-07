@@ -12,13 +12,7 @@ import { listUserRefSalesCreate } from "../users/list.js";
 import { addSale } from "./services.js";
 import { getAll2 } from "../persediaan/utils.js";
 import { getAll } from "./utils.js";
-// sweet alert
-Swal.fire({
-  title: "Success!",
-  text: "The Order has been successfully completed.",
-  icon: "success",
-  confirmButtonText: "OK",
-});
+
 // init table order
 $(".card-footer ")
   .off("click")

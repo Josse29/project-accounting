@@ -17,12 +17,12 @@ const { status, response } = await getPagination(req);
 if (status) {
   const { totalPage, totalRow } = response;
   $("p#categories-total-row").text(`Total : ${totalRow}`);
-  // exsited category
+  // existed category
   if (totalRow >= 1) {
     await get2(req);
     handlePagination(totalPage);
   }
-  // non=exsited category
+  // non-existed category
   if (totalRow < 1) {
     uiTbodyEmpty(searchVal);
   }

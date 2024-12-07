@@ -1,4 +1,4 @@
-import { formatWaktuIndo } from "../../utils/formatWaktu.js";
+import { formatWaktuIndo } from "../../utils/formatTime.js";
 import { deleteAll, deleteById } from "./services.js";
 import { uiAlertFailDelete, uiAlertSuccess } from "./ui.js";
 import { getAll } from "./utils.js";

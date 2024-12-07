@@ -69,7 +69,7 @@
                 data-bs-target="#persediaan-modal-convert-csv"
               >
                 <div class="tooltip-bottom-text">excel-inventory</div>
-                <i class="fa-solid fa-file-excel fs-4"> </i>
+                <i class="fa-solid fa-file-excel fs-4"></i>
               </button>
               <!-- export persediaan pdf -->
               <button
@@ -1055,6 +1055,8 @@
                 <h3 class="modal-title text-white ms-3">Excel</h3>
               </div>
               <div class="modal-body">
+                <!-- failed section -->
+                <div id="failed"></div>
                 <!-- start date -->
                 <div class="mb-3">
                   <label for="persediaan-start-date-csv" class="fs-4 mb-2"
@@ -1111,6 +1113,7 @@
                 <h3 class="modal-title text-white ms-3">PDF</h3>
               </div>
               <div class="modal-body">
+                <div id="failed"></div>
                 <!-- start date -->
                 <div class="mb-3">
                   <label for="persediaan-start-date-pdf" class="fs-4 mb-2"
@@ -2054,7 +2057,6 @@
     <!-- Impor JS Bootstrap -->
     <script src="./../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <!-- my-script -->
-    <script src="./../require/index.js"></script>
     <script type="module" src="./../js/navigation/index.js"></script>
     <script type="module" src="./../js/utils/updateUi.js"></script>
     <script type="module" src="./../js/models/categories/index.js"></script>

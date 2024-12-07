@@ -58,15 +58,16 @@ export const uiTbodyEmpty = (searchVal) => {
     search = `${searchVal} not found....`;
   }
   const tr = `
-    <tr>
-      <td
-        colspan="6"
-        class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize"
-        style="background-color: #f2f2f2"
-      >
-        ${search}
-      </td>
-    </tr>`;
+  <tr>
+    <td
+      colspan="6"
+      class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize"
+      style="background-color: #f2f2f2"
+    >
+      ${search}
+    </td>
+  </tr>
+  `;
   $("tbody#cash").html(tr);
   $("div#cash-pagination-container").addClass("d-none");
 };
@@ -110,12 +111,16 @@ export const uiAlertSuccess = (res) => {
   $("#section-alert").html(alert);
 };
 // for pdf
-
 export const uiPDF = (response, sumCash) => {
   let tr = ``;
   let no = 1;
   // tbody
   response.forEach((row) => {
+    // cash name
+    const cashName = row.CashName;
+    // cash date
+    const cashDate = row.CashYYYYMMDD;
+    // cash price
     const cashRp = row.CashRp;
     const cashPrice =
       cashRp >= 1
@@ -123,48 +128,48 @@ export const uiPDF = (response, sumCash) => {
         : `- ${formatRupiah2(Math.abs(cashRp))}`;
     tr += `<tr>
             <td>${no++}</td>
-            <td>${row.CashYYYYMMDD}</td>
-            <td>${row.CashName}</td>
+            <td>${cashDate}</td>
+            <td>${cashName}</td>
             <td>${cashPrice}</td>
            </tr>`;
     no++;
   });
-  const sum = `<td id="cash-sum">${formatRupiah2(sumCash)}</td>`;
+  const sum = `<td>${formatRupiah2(sumCash)}</td>`;
   const { indonesiaDDMY, indonesiaHour, indonesiaMinute, indonesiaSecond } =
     timeIndonesian();
   const html = `
   <h3>Table Cash</h3>
   <h6>${indonesiaDDMY}</h6>
   <div class="d-flex gap-1">
-    <h6 class="jam">${indonesiaHour} :</h6>
-    <h6 class="menit">${indonesiaMinute}</h6>
-    <h6 class="detik">${indonesiaSecond}</h6>
+    <h6>${indonesiaHour} :</h6>
+    <h6>${indonesiaMinute}</h6>
+    <h6>${indonesiaSecond}</h6>
   </div>
   `;
   const html1 = `
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th>No</th>
-            <th>Date</th>
-            <th>Name</th>
-            <th>Price</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${tr}
-        </tbody>
-        <tfoot>
-          <tr>
-            <th colspan="3" class="text-center">Total</th>
-            ${sum}
-          </tr>
-        </tfoot>
-      </table>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>Date</th>
+        <th>Name</th>
+        <th>Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${tr}
+    </tbody>
+    <tfoot>
+      <tr>
+        <th colspan="3" class="text-center">Total</th>
+        ${sum}
+      </tr>
+    </tfoot>
+  </table>
   `;
   const html2 = `          
   <div class="d-flex justify-content-center">
-    <div class="card my-2">
+    <div class="card my-2 w-100">
       <!--  cardheader -->
       <div
         class="card-header text-center text-white fs-3"

@@ -1,5 +1,7 @@
-import { formatRupiah2 } from "../../utils/formatRupiah.js";
-import { formatWaktuIndo } from "../../utils/formatWaktu.js";
+import formatQty from "../../utils/formatQty.js";
+import { formatPrice, formatRupiah2 } from "../../utils/formatPrice.js";
+import { formatWaktuIndo, timeIndonesian } from "../../utils/formatTime.js";
+
 // ui tr inventory from db
 export const uiTbody = (response) => {
   let tr = ``;
@@ -7,43 +9,38 @@ export const uiTbody = (response) => {
     // persediaanId
     const persediaanId = parseInt(el.PersediaanId);
     // persediaanDMY
-    const persediaanDDMY = el.PersediaanDDMY;
+    const persediaanDDMY = formatWaktuIndo(el.PersediaanDDMY);
     // persediaanHMS
     const persediaanHMS = el.PersediaanHMS;
     // persediaanInfo
     const persediaanInfo = el.PersediaanInfo;
     // productId
-    const productId = parseInt(el.ProductId);
+    const productId = el.ProductId;
     // productName
     const productName = el.ProductName;
     // productPriceBuy
-    const productPriceBuy = parseFloat(el.ProductPriceBeli);
+    const productPriceBuy = formatPrice(el.ProductPriceBeli);
     // supplier-name
     const supplierName = el.SupplierName === null ? "-" : el.SupplierName;
     // categoryName
     const categoryName = el.CategoryName === null ? "-" : el.CategoryName;
     // qty
-    const persediaanQty = parseFloat(el.PersediaanQty);
-    const spanColor = persediaanQty >= 1 ? "text-bg-success" : "text-bg-danger";
-    const qtyTxt =
-      persediaanQty >= 1
-        ? `+ ${persediaanQty}`
-        : `- ${Math.abs(persediaanQty)}`;
-    // rupiah
-    const persediaanRp = parseFloat(el.PersediaanRp);
-    const rpTxt =
-      persediaanRp >= 1
-        ? `+ ${formatRupiah2(persediaanRp)}`
-        : `- ${formatRupiah2(Math.abs(persediaanRp))}`;
+    const persediaanQty = el.PersediaanQty;
+    // totaPrice
+    const persediaanRp = formatPrice(el.PersediaanRp);
+
+    const spanColor =
+      el.PersediaanQty >= 1 ? "text-bg-success" : "text-bg-danger";
+
     tr += `
     <tr
-      data-persediaanid=${persediaanId}
+      data-persediaanid="${persediaanId}"
       data-persediaanddmy="${persediaanDDMY}"
       data-persediaanHMS="${persediaanHMS}"
       data-persediaanrp="${persediaanRp}"
       data-persediaanqty="${persediaanQty}"
       data-persediaaninfo="${persediaanInfo}"
-      data-productid=${productId}
+      data-productid="${productId}"
       data-productname="${productName}"
       data-productpricebuy="${productPriceBuy}"
     >
@@ -51,7 +48,7 @@ export const uiTbody = (response) => {
         ${persediaanId}
       </td>
       <td class="align-content-center pe-3 text-truncate">
-        ${formatWaktuIndo(persediaanDDMY)}
+        ${persediaanDDMY}
       </td>
       <td class="align-content-center pe-3 text-truncate">
         ${persediaanHMS}
@@ -69,14 +66,14 @@ export const uiTbody = (response) => {
         <span
           class="badge fs-6 text-truncate ${spanColor}"
           style="max-width: 100%"
-          >${qtyTxt}</span
+          >${formatQty(persediaanQty)}</span
         >
       </td>
       <td class="text-truncate align-content-center text-center">
         <span
           class="badge fs-6 text-truncate ${spanColor}"
           style="max-width: 100%"
-          >${rpTxt}</span
+          >${persediaanRp}</span
         >
       </td>
       <td class="align-content-center">
@@ -140,11 +137,38 @@ export const uiAlertSuccess = (res) => {
   $("#section-alert").html(alertSuccess);
 };
 export const uiAlertFail = (res) => {
-  const alertFailedMe = `<div class="alert alert-danger alert-dismissible fade show text-start" role="alert">
-                            <strong class="text-capitalize">${res}</strong>
-                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>`;
-  $("#section-alert").html(alertFailedMe);
+  const alert = `
+  <div
+    class="alert alert-danger alert-dismissible fade show text-start"
+    role="alert"
+  >
+    <strong class="text-capitalize">${res}</strong>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  </div>
+  `;
+  $("#persediaan-modal-convert-csv #failed").html(alert);
+};
+export const uiAlertFail1 = (res) => {
+  const alert = `
+  <div
+    class="alert alert-danger alert-dismissible fade show text-start"
+    role="alert"
+  >
+    <strong class="text-capitalize">${res}</strong>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  </div>
+  `;
+  $("#persediaan-modal-convert-pdf #failed").html(alert);
 };
 export const uiAlertFailCreate = (res) => {
   const alertFailed = `<div class="alert alert-danger alert-dismissible fade show text-start" role="alert">
@@ -244,33 +268,132 @@ export const uiInit = () => {
   $("div#persediaan-sum-section").html("");
 };
 // for - report
-export const uiTrPDF = (rows, no) => {
-  const totalQty = rows.PersediaanQty;
-  const totalRp = rows.PersediaanRp;
-  const totalQtyTxt =
-    totalQty >= 1 ? `+ ${totalQty}` : `- ${Math.abs(totalQty)}`;
-  const totalRpTxt =
-    totalRp >= 1
-      ? `+ ${formatRupiah2(totalRp)}`
-      : `- ${formatRupiah2(Math.abs(totalRp))}`;
-  const tr = `<tr>
-                  <td class="text-center text-nowrap align-content-center">${no}</td>
-                  <td class="text-nowrap align-content-center">${formatWaktuIndo(
-                    rows.PersediaanDDMY
-                  )}</td>
-                  <td class="text-nowrap align-content-center">${
-                    rows.PersediaanHMS
-                  }</td>
-                  <td class="text-nowrap align-content-center">${
-                    rows.ProductName
-                  }</td>
-                  <td class="text-nowrap align-content-center">${formatRupiah2(
-                    rows.HargaBeli
-                  )}</td>
-                  <td class="text-nowrap align-content-center">${totalQtyTxt}</td>
-                  <td class="text-nowrap align-content-center">${totalRpTxt}</td>
-                </tr>`;
-  return tr;
+export const uiTrPDF = (response, sumPrice1, groupProduct1) => {
+  // 1.table persediaan
+  let tr = "";
+  let no = 1;
+  response.forEach((rows) => {
+    const persediaanDDMY = rows.PersediaanDDMY;
+    const persediaanHMS = rows.PersediaanHMS;
+    const productName = rows.ProductName;
+    const productPriceBuy = rows.HargaBeli;
+    const totalQty = rows.PersediaanQty;
+    const totalRp = rows.PersediaanRp;
+
+    const totalQtyTxt = formatQty(totalQty);
+    const totalRpTxt = formatPrice(totalRp);
+    tr += `
+    <tr>
+      <td class="text-center text-nowrap align-content-center">${no++}</td>
+      <td class="text-nowrap align-content-center">
+        ${persediaanDDMY}
+      </td>
+      <td class="text-nowrap align-content-center">${persediaanHMS}</td>
+      <td class="text-nowrap align-content-center">${productName}</td>
+      <td class="text-nowrap align-content-center">
+        ${formatRupiah2(productPriceBuy)}
+      </td>
+      <td class="text-nowrap align-content-center">${totalQtyTxt}</td>
+      <td class="text-nowrap align-content-center">${totalRpTxt}</td>
+    </tr>
+    `;
+  });
+  // 2. group product
+  let tr1 = "";
+  let no1 = 1;
+  groupProduct1.forEach((rows) => {
+    const productName = rows.ProductName;
+    const productPriceBuy = formatRupiah2(rows.ProductPriceBeli);
+    const totalQty = rows.TotalQty;
+    const totalRp = rows.TotalRp;
+
+    let totalQtyTxt = formatQty(totalQty);
+    let totalRpTxt = formatPrice(totalRp);
+    tr1 += `
+    <tr>
+      <td class="text-center text-nowrap align-content-center">${no1++}</td>
+      <td class="text-nowrap align-content-center">${productName}</td>
+      <td class="text-nowrap align-content-center">${productPriceBuy}</td>
+      <td class="text-nowrap align-content-center">${totalQtyTxt}</td>
+      <td class="text-nowrap align-content-center">${totalRpTxt}</td>
+    </tr>
+    `;
+    return tr1;
+  });
+  const { indonesiaDDMY, indonesiaHour, indonesiaMinute, indonesiaSecond } =
+    timeIndonesian();
+  const html1 = `
+  <div class="mb-3">
+    <h2>Table Stock</h2>
+    <h6>${indonesiaDDMY}</h6>
+    <div class="d-flex gap-1">
+      <h6>${indonesiaHour} :</h6>
+      <h6>${indonesiaMinute}</h6>
+      <h6>${indonesiaSecond}</h6>
+    </div>
+  </div>
+  `;
+  const html2 = `
+  <div class="mb-3">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th class="text-center">#</th>
+          <th>Date</th>
+          <th>Hour</th>
+          <th>Product</th>
+          <th>Price</th>
+          <th>Qty</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${tr}
+      </tbody>
+      <tfoot>
+        <tr>
+          <th colspan="6" class="text-end me-2">Total</th>
+          <th>${sumPrice1}</th>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+  `;
+  const html3 = `
+  <div class="mb-3">
+    <h3>Table Summary</h3>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th class="text-center">#</th>
+          <th>Product</th>
+          <th>Price</th>
+          <th>Qty</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${tr1}
+      </tbody>
+    </table>
+  </div>
+  `;
+  const html = `
+  <div class="d-flex justify-content-center">
+    <div class="card my-2 w-100">
+      <!--  cardheader -->
+      <div
+        class="card-header text-center text-white fs-3"
+        style="background-color: #273eec"
+      >
+        PT. ABC, T.bk
+      </div>
+      <!--  cardBody -->
+      <div class="card-body">${html1} ${html2} ${html3}</div>
+    </div>
+  </div>          
+  `;
+  return html;
 };
 export const uiTrProductSum = (rows, no) => {
   // qty

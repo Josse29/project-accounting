@@ -1,4 +1,4 @@
-import { getTimeNow } from "../../utils/formatWaktu.js";
+import { getTimeNow } from "../../utils/formatTime.js";
 import { uiBlankValue, uiAlertFailCreate, uiAlertSuccess } from "./ui.js";
 import { listProductRefPersediaanCreate } from "../products/list.js";
 import { addStock, getSumQty } from "./services.js";

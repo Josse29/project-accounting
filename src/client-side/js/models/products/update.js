@@ -3,7 +3,7 @@ import { listCategoryRefProductUpdate } from "../categories/list.js";
 import { listSupplierRefProductUpdate } from "../supplier/list.js";
 import { uiAlertSuccess, uiAlertFailUpdate } from "./ui.js";
 import { capitalizeWord } from "../../utils/formatCapitalize.js";
-import { disFormatRupiah1, formatRupiah1 } from "../../utils/formatRupiah.js";
+import { disFormatRupiah1, formatRupiah1 } from "../../utils/formatPrice.js";
 import { getImageBase64, validateImg } from "../../utils/loadImg.js";
 import { getProductAll, getProductRef } from "./utils.js";
 

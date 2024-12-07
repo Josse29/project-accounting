@@ -61,3 +61,6 @@
 12/6/2024
 - refactor csv handlers part 2 huffffrf
 - refactor pdf handlers part 2 huffffrf
+12/7/2024
+- refactor pdf handlers part 3 huffffrf
+- refactor utils/...

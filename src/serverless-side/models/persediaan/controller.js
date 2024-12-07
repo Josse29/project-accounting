@@ -1,4 +1,8 @@
-import { validateProductAdd, validateQty } from "../../utils/validation.js";
+import {
+  validateDate,
+  validateProductAdd,
+  validateQty,
+} from "../../utils/validation.js";
 import { createAccounting } from "../accounting/controller.js";
 import { createCash } from "../cash/controller.js";
 import {
@@ -138,7 +142,7 @@ export const getPersediaanQtyValidate = async (req) => {
     }
     // goods out
     if (valPersediaanQty < 0) {
-      // barang keluar tapi persediaan masih ada
+      // goods out but stock still existed
       if (stockQty >= 1) {
         // change min to positive value
         const qtyOutAbs = Math.abs(parseFloat(valPersediaanQty));
@@ -152,7 +156,7 @@ export const getPersediaanQtyValidate = async (req) => {
           throw new Error(msg);
         }
       }
-      // barang keluar tapi persediaan masih kosong
+      // goods out but stock still existed
       if (stockQty < 1) {
         const msg = `${valProductName} is still empty....`;
         throw new Error(msg);
@@ -161,12 +165,12 @@ export const getPersediaanQtyValidate = async (req) => {
   }
   // Product hasn't listed yet
   if (!existItem) {
-    // barang masuk
+    // goods in
     if (valPersediaanQty >= 1) {
       const msg = `${valProductName} has been added with qty : ${valPersediaanQty}`;
       return msg;
     }
-    // barang keluar
+    // goods out but stock still existed
     if (valPersediaanQty < 1) {
       const msg = `Upppsss Sorry... ${valProductName} is'nt listed`;
       throw new Error(msg);
@@ -179,21 +183,12 @@ export const getPersediaanSumQty = async (valPersediaanProductId) => {
   const resSumQty = sumQty.TotalQty ? sumQty.TotalQty : 0;
   return resSumQty;
 };
-export const getPersediaanSumQtyDate = (req) => {
+export const getPersediaanSumQtyDate = async (req) => {
   const { startDateVal, endDateVal } = req;
   const query = queryGetPersediaanQtyDate(startDateVal, endDateVal);
-  return new Promise((resolve, reject) => {
-    db.each(query, (err, res) => {
-      if (!err) {
-        const response = res.TotalQty;
-        const totalQty = response ? response : 0;
-        resolve(totalQty);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const sumQty = await window.electronAPI.sqliteApi.each1(query);
+  const resSumQty = sumQty.TotalQty ? sumQty.TotalQty : 0;
+  return resSumQty;
 };
 export const getPersediaanSumPrice = async () => {
   const query = queryGetPersediaanRpSum();
@@ -229,33 +224,18 @@ export const getPersediaanProductId1 = async (valPersediaanProductId) => {
   const persediaanProduct = await window.electronAPI.sqliteApi.all(query);
   return persediaanProduct;
 };
-export const getPersediaanReport1 = (req) => {
+export const getPersediaanReport1 = async (req) => {
   const { startDateVal, endDateVal } = req;
+  validateDate(startDateVal, endDateVal);
   const query = queryGetPersediaanProductReport(startDateVal, endDateVal);
-  return new Promise((resolve, reject) => {
-    db.all(query, (err, result) => {
-      if (!err) {
-        resolve(result);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const persediaan = await window.electronAPI.sqliteApi.all(query);
+  return persediaan;
 };
-export const getPersediaanGroupProduct1 = (req) => {
+export const getPersediaanGroupProduct1 = async (req) => {
   const { startDateVal, endDateVal } = req;
   const query = queryGetPersediaanProductGroup(startDateVal, endDateVal);
-  return new Promise((resolve, reject) => {
-    db.all(query, (err, res) => {
-      if (!err) {
-        resolve(res);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const persediaan = await window.electronAPI.sqliteApi.all(query);
+  return persediaan;
 };
 
 export const getPersediaanGroupSupplier = (req) => {
@@ -274,6 +254,8 @@ export const getPersediaanGroupSupplier = (req) => {
 };
 export const getPersediaanReport = async (req) => {
   const { startDateVal, endDateVal } = req;
+  // validate date
+  validateDate(startDateVal, endDateVal);
   const query = queryGetPersediaanReport(startDateVal, endDateVal);
   const persediaan = await window.electronAPI.sqliteApi.all(query);
   return persediaan;

@@ -1,5 +1,5 @@
-import { formatRupiah2 } from "../../utils/formatRupiah.js";
-import { formatWaktuIndo } from "../../utils/formatWaktu.js";
+import { formatRupiah2 } from "../../utils/formatPrice.js";
+import { formatWaktuIndo } from "../../utils/formatTime.js";
 import { animateFade, reinitTooltip } from "../../utils/updateUi.js";
 import { getByDateProductId, getSumQtyDateProduct } from "./services.js";
 import { uiTbody, uiTbodyEmpty } from "./ui.js";

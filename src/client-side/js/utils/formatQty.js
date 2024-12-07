@@ -1,12 +1,14 @@
-import { addSpace } from "./formatSpace.js";
-
-export const formatQty1 = (valueQty) => {
-  let PersediaanQty = ``;
-  const formattedQty = addSpace(valueQty);
-  if (valueQty >= 1) {
-    PersediaanQty = `<span> + ${valueQty}</span>`;
-  } else {
-    PersediaanQty = `<span>${formattedQty}</span>`;
+const formatQty = (num) => {
+  let qtyTxt = ``;
+  if (num < 0) {
+    qtyTxt = `- ${Math.abs(num)}`;
   }
-  return PersediaanQty;
+  if (num === 0) {
+    qtyTxt = num;
+  }
+  if (num > 0) {
+    qtyTxt = `+ ${num}`;
+  }
+  return qtyTxt;
 };
+export default formatQty;

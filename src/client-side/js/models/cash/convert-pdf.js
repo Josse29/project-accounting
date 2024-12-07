@@ -13,14 +13,15 @@ $("#cash-modal-convert-pdf button#cash-convert-pdf")
       startDateVal,
       endDateVal,
     };
+    // table
     const { status, response } = await getPDF(req);
     if (status) {
       const existed = response.length >= 1;
       if (existed) {
         // summary cash
         const sumCash1 = await summary1(req);
-        const htlmContent = uiPDF(response, sumCash1);
-        const filePath = await window.electronAPI.savePDF(htlmContent);
+        const htmlContent = uiPDF(response, sumCash1);
+        const filePath = await window.electronAPI.savePDF(htmlContent);
         if (filePath) {
           uiAlertSuccess(`File PDF Save on ${filePath}`);
           $("#cash-modal-convert-pdf input#cash-start-date-1").val("");
@@ -38,4 +39,5 @@ $("#cash-modal-convert-pdf button#cash-convert-pdf")
       console.error(response);
       uiAlertFailed1(response);
     }
+    // summary
   });

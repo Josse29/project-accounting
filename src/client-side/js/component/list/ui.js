@@ -1,4 +1,4 @@
-import { formatRupiah2 } from "../../utils/formatRupiah.js";
+import { formatRupiah2 } from "../../utils/formatPrice.js";
 
 export const uiList = (rows) => {
   const rupiahTotal = formatRupiah2(rows.ProductPriceSell * rows.ProductQty);

@@ -1,5 +1,5 @@
 import { getPDF } from "./services.js";
-import { uiAlertFail, uiAlertSuccess } from "./ui.js";
+import { uiAlertFail, uiAlertSuccess, uiPDF } from "./ui.js";
 //
 // export pdf product
 $("#product-export-pdf")
@@ -9,12 +9,13 @@ $("#product-export-pdf")
     if (status) {
       const existed = response.length >= 1;
       if (existed) {
-        // 1. load file page pdf first
-        ipcRenderer.send("pdf:product");
-        // 2. after success create pdf and display ui aler success
-        ipcRenderer.on("success:pdf-product", (e, file_path) => {
-          uiAlertSuccess(`File PDF Savded on ${file_path}`);
-        });
+        const htmlContent = uiPDF(response);
+        const filePath = await window.electronAPI.savePDF(htmlContent);
+        if (filePath) {
+          uiAlertSuccess(`File PDF Savded on ${filePath}`);
+        } else {
+          console.error(filePath);
+        }
       } else {
         uiAlertFail("upppps Product is still empty...");
       }

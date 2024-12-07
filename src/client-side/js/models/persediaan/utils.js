@@ -1,9 +1,12 @@
 import {
   getAll1,
+  getByGroupProduct1,
   getGroupProduct,
   getPagination,
   getRowPage1,
   getSumPrice,
+  getSumPriceDate,
+  getSumQtyDate,
 } from "./services.js";
 import { handlePagination } from "./pagination.js";
 import {
@@ -14,7 +17,7 @@ import {
   uiTbody,
   uiTbodyEmpty,
 } from "./ui.js";
-import { formatRupiah2 } from "../../utils/formatRupiah.js";
+import { formatRupiah2 } from "../../utils/formatPrice.js";
 import { reinitTooltip } from "../../utils/updateUi.js";
 import { handlePagination1 } from "./pagination-1.js";
 import { uiQty } from "../../component/card/qty.js";
@@ -122,6 +125,36 @@ export async function getPage1(req) {
     list();
     // update active page
     uiBtnPageActive1(req.offsetVal);
+  }
+  if (!status) {
+    console.error(response);
+  }
+}
+// sum-qty
+export const sumQty = async (req) => {
+  const { status, response } = await getSumQtyDate(req);
+  if (status) {
+    return response;
+  }
+  if (!status) {
+    console.error(response);
+  }
+};
+// sum-rp
+export const sumPrice = async (req) => {
+  const { status, response } = await getSumPriceDate(req);
+  if (status) {
+    const rupiah = formatRupiah2(response);
+    return rupiah;
+  }
+  if (!status) {
+    console.error(response);
+  }
+};
+export async function groupProduct(req) {
+  const { status, response } = await getByGroupProduct1(req);
+  if (status) {
+    return response;
   }
   if (!status) {
     console.error(response);

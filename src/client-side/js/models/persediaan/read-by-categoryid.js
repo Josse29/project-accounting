@@ -1,4 +1,4 @@
-import { formatRupiah2 } from "../../utils/formatRupiah.js";
+import { formatRupiah2 } from "../../utils/formatPrice.js";
 import { animateFade, reinitTooltip } from "../../utils/updateUi.js";
 import { listCategoryRefPersediaanRead } from "../categories/list.js";
 import { getByCategoryId, getSumPriceCategoryId } from "./services.js";

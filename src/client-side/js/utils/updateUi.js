@@ -1,4 +1,4 @@
-import { timeIndonesian } from "./formatWaktu.js";
+import { timeIndonesian } from "./formatTime.js";
 
 const updateTimeHTML = () => {
   const { indonesiaDDMY, indonesiaHour, indonesiaMinute, indonesiaSecond } =

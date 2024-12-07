@@ -1,5 +1,5 @@
-import { formatRupiah2 } from "../../utils/formatRupiah.js";
-
+import { formatRupiah2 } from "../../utils/formatPrice.js";
+import { timeIndonesian } from "../../utils/formatTime.js";
 // UI tr Product from dbsqlite
 export const uiTbody = (response) => {
   let tr = "";
@@ -182,18 +182,73 @@ export const uiAlertFailUpdate = (res) => {
                     </div>`;
   $("#product-update-failed").html(alertFail);
 };
-export const uiTrPDf = (no, row) => {
-  const productPriceBuy = formatRupiah2(row.ProductPriceBeli);
-  const productPriceSell = formatRupiah2(row.ProductPriceJual);
-  const productInfo = row.ProductInfo !== "" ? row.ProductInfo : "-";
-  return `<tr>
-            <td class="text-center text-nowrap align-content-center">${no}</td>
-            <td class="text-nowrap align-content-center">${row.ProductName}</td>
-            <td class="text-nowrap align-content-center">${productPriceBuy}</td>
-            <td class="text-nowrap align-content-center">${productPriceSell}</td>
-            <td style="width:200px">
-              <img src="${row.ProductImage}" style="width:100%"/>
-            </td>
-            <td class="text-nowrap align-content-center">${productInfo}</td>
-          </tr>`;
+export const uiPDF = (response) => {
+  let tr = ``;
+  let no = 1;
+  response.forEach((row) => {
+    const productName = row.ProductName;
+    const productImg = row.ProductImage;
+    const productPriceBuy = formatRupiah2(row.ProductPriceBeli);
+    const productPriceSell = formatRupiah2(row.ProductPriceJual);
+    // const productInfo = row.ProductInfo !== "" ? row.ProductInfo : "-"; || if needed
+    tr += `
+      <tr>
+        <td class="text-center text-nowrap align-content-center">${no++}</td>
+        <td class="text-nowrap align-content-center">${productName}</td>
+        <td class="text-nowrap align-content-center">${productPriceBuy}</td>
+        <td class="text-nowrap align-content-center">${productPriceSell}</td>
+        <td class="d-flex justify-content-center">
+          ${
+            productImg !== "null"
+              ? `<img src="${productImg}" style="width: 200px" />`
+              : `<p class="text-nowrap text-muted fst-italic mb-0">no img displayed....</p>`
+          }
+        </td>
+      </tr>  
+    `;
+  });
+  const { indonesiaDDMY, indonesiaHour, indonesiaMinute, indonesiaSecond } =
+    timeIndonesian();
+  const html = `
+  <h3>Table Product</h3>
+  <h6>${indonesiaDDMY}</h6>
+  <div class="d-flex gap-1">
+    <h6>${indonesiaHour} :</h6>
+    <h6>${indonesiaMinute}</h6>
+    <h6>${indonesiaSecond}</h6>
+  </div>
+  `;
+  const html1 = `
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>Date</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th class="text-center">Image</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${tr}
+    </tbody>
+  </table>
+  `;
+  const html2 = `          
+  <div class="d-flex justify-content-center">
+    <div class="card my-2 w-100">
+      <!--  cardheader -->
+      <div
+        class="card-header text-center text-white fs-3"
+        style="background-color: #273eec">
+        PT. ABC, T.bk
+      </div>
+      <!--  cardBody -->
+      <div class="card-body">
+        ${html}
+        ${html1}
+      </div>
+    </div>
+  </div>`;
+  return html2;
 };

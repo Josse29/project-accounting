@@ -7,13 +7,6 @@ $("#persediaan-modal-convert-csv button#persediaan-convert-csv")
     const startDateVal = $("input#persediaan-start-date-csv").val();
     const endDateVal = $("input#persediaan-end-date-csv").val();
     const req = { startDateVal, endDateVal };
-    if (
-      startDateVal > endDateVal ||
-      (startDateVal !== "" && endDateVal === "") ||
-      (startDateVal === "" && endDateVal !== "")
-    ) {
-      return false;
-    }
     const { status, response } = await getCSV(req);
     if (status) {
       const existed = response.length >= 1;
@@ -21,6 +14,7 @@ $("#persediaan-modal-convert-csv button#persediaan-convert-csv")
         const savedPath = await window.electronAPI.saveCSV(response);
         if (savedPath) {
           uiAlertSuccess(`File Excel Save On ${savedPath}`);
+          $("#persediaan-modal-convert-csv #failed").html(``);
           $("input#persediaan-start-date-csv").val("");
           $("input#persediaan-end-date-csv").val("");
           $("#persediaan-modal-convert-csv").modal("hide");
@@ -28,10 +22,10 @@ $("#persediaan-modal-convert-csv button#persediaan-convert-csv")
       }
       if (!existed) {
         uiAlertFail("uuppsss , sorry stock is still empty...");
-        $("#persediaan-modal-convert-csv").modal("hide");
       }
     }
     if (!status) {
       console.error(response);
+      uiAlertFail(response);
     }
   });

@@ -1,6 +1,6 @@
 import { getByDate, getSumPriceDate } from "./services.js";
-import { formatRupiah2 } from "../../utils/formatRupiah.js";
-import { formatWaktuIndo } from "../../utils/formatWaktu.js";
+import { formatRupiah2 } from "../../utils/formatPrice.js";
+import { formatWaktuIndo } from "../../utils/formatTime.js";
 import { animateFade, reinitTooltip } from "../../utils/updateUi.js";
 import { listCategoryRefPersediaanReadDate } from "../categories/list.js";
 import { listProductRefPersediaanReadDate } from "../products/list.js";
