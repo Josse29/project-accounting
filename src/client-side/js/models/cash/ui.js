@@ -1,5 +1,5 @@
-import { formatRupiah2 } from "../../utils/formatRupiah.js";
-import { formatWaktuIndo, timeIndonesian } from "../../utils/formatWaktu.js";
+import { formatPrice, formatRupiah2 } from "../../utils/formatPrice.js";
+import { formatWaktuIndo, timeIndonesian } from "../../utils/formatTime.js";
 
 export const uiTbody = (response) => {
   let tbody = ``;
@@ -122,19 +122,15 @@ export const uiPDF = (response, sumCash) => {
     const cashDate = row.CashYYYYMMDD;
     // cash price
     const cashRp = row.CashRp;
-    const cashPrice =
-      cashRp >= 1
-        ? `+ ${formatRupiah2(cashRp)}`
-        : `- ${formatRupiah2(Math.abs(cashRp))}`;
     tr += `<tr>
             <td>${no++}</td>
             <td>${cashDate}</td>
             <td>${cashName}</td>
-            <td>${cashPrice}</td>
+            <td>${formatPrice(cashRp)}</td>
            </tr>`;
     no++;
   });
-  const sum = `<td>${formatRupiah2(sumCash)}</td>`;
+  const sum = `<td>${formatPrice(sumCash)}</td>`;
   const { indonesiaDDMY, indonesiaHour, indonesiaMinute, indonesiaSecond } =
     timeIndonesian();
   const html = `
@@ -142,7 +138,7 @@ export const uiPDF = (response, sumCash) => {
   <h6>${indonesiaDDMY}</h6>
   <div class="d-flex gap-1">
     <h6>${indonesiaHour} :</h6>
-    <h6>${indonesiaMinute}</h6>
+    <h6>${indonesiaMinute} :</h6>
     <h6>${indonesiaSecond}</h6>
   </div>
   `;

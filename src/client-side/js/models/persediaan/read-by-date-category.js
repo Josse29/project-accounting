@@ -1,4 +1,4 @@
-import { formatRupiah2 } from "../../utils/formatPrice.js";
+import { formatPrice } from "../../utils/formatPrice.js";
 import { formatWaktuIndo } from "../../utils/formatTime.js";
 import { animateFade, reinitTooltip } from "../../utils/updateUi.js";
 import { getByDateCategoryId, getSumPriceDateCategory } from "./services.js";
@@ -22,7 +22,7 @@ $("div#persediaan-date-all-search")
     const sumRpRes = sumRp.response;
     const sumRpStatus = sumRp.status;
     if (sumRpStatus) {
-      const sumRupiah = formatRupiah2(sumRpRes);
+      const sumRupiah = formatPrice(sumRpRes);
       // insert - to - html sumpersediaan
       const sumSectionHTML = `<p class="fs-5 ms-2 mb-1 text-capitalize fw-bold ms-2">
                               ${selectedTxt} | ${rangeDateTxt}</p>

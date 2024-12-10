@@ -1,4 +1,4 @@
-import { formatRupiah2 } from "../../utils/formatPrice.js";
+import { formatPrice } from "../../utils/formatPrice.js";
 import { animateFade, reinitTooltip } from "../../utils/updateUi.js";
 import { listSupplierRefPersediaanRead } from "../supplier/list.js";
 import { getBySupplierId, getSumPriceSupplierId } from "./services.js";
@@ -18,7 +18,7 @@ $("select#persediaan-refsupplier-search")
     const summaryRes = summary.response;
     const summaryStatus = summary.status;
     if (summaryStatus) {
-      const resSumRp = formatRupiah2(summaryRes);
+      const resSumRp = formatPrice(summaryRes);
       // insertohtml
       const sectionSum = `
       <p class="fs-5 ms-2 mb-1 text-capitalize fw-bold ms-2">${selectedSupplierName}</p>

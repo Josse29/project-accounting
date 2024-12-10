@@ -210,29 +210,33 @@ export const uiPDF = (response) => {
   const { indonesiaDDMY, indonesiaHour, indonesiaMinute, indonesiaSecond } =
     timeIndonesian();
   const html = `
-  <h3>Table Product</h3>
-  <h6>${indonesiaDDMY}</h6>
-  <div class="d-flex gap-1">
-    <h6>${indonesiaHour} :</h6>
-    <h6>${indonesiaMinute}</h6>
-    <h6>${indonesiaSecond}</h6>
+  <div class="mb-3">
+    <h3>Table Product</h3>
+    <h6>${indonesiaDDMY}</h6>
+    <div class="d-flex gap-1">
+      <h6>${indonesiaHour} :</h6>
+      <h6>${indonesiaMinute} :</h6>
+      <h6>${indonesiaSecond}</h6>
+    </div>
   </div>
   `;
   const html1 = `
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>No</th>
-        <th>Date</th>
-        <th>Name</th>
-        <th>Price</th>
-        <th class="text-center">Image</th>
-      </tr>
-    </thead>
-    <tbody>
-      ${tr}
-    </tbody>
-  </table>
+  <div class="mb-3">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Date</th>
+          <th>Name</th>
+          <th>Price</th>
+          <th class="text-center">Image</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${tr}
+      </tbody>
+    </table>
+  </div>
   `;
   const html2 = `          
   <div class="d-flex justify-content-center">

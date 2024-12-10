@@ -1,4 +1,4 @@
-import { formatRupiah2 } from "../../utils/formatRupiah.js";
+import { formatRupiah2 } from "../../utils/formatPrice.js";
 import handlePagination from "./pagination.js";
 import {
   getCashByLimitOffset,

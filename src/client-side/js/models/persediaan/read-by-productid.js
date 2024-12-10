@@ -1,4 +1,4 @@
-import { formatRupiah2 } from "../../utils/formatPrice.js";
+import { formatPrice, formatRupiah2 } from "../../utils/formatPrice.js";
 import { animateFade, reinitTooltip } from "../../utils/updateUi.js";
 import { listProductRefPersediaanRead } from "../products/list.js";
 import { getByProductId2, getSumQty } from "./services.js";
@@ -23,7 +23,7 @@ $("select#persediaan-refproduct-search")
     const sumQtyRes = sumQty.response;
     if (sumQtyStatus) {
       const sumRp = priceBuy * sumQtyRes;
-      const sumRp1 = formatRupiah2(parseFloat(sumRp));
+      const sumRp1 = formatPrice(parseFloat(sumRp));
       // insert - to - html sumpersediaan
       const sumSectionHTML = `
       <p class="fs-5 ms-2 mb-1 text-capitalize fw-bold ms-2">${productName}</p> 

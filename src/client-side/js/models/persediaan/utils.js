@@ -1,12 +1,13 @@
 import {
   getAll1,
+  getByGroupCategory,
   getByGroupProduct1,
+  getByGroupSupplier,
   getGroupProduct,
   getPagination,
   getRowPage1,
   getSumPrice,
   getSumPriceDate,
-  getSumQtyDate,
 } from "./services.js";
 import { handlePagination } from "./pagination.js";
 import {
@@ -74,6 +75,7 @@ export async function get2() {
 export async function get3(req) {
   const { status, response } = await getAll1(req);
   if (status) {
+    console.log(response);
     uiTbody(response);
     uiBtnPageActive(req.offsetVal);
     reinitTooltip();
@@ -82,7 +84,6 @@ export async function get3(req) {
     console.error(response);
   }
 }
-
 // get pagination by group product and all
 export const getAll2 = async (data) => {
   // 1. get total page and row
@@ -113,6 +114,8 @@ export const getAll2 = async (data) => {
     console.error(response);
   }
 };
+
+// to pdf
 // get by group product
 export async function getPage1(req) {
   const stock = await getGroupProduct(req);
@@ -130,16 +133,6 @@ export async function getPage1(req) {
     console.error(response);
   }
 }
-// sum-qty
-export const sumQty = async (req) => {
-  const { status, response } = await getSumQtyDate(req);
-  if (status) {
-    return response;
-  }
-  if (!status) {
-    console.error(response);
-  }
-};
 // sum-rp
 export const sumPrice = async (req) => {
   const { status, response } = await getSumPriceDate(req);
@@ -151,6 +144,7 @@ export const sumPrice = async (req) => {
     console.error(response);
   }
 };
+// persediaan by product
 export async function groupProduct(req) {
   const { status, response } = await getByGroupProduct1(req);
   if (status) {
@@ -160,3 +154,22 @@ export async function groupProduct(req) {
     console.error(response);
   }
 }
+// persediaan by supplier
+export const groupSupplier = async (req) => {
+  const { status, response } = await getByGroupSupplier(req);
+  if (status) {
+    return response;
+  }
+  if (!status) {
+    console.error(response);
+  }
+};
+export const groupCategory = async (req) => {
+  const { status, response } = await getByGroupCategory(req);
+  if (status) {
+    return response;
+  }
+  if (!status) {
+    console.error(response);
+  }
+};

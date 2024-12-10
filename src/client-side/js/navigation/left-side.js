@@ -23,7 +23,7 @@ $(async () => {
             class="text-center mb-5 custome-me tooltip-right-container"
             onClick='window.electronAPI.navigateTo("order")'
           >
-            <i class="fa-solid fa-utensils fs-3 ${
+            <i class="fa-solid fa-cart-shopping fs-3 ${
               currentPage === "Order" && "custome-me-active"
             }">
               <div class="tooltip-right-text fs-4 p-2 px-3">Order</div>
@@ -56,7 +56,7 @@ $(async () => {
             class="text-center mb-5 custome-me tooltip-right-container"
             onClick='window.electronAPI.navigateTo("users")'>
             <i class="fa-solid fa-users fs-3 ${
-              currentPage === "Users" && "custome-me-active"
+              currentPage === "User" && "custome-me-active"
             }">
               <div class="tooltip-right-text fs-4 p-2 px-3">Users</div>
             </i>

@@ -1,7 +1,7 @@
 import { getByProductId, getSumProductId } from "./services.js";
 import { uiTbody, uiTbodyEmpty } from "./ui.js";
 import { listProductRefSalesRead } from "../products/list.js";
-import { formatRupiah2 } from "./../../utils/formatRupiah.js";
+import { formatRupiah2 } from "./../../utils/formatPrice.js";
 import { animateFade } from "../../utils/updateUi.js";
 
 // 1. get list

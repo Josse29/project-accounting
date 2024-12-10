@@ -1,6 +1,6 @@
 import { getByPersonId, getSumPersonId } from "./services.js";
 import { uiTbody, uiTbodyEmpty } from "./ui.js";
-import { formatRupiah2 } from "../../utils/formatRupiah.js";
+import { formatRupiah2 } from "../../utils/formatPrice.js";
 import { listUserRefSalesRead } from "./../users/list.js";
 import { animateFade } from "../../utils/updateUi.js";
 

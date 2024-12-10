@@ -1,42 +1,11 @@
-import { formatRupiah2 } from "../../utils/formatRupiah.js";
 import {
   getByGroupCustomer,
   getByGroupProduct,
-  getByGroupSale,
   getReport,
-  getSummary,
 } from "./services.js";
-import { uiSuccess } from "./ui.js";
-const tableGroupSales = async (req) => {
-  const { status, response } = await getByGroupSale(req);
-  if (status) {
-    let no = 1;
-    let tbody = ``;
-    response.forEach((el) => {
-      tbody += `<tr>
-                  <td>${no++}</td>
-                  <td>${el.UserFullname}</td>
-                  <td>${formatRupiah2(el.Sales_Total)}</td>
-                </tr>`;
-    });
-    const table = `<table class="table table-striped">
-                    <thead>
-                      <tr>
-                        <th>No</th>
-                        <th>Sales</th>
-                        <th>Total</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      ${tbody}
-                    </tbody>
-                  </table>`;
-    return table;
-  }
-  if (!status) {
-    console.error(response);
-  }
-};
+import { uiFailed1, uiPDF, uiSuccess } from "./ui.js";
+import { getSalesGroup, getTotal } from "./utils.js";
+
 const tableGroupProduct = async (req) => {
   const { status, response } = await getByGroupProduct(req);
   if (status) {
@@ -101,19 +70,7 @@ const tableGroupCustomer = async (req) => {
     console.error(response);
   }
 };
-const txtSummary = async (req) => {
-  const { status, response } = await getSummary(req);
-  if (status) {
-    const { totalQty, totalRp } = response;
-    return {
-      totalQty,
-      totalRp: formatRupiah2(totalRp),
-    };
-  }
-  if (!status) {
-    console.error(response);
-  }
-};
+
 // action
 $("#modal-sales-convert-pdf button#sale-convert-pdf")
   .off("click")
@@ -125,68 +82,32 @@ $("#modal-sales-convert-pdf button#sale-convert-pdf")
       startDateVal,
       endDateVal,
     };
-    // 2. validation date
-    if (
-      startDateVal > endDateVal ||
-      (startDateVal !== "" && endDateVal === "") ||
-      (startDateVal === "" && endDateVal !== "")
-    ) {
-      return false;
-    }
     const { status, response } = await getReport(req);
     if (status) {
       const existed = response.length >= 1;
+      console.log(existed);
       if (existed) {
-        let file_path = dialog.showSaveDialogSync({
-          title: "Export Data",
-          filters: [{ name: "pdf", extensions: ["pdf"] }],
-        });
-        if (file_path) {
-          let tbody = ``;
-          let no = 1;
-          response.forEach((row) => {
-            tbody += `<tr>
-                        <td class="text-wrap align-content-center text-capitalize">${no++}</td>
-                        <td class="text-wrap align-content-center text-capitalize">${
-                          row.SalesPersonName
-                        }</td>
-                        <td class="text-wrap align-content-center text-capitalize">${
-                          row.ProductName
-                        }</td>
-                        <td class="text-wrap align-content-center">${formatRupiah2(
-                          row.PriceSell
-                        )}</td>
-                        <td class="text-wrap align-content-center">${
-                          row.Qty
-                        }</td>
-                        <td class="text-wrap align-content-center">${formatRupiah2(
-                          row.Total
-                        )}</td>
-                    </tr>`;
-          });
-          const tbody1 = await tableGroupSales(req);
-          const tbody2 = await tableGroupProduct(req);
-          const tbody3 = await tableGroupCustomer(req);
-          const summary = await txtSummary(req);
-          ipcRenderer.send(
-            "pdf:sales",
-            tbody,
-            tbody1,
-            tbody2,
-            tbody3,
-            summary,
-            file_path
-          );
-          ipcRenderer.on("success:pdf-sales", (e, file_path) => {
-            uiSuccess(file_path);
-            $("input#sale-start-date").val("");
-            $("input#sale-end-date").val("");
-            $("#modal-sales-convert-pdf").modal("hide");
-          });
+        const getTotal1 = await getTotal(req);
+        const salesGroup = await getSalesGroup(req);
+        // const tbody2 = await tableGroupProduct(req);
+        // const tbody3 = await tableGroupCustomer(req);
+        const htmlContent = uiPDF(response, getTotal1, salesGroup);
+        console.log(htmlContent);
+        return false;
+        const filePath = await window.electronAPI.savePDF(htmlContent);
+        if (filePath) {
+          uiSuccess(`File PDF saved on ${filePath}`);
+          $("input#sale-start-date-1").val("");
+          $("input#sale-end-date-1").val("");
+          $("#modal-sales-convert-pdf").modal("hide");
         }
+      }
+      if (!existed) {
+        uiFailed1(`upsssss it's stil empty....`);
       }
     }
     if (!status) {
+      uiFailed1(response);
       console.error(response);
     }
   });

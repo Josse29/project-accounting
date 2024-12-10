@@ -19,9 +19,9 @@ import {
   getSaleSumCustomerIdDate,
   getSaleSumDate,
   getSaleSumDateProductId,
-  getSaleSummary,
   getSaleSumPersonId,
   getSaleSumPersonIdDate,
+  getSaleSumPriceQtyDate,
   getSaleSumProductId,
 } from "../../../../serverless-side/models/sales/controller.js";
 // 1. endpoint = /api/sale/
@@ -369,13 +369,13 @@ export const getByGroupCustomer = async (req) => {
 // method : GET
 // payload : 1.startDateVal, 2.endDateVal
 // return : summary qty and price
-export const getSummary = async (req) => {
+export const getSum1 = async (req) => {
   try {
     const payLoad = {
       startDateVal: req.startDateVal,
       endDateVal: req.endDateVal,
     };
-    const summary = await getSaleSummary(payLoad);
+    const summary = await getSaleSumPriceQtyDate(payLoad);
     return { status: true, response: summary };
   } catch (error) {
     return { status: false, response: error };

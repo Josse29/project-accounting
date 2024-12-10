@@ -348,7 +348,6 @@ export const queryGetPersediaanDateRpCategoryId = (
 export const queryGetPersediaanSupplierGroup = (startDateVal, endDateVal) => {
   let query = `SELECT
                Supplier.SupplierName,
-               SUM(Persediaan.PersediaanQty) AS TotalQty,
                SUM(Persediaan.PersediaanRp) AS TotalRp
                FROM Persediaan
                LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
@@ -442,17 +441,6 @@ export const queryGetPersediaanQty = (valPersediaanProductId) => {
   }
   return query;
 };
-export const queryGetPersediaanQtyDate = (startDateVal, endDateVal) => {
-  let query = `SELECT
-               PersediaanProductId,
-               SUM(PersediaanQty) AS TotalQty
-               FROM Persediaan `;
-  //  with range date
-  if (startDateVal !== "" && endDateVal !== "") {
-    query += `WHERE Persediaan.PersediaanDDMY BETWEEN '${startDateVal}' AND '${endDateVal}' `;
-  }
-  return query;
-};
 export const queryGetPersediaanQty2 = (
   valPersediaanId,
   valPersediaanProductId
@@ -494,32 +482,6 @@ export const queryGetPersediaanRpSumCategoryId = (valCategoryId) => {
                  LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
                  LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId `;
   query += `WHERE Category.CategoryId = ${valCategoryId}`;
-  return query;
-};
-export const queryGetPersediaanCategorySum = (startDateVal, endDateVal) => {
-  let query = `SELECT
-               SUM(Persediaan.PersediaanRp) AS TotalRp
-               FROM Persediaan
-               LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
-               LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
-               WHERE Category.CategoryId IS NOT NULL `;
-  //  with date
-  if (startDateVal !== "" && endDateVal !== "") {
-    query += `AND Persediaan.PersediaanDDMY BETWEEN  '${startDateVal}' AND '${endDateVal}' `;
-  }
-  return query;
-};
-export const queryGetPersediaanSupplierSum = (startDateVal, endDateVal) => {
-  let query = `SELECT
-               SUM(Persediaan.PersediaanRp) AS TotalRp
-               FROM Persediaan
-               LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
-               LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId
-               WHERE Supplier.SupplierId IS NOT NULL `;
-  //  with range date
-  if (startDateVal !== "" && endDateVal !== "") {
-    query += `AND Persediaan.PersediaanDDMY BETWEEN  '${startDateVal}' AND '${endDateVal}' `;
-  }
   return query;
 };
 export const queryGetPersediaanRpSupplier = (supplierIdVal) => {

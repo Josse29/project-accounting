@@ -12,7 +12,6 @@ import {
   queryGetPersediaan,
   queryGetPersediaanCategoryGroup,
   queryGetPersediaanCategoryId,
-  queryGetPersediaanCategorySum,
   queryGetPersediaanDate,
   queryGetPersediaanDateCategoryId,
   queryGetPersediaanDateProductId,
@@ -29,14 +28,12 @@ import {
   queryGetPersediaanProductRow,
   queryGetPersediaanQty,
   queryGetPersediaanQty2,
-  queryGetPersediaanQtyDate,
   queryGetPersediaanReport,
   queryGetPersediaanRpSum,
   queryGetPersediaanRpSumCategoryId,
   queryGetPersediaanRpSupplier,
   queryGetPersediaanSupplierGroup,
   queryGetPersediaanSupplierId,
-  queryGetPersediaanSupplierSum,
   queryGetPersediaanTotalRow,
   queryGetPersediaanTotalRow1,
   queryInsertPersediaan,
@@ -183,13 +180,6 @@ export const getPersediaanSumQty = async (valPersediaanProductId) => {
   const resSumQty = sumQty.TotalQty ? sumQty.TotalQty : 0;
   return resSumQty;
 };
-export const getPersediaanSumQtyDate = async (req) => {
-  const { startDateVal, endDateVal } = req;
-  const query = queryGetPersediaanQtyDate(startDateVal, endDateVal);
-  const sumQty = await window.electronAPI.sqliteApi.each1(query);
-  const resSumQty = sumQty.TotalQty ? sumQty.TotalQty : 0;
-  return resSumQty;
-};
 export const getPersediaanSumPrice = async () => {
   const query = queryGetPersediaanRpSum();
   const sumRp = await window.electronAPI.sqliteApi.each1(query);
@@ -238,19 +228,11 @@ export const getPersediaanGroupProduct1 = async (req) => {
   return persediaan;
 };
 
-export const getPersediaanGroupSupplier = (req) => {
+export const getPersediaanGroupSupplier = async (req) => {
   const { startDateVal, endDateVal } = req;
   const query = queryGetPersediaanSupplierGroup(startDateVal, endDateVal);
-  return new Promise((resolve, reject) => {
-    db.all(query, (err, res) => {
-      if (!err) {
-        resolve(res);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const persediaanSupplier = await window.electronAPI.sqliteApi.all(query);
+  return persediaanSupplier;
 };
 export const getPersediaanReport = async (req) => {
   const { startDateVal, endDateVal } = req;
@@ -337,62 +319,17 @@ export const getPersediaanSumPriceDateCategoryId = async (req) => {
   const resSumRp = sumRp.TotalRp ? sumRp.TotalRp : 0;
   return resSumRp;
 };
-export const getPersediaanGroupCategory = (req) => {
+export const getPersediaanGroupCategory = async (req) => {
   const { startDateVal, endDateVal } = req;
   const query = queryGetPersediaanCategoryGroup(startDateVal, endDateVal);
-  return new Promise((resolve, reject) => {
-    db.all(query, (err, res) => {
-      if (!err) {
-        resolve(res);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
-};
-export const getPersediaanSumPriceSupplier = (req) => {
-  const { startDateVal, endDateVal } = req;
-  const query = queryGetPersediaanSupplierSum(startDateVal, endDateVal);
-  return new Promise((resolve, reject) => {
-    db.each(query, (err, res) => {
-      if (!err) {
-        const response = res.TotalRp;
-        const totalRp = response ? response : 0;
-        resolve(totalRp);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const persediaanGroupCategory = await window.electronAPI.sqliteApi.all(query);
+  return persediaanGroupCategory;
 };
 export const getPersediaanSumPriceSupplierId = async (supplierId) => {
   const query = queryGetPersediaanRpSupplier(supplierId);
   const sumRp = await window.electronAPI.sqliteApi.each1(query);
   const resSumRp = sumRp.TotalRp ? sumRp.TotalRp : 0;
   return resSumRp;
-};
-export const getPersediaanSumPriceCategory = (req) => {
-  const { startDateVal, endDateVal } = req;
-  const query = queryGetPersediaanCategorySum(startDateVal, endDateVal);
-  return new Promise((resolve, reject) => {
-    db.each(query, (err, res) => {
-      if (!err) {
-        let totalRp = ``;
-        if (res.TotalRp !== null) {
-          totalRp = parseFloat(res.TotalRp);
-        }
-        if (res.TotalRp === null) {
-          totalRp = 0;
-        }
-        resolve(totalRp);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
 };
 // references order
 export const getPersediaanPagination1 = async (req) => {

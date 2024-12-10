@@ -1,90 +1,12 @@
-import { formatRupiah2 } from "../../utils/formatPrice.js";
+import { getPDF } from "./services.js";
+import { uiAlertFail1, uiAlertSuccess, uiPDF } from "./ui.js";
 import {
-  getByGroupCategory,
-  getByGroupProduct1,
-  getByGroupSupplier,
-  getPDF,
-  getSumPriceCategory,
-  getSumPriceSupplier,
-} from "./services.js";
-import {
-  uiAlertFail,
-  uiAlertFail1,
-  uiAlertSuccess,
-  uiTrCategorySum,
-  uiTrPDF,
-  uiTrSupplierSum,
-} from "./ui.js";
-import { groupProduct, sumPrice } from "./utils.js";
+  groupCategory,
+  groupProduct,
+  groupSupplier,
+  sumPrice,
+} from "./utils.js";
 
-// supplier
-const groupSupplier = async (req) => {
-  const { status, response } = await getByGroupSupplier(req);
-  if (status) {
-    const existedSupplier = response.length >= 1;
-    let tbody = ``;
-    let no = 1;
-    if (existedSupplier) {
-      response.forEach((el) => {
-        tbody += uiTrSupplierSum(el, no);
-        no++;
-      });
-    }
-    if (!existedSupplier) {
-      tbody += `<tr>
-                    <td class="text-center text-nowrap align-content-center" colspan="3">supplier empty....</td>
-                 </tr>`;
-    }
-    return tbody;
-  }
-  if (!status) {
-    console.error(response);
-  }
-};
-const sumSupplier = async (req) => {
-  const { status, response } = await getSumPriceSupplier(req);
-  if (status) {
-    const totalRp = formatRupiah2(response);
-    return totalRp;
-  }
-  if (!status) {
-    console.error(response);
-  }
-};
-// category
-const groupCategory = async (req) => {
-  const { status, response } = await getByGroupCategory(req);
-  if (status) {
-    const existedCategory = response.length >= 1;
-    let tbody = ``;
-    if (existedCategory) {
-      let no = 1;
-      response.forEach((el) => {
-        tbody += uiTrCategorySum(el, no);
-        no++;
-      });
-    }
-    if (!existedCategory) {
-      tbody += `<tr>
-                  <td class="text-center text-nowrap align-content-center" colspan="3">category empty....</td>
-                </tr>`;
-    }
-    return tbody;
-  }
-  if (!status) {
-    console.error(response);
-  }
-};
-const sumCategory = async (req) => {
-  const { status, response } = await getSumPriceCategory(req);
-  if (status) {
-    const totalRp = formatRupiah2(response);
-    return totalRp;
-  }
-  if (!status) {
-    console.error(response);
-  }
-};
 // actions
 $("#persediaan-modal-convert-pdf #persediaan-convert-pdf")
   .off("click")
@@ -98,7 +20,15 @@ $("#persediaan-modal-convert-pdf #persediaan-convert-pdf")
       if (existed) {
         const sumPrice1 = await sumPrice(req);
         const groupProduct1 = await groupProduct(req);
-        const htmlContent = uiTrPDF(response, sumPrice1, groupProduct1);
+        const groupSupplier1 = await groupSupplier(req);
+        const groupCategory1 = await groupCategory(req);
+        const htmlContent = uiPDF(
+          response,
+          sumPrice1,
+          groupProduct1,
+          groupSupplier1,
+          groupCategory1
+        );
         const filePath = await window.electronAPI.savePDF(htmlContent);
         if (filePath) {
           uiAlertSuccess(`File PDF Savded on ${filePath}`);
@@ -111,8 +41,6 @@ $("#persediaan-modal-convert-pdf #persediaan-convert-pdf")
         }
         return;
 
-        const tbodySupplierGroup = await groupSupplier(req);
-        const txtSumSupplier = await sumSupplier(req);
         const tbodyCategoryGroup = await groupCategory(req);
         const txtSumCategory = await sumCategory(req);
 
@@ -140,7 +68,7 @@ $("#persediaan-modal-convert-pdf #persediaan-convert-pdf")
         }
       }
       if (!existed) {
-        uiAlertFail("uuppsss , sorry stock is still empty...");
+        uiAlertFail1("uuppsss , sorry stock is still empty...");
       }
     }
     if (!status) {

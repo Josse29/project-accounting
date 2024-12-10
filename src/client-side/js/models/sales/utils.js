@@ -1,6 +1,12 @@
-import { formatRupiah2 } from "../../utils/formatRupiah.js";
+import {
+  getByGroupSale,
+  getLimitOffset,
+  getRowPage,
+  getSum,
+  getSum1,
+} from "./services.js";
+import { formatRupiah2 } from "../../utils/formatPrice.js";
 import { handlePagination } from "./pagination.js";
-import { getLimitOffset, getRowPage, getSum } from "./services.js";
 import { uiBtnPageActive, uiTbody, uiTbodyEmpty } from "./ui.js";
 
 export const getAll = async (data) => {
@@ -56,3 +62,25 @@ export async function getPage(req) {
     console.error(response);
   }
 }
+export const getSalesGroup = async (req) => {
+  const { status, response } = await getByGroupSale(req);
+  if (status) {
+    return response;
+  }
+  if (!status) {
+    console.error(response);
+  }
+};
+export const getTotal = async (req) => {
+  const { status, response } = await getSum1(req);
+  if (status) {
+    const { totalQty, totalRp } = response;
+    return {
+      totalQty,
+      totalRp,
+    };
+  }
+  if (!status) {
+    console.error(response);
+  }
+};

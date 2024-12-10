@@ -14,7 +14,7 @@ const convertPDF = (ipcMain, BrowserWindow, dialog, fs, appPath) => {
       "client-side",
       "css",
       "components",
-      "text.css"
+      "textToPDF.css"
     );
     const bootstrapPath = appPath(
       "node_modules",

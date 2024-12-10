@@ -10,13 +10,6 @@ $("#modal-sales-convert-csv button#sale-convert-csv")
       startDateVal,
       endDateVal,
     };
-    if (
-      startDateVal > endDateVal ||
-      (startDateVal !== "" && endDateVal === "") ||
-      (startDateVal === "" && endDateVal !== "")
-    ) {
-      return false;
-    }
     const { status, response } = await getReport(req);
     if (status) {
       const existed = response.length >= 1;
@@ -35,6 +28,7 @@ $("#modal-sales-convert-csv button#sale-convert-csv")
       }
     }
     if (!status) {
+      uiFailed(response);
       console.error(response);
     }
   });

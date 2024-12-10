@@ -1,4 +1,5 @@
 import db from "../../database/config.js";
+import { validateDate } from "../../utils/validation.js";
 import { createAccounting } from "../accounting/controller.js";
 import { createCash } from "../cash/controller.js";
 import { createPersediaan1 } from "../persediaan/controller.js";
@@ -124,6 +125,7 @@ export const getSaleRowPage = async (req) => {
 };
 export const getSaleReport = async (req) => {
   const { startDateVal, endDateVal } = req;
+  validateDate(startDateVal, endDateVal);
   const query = queryGetReportSales(startDateVal, endDateVal);
   const saleReport = await window.electronAPI.sqliteApi.all(query);
   return saleReport;
@@ -137,16 +139,8 @@ export const getSaleSum = async () => {
 export const getSaleGroupPerson = (req) => {
   const { startDateVal, endDateVal } = req;
   const query = queryGetGroupPerson(startDateVal, endDateVal);
-  return new Promise((resolve, reject) => {
-    db.all(query, (err, res) => {
-      if (!err) {
-        resolve(res);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const sales = window.electronAPI.sqliteApi.all(query);
+  return sales;
 };
 export const getSaleGroupCustomer = (req) => {
   const { startDateVal, endDateVal } = req;
@@ -289,24 +283,13 @@ export const getSaleSumCustomerIdDate = async (req) => {
   const resPrice = price.Total_Rp ? price.Total_Rp : 0;
   return resPrice;
 };
-export const getSaleSummary = (req) => {
+export const getSaleSumPriceQtyDate = async (req) => {
   const { startDateVal, endDateVal } = req;
   const query = queryGetSalesSum1(startDateVal, endDateVal);
-  return new Promise((resolve, reject) => {
-    db.each(query, (err, res) => {
-      if (!err) {
-        const response1 = res.Total_Rp ? res.Total_Rp : 0;
-        const response2 = res.Total_Qty ? res.Total_Qty : 0;
-        resolve({
-          totalRp: response1,
-          totalQty: response2,
-        });
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const res = await window.electronAPI.sqliteApi.each1(query);
+  const totalQty = res.Total_Qty ? res.Total_Qty : 0;
+  const totalRp = res.Total_Rp ? res.Total_Rp : 0;
+  return { totalQty, totalRp };
 };
 // update
 export const updateSales = (req, res) => {

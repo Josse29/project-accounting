@@ -1,7 +1,7 @@
 import { getByDatePerson, getSumByDatePerson } from "./services.js";
 import { uiTbody, uiTbodyEmpty } from "./ui.js";
-import { formatRupiah2 } from "../../utils/formatRupiah.js";
-import { formatWaktuIndo } from "../../utils/formatWaktu.js";
+import { formatRupiah2 } from "../../utils/formatPrice.js";
+import { formatWaktuIndo } from "../../utils/formatTime.js";
 import { animateFade } from "../../utils/updateUi.js";
 
 // 1. by date and user

@@ -1,7 +1,7 @@
-import { formatRupiah2 } from "../../utils/formatPrice.js";
+import { getByDateProductId, getSumQtyDateProduct } from "./services.js";
+import { formatPrice, formatRupiah2 } from "../../utils/formatPrice.js";
 import { formatWaktuIndo } from "../../utils/formatTime.js";
 import { animateFade, reinitTooltip } from "../../utils/updateUi.js";
-import { getByDateProductId, getSumQtyDateProduct } from "./services.js";
 import { uiTbody, uiTbodyEmpty } from "./ui.js";
 // get persediaan date and product
 $("div#persediaan-date-all-search")
@@ -28,7 +28,7 @@ $("div#persediaan-date-all-search")
     const qtyRes = qty.response;
     if (qtyStatus) {
       //   sum rupiah
-      const sumRupiah = formatRupiah2(priceBuy * qtyRes);
+      const sumRupiah = formatPrice(priceBuy * qtyRes);
       // insert - to - html sumpersediaan
       const sumSectionHTML = `
       <p class="fs-5 ms-2 mb-1 text-capitalize fw-bold ms-2">${selectedTxt} | ${rangeDateTxt}</p>

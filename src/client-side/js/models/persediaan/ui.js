@@ -268,7 +268,26 @@ export const uiInit = () => {
   $("div#persediaan-sum-section").html("");
 };
 // for - report
-export const uiTrPDF = (response, sumPrice1, groupProduct1) => {
+export const uiPDF = (
+  response,
+  sumPrice1,
+  groupProduct1,
+  groupSupplier,
+  groupCategory
+) => {
+  const { indonesiaDDMY, indonesiaHour, indonesiaMinute, indonesiaSecond } =
+    timeIndonesian();
+  const html1 = `
+  <div class="mb-3">
+    <h2>Table Stock</h2>
+    <h6>${indonesiaDDMY}</h6>
+    <div class="d-flex gap-1">
+      <h6>${indonesiaHour} :</h6>
+      <h6>${indonesiaMinute} :</h6>
+      <h6>${indonesiaSecond}</h6>
+    </div>
+  </div>
+  `;
   // 1.table persediaan
   let tr = "";
   let no = 1;
@@ -298,6 +317,32 @@ export const uiTrPDF = (response, sumPrice1, groupProduct1) => {
     </tr>
     `;
   });
+  const html2 = `
+  <div class="mb-3">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th class="text-center">#</th>
+          <th>Date</th>
+          <th>Hour</th>
+          <th>Product</th>
+          <th>Price</th>
+          <th class="text-center">Qty</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${tr}
+      </tbody>
+      <tfoot>
+        <tr>
+          <th colspan="6" class="text-end me-2">Total</th>
+          <th>${sumPrice1}</th>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+  `;
   // 2. group product
   let tr1 = "";
   let no1 = 1;
@@ -314,66 +359,91 @@ export const uiTrPDF = (response, sumPrice1, groupProduct1) => {
       <td class="text-center text-nowrap align-content-center">${no1++}</td>
       <td class="text-nowrap align-content-center">${productName}</td>
       <td class="text-nowrap align-content-center">${productPriceBuy}</td>
-      <td class="text-nowrap align-content-center">${totalQtyTxt}</td>
+      <td class="text-center text-nowrap align-content-center">${totalQtyTxt}</td>
       <td class="text-nowrap align-content-center">${totalRpTxt}</td>
     </tr>
     `;
     return tr1;
   });
-  const { indonesiaDDMY, indonesiaHour, indonesiaMinute, indonesiaSecond } =
-    timeIndonesian();
-  const html1 = `
-  <div class="mb-3">
-    <h2>Table Stock</h2>
-    <h6>${indonesiaDDMY}</h6>
-    <div class="d-flex gap-1">
-      <h6>${indonesiaHour} :</h6>
-      <h6>${indonesiaMinute}</h6>
-      <h6>${indonesiaSecond}</h6>
-    </div>
-  </div>
-  `;
-  const html2 = `
-  <div class="mb-3">
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th class="text-center">#</th>
-          <th>Date</th>
-          <th>Hour</th>
-          <th>Product</th>
-          <th>Price</th>
-          <th>Qty</th>
-          <th>Total</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${tr}
-      </tbody>
-      <tfoot>
-        <tr>
-          <th colspan="6" class="text-end me-2">Total</th>
-          <th>${sumPrice1}</th>
-        </tr>
-      </tfoot>
-    </table>
-  </div>
-  `;
   const html3 = `
   <div class="mb-3">
-    <h3>Table Summary</h3>
-    <table class="table table-striped">
+    <h4>Table Summary of Products</h4>
+    <table class="table table-striped w-50">
       <thead>
         <tr>
           <th class="text-center">#</th>
           <th>Product</th>
           <th>Price</th>
-          <th>Qty</th>
+          <th class="text-center">Qty</th>
           <th>Total</th>
         </tr>
       </thead>
       <tbody>
         ${tr1}
+      </tbody>
+    </table>
+  </div>
+  `;
+  // 3. group supplier
+  let tr2 = "";
+  let no2 = 1;
+  groupSupplier.forEach((rows) => {
+    const supplierName = rows.SupplierName;
+    const totalPrice = rows.TotalRp;
+    tr2 += `
+    <tr>
+      <td class="text-center text-nowrap align-content-center">${no2++}</td>
+      <td class="text-nowrap align-content-center">${supplierName}</td>
+      <td class="text-nowrap align-content-center">${formatPrice(
+        totalPrice
+      )}</td>
+    </tr>
+    `;
+  });
+  const html4 = `
+  <div class="mb-3">
+    <h4>Table Summary of Suppliers</h4>
+    <table class="table table-striped w-50">
+      <thead>
+        <tr>
+          <th class="text-center">#</th>
+          <th>Supplier</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${tr2}
+      </tbody>
+    </table>
+  </div>
+  `;
+  // 4. group category
+  let tr3 = "";
+  let no3 = 1;
+  groupCategory.forEach((rows) => {
+    const categoryName = rows.CategoryName;
+    const totalRp = formatPrice(rows.TotalRp);
+    tr3 += `
+    <tr>
+      <td class="text-center text-nowrap align-content-center">${no3++}</td>
+      <td class="text-nowrap align-content-center">${categoryName}</td>
+      <td class="text-nowrap align-content-center">${totalRp}</td>
+    </tr>
+    `;
+  });
+  const html5 = `
+  <div class="mb-3">
+    <h4>Table Summary of Categories</h4>
+    <table class="table table-striped w-50">
+      <thead>
+        <tr>
+          <th class="text-center">#</th>
+          <th>Category</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${tr3}
       </tbody>
     </table>
   </div>
@@ -389,135 +459,60 @@ export const uiTrPDF = (response, sumPrice1, groupProduct1) => {
         PT. ABC, T.bk
       </div>
       <!--  cardBody -->
-      <div class="card-body">${html1} ${html2} ${html3}</div>
+      <div class="card-body">${html1} ${html2} ${html3} ${html4} ${html5}</div>
     </div>
   </div>          
   `;
   return html;
 };
-export const uiTrProductSum = (rows, no) => {
-  // qty
-  const totalQty = rows.TotalQty;
-  let totalQtyTxt = ``;
-  if (totalQty === 0) {
-    totalQtyTxt = `${totalQty}`;
-  }
-  if (totalQty >= 1) {
-    totalQtyTxt = `+ ${totalQty}`;
-  }
-  if (totalQty < 0) {
-    totalQtyTxt = `- ${Math.abs(totalQty)}`;
-  }
-  // price
-  const totalRp = rows.TotalRp;
-  let totalRpTxt = ``;
-  if (totalRp === 0) {
-    totalRpTxt = `${formatRupiah2(totalRp)}`;
-  }
-  if (totalRp >= 1) {
-    totalRpTxt = `+ ${formatRupiah2(totalRp)}`;
-  }
-  if (totalRp < 0) {
-    totalRpTxt = `- ${formatRupiah2(Math.abs(totalRp))}`;
-  }
-  return `<tr>
-            <td class="text-center text-nowrap align-content-center">${no}</td>
-            <td class="text-nowrap align-content-center">${
-              rows.ProductName
-            }</td>
-            <td class="text-nowrap align-content-center">${formatRupiah2(
-              rows.ProductPriceBeli
-            )}</td>
-            <td class="text-nowrap align-content-center">${totalQtyTxt}</td>
-            <td class="text-nowrap align-content-center">${totalRpTxt}</td>
-          </tr>`;
-};
-export const uiTrSupplierSum = (rows, no) => {
-  const totalRp = rows.TotalRp;
-  let totalRpTxt = ``;
-  if (totalRp === 0) {
-    totalRpTxt = `${formatRupiah2(totalRp)}`;
-  }
-  if (totalRp >= 1) {
-    totalRpTxt = `+ ${formatRupiah2(totalRp)}`;
-  }
-  if (totalRp < 0) {
-    totalRpTxt = `- ${formatRupiah2(Math.abs(totalRp))}`;
-  }
-  return `<tr>
-            <td class="text-center text-nowrap align-content-center">${no}</td>
-            <td class="text-nowrap align-content-center">${rows.SupplierName}</td>
-            <td class="text-nowrap align-content-center">${totalRpTxt}</td>
-          </tr>`;
-};
-export const uiTrCategorySum = (rows, no) => {
-  // category name
-  const categoryName = rows.CategoryName;
-  // total rupiah
-  const totalRp = rows.TotalRp;
-  let totalRpTxt = ``;
-  if (totalRp === 0) {
-    totalRpTxt = `${formatRupiah2(totalRp)}`;
-  }
-  if (totalRp >= 1) {
-    totalRpTxt = `+ ${formatRupiah2(totalRp)}`;
-  }
-  if (totalRp < 0) {
-    totalRpTxt = `- ${formatRupiah2(Math.abs(totalRp))}`;
-  }
-  const html = `<tr>
-                  <td class="text-center text-nowrap align-content-center">${no}</td>
-                  <td class="text-nowrap align-content-center">${categoryName}</td>
-                  <td class="text-nowrap align-content-center">${totalRpTxt}</td>
-                </tr>`;
-  return html;
-};
 // group by product
 export const uiLoad = () => {
-  const div = `<div class="container-by-me">
-                <div class="card">
-                  <div class="animate-load" style="width: 100%; height: 200px"></div>
-                  <div class="card-body">
-                    <div class="mb-4">
-                      <div class="animate-load mb-2 w-75" style="height: 30px"></div>
-                      <div class="animate-load w-50 mb-2" style="height: 30px"></div>
-                      <div class="animate-load w-25" style="height: 25px"></div>
-                    </div>
-                    <div class="d-flex justify-content-end gap-2">
-                      <div class="animate-load" style="height: 35px; width: 35px"></div>
-                      <div class="animate-load" style="height: 35px; width: 35px"></div>
-                    </div>
-                  </div>
-                </div>
-                <div class="card">
-                  <div class="animate-load" style="width: 100%; height: 200px"></div>
-                  <div class="card-body">
-                    <div class="mb-4">
-                      <div class="animate-load mb-2 w-75" style="height: 30px"></div>
-                      <div class="animate-load w-50 mb-2" style="height: 30px"></div>
-                      <div class="animate-load w-25" style="height: 25px"></div>
-                    </div>
-                    <div class="d-flex justify-content-end gap-2">
-                      <div class="animate-load" style="height: 35px; width: 35px"></div>
-                      <div class="animate-load" style="height: 35px; width: 35px"></div>
-                    </div>
-                  </div>
-                </div>
-                <div class="card">
-                  <div class="animate-load" style="width: 100%; height: 200px"></div>
-                  <div class="card-body">
-                    <div class="mb-4">
-                      <div class="animate-load mb-2 w-75" style="height: 30px"></div>
-                      <div class="animate-load w-50 mb-2" style="height: 30px"></div>
-                      <div class="animate-load w-25" style="height: 25px"></div>
-                    </div>
-                    <div class="d-flex justify-content-end gap-2">
-                      <div class="animate-load" style="height: 35px; width: 35px"></div>
-                      <div class="animate-load" style="height: 35px; width: 35px"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>`;
+  const div = `
+  <div class="container-by-me">
+    <div class="card">
+      <div class="animate-load" style="width: 100%; height: 200px"></div>
+      <div class="card-body">
+        <div class="mb-4">
+          <div class="animate-load mb-2 w-75" style="height: 30px"></div>
+          <div class="animate-load w-50 mb-2" style="height: 30px"></div>
+          <div class="animate-load w-25" style="height: 25px"></div>
+        </div>
+        <div class="d-flex justify-content-end gap-2">
+          <div class="animate-load" style="height: 35px; width: 35px"></div>
+          <div class="animate-load" style="height: 35px; width: 35px"></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="animate-load" style="width: 100%; height: 200px"></div>
+      <div class="card-body">
+        <div class="mb-4">
+          <div class="animate-load mb-2 w-75" style="height: 30px"></div>
+          <div class="animate-load w-50 mb-2" style="height: 30px"></div>
+          <div class="animate-load w-25" style="height: 25px"></div>
+        </div>
+        <div class="d-flex justify-content-end gap-2">
+          <div class="animate-load" style="height: 35px; width: 35px"></div>
+          <div class="animate-load" style="height: 35px; width: 35px"></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="animate-load" style="width: 100%; height: 200px"></div>
+      <div class="card-body">
+        <div class="mb-4">
+          <div class="animate-load mb-2 w-75" style="height: 30px"></div>
+          <div class="animate-load w-50 mb-2" style="height: 30px"></div>
+          <div class="animate-load w-25" style="height: 25px"></div>
+        </div>
+        <div class="d-flex justify-content-end gap-2">
+          <div class="animate-load" style="height: 35px; width: 35px"></div>
+          <div class="animate-load" style="height: 35px; width: 35px"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  `;
   $("div#product-refpersediaan-read").html(div);
   $("div#product-refpersediaan-pagination").addClass("d-none");
 };

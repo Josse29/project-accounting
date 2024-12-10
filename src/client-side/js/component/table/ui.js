@@ -1,4 +1,4 @@
-import { formatRupiah2 } from "../../utils/formatRupiah.js";
+import { formatRupiah2 } from "../../utils/formatPrice.js";
 
 export const uiTr = (rows, noTd) => {
   const priceSellRp = formatRupiah2(rows.ProductPriceSell);

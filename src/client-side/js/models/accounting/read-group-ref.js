@@ -1,4 +1,4 @@
-import { formatRupiah2 } from "../../utils/formatRupiah.js";
+import { formatRupiah2 } from "../../utils/formatPrice.js";
 import { getBalanceSheet, getSumDebtCredit } from "./services.js";
 import { uiTbody1, uiTbodyZero1 } from "./ui.js";
 

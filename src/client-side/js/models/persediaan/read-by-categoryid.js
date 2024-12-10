@@ -1,4 +1,4 @@
-import { formatRupiah2 } from "../../utils/formatPrice.js";
+import { formatPrice } from "../../utils/formatPrice.js";
 import { animateFade, reinitTooltip } from "../../utils/updateUi.js";
 import { listCategoryRefPersediaanRead } from "../categories/list.js";
 import { getByCategoryId, getSumPriceCategoryId } from "./services.js";
@@ -18,7 +18,7 @@ $("select#persediaan-refcategory-search")
     const sumStatus = sum.status;
     const sumRes = sum.response;
     if (sumStatus) {
-      const sumRupiah = formatRupiah2(sumRes);
+      const sumRupiah = formatPrice(sumRes);
       // insert - to - html sumpersediaan
       const sumSectionHTML = `
       <p class="fs-5 ms-2 mb-1 text-capitalize fw-bold ms-2">${selectedCategoryName}</p>

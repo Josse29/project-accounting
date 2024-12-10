@@ -1,5 +1,5 @@
-import { formatRupiah2 } from "../../utils/formatRupiah.js";
-import { terbilangIndonesia } from "../../utils/formatTerbilang.js";
+import { formatRupiah2 } from "../../utils/formatPrice.js";
+import { terbilangIndonesia } from "../../utils/formatNumberWord.js";
 import { getStorageCartSum } from "../../utils/localStorage.js";
 export const tFooter = () => {
   // get from storage again cart

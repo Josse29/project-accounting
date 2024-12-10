@@ -1,6 +1,6 @@
 import { getByCustomerId, getSumCustomerId } from "./services.js";
 import { uiTbody, uiTbodyEmpty } from "./ui.js";
-import { formatRupiah2 } from "../../utils/formatRupiah.js";
+import { formatRupiah2 } from "../../utils/formatPrice.js";
 import { animateFade } from "../../utils/updateUi.js";
 
 // 1. get list already there in personid

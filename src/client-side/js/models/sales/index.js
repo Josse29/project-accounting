@@ -4,7 +4,7 @@ import "./read.js";
 import "./delete.js";
 
 import "./export-csv.js";
-// import "./export-pdf.js";
+import "./export-pdf.js";
 
 import "./read-by-customerid.js";
 import "./read-by-date.js";

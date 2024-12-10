@@ -64,3 +64,5 @@
 12/7/2024
 - refactor pdf handlers part 3 huffffrf
 - refactor utils/...
+12/10/2024
+- refactor pdf handlers part 4 huffffrf

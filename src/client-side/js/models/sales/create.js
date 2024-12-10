@@ -1,7 +1,9 @@
+import { addSale } from "./services.js";
+
 import { table } from "../../component/table/index.js";
-import { disFormatRupiah1, formatRupiah1 } from "../../utils/formatRupiah.js";
-import { terbilangIndonesia } from "../../utils/formatTerbilang.js";
-import { getTimeNow } from "../../utils/formatWaktu.js";
+import { disFormatRupiah1, formatRupiah1 } from "../../utils/formatPrice.js";
+import { terbilangIndonesia } from "../../utils/formatNumberWord.js";
+import { getTimeNow } from "../../utils/formatTime.js";
 import {
   getStorageCart,
   getStorageCartSum,
@@ -9,7 +11,6 @@ import {
   removeStorageCartSUM,
 } from "../../utils/localStorage.js";
 import { listUserRefSalesCreate } from "../users/list.js";
-import { addSale } from "./services.js";
 import { getAll2 } from "../persediaan/utils.js";
 import { getAll } from "./utils.js";
 
@@ -95,7 +96,7 @@ $("button#order-done")
       $("span#order-change").html(span);
       return false;
     }
-    // loop data and req-to-db
+    // loop data from localStorage and req-to-db
     for (const el of storageCart) {
       const reqSales = {
         SalesPersonId: userSalesId,
