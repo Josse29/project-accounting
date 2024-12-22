@@ -78,9 +78,7 @@ export const querySumCash1 = (startDateVal, endDateVal) => {
   let query = `SELECT 
                SUM(Cash.CashRp) AS Total_Amount
                FROM Cash `;
-  if (startDateVal !== "" && endDateVal !== "") {
-    query += `WHERE CashYYYYMMDD BETWEEN '${startDateVal}' AND '${endDateVal}' `;
-  }
+  query += `WHERE CashYYYYMMDD BETWEEN '${startDateVal}' AND '${endDateVal}' `;
   return query;
 };
 // UPDATE

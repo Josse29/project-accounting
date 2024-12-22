@@ -183,6 +183,19 @@ export const uiAlertFailUpdate = (res) => {
   $("#product-update-failed").html(alertFail);
 };
 export const uiPDF = (response) => {
+  const { indonesiaDDMY, indonesiaHour, indonesiaMinute, indonesiaSecond } =
+    timeIndonesian();
+  const html = `
+  <div class="mb-3">
+    <h3>Table Product</h3>
+    <h6>${indonesiaDDMY}</h6>
+    <div class="d-flex gap-1">
+      <h6>${indonesiaHour} :</h6>
+      <h6>${indonesiaMinute} :</h6>
+      <h6>${indonesiaSecond}</h6>
+    </div>
+  </div>
+  `;
   let tr = ``;
   let no = 1;
   response.forEach((row) => {
@@ -207,19 +220,6 @@ export const uiPDF = (response) => {
       </tr>  
     `;
   });
-  const { indonesiaDDMY, indonesiaHour, indonesiaMinute, indonesiaSecond } =
-    timeIndonesian();
-  const html = `
-  <div class="mb-3">
-    <h3>Table Product</h3>
-    <h6>${indonesiaDDMY}</h6>
-    <div class="d-flex gap-1">
-      <h6>${indonesiaHour} :</h6>
-      <h6>${indonesiaMinute} :</h6>
-      <h6>${indonesiaSecond}</h6>
-    </div>
-  </div>
-  `;
   const html1 = `
   <div class="mb-3">
     <table class="table table-striped">

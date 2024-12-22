@@ -2,8 +2,9 @@ import {
   createAccounting,
   getAccounting,
   getAccounting1,
+  getAccountingDate,
   getAccountingPagination,
-  getAccountingSum,
+  getAccountingSumDate,
 } from "../../../../serverless-side/models/accounting/controller.js";
 
 // 1. endpoint = api/accounting/
@@ -76,10 +77,30 @@ export const getBalanceSheet = async () => {
 // method : GET
 // payLoad : ""
 // return : summary credit
-export const getSumDebtCredit = async () => {
+export const getSumDebtCredit = async (req) => {
   try {
-    const sumDebtCredit = await getAccountingSum();
+    const payLoad = {
+      startDateVal: req.startDateVal,
+      endDateVal: req.endDateVal,
+    };
+    const sumDebtCredit = await getAccountingSumDate(payLoad);
     return { status: true, response: sumDebtCredit };
+  } catch (error) {
+    return { status: false, response: error };
+  }
+};
+// 6.endpoint : api/accounting-by-date
+// method : GET
+// payLoad : startDate, endDate,
+// return : accounting by date
+export const getByDate = async (req) => {
+  try {
+    const payLoad = {
+      startDateVal: req.startDateVal,
+      endDateVal: req.endDateVal,
+    };
+    const accountingByDate = await getAccountingDate(payLoad);
+    return { status: true, response: accountingByDate };
   } catch (error) {
     return { status: false, response: error };
   }

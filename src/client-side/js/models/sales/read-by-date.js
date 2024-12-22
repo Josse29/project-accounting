@@ -1,56 +1,34 @@
-import { getByDate, getSumDate } from "./services.js";
-import { uiTbody, uiTbodyEmpty } from "./ui.js";
-import { formatRupiah2 } from "../../utils/formatPrice.js";
-import { formatWaktuIndo } from "../../utils/formatTime.js";
+import { getByDate } from "./services.js";
+import { uiFailed2, uiSummary, uiTbody, uiTbodyEmpty } from "./ui.js";
 import { listProductRefSalesReadDate } from "../products/list.js";
 import { listUserRefSalesReadDate } from "../users/list.js";
 import { animateFade } from "../../utils/updateUi.js";
+import { getSummary1 } from "./utils.js";
 
 // 1. triggered event button
 $("button#read-sales-date")
   .off("click")
   .on("click", async function () {
+    // animate
+    animateFade("#sales-card-body");
     // request
     const startDateVal = $("input#sales-read-startDate").val();
     const endDateVal = $("input#sales-read-endDate").val();
-    const date = `${formatWaktuIndo(startDateVal)} - ${formatWaktuIndo(
-      endDateVal
-    )}`;
     const req = {
       startDateVal,
       endDateVal,
     };
-    // validation date
-    if (
-      startDateVal > endDateVal ||
-      (startDateVal !== "" && endDateVal === "") ||
-      (startDateVal === "" && endDateVal !== "") ||
-      (startDateVal === "" && endDateVal === "")
-    ) {
-      return;
-    }
-    // animate
-    animateFade("#sales-card-body");
-    // summary
-    const summary = await getSumDate(req);
-    const sumStatus = summary.status;
-    const sumResponse = summary.response;
-    if (sumStatus) {
-      const rupiah = formatRupiah2(sumResponse);
-      const p = `<p class="fs-5 mb-1 fw-bold text-capitalize">${date}</p>
-              <p class="fs-5 ms-1 mb-1">Total : ${rupiah}</p> `;
-      $("div#summary").html(p);
-    }
-    if (!sumStatus) {
-      console.error(sumResponse);
-    }
-    // sales
+    // 1. sales
     const sales = await getByDate(req);
     const salesStatus = sales.status;
     const salesResponse = sales.response;
     if (salesStatus) {
       const existed = salesResponse.length >= 1;
       if (existed) {
+        // 1. summary
+        const price = await getSummary1(req);
+        uiSummary(price, startDateVal, endDateVal);
+        // 2. table
         uiTbody(salesResponse);
         // select with date product, sales, customer
         await listProductRefSalesReadDate();
@@ -58,12 +36,16 @@ $("button#read-sales-date")
         $("div#sales-select-date").removeClass("d-none");
       }
       if (!existed) {
+        // 1. summary
+        uiSummary("", startDateVal, endDateVal);
+        // 2.table
         uiTbodyEmpty(date);
         $("div#sales-select-date").addClass("d-none");
       }
     }
     if (!salesStatus) {
-      console.error(salesResponse);
+      uiFailed2(salesResponse);
+      throw new Error(salesResponse);
     }
     // references-callback-ui
     // 1.limit-search
@@ -76,4 +58,6 @@ $("button#read-sales-date")
     $("div#sales-select").addClass("d-none");
     // 4.pagination
     $("div#sales-page-container").addClass("d-none");
+    // 5. alert
+    $("div#sales-card-body div.failed").html(``);
   });

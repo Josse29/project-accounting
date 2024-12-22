@@ -19,9 +19,9 @@ $("button#cash-convert-csv")
         const filePath = await window.electronAPI.saveCSV(response);
         if (filePath) {
           uiAlertSuccess(`File Excel Save On ${filePath}`);
+          $("#cash-modal-convert-csv .failed").html(``);
           $("#cash-modal-convert-csv input#cash-start-date").val("");
           $("#cash-modal-convert-csv input#cash-end-date").val("");
-          $("#cash-modal-convert-csv .failed").html(``);
           $("#cash-modal-convert-csv").modal("hide");
         }
       }

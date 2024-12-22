@@ -59,15 +59,10 @@ export async function getCashPage(req) {
   }
 }
 export async function summary1(req) {
-  const sumCash = await getSum1(req);
-  const statusSumCash = sumCash.status;
-  const resSumCash = sumCash.response;
-  let sumCash1 = ``;
-  if (statusSumCash) {
-    sumCash1 = resSumCash;
+  const { status, response } = await getSum1(req);
+  if (status) {
+    return response;
   } else {
-    sumCash1 = resSumCash;
-    console.error(sumCash1);
+    throw new Error(response);
   }
-  return sumCash1;
 }

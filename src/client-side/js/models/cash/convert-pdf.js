@@ -24,6 +24,9 @@ $("#cash-modal-convert-pdf button#cash-convert-pdf")
         const filePath = await window.electronAPI.savePDF(htmlContent);
         if (filePath) {
           uiAlertSuccess(`File PDF Save on ${filePath}`);
+          // reset ui alert
+          $("#cash-modal-convert-pdf .failed").html(``);
+          // reset all
           $("#cash-modal-convert-pdf input#cash-start-date-1").val("");
           $("#cash-modal-convert-pdf input#cash-end-date-1").val("");
           $("#cash-modal-convert-pdf").modal("hide");
@@ -39,5 +42,4 @@ $("#cash-modal-convert-pdf button#cash-convert-pdf")
       console.error(response);
       uiAlertFailed1(response);
     }
-    // summary
   });

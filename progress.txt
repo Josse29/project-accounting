@@ -66,3 +66,7 @@
 - refactor utils/...
 12/10/2024
 - refactor pdf handlers part 4 huffffrf
+12/22/2024
+- convert pdf and excels accounting 
+- refactor date all models
+- continuee create excels in case cash in 

@@ -120,10 +120,19 @@ export const uiFailed1 = (res) => {
   </div>`;
   $("#modal-sales-convert-pdf #failed").html(alert);
 };
+export const uiFailed2 = (res) => {
+  const alert = `
+  <div class="alert alert-danger alert-dismissible fade show text-start" role="alert">
+    <strong class="text-capitalize">${res}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>`;
+  $("div#sales-card-body div.failed").html(alert);
+};
 export const uiReset = () => {
-  // reset search
+  // reset search  & date
   $("input#sales-read-search").val("");
-  // summary
+  $("input#sales-read-startDate").val("");
+  $("input#sales-read-endDate").val("");
   $("div#summary").html(``);
   // limit-search
   $("div#sales-limit-search").removeClass("d-none");
@@ -146,7 +155,13 @@ export const uiLoad = () => {
   $("tbody#sales-read-table").html(tr);
   $("div#sales-page-container").addClass("d-none");
 };
-export const uiPDF = (response, getTotal, salesGroup) => {
+export const uiPDF = (
+  response,
+  getTotal,
+  salesGroup,
+  productGroup,
+  customerGroup
+) => {
   const { indonesiaDDMY, indonesiaHour, indonesiaMinute, indonesiaSecond } =
     timeIndonesian();
   const html1 = `
@@ -160,7 +175,7 @@ export const uiPDF = (response, getTotal, salesGroup) => {
     </div>
   </div>
   `;
-  // table sales
+  // 1. table sales
   let tbody = ``;
   let no = 1;
   response.forEach((row) => {
@@ -213,7 +228,7 @@ export const uiPDF = (response, getTotal, salesGroup) => {
     </table>
   </div>
   `;
-  // table Salesname
+  // 2. table Salesname
   let no1 = 1;
   let tbody1 = ``;
   salesGroup.forEach((el) => {
@@ -244,6 +259,74 @@ export const uiPDF = (response, getTotal, salesGroup) => {
     </table>
   </div>
   `;
+  // 3. table product
+  let no2 = 1;
+  let tbody2 = ``;
+  productGroup.forEach((el) => {
+    const productName = el.ProductName;
+    const productPriceSell = el.ProductPriceJual;
+    const salesQty = el.Sales_Qty;
+    const salesTotal = el.Sales_Total;
+    tbody2 += `
+    <tr>
+      <td>${no2++}</td>
+      <td>${productName}</td>
+      <td>${formatRupiah2(productPriceSell)}</td>
+      <td>${salesQty}</td>
+      <td>${formatRupiah2(salesTotal)}</td>
+    </tr>
+    `;
+  });
+  const html4 = `
+  <div class="mb-3">
+    <h4>Table Summary Of Product</h4>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Product</th>
+          <th>Price</th>
+          <th>Qty</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${tbody2}
+      </tbody>
+    </table>
+  </div>
+  `;
+  // 4. tabel customer
+  let tbody3 = ``;
+  let no3 = 1;
+  customerGroup.forEach((el) => {
+    const customerName = el.UserFullname;
+    const totalSales = el.Sales_Total;
+    tbody3 += `
+    <tr>
+      <td>${no3++}</td>
+      <td>${customerName}</td>
+      <td>${formatRupiah2(totalSales)}</td>
+    </tr>
+    `;
+  });
+  const html5 = `
+  <div class="mb-3">
+    <h4>Table Of Customer</h4>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Customer</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${tbody3}
+      </tbody>
+    </table>
+  </div>
+  `;
   const html = `          
   <div class="d-flex justify-content-center">
     <div class="card my-2 w-100">
@@ -258,8 +341,19 @@ export const uiPDF = (response, getTotal, salesGroup) => {
         ${html1}
         ${html2}
         ${html3}
+        ${html4}
+        ${html5}
       </div>
     </div>
   </div>`;
   return html;
+};
+export const uiSummary = (rupiah, startDateVal, endDateVal) => {
+  const date = `
+  ${formatWaktuIndo(startDateVal)} - ${formatWaktuIndo(endDateVal)}`;
+  const price = rupiah !== "" ? formatRupiah2(rupiah) : formatRupiah2(0);
+  const p = `
+  <p class="fs-5 mb-1 fw-bold text-capitalize">${date}</p>
+  <p class="fs-5 ms-1 mb-1">Total : ${price}</p> `;
+  $("div#summary").html(p);
 };

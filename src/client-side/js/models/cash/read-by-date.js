@@ -1,46 +1,19 @@
-import { formatRupiah2 } from "../../utils/formatPrice.js";
-import { formatWaktuIndo } from "../../utils/formatTime.js";
 import { animateFade } from "../../utils/updateUi.js";
 import { getByDate, getSum1 } from "./services.js";
-import { uiTbody, uiTbodyEmpty } from "./ui.js";
+import { uiAlertFailed2, uiSummary, uiTbody, uiTbodyEmpty } from "./ui.js";
+import { summary1 } from "./utils.js";
 
 $("#cash-read-date button")
   .off("click")
   .on("click", async () => {
+    animateFade("#cash-card");
+    const searchVal = $("input#cash-read-search").val();
     const startDateVal = $("#cash-read-date input#startDate").val();
     const endDateVal = $("#cash-read-date input#endDate").val();
     const req = {
       startDateVal,
       endDateVal,
     };
-    // validation date
-    if (
-      startDateVal > endDateVal ||
-      (startDateVal !== "" && endDateVal === "") ||
-      (startDateVal === "" && endDateVal !== "") ||
-      (startDateVal === "" && endDateVal === "")
-    ) {
-      return false;
-    }
-    animateFade("#cash-card");
-    // get only sum
-    const summary = await getSum1(req);
-    const status = summary.status;
-    const response = summary.response;
-    if (status) {
-      const rupiah = formatRupiah2(response);
-      const uiSummary = `
-      <h4 class="text-capitalize fw-bold">
-        ${formatWaktuIndo(startDateVal)} 
-        - ${formatWaktuIndo(endDateVal)}  
-      </h4>
-      <h5>Total : ${rupiah}</h5>
-      `;
-      $("div#cash-summary").html(uiSummary);
-    }
-    if (!status) {
-      console.error(response);
-    }
     // get cash
     const cash = await getByDate(req);
     const status1 = cash.status;
@@ -48,14 +21,20 @@ $("#cash-read-date button")
     if (status1) {
       const existed = response1.length >= 1;
       if (existed) {
+        // get only sum
+        const sumCash1 = await summary1(req);
+        uiSummary(sumCash1, startDateVal, endDateVal);
         uiTbody(response1);
       }
       if (!existed) {
-        uiTbodyEmpty("");
+        uiSummary("", startDateVal, endDateVal);
+        uiTbodyEmpty(searchVal);
       }
+      $("#section-alert").html(``);
     }
     if (!status1) {
-      console.error(response1);
+      uiAlertFailed2(response1);
+      throw new Error(response1);
     }
     // callback ui
     // 1. limit search

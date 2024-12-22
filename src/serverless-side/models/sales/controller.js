@@ -145,30 +145,14 @@ export const getSaleGroupPerson = (req) => {
 export const getSaleGroupCustomer = (req) => {
   const { startDateVal, endDateVal } = req;
   const query = queryGetGroupCustomer(startDateVal, endDateVal);
-  return new Promise((resolve, reject) => {
-    db.all(query, (err, res) => {
-      if (!err) {
-        resolve(res);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const sales = window.electronAPI.sqliteApi.all(query);
+  return sales;
 };
 export const getSaleGroupProduct = (req) => {
   const { startDateVal, endDateVal } = req;
   const query = queyrGetGroupProduct(startDateVal, endDateVal);
-  return new Promise((resolve, reject) => {
-    db.all(query, (err, res) => {
-      if (!err) {
-        resolve(res);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const sales = window.electronAPI.sqliteApi.all(query);
+  return sales;
 };
 // product
 export const getSaleSumProductId = async (req) => {
@@ -209,6 +193,7 @@ export const getSaleSumCustomerId = async (req) => {
 // date
 export const getSaleDate = async (req) => {
   const { startDateVal, endDateVal } = req;
+  validateDate(startDateVal, endDateVal);
   const query = queryGetSalesDate(startDateVal, endDateVal);
   const salesByDate = await window.electronAPI.sqliteApi.all(query);
   return salesByDate;

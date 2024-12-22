@@ -1,9 +1,12 @@
 import {
+  getByGroupCustomer,
+  getByGroupProduct,
   getByGroupSale,
   getLimitOffset,
   getRowPage,
   getSum,
   getSum1,
+  getSumDate,
 } from "./services.js";
 import { formatRupiah2 } from "../../utils/formatPrice.js";
 import { handlePagination } from "./pagination.js";
@@ -51,6 +54,15 @@ export async function getSummary() {
     console.error(response);
   }
 }
+export async function getSummary1(req) {
+  const { status, response } = await getSumDate(req);
+  if (status) {
+    return response;
+  }
+  if (!status) {
+    throw new Error(response);
+  }
+}
 // 3. get sales by limit and offset
 export async function getPage(req) {
   const { status, response } = await getLimitOffset(req);
@@ -68,7 +80,7 @@ export const getSalesGroup = async (req) => {
     return response;
   }
   if (!status) {
-    console.error(response);
+    throw new Error(response);
   }
 };
 export const getTotal = async (req) => {
@@ -81,6 +93,24 @@ export const getTotal = async (req) => {
     };
   }
   if (!status) {
-    console.error(response);
+    throw new Error(response);
+  }
+};
+export const productGroup = async (req) => {
+  const { status, response } = await getByGroupProduct(req);
+  if (status) {
+    return response;
+  }
+  if (!status) {
+    throw new Error(response);
+  }
+};
+export const customerGroup = async (req) => {
+  const { status, response } = await getByGroupCustomer(req);
+  if (status) {
+    return response;
+  }
+  if (!status) {
+    throw new Error(response);
   }
 };

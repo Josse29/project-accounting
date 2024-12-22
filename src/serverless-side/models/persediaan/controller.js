@@ -70,7 +70,7 @@ export const createPersediaan = async (req) => {
     CashInfoVal: `${valProductName} has been stored ${qty}`,
   };
   await createCash(reqCash);
-  // 5.effect to db.acounting credit and debt
+  // 5.effect to db.acounting debt and credit
   const debtEntry = {
     accountingYMDVal: valPersediaanDDMY,
     accountingHMSVal: valPersediaanHMS,
@@ -244,6 +244,7 @@ export const getPersediaanReport = async (req) => {
 };
 export const getPersediaanDate = async (req) => {
   const { startDateVal, endDateVal } = req;
+  validateDate(startDateVal, endDateVal);
   const query = queryGetPersediaanDate(startDateVal, endDateVal);
   const persediaanByDate = await window.electronAPI.sqliteApi.all(query);
   return persediaanByDate;

@@ -91,6 +91,7 @@ export const getCashSum1 = async (req) => {
 };
 export const getCashDate = async (req) => {
   const { startDateVal, endDateVal } = req;
+  validateDate(startDateVal, endDateVal);
   const query = queryReadByDate(startDateVal, endDateVal);
   const cashByDate = await window.electronAPI.sqliteApi.all(query);
   return cashByDate;

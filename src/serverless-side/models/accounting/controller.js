@@ -1,11 +1,13 @@
 import db from "../../database/config.js";
+import { validateDate } from "../../utils/validation.js";
 import {
   queryCreateAccounting,
   queryDeleteAccounting,
   queryInitAccounting,
   queryReadAccounting,
   queryReadAccounting1,
-  querySum,
+  queryReadAccountingDate,
+  querySumDate,
   queryUpdateAccounting,
 } from "./querysql.js";
 export const createAccounting = async (req) => {
@@ -33,33 +35,34 @@ export const createAccounting = async (req) => {
 };
 // general-entries
 export const getAccountingPagination = async (req) => {
-  const { searchVal, limitVal } = req;
+  const { limitVal } = req;
   const query = queryInitAccounting();
   const totalPageRow = await window.electronAPI.sqliteApi.each(query, limitVal);
   return totalPageRow;
 };
 export const getAccounting = async (req) => {
-  const { searchVal, limitVal, offsetVal } = req;
+  const { limitVal, offsetVal } = req;
   const startOffsetVal = parseInt((offsetVal - 1) * limitVal);
-  const query = queryReadAccounting(searchVal, limitVal, startOffsetVal);
+  const query = queryReadAccounting(limitVal, startOffsetVal);
+  const accounting = await window.electronAPI.sqliteApi.all(query);
+  return accounting;
+};
+export const getAccountingDate = async (req) => {
+  const { startDateVal, endDateVal } = req;
+  // validate Date
+  validateDate(startDateVal, endDateVal);
+  const query = queryReadAccountingDate(startDateVal, endDateVal);
   const accounting = await window.electronAPI.sqliteApi.all(query);
   return accounting;
 };
 // balance-sheet
-export const getAccountingSum = () => {
-  const query = querySum();
-  return new Promise((resolve, reject) => {
-    db.each(query, (err, result) => {
-      if (!err) {
-        const sumDebt = result.Total_Debt ? result.Total_Debt : 0;
-        const sumCredit = result.Total_Credit ? result.Total_Credit : 0;
-        resolve({ sumDebt, sumCredit });
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+export const getAccountingSumDate = async (req) => {
+  const { startDateVal, endDateVal } = req;
+  const query = querySumDate(startDateVal, endDateVal);
+  const result = await window.electronAPI.sqliteApi.each1(query);
+  const sumDebt = result.Total_Debt ? result.Total_Debt : 0;
+  const sumCredit = result.Total_Credit ? result.Total_Credit : 0;
+  return { sumDebt, sumCredit };
 };
 export const getAccounting1 = () => {
   const query = queryReadAccounting1();

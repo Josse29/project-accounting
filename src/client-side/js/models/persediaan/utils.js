@@ -18,7 +18,7 @@ import {
   uiTbody,
   uiTbodyEmpty,
 } from "./ui.js";
-import { formatRupiah2 } from "../../utils/formatPrice.js";
+import { formatPrice, formatRupiah2 } from "../../utils/formatPrice.js";
 import { reinitTooltip } from "../../utils/updateUi.js";
 import { handlePagination1 } from "./pagination-1.js";
 import { uiQty } from "../../component/card/qty.js";
@@ -75,7 +75,6 @@ export async function get2() {
 export async function get3(req) {
   const { status, response } = await getAll1(req);
   if (status) {
-    console.log(response);
     uiTbody(response);
     uiBtnPageActive(req.offsetVal);
     reinitTooltip();
@@ -137,11 +136,11 @@ export async function getPage1(req) {
 export const sumPrice = async (req) => {
   const { status, response } = await getSumPriceDate(req);
   if (status) {
-    const rupiah = formatRupiah2(response);
+    const rupiah = formatPrice(response);
     return rupiah;
   }
   if (!status) {
-    console.error(response);
+    throw new Error(response);
   }
 };
 // persediaan by product
@@ -151,7 +150,7 @@ export async function groupProduct(req) {
     return response;
   }
   if (!status) {
-    console.error(response);
+    throw new Error(response);
   }
 }
 // persediaan by supplier
@@ -161,7 +160,7 @@ export const groupSupplier = async (req) => {
     return response;
   }
   if (!status) {
-    console.error(response);
+    throw new Error(response);
   }
 };
 export const groupCategory = async (req) => {
@@ -170,6 +169,6 @@ export const groupCategory = async (req) => {
     return response;
   }
   if (!status) {
-    console.error(response);
+    throw new Error(response);
   }
 };

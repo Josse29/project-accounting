@@ -19,7 +19,7 @@ export const queryInitAccounting = () => {
                FROM Accounting `;
   return query;
 };
-export const queryReadAccounting = (searchVal, limitVal, startoffsetVal) => {
+export const queryReadAccounting = (limitVal, startoffsetVal) => {
   let query = `SELECT * FROM Accounting `;
   query += `ORDER BY AccountingYMD DESC, 
                      AccountingHMS DESC
@@ -27,12 +27,20 @@ export const queryReadAccounting = (searchVal, limitVal, startoffsetVal) => {
             OFFSET ${startoffsetVal} `;
   return query;
 };
+export const queryReadAccountingDate = (startDateVal, endDateVal) => {
+  let query = `SELECT * FROM Accounting `;
+  query += `WHERE AccountingYMD BETWEEN '${startDateVal}' AND '${endDateVal}' `;
+  query += `ORDER BY AccountingYMD DESC, 
+                     AccountingHMS DESC `;
+  return query;
+};
 // balance sheet
-export const querySum = () => {
+export const querySumDate = (startDateVal, endDateVal) => {
   let query = `SELECT
                SUM(AccountingDebt) AS Total_Debt,
-               SUM(AccountingCredit) AS Total_Credit
+               SUM(AccountingCredit) AS Total_Credit 
                FROM Accounting `;
+  query += `WHERE AccountingYMD BETWEEN '${startDateVal}' AND '${endDateVal}' `;
   return query;
 };
 export const queryReadAccounting1 = () => {

@@ -5,11 +5,17 @@ import { animateFade, reinitTooltip } from "../../utils/updateUi.js";
 import { listCategoryRefPersediaanReadDate } from "../categories/list.js";
 import { listProductRefPersediaanReadDate } from "../products/list.js";
 import { listSupplierRefPersediaanReadDate } from "../supplier/list.js";
-import { uiSumPersediaanDate, uiTbody, uiTbodyEmpty } from "./ui.js";
+import {
+  uiAlertFailed,
+  uiSumPersediaanDate,
+  uiTbody,
+  uiTbodyEmpty,
+} from "./ui.js";
 
 $("button#persediaan-date-search")
   .off("click")
   .on("click", async function () {
+    animateFade("#persediaan-section");
     // 1. request
     const startDateVal = $("input#persediaan-start-date").val();
     const endDateVal = $("input#persediaan-end-date").val();
@@ -17,42 +23,31 @@ $("button#persediaan-date-search")
       startDateVal,
       endDateVal,
     };
-    // 2. validation date
-    if (
-      startDateVal > endDateVal ||
-      (startDateVal !== "" && endDateVal === "") ||
-      (startDateVal === "" && endDateVal !== "") ||
-      (startDateVal === "" && endDateVal === "")
-    ) {
-      return false;
-    }
-    animateFade("#persediaan-section");
-    // 3. caption-selected
+    // 2. caption-selected
     const startDateValTxt = formatWaktuIndo(startDateVal);
     const endDateValTxt = formatWaktuIndo(endDateVal);
     const rangeDateTxt = `All Product | ${startDateValTxt} - ${endDateValTxt} `;
-    // 4. sum rupiah
-    const sumRp = await getSumPriceDate(req);
-    const sumRpRes = sumRp.response;
-    const sumRpStatus = sumRp.status;
-    if (sumRpStatus) {
-      const sumRupiah = formatPrice(sumRpRes);
-      // insert - to - html sumpersediaan
-      const sumSectionHTML = `
-      <p class="fs-5 ms-2 mb-1 text-capitalize fw-bold ms-2">${rangeDateTxt}</p>
-      <p class="fs-5 ms-4">Total Price : ${sumRupiah} </p>`;
-      $("div#persediaan-sum-section").html(sumSectionHTML);
-    }
-    if (!sumRpStatus) {
-      console.error(sumRpRes);
-    }
-    // 5. stock - table
+    // 3. stock - table
     const byDate = await getByDate(req);
     const byDateRes = byDate.response;
     const byDateStatus = byDate.status;
     if (byDateStatus) {
       const existed = byDateRes.length >= 1;
       if (existed) {
+        // 4. summary
+        const sumRp = await getSumPriceDate(req);
+        const sumRpRes = sumRp.response;
+        const sumRpStatus = sumRp.status;
+        if (sumRpStatus) {
+          const sumRupiah = formatPrice(sumRpRes);
+          const sumSectionHTML = `
+          <p class="fs-5 ms-2 mb-1 text-capitalize fw-bold ms-2">${rangeDateTxt}</p>
+          <p class="fs-5 ms-4">Total Price : ${sumRupiah} </p>`;
+          $("div#persediaan-sum-section").html(sumSectionHTML);
+        }
+        if (!sumRpStatus) {
+          throw new Error(sumRpRes);
+        }
         // list with date
         const productListDate = await listProductRefPersediaanReadDate();
         const supplierListDate = await listSupplierRefPersediaanReadDate();
@@ -67,11 +62,18 @@ $("button#persediaan-date-search")
         reinitTooltip();
       }
       if (!existed) {
+        // summary
+        const sumSectionHTML = `
+        <p class="fs-5 ms-2 mb-1 text-capitalize fw-bold ms-2">${rangeDateTxt}</p>
+        <p class="fs-5 ms-4">Total Price : 0 </p>`;
+        $("div#persediaan-sum-section").html(sumSectionHTML);
         uiTbodyEmpty(rangeDateTxt);
       }
+      $("#section-alert").html(``);
     }
     if (!byDateStatus) {
-      console.error(byDateRes);
+      uiAlertFailed(byDateRes);
+      throw new Error(byDateRes);
     }
     // references
     uiSumPersediaanDate();

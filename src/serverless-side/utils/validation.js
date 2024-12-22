@@ -126,7 +126,8 @@ export const validateCategoryName = (categoryName) => {
 export const validateDate = (startDateVal, endDateVal) => {
   if (
     (startDateVal !== "" && endDateVal === "") ||
-    (startDateVal === "" && endDateVal !== "")
+    (startDateVal === "" && endDateVal !== "") ||
+    (startDateVal === "" && endDateVal === "")
   ) {
     const msg = "Start Date And End Date must be filled...";
     throw new Error(msg);

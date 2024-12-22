@@ -595,3 +595,20 @@ export const uiBtnPageActive1 = (pageNumber) => {
   btnPage.removeClass("product-ref-persediaan-page-active");
   btnPage.eq(pageNumber - 1).addClass("product-ref-persediaan-page-active");
 };
+export const uiAlertFailed = (res) => {
+  const alertFailed = `
+  <div
+    class="alert alert-danger alert-dismissible fade show text-start"
+    role="alert"
+  >
+    <strong class="text-capitalize">${res}</strong>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  </div>
+  `;
+  $("#section-alert").html(alertFailed);
+};

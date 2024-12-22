@@ -112,6 +112,17 @@ export const uiAlertSuccess = (res) => {
 };
 // for pdf
 export const uiPDF = (response, sumCash) => {
+  const { indonesiaDDMY, indonesiaHour, indonesiaMinute, indonesiaSecond } =
+    timeIndonesian();
+  const html = `
+  <h3>Table Cash</h3>
+  <h6>${indonesiaDDMY}</h6>
+  <div class="d-flex gap-1">
+    <h6>${indonesiaHour} :</h6>
+    <h6>${indonesiaMinute} :</h6>
+    <h6>${indonesiaSecond}</h6>
+  </div>
+  `;
   let tr = ``;
   let no = 1;
   // tbody
@@ -128,20 +139,7 @@ export const uiPDF = (response, sumCash) => {
             <td>${cashName}</td>
             <td>${formatPrice(cashRp)}</td>
            </tr>`;
-    no++;
   });
-  const sum = `<td>${formatPrice(sumCash)}</td>`;
-  const { indonesiaDDMY, indonesiaHour, indonesiaMinute, indonesiaSecond } =
-    timeIndonesian();
-  const html = `
-  <h3>Table Cash</h3>
-  <h6>${indonesiaDDMY}</h6>
-  <div class="d-flex gap-1">
-    <h6>${indonesiaHour} :</h6>
-    <h6>${indonesiaMinute} :</h6>
-    <h6>${indonesiaSecond}</h6>
-  </div>
-  `;
   const html1 = `
   <table class="table table-striped">
     <thead>
@@ -158,7 +156,7 @@ export const uiPDF = (response, sumCash) => {
     <tfoot>
       <tr>
         <th colspan="3" class="text-center">Total</th>
-        ${sum}
+        <th colspan="1">${formatPrice(sumCash)}</th>
       </tr>
     </tfoot>
   </table>
@@ -196,4 +194,22 @@ export const uiAlertFailed1 = (res) => {
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>`;
   $("#cash-modal-convert-pdf .failed").html(alert);
+};
+export const uiAlertFailed2 = (res) => {
+  const alert = `<div class="alert alert-danger alert-dismissible fade show text-start" role="alert">
+                    <strong class="text-capitalize">${res}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                 </div>`;
+  $("#section-alert").html(alert);
+};
+export const uiSummary = (rupiah, startDateVal, endDateVal) => {
+  const price = rupiah !== "" ? formatRupiah2(rupiah) : formatRupiah2(0);
+  const uiSummary = `
+  <h4 class="text-capitalize fw-bold">
+    ${formatWaktuIndo(startDateVal)} 
+    - ${formatWaktuIndo(endDateVal)}  
+  </h4>
+  <h5>Total : ${price}</h5>
+  `;
+  $("div#cash-summary").html(uiSummary);
 };

@@ -50,4 +50,5 @@ $("select#persediaan-refcategory-search")
     $("select#persediaan-refproduct-search").val("Choose One Of Products");
     $("select#persediaan-refsupplier-search").val("Choose One Of Suppliers");
     $("#persediaan-pagination").addClass("d-none");
+    $("#section-alert").html(``);
   });

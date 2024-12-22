@@ -39,33 +39,6 @@ $("#persediaan-modal-convert-pdf #persediaan-convert-pdf")
         } else {
           console.error(filePath);
         }
-        return;
-
-        const tbodyCategoryGroup = await groupCategory(req);
-        const txtSumCategory = await sumCategory(req);
-
-        let file_path = dialog.showSaveDialogSync({
-          title: "Export Data",
-          filters: [{ name: "pdf", extensions: ["pdf"] }],
-        });
-        if (file_path) {
-          file_path = file_path.replace(/\\/g, "/");
-          ipcRenderer.send(
-            "pdf:persediaan",
-            tbodyProduct,
-            tbodyCategoryGroup,
-            txtSumCategory,
-            tbodyProductGroup,
-            tbodySupplierGroup,
-            txtSumSupplier,
-            txtPersediaanQtySum,
-            txtPersediaanRpSum,
-            file_path
-          );
-          ipcRenderer.on("success:pdf-persediaan", (e, file_path) => {
-            uiAlertSuccess(`File Save On ${file_path}`);
-          });
-        }
       }
       if (!existed) {
         uiAlertFail1("uuppsss , sorry stock is still empty...");
@@ -73,6 +46,6 @@ $("#persediaan-modal-convert-pdf #persediaan-convert-pdf")
     }
     if (!status) {
       uiAlertFail1(response);
-      console.error(response);
+      throw new Error(response);
     }
   });

@@ -256,22 +256,39 @@
                 <span>Purchase</span>
               </button>
             </div>
-            <!-- create, convert ,misc -->
+            <!-- create, convert ,reset -->
             <div class="d-flex gap-1 justify-content-end mb-3">
               <div class="btn-group gap-2">
-                <button class="btn btn-success d-flex align-items-center gap-2">
+                <!-- excel -->
+                <button
+                  class="btn btn-success d-flex align-items-center gap-2"
+                  data-bs-toggle="modal"
+                  data-bs-target="#accounting-modal-convert-csv"
+                >
                   <i class="fa-solid fa-file-excel fs-5"></i>
                   <span>Excel</span>
                 </button>
+                <!-- pdf -->
                 <button
                   class="btn btn-secondary d-flex align-items-center gap-2"
+                  data-bs-toggle="modal"
+                  data-bs-target="#accounting-modal-convert-pdf"
                 >
                   <i class="fa-solid fa-file-pdf fs-5"></i>
                   <span>PDF</span>
                 </button>
+                <!-- delete -->
                 <button class="btn btn-danger d-flex align-items-center gap-2">
                   <i class="fa-solid fa-trash fs-5"></i>
                   <span>Delete</span>
+                </button>
+                <!-- reset -->
+                <button
+                  class="btn btn-secondary d-flex align-items-center gap-2"
+                  id="accounting-reset"
+                >
+                  <i class="fa-solid fa-arrows-rotate fs-5"></i>
+                  <span>Refresh</span>
                 </button>
               </div>
             </div>
@@ -294,35 +311,13 @@
                   id="endDate"
                   style="width: 250px"
                 />
-                <button class="btn btn-primary">Search</button>
+                <button class="btn btn-primary" id="filtered_date">
+                  Search
+                </button>
               </div>
             </div>
-            <!-- limit & search -->
-            <div class="d-flex justify-content-end gap-1 mb-3">
-              <select
-                class="form-select"
-                style="width: auto"
-                id="general-entries-limit"
-              >
-                <option value="10">10</option>
-                <option value="20">20</option>
-                <option value="50">50</option>
-              </select>
-              <div class="input-group" style="width: max-content">
-                <input
-                  type="text"
-                  class="form-control focus-by-me"
-                  placeholder="masukkan keyword menus..."
-                  style="width: 450px"
-                  id="general-entries-search"
-                />
-                <span
-                  class="input-group-text hover-by-me"
-                  style="background-color: #3c50e0; color: white"
-                  >Search</span
-                >
-              </div>
-            </div>
+            <!-- section alert -->
+            <div class="section-alert"></div>
             <!-- tabel general-entries -->
             <div class="overflow-x-auto mb-3" id="accounting-table">
               <table class="table table-striped" style="table-layout: fixed">
@@ -683,6 +678,12 @@
                 <h1 class="modal-title fs-2" id="cashInModal">Cash in</h1>
               </div>
               <div class="modal-body">
+                <!-- date -->
+                <div class="mb-3">
+                  <label for="" class="form-label fs-4">Input Date :</label>
+                  <input type="date" class="form-control" id="" />
+                </div>
+                <!-- transaction -->
                 <div class="mb-3">
                   <label class="form-label fs-4">Metode</label>
                   <select
@@ -690,45 +691,38 @@
                     aria-label="Default select example"
                   >
                     <option selected>Open this select menu</option>
-                    <option value="cash">Tunai</option>
-                    <option value="2">Kredit</option>
+                    <option>Receivable</option>
+                    <option>Payable</option>
+                    <option>Equity</option>
+                    <option>Sales</option>
                   </select>
                 </div>
-                <div class="mb-3">
-                  <label class="form-label fs-4">Jenis Akun</label>
-                  <select
-                    class="form-select"
-                    aria-label="Default select example"
-                  >
-                    <option selected>Open this select menu</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </select>
-                </div>
+                <!-- nominal -->
                 <div class="mb-3">
                   <label for="nominal" class="form-label fs-4">Nominal</label>
                   <input
                     type="text"
                     class="form-control"
                     id="nominal"
-                    placeholder="40,000,00 ,-"
+                    placeholder="$ 10.0"
                   />
                 </div>
+                <!-- image -->
                 <div class="mb-3">
-                  <label for="bukti" class="form-label fs-4">Bukti</label>
-                  <input class="form-control" type="file" id="bukti" />
+                  <label for="proof" class="form-label fs-4">Image</label>
+                  <input class="form-control" type="file" id="proof" />
                 </div>
+                <!-- further information -->
                 <div class="mb-3">
-                  <label for="keterangan" class="form-label fs-4"
-                    >Keterangan</label
+                  <label for="information" class="form-label fs-4"
+                    >Information</label
                   >
-                  <input
-                    type="text"
+                  <textarea
                     class="form-control"
-                    id="keterangan"
-                    placeholder="40,000,00 ,-"
-                  />
+                    placeholder="furhter information"
+                    style="height: 100px"
+                    id="information"
+                  ></textarea>
                 </div>
               </div>
               <div class="modal-footer">
@@ -836,18 +830,128 @@
             </div>
           </div>
         </div>
-      </div>
-      <!-- cash -->
-      <div>
-        <!-- cash - csv -->
-        <div class="modal fade" id="cash-modal-convert-csv">
+        <!-- convert excel -->
+        <div class="modal fade" id="accounting-modal-convert-csv" tabindex="-1">
           <div
             class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
           >
             <div class="modal-content">
               <div class="modal-header px-3 py-2 bg-success">
                 <i class="fa-solid fa-file-excel fs-4 text-white"></i>
-                <h3 class="modal-title text-white ms-3">Excel</h3>
+                <h4 class="modal-title text-white ms-3">Accounting - Excel</h4>
+              </div>
+              <div class="modal-body">
+                <!-- alert failed -->
+                <div class="failed"></div>
+                <!-- start date -->
+                <div class="mb-3">
+                  <label for="accounting-start-date" class="fs-4 mb-2"
+                    >Start Date :</label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="accounting-start-date"
+                  />
+                </div>
+                <!-- endate -->
+                <div class="mb-3">
+                  <label for="accounting-end-date" class="fs-4 mb-2"
+                    >End Date :</label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="accounting-end-date"
+                  />
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn bg-danger text-white"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button
+                  type="button"
+                  class="btn bg-success text-white"
+                  id="accounting-convert-csv"
+                >
+                  Convert
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- convert pdf -->
+        <div class="modal fade" id="accounting-modal-convert-pdf" tabindex="-1">
+          <div
+            class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
+          >
+            <div class="modal-content">
+              <div class="modal-header px-3 py-2 bg-primary">
+                <i class="fa-solid fa-file-pdf fs-4 text-white"></i>
+                <h4 class="modal-title text-white ms-3">Accounting - PDF</h4>
+              </div>
+              <div class="modal-body">
+                <!-- failed -->
+                <div class="failed"></div>
+                <!-- start date -->
+                <div class="mb-3">
+                  <label for="accounting-start-date-1" class="fs-4 mb-2"
+                    >Start Date :</label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="accounting-start-date-1"
+                  />
+                </div>
+                <!-- endate -->
+                <div class="mb-3">
+                  <label for="accounting-end-date-1" class="fs-4 mb-2"
+                    >End Date :</label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="accounting-end-date-1"
+                  />
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn bg-danger text-white"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  id="accounting-convert-pdf"
+                >
+                  Convert
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- cash -->
+      <div>
+        <!-- cash - csv -->
+        <div class="modal fade" id="cash-modal-convert-csv" tabindex="-1">
+          <div
+            class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
+          >
+            <div class="modal-content">
+              <div class="modal-header px-3 py-2 bg-success">
+                <i class="fa-solid fa-file-excel fs-4 text-white"></i>
+                <h4 class="modal-title text-white ms-3">Cash - Excel</h4>
               </div>
               <div class="modal-body">
                 <!-- alert failed -->
@@ -898,7 +1002,7 @@
             <div class="modal-content">
               <div class="modal-header px-3 py-2 bg-primary">
                 <i class="fa-solid fa-file-pdf fs-4 text-white"></i>
-                <h3 class="modal-title text-white ms-3">PDF</h3>
+                <h4 class="modal-title text-white ms-3">Cash - PDF</h4>
               </div>
               <div class="modal-body">
                 <!-- failed -->
