@@ -4,15 +4,15 @@ import { timeIndonesian } from "../../utils/formatTime.js";
 export const uiTbody = (response) => {
   let tr = "";
   response.forEach((el) => {
-    const productId = parseInt(el.ProductId);
+    const productId = el.ProductId;
     const productName = el.ProductName;
-    const productBuy = parseFloat(el.ProductPriceBeli);
-    const productSell = parseFloat(el.ProductPriceJual);
+    const productBuy = el.ProductPriceBeli;
+    const productSell = el.ProductPriceJual;
     const productInfo = el.ProductInfo;
     const productImg = el.ProductImage;
     const categoryId = el.CategoryId;
     const categoryName = el.CategoryName;
-    const supplierId = parseInt(el.SupplierId);
+    const supplierId = el.SupplierId;
     const supplierName = el.SupplierName;
     const priceBuy = formatRupiah2(productBuy);
     const priceSell = formatRupiah2(productSell);
@@ -22,13 +22,13 @@ export const uiTbody = (response) => {
     <tr
       data-productid="${productId}"
       data-productname="${productName}"
-      data-productpricebeli=${productBuy}
+      data-productpricebeli="${productBuy}"
       data-productpricejual=${productSell}
       data-productketerangan="${productInfo}"
       data-productimage="${productImg}"
-      data-productcategoryid=${categoryId}
+      data-productcategoryid="${categoryId}"
       data-productcategoryname="${categoryName}"
-      data-productsupplierid=${supplierId}
+      data-productsupplierid="${supplierId}"
       data-productsuppliername="${supplierName}"
     >
       <td class="text-center align-content-center text-truncate pe-2">

@@ -40,7 +40,7 @@ $("div#persediaan-date-all-search")
     if (!qtyStatus) {
       console.error(qtyRes);
     }
-    //   table
+    //  table
     const dateProduct = await getByDateProductId(req);
     const dateProductStatus = dateProduct.status;
     const dateProductRes = dateProduct.response;

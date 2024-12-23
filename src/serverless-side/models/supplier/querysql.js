@@ -1,5 +1,5 @@
 // 1.CREATE
-export const queryInsertSupplier = (supplierName, supplierInfo, imgbase64) => {
+const queryInsertSupplier = (supplierName, supplierInfo, imgbase64) => {
   let query = `INSERT 
                INTO Supplier 
                (SupplierName, SupplierInfo, SupplierImg) 
@@ -8,7 +8,7 @@ export const queryInsertSupplier = (supplierName, supplierInfo, imgbase64) => {
   return query;
 };
 // 2.READ
-export const queryGetSupplier = (
+const queryGetSupplier = (
   supplierSearch,
   supplierLimit,
   supplierStartOffset
@@ -33,8 +33,7 @@ export const queryGetSupplier = (
             OFFSET ${supplierStartOffset}`;
   return query;
 };
-
-export const queryTotalRowSupplier = (supplierSearch) => {
+const queryTotalRowSupplier = (supplierSearch) => {
   let query = `SELECT COUNT (*) 
                  AS TOTAL_ROW
                  FROM Supplier `;
@@ -45,7 +44,7 @@ export const queryTotalRowSupplier = (supplierSearch) => {
   }
   return query;
 };
-export const queryGetListSupplier = (supplierSearch) => {
+const queryGetListSupplier = (supplierSearch) => {
   let query = `SELECT 
                SupplierId, SupplierName 
                FROM Supplier `;
@@ -58,7 +57,7 @@ export const queryGetListSupplier = (supplierSearch) => {
   return query;
 };
 // 3.UPDATE
-export const queryUpdateSupplier = (
+const queryUpdateSupplier = (
   supplierId,
   supplierName,
   supplierInfo,
@@ -82,8 +81,16 @@ export const queryUpdateSupplier = (
   return query;
 };
 // 4.DELETE
-export const queryDeleteSupplier = (supplierId) => {
+const queryDeleteSupplier = (supplierId) => {
   return `DELETE 
             FROM Supplier
             WHERE SupplierId = ${supplierId} `;
+};
+export {
+  queryDeleteSupplier,
+  queryGetListSupplier,
+  queryGetSupplier,
+  queryInsertSupplier,
+  queryTotalRowSupplier,
+  queryUpdateSupplier,
 };

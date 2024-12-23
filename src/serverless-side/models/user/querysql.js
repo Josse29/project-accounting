@@ -1,4 +1,4 @@
-export const queryRegister = (
+const queryRegister = (
   UserEmailVal,
   UserFullnameVal,
   UserPasswordVal,
@@ -12,7 +12,7 @@ export const queryRegister = (
                ('${UserEmailVal}', '${UserFullnameVal}', '${UserPasswordVal}', '${imgBase64}', '${UserPositionVal}') `;
   return query;
 };
-export const queryGetTotal = (searchVal) => {
+const queryGetTotal = (searchVal) => {
   let query = `SELECT 
                COUNT(*) AS TOTAL_ROW 
                FROM User `;
@@ -23,7 +23,7 @@ export const queryGetTotal = (searchVal) => {
   }
   return query;
 };
-export const queryGet = (searchVal, limitVal, offsetVal) => {
+const queryGet = (searchVal, limitVal, offsetVal) => {
   let query = `SELECT
                User.UserId, 
                User.UserFullname,
@@ -43,7 +43,7 @@ export const queryGet = (searchVal, limitVal, offsetVal) => {
             OFFSET ${offsetVal}`;
   return query;
 };
-export const queryGetCustomer = () => {
+const queryGetCustomer = () => {
   let query = `SELECT 
                  UserId,
                  UserFullname
@@ -54,7 +54,7 @@ export const queryGetCustomer = () => {
   query += `ORDER BY UserFullname ASC`;
   return query;
 };
-export const queryGetSales = () => {
+const queryGetSales = () => {
   let query = `SELECT 
                UserId,
                UserFullname
@@ -65,7 +65,7 @@ export const queryGetSales = () => {
   query += `ORDER BY UserFullname ASC`;
   return query;
 };
-export const queryUpdate = (
+const queryUpdate = (
   UserEmailVal,
   UserFullnameVal,
   UserPositionVal,
@@ -87,8 +87,17 @@ export const queryUpdate = (
   query += `WHERE UserId = ${UserIdVal} `;
   return query;
 };
-export const queryDeleteUser = (userId) => {
+const queryDeleteUser = (userId) => {
   let query = `DELETE FROM User
                WHERE User.UserId = ${userId} `;
   return query;
+};
+export {
+  queryDeleteUser,
+  queryGet,
+  queryGetCustomer,
+  queryGetSales,
+  queryGetTotal,
+  queryRegister,
+  queryUpdate,
 };

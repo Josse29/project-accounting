@@ -5,6 +5,7 @@ CREATE TABLE User (
   UserFullname VARCHAR(255),
   UserPassword VARCHAR(255),
   UserImg BLOB,
-  UserPosition VARCHAR(255)
+  UserPosition VARCHAR(255),
+  UserInfo TEXT
 )`;
 export default schema;

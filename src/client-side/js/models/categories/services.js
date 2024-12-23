@@ -10,7 +10,7 @@ import {
 // method : POST
 // payload : 1.categoryName, 2.categoryInfo,
 // return : success message create
-export const create = async (req) => {
+const create = async (req) => {
   try {
     const payLoad = {
       categoryName: req.categoryName,
@@ -26,7 +26,7 @@ export const create = async (req) => {
 // method : GET
 // payload : 1.searchVal, 2.limitVal
 // return : total page and total row
-export const getPagination = async (req) => {
+const getPagination = async (req) => {
   try {
     const payLoad = {
       searchVal: req.searchVal,
@@ -42,7 +42,7 @@ export const getPagination = async (req) => {
 // method : GET
 // payload : 1.searchVal, 2.limitVal, 3.offsetVal
 // return ; category with limit offset
-export const getByLimitOffset = async (req) => {
+const getByLimitOffset = async (req) => {
   try {
     const payLoad = {
       searchVal: req.searchVal,
@@ -59,7 +59,7 @@ export const getByLimitOffset = async (req) => {
 // method : PUT
 // payload  : 1.categoryId , 2.categoryName, 3.categoryInfo
 // return : message success or failed updated
-export const update = async (req) => {
+const update = async (req) => {
   try {
     const payLoad = {
       categoryId: req.categoryId,
@@ -76,7 +76,7 @@ export const update = async (req) => {
 // method : DELETE
 // payLoad : 1.categoryId, 2.categoryName
 // return : message success or failed deleted
-export const deleteById = async (req) => {
+const deleteById = async (req) => {
   try {
     const payLoad = {
       categoryId: req.categoryId,
@@ -92,7 +92,7 @@ export const deleteById = async (req) => {
 // method : GET
 // payload : 1.search
 // return : list category
-export const getList = async (req) => {
+const getList = async (req) => {
   try {
     const list = await getCategoryList(req);
     return { status: true, response: list };
@@ -100,3 +100,4 @@ export const getList = async (req) => {
     return { status: false, response: error };
   }
 };
+export { create, deleteById, getByLimitOffset, getList, getPagination, update };

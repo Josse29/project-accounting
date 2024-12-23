@@ -24,8 +24,7 @@ $("tbody#user")
         const { status, response } = await deleteById(req);
         if (status) {
           await executeRead();
-          const alert = uiAlertSuccess(response);
-          $("#section-user #crud-success").html(alert);
+          uiAlertSuccess(response);
           $("#user-delete-modal").modal("hide");
         }
         if (!status) {

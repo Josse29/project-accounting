@@ -1,8 +1,4 @@
 import {
-  validateLoadImg,
-  validateSupplierName,
-} from "../../utils/validation.js";
-import {
   queryDeleteSupplier,
   queryGetListSupplier,
   queryGetSupplier,
@@ -11,8 +7,13 @@ import {
   queryUpdateSupplier,
 } from "./querysql.js";
 
+import {
+  validateLoadImg,
+  validateSupplierName,
+} from "../../utils/validation.js";
+
 // 1.CREATE
-export const createSupplier = async (req) => {
+const createSupplier = async (req) => {
   const { supplierName, supplierInfo, supplierImg } = req;
   // 1.validate name
   validateSupplierName(supplierName);
@@ -25,26 +26,26 @@ export const createSupplier = async (req) => {
   return created;
 };
 // 2.READ
-export const getSupplier = async (req) => {
+const getSupplier = async (req) => {
   const { searchVal, limitVal, offsetVal } = req;
   const startOffset = (offsetVal - 1) * limitVal;
   const query = queryGetSupplier(searchVal, limitVal, startOffset);
   const suppliers = await window.electronAPI.sqliteApi.all(query);
   return suppliers;
 };
-export const getSupplierInit = async (req) => {
+const getSupplierInit = async (req) => {
   const { searchVal, limitVal } = req;
   const query = queryTotalRowSupplier(searchVal);
   const totalPageRow = await window.electronAPI.sqliteApi.each(query, limitVal);
   return totalPageRow;
 };
-export const getSupplierList = async (supplierSearch) => {
+const getSupplierList = async (supplierSearch) => {
   const query = queryGetListSupplier(supplierSearch);
   const suppliers = await window.electronAPI.sqliteApi.all(query);
   return suppliers;
 };
 // 3.UPDATE
-export const updateSupplier = async (req) => {
+const updateSupplier = async (req) => {
   const {
     supplierId,
     supplierName,
@@ -68,10 +69,18 @@ export const updateSupplier = async (req) => {
   return updated;
 };
 // 4.DELETE
-export const deleteSupplier = async (req) => {
+const deleteSupplier = async (req) => {
   const { supplierId, supplierName } = req;
   const query = queryDeleteSupplier(supplierId);
   const msg = `Supplier <b class= 'text-capitalize'>${supplierName}</b> has been deleted`;
   const deleted = await window.electronAPI.sqliteApi.run(query, msg);
   return deleted;
+};
+export {
+  createSupplier,
+  deleteSupplier,
+  getSupplier,
+  getSupplierInit,
+  getSupplierList,
+  updateSupplier,
 };

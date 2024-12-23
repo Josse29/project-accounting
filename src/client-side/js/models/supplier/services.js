@@ -10,7 +10,7 @@ import {
 // method : POST
 // payload : 1.suppliername, 2.supplierinfo, 3.supplierimg
 // return : mesage success supplier create
-export const create = async (req) => {
+const create = async (req) => {
   try {
     const payLoad = {
       supplierName: req.supplierName,
@@ -27,7 +27,7 @@ export const create = async (req) => {
 // method : GET
 // payload : 1.searchVal 2.limitVal, 3.offsetVal
 // return : supplier with limit offset
-export const getByLimitOffset = async (req) => {
+const getByLimitOffset = async (req) => {
   try {
     const payLoad = {
       searchVal: req.searchVal,
@@ -44,7 +44,7 @@ export const getByLimitOffset = async (req) => {
 // method :GET
 // payload : 1.searchVal, 2.limitVal
 // return : supplier with total page with row
-export const pagination = async (req) => {
+const pagination = async (req) => {
   try {
     const payLoad = {
       searchVal: req.searchVal,
@@ -60,7 +60,7 @@ export const pagination = async (req) => {
 // method : PATCH
 // payLoad : 1.suppliername, 2.supplierinfo, 3.supplierimg, 4.supplierimgCancel
 // return : message suucces supplierupdate
-export const update = async (req) => {
+const update = async (req) => {
   try {
     const payload = {
       supplierId: req.supplierId,
@@ -79,7 +79,7 @@ export const update = async (req) => {
 // method : DELETE
 // payload : 1.supplierId, 2.supplierName
 // return : message success deleted
-export const deleteById = async (req) => {
+const deleteById = async (req) => {
   try {
     const payLoad = {
       supplierId: req.supplierId,
@@ -95,7 +95,7 @@ export const deleteById = async (req) => {
 // method : GET
 // payload : 1.searchVal
 // return : supplier list
-export const getList = async (req) => {
+const getList = async (req) => {
   try {
     const list = await getSupplierList(req);
     return { status: true, response: list };
@@ -103,3 +103,4 @@ export const getList = async (req) => {
     return { status: false, response: error };
   }
 };
+export { create, deleteById, getByLimitOffset, getList, pagination, update };

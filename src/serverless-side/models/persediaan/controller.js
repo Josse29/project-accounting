@@ -1,47 +1,48 @@
 import {
+  queryDeletePersediaan,
+  queryDeletePersediaanAll,
+  queryDeletePersediaanProductId,
+  queryGetPersediaan,
+  queryGetPersediaanCategoryId,
+  queryGetPersediaanDate,
+  queryGetPersediaanDateCategoryId,
+  queryGetPersediaanDateProductId,
+  queryGetPersediaanDateSupplierId,
+  queryGetPersediaanGroupCategory,
+  queryGetPersediaanGroupProduct,
+  queryGetPersediaanGroupProduct1,
+  queryGetPersediaanGroupSupplier,
+  queryGetPersediaanPagination,
+  queryGetPersediaanPagination1,
+  queryGetPersediaanProductId,
+  queryGetPersediaanProductId1,
+  queryGetPersediaanProductRow,
+  queryGetPersediaanQty2,
+  queryGetPersediaanReport,
+  queryGetPersediaanReport1,
+  queryGetPersediaanSumPrice,
+  queryGetPersediaanSumPriceCategoryId,
+  queryGetPersediaanSumPriceDate,
+  queryGetPersediaanSumPriceDateCategoryId,
+  queryGetPersediaanSumPriceDateSupplierId,
+  queryGetPersediaanSumPriceSupplierId,
+  queryGetPersediaanSumQty,
+  queryGetPersediaanSumQtyDateProductId,
+  queryGetPersediaanSupplierId,
+  queryInsertPersediaan,
+  queryInsertPersediaan1,
+  queryUpdatePersediaan,
+} from "./querysql.js";
+import {
   validateDate,
   validateProductAdd,
   validateQty,
 } from "../../utils/validation.js";
 import { createAccounting } from "../accounting/controller.js";
 import { createCash } from "../cash/controller.js";
-import {
-  queryDeletePersediaan,
-  queryDeletePersediaanAll,
-  queryDeletePersediaanProductId,
-  queryGetPersediaan,
-  queryGetPersediaanCategoryGroup,
-  queryGetPersediaanCategoryId,
-  queryGetPersediaanDate,
-  queryGetPersediaanDateCategoryId,
-  queryGetPersediaanDateProductId,
-  queryGetPersediaanDateQtyProductId,
-  queryGetPersediaanDateRpCategoryId,
-  queryGetPersediaanDateRpSupplierId,
-  queryGetPersediaanDateSUM,
-  queryGetPersediaanDateSupplierId,
-  queryGetPersediaanProductGroup,
-  queryGetPersediaanProductGroup1,
-  queryGetPersediaanProductId,
-  queryGetPersediaanProductId2,
-  queryGetPersediaanProductReport,
-  queryGetPersediaanProductRow,
-  queryGetPersediaanQty,
-  queryGetPersediaanQty2,
-  queryGetPersediaanReport,
-  queryGetPersediaanRpSum,
-  queryGetPersediaanRpSumCategoryId,
-  queryGetPersediaanRpSupplier,
-  queryGetPersediaanSupplierGroup,
-  queryGetPersediaanSupplierId,
-  queryGetPersediaanTotalRow,
-  queryGetPersediaanTotalRow1,
-  queryInsertPersediaan,
-  queryInsertPersediaan1,
-  queryUpdatePersediaan,
-} from "./querysql.js";
+
 // 1.CREATE
-export const createPersediaan = async (req) => {
+const createPersediaan = async (req) => {
   const {
     valProductName,
     valPersediaanDDMY,
@@ -104,36 +105,35 @@ export const createPersediaan = async (req) => {
   const created = await window.electronAPI.sqliteApi.run(query, msg);
   return created;
 };
-export const createPersediaan1 = async (request) => {
+const createPersediaan1 = async (request) => {
   const query = queryInsertPersediaan1(request);
   const msg = "Stock has been stored";
   const created = await window.electronAPI.sqliteApi.run(query, msg);
   return created;
 };
 // 2.READ
-export const getPersediaanPagination = async (req) => {
+const getPersediaanPagination = async (req) => {
   const { searchVal, limitVal } = req;
-  const query = queryGetPersediaanTotalRow(searchVal);
+  const query = queryGetPersediaanPagination(searchVal);
   const totalPageRow = await window.electronAPI.sqliteApi.each(query, limitVal);
   return totalPageRow;
 };
-export const getPersediaan = async (req) => {
+const getPersediaan = async (req) => {
   const { searchVal, limitVal, offsetVal } = req;
   const offsetStartVal = (offsetVal - 1) * limitVal;
   const query = queryGetPersediaan(searchVal, limitVal, offsetStartVal);
   const persediaan = await window.electronAPI.sqliteApi.all(query);
   return persediaan;
 };
-export const getPersediaanQtyValidate = async (req) => {
+const getPersediaanQtyValidate = async (req) => {
   const { valProductName, valPersediaanProductId, valPersediaanQty } = req;
-  const query = queryGetPersediaanQty(valPersediaanProductId);
-  const response = await window.electronAPI.sqliteApi.all(query);
-  const res = response[0];
-  const existItem = res.TotalQty >= 1;
+  const query = queryGetPersediaanSumQty(valPersediaanProductId);
+  const response = await window.electronAPI.sqliteApi.each1(query);
+  const existItem = response.TotalQty >= 1;
   // Produk has listed
   if (existItem) {
     // goods in
-    const stockQty = parseFloat(res.TotalQty);
+    const stockQty = response.TotalQty;
     if (valPersediaanQty >= 1) {
       return true;
     }
@@ -174,67 +174,64 @@ export const getPersediaanQtyValidate = async (req) => {
     }
   }
 };
-export const getPersediaanSumQty = async (valPersediaanProductId) => {
-  const query = queryGetPersediaanQty(valPersediaanProductId);
+const getPersediaanSumQty = async (valPersediaanProductId) => {
+  const query = queryGetPersediaanSumQty(valPersediaanProductId);
   const sumQty = await window.electronAPI.sqliteApi.each1(query);
   const resSumQty = sumQty.TotalQty ? sumQty.TotalQty : 0;
   return resSumQty;
 };
-export const getPersediaanSumPrice = async () => {
-  const query = queryGetPersediaanRpSum();
+const getPersediaanSumPrice = async () => {
+  const query = queryGetPersediaanSumPrice();
   const sumRp = await window.electronAPI.sqliteApi.each1(query);
   const resSumRp = sumRp.TotalRp ? sumRp.TotalRp : 0;
   return resSumRp;
 };
-export const getPersediaanSumPriceCategoryId = async (
-  valPersediaanCategoryId
-) => {
-  const query = queryGetPersediaanRpSumCategoryId(valPersediaanCategoryId);
+const getPersediaanSumPriceCategoryId = async (valPersediaanCategoryId) => {
+  const query = queryGetPersediaanSumPriceCategoryId(valPersediaanCategoryId);
   const sumRp = await window.electronAPI.sqliteApi.each1(query);
   const resSumRp = sumRp.TotalRp ? sumRp.TotalRp : 0;
   return resSumRp;
 };
-export const getPersediaanProductId = async (valPersediaanProductId) => {
+const getPersediaanProductId = async (valPersediaanProductId) => {
   const query = queryGetPersediaanProductId(valPersediaanProductId);
   const persediaanProduct = await window.electronAPI.sqliteApi.all(query);
   return persediaanProduct;
 };
-export const getPersediaanCategoryId = async (valPersediaanCategoryId) => {
+const getPersediaanCategoryId = async (valPersediaanCategoryId) => {
   const query = queryGetPersediaanCategoryId(valPersediaanCategoryId);
   const persediaanCategory = await window.electronAPI.sqliteApi.all(query);
   return persediaanCategory;
 };
-export const getPersediaanSupplierId = async (valSupplierId) => {
+const getPersediaanSupplierId = async (valSupplierId) => {
   const query = queryGetPersediaanSupplierId(valSupplierId);
   const persediaanSupplier = await window.electronAPI.sqliteApi.all(query);
   return persediaanSupplier;
 };
-export const getPersediaanProductId1 = async (valPersediaanProductId) => {
-  const query = queryGetPersediaanProductId2(valPersediaanProductId);
+const getPersediaanProductId1 = async (valPersediaanProductId) => {
+  const query = queryGetPersediaanProductId1(valPersediaanProductId);
   const persediaanProduct = await window.electronAPI.sqliteApi.all(query);
   return persediaanProduct;
 };
-export const getPersediaanReport1 = async (req) => {
+const getPersediaanReport1 = async (req) => {
   const { startDateVal, endDateVal } = req;
   validateDate(startDateVal, endDateVal);
-  const query = queryGetPersediaanProductReport(startDateVal, endDateVal);
+  const query = queryGetPersediaanReport1(startDateVal, endDateVal);
   const persediaan = await window.electronAPI.sqliteApi.all(query);
   return persediaan;
 };
-export const getPersediaanGroupProduct1 = async (req) => {
+const getPersediaanGroupProduct1 = async (req) => {
   const { startDateVal, endDateVal } = req;
-  const query = queryGetPersediaanProductGroup(startDateVal, endDateVal);
+  const query = queryGetPersediaanGroupProduct1(startDateVal, endDateVal);
   const persediaan = await window.electronAPI.sqliteApi.all(query);
   return persediaan;
 };
-
-export const getPersediaanGroupSupplier = async (req) => {
+const getPersediaanGroupSupplier = async (req) => {
   const { startDateVal, endDateVal } = req;
-  const query = queryGetPersediaanSupplierGroup(startDateVal, endDateVal);
+  const query = queryGetPersediaanGroupSupplier(startDateVal, endDateVal);
   const persediaanSupplier = await window.electronAPI.sqliteApi.all(query);
   return persediaanSupplier;
 };
-export const getPersediaanReport = async (req) => {
+const getPersediaanReport = async (req) => {
   const { startDateVal, endDateVal } = req;
   // validate date
   validateDate(startDateVal, endDateVal);
@@ -242,23 +239,23 @@ export const getPersediaanReport = async (req) => {
   const persediaan = await window.electronAPI.sqliteApi.all(query);
   return persediaan;
 };
-export const getPersediaanDate = async (req) => {
+const getPersediaanDate = async (req) => {
   const { startDateVal, endDateVal } = req;
   validateDate(startDateVal, endDateVal);
   const query = queryGetPersediaanDate(startDateVal, endDateVal);
   const persediaanByDate = await window.electronAPI.sqliteApi.all(query);
   return persediaanByDate;
 };
-export const getPersediaanSumPriceDate = async (req) => {
+const getPersediaanSumPriceDate = async (req) => {
   const { startDateVal, endDateVal } = req;
-  const query = queryGetPersediaanDateSUM(startDateVal, endDateVal);
+  const query = queryGetPersediaanSumPriceDate(startDateVal, endDateVal);
   const sumRp = await window.electronAPI.sqliteApi.each1(query);
   const resSumRp = sumRp.TotalRp ? sumRp.TotalRp : 0;
   return resSumRp;
 };
-export const getPersediaanSumQtyDateProductId = async (req) => {
+const getPersediaanSumQtyDateProductId = async (req) => {
   const { startDateVal, endDateVal, productId } = req;
-  const query = queryGetPersediaanDateQtyProductId(
+  const query = queryGetPersediaanSumQtyDateProductId(
     startDateVal,
     endDateVal,
     productId
@@ -267,7 +264,7 @@ export const getPersediaanSumQtyDateProductId = async (req) => {
   const resSumQty = sumQty.TotalQty ? sumQty.TotalQty : 0;
   return resSumQty;
 };
-export const getPersediaanDateProductId = async (req) => {
+const getPersediaanDateProductId = async (req) => {
   const { startDateVal, endDateVal, productId } = req;
   const query = queryGetPersediaanDateProductId(
     startDateVal,
@@ -277,8 +274,7 @@ export const getPersediaanDateProductId = async (req) => {
   const persediaanByDate = await window.electronAPI.sqliteApi.all(query);
   return persediaanByDate;
 };
-
-export const getPersediaanDateSupplierId = async (req) => {
+const getPersediaanDateSupplierId = async (req) => {
   const { startDateVal, endDateVal, supplierId } = req;
   const query = queryGetPersediaanDateSupplierId(
     startDateVal,
@@ -288,9 +284,9 @@ export const getPersediaanDateSupplierId = async (req) => {
   const persediaanByDate = await window.electronAPI.sqliteApi.all(query);
   return persediaanByDate;
 };
-export const getPersediaanSumPriceDateSupplierId = async (req) => {
+const getPersediaanSumPriceDateSupplierId = async (req) => {
   const { startDateVal, endDateVal, supplierId } = req;
-  const query = queryGetPersediaanDateRpSupplierId(
+  const query = queryGetPersediaanSumPriceDateSupplierId(
     startDateVal,
     endDateVal,
     supplierId
@@ -299,7 +295,7 @@ export const getPersediaanSumPriceDateSupplierId = async (req) => {
   const resSumRp = sumRp.TotalRp ? sumRp.TotalRp : 0;
   return resSumRp;
 };
-export const getPersediaanDateCategoryId = async (req) => {
+const getPersediaanDateCategoryId = async (req) => {
   const { startDateVal, endDateVal, categoryId } = req;
   const query = queryGetPersediaanDateCategoryId(
     startDateVal,
@@ -309,9 +305,9 @@ export const getPersediaanDateCategoryId = async (req) => {
   const persediaanByDate = await window.electronAPI.sqliteApi.all(query);
   return persediaanByDate;
 };
-export const getPersediaanSumPriceDateCategoryId = async (req) => {
+const getPersediaanSumPriceDateCategoryId = async (req) => {
   const { startDateVal, endDateVal, categoryId } = req;
-  const query = queryGetPersediaanDateRpCategoryId(
+  const query = queryGetPersediaanSumPriceDateCategoryId(
     startDateVal,
     endDateVal,
     categoryId
@@ -320,29 +316,28 @@ export const getPersediaanSumPriceDateCategoryId = async (req) => {
   const resSumRp = sumRp.TotalRp ? sumRp.TotalRp : 0;
   return resSumRp;
 };
-export const getPersediaanGroupCategory = async (req) => {
+const getPersediaanGroupCategory = async (req) => {
   const { startDateVal, endDateVal } = req;
-  const query = queryGetPersediaanCategoryGroup(startDateVal, endDateVal);
+  const query = queryGetPersediaanGroupCategory(startDateVal, endDateVal);
   const persediaanGroupCategory = await window.electronAPI.sqliteApi.all(query);
   return persediaanGroupCategory;
 };
-export const getPersediaanSumPriceSupplierId = async (supplierId) => {
-  const query = queryGetPersediaanRpSupplier(supplierId);
+const getPersediaanSumPriceSupplierId = async (supplierId) => {
+  const query = queryGetPersediaanSumPriceSupplierId(supplierId);
   const sumRp = await window.electronAPI.sqliteApi.each1(query);
   const resSumRp = sumRp.TotalRp ? sumRp.TotalRp : 0;
   return resSumRp;
 };
-// references order
-export const getPersediaanPagination1 = async (req) => {
+const getPersediaanPagination1 = async (req) => {
   const { searchVal, limitVal } = req;
-  const query = queryGetPersediaanTotalRow1(searchVal);
+  const query = queryGetPersediaanPagination1(searchVal);
   const totalPageRow = await window.electronAPI.sqliteApi.each(query, limitVal);
   return totalPageRow;
 };
-export const getPersediaanGroupProduct = async (req) => {
+const getPersediaanGroupProduct = async (req) => {
   const { searchVal, limitVal, offsetVal } = req;
   const startOffsetVal = parseInt((offsetVal - 1) * limitVal);
-  const query = queryGetPersediaanProductGroup1(
+  const query = queryGetPersediaanGroupProduct(
     searchVal,
     limitVal,
     startOffsetVal
@@ -351,7 +346,7 @@ export const getPersediaanGroupProduct = async (req) => {
   return persedianProductGroup;
 };
 // 3.UPDATE
-export const updatePersediaan = async (req) => {
+const updatePersediaan = async (req) => {
   const {
     valPersediaanId,
     valPersediaanDDMY,
@@ -405,7 +400,7 @@ export const updatePersediaan = async (req) => {
     });
   });
 };
-export const validateStock1 = (
+const validateStock1 = (
   valPersediaanId,
   valPersediaanProductId,
   valPersediaanQty
@@ -433,7 +428,7 @@ export const validateStock1 = (
   });
 };
 // 4.DELETE
-export const deletePersediaan = async (req) => {
+const deletePersediaan = async (req) => {
   const {
     valPersediaanId,
     valProductName,
@@ -447,58 +442,34 @@ export const deletePersediaan = async (req) => {
     await validateStock3(valPersediaanId, valPersediaanProductId);
   }
   // 3. execute delete
-  return new Promise((resolve, reject) => {
-    db.run(queryDeletePersediaan(valPersediaanId), (err) => {
-      if (!err) {
-        const qty =
-          valPersediaanQty >= 1
-            ? `+ ${valPersediaanQty}`
-            : `- ${Math.abs(valPersediaanQty)}`;
-        const msg = `Stock Product <b class='text-capitalize'>${valProductName} ${qty}</b> has been deleted`;
-        resolve(msg);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const query = queryDeletePersediaan(valPersediaanId);
+  const qty =
+    valPersediaanQty >= 1
+      ? `+ ${valPersediaanQty}`
+      : `- ${Math.abs(valPersediaanQty)}`;
+  const msg = `Stock Product <b class='text-capitalize'>${valProductName} ${qty}</b> has been deleted`;
+  const deleted = await window.electronAPI.sqliteApi.run(query, msg);
+  return deleted;
 };
-export const checkProductRow = (valPersediaanProductId) => {
+const checkProductRow = async (valPersediaanProductId) => {
   const query = queryGetPersediaanProductRow(valPersediaanProductId);
-  return new Promise((resolve, reject) => {
-    db.each(query, (err, response) => {
-      if (!err) {
-        const totalRow = parseFloat(response.TotalRow);
-        resolve(totalRow);
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const response = await window.electronAPI.sqliteApi.each1(query);
+  const totalRow = response.TotalRow;
+  return totalRow;
 };
-export const validateStock3 = (valPersediaanId, valPersediaanProductId) => {
+const validateStock3 = async (valPersediaanId, valPersediaanProductId) => {
   const query = queryGetPersediaanQty2(valPersediaanId, valPersediaanProductId);
-  return new Promise((resolve, reject) => {
-    db.each(query, (err, rows) => {
-      if (!err) {
-        const response = parseFloat(rows.TotalQty);
-        const positiveStock = response >= 0;
-        if (positiveStock) {
-          resolve();
-        }
-        if (!positiveStock) {
-          const msg = `Failed to delete, If Succeed to delete, The total Stock is : ${response}`;
-          reject(msg);
-        }
-      }
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  const response = await window.electronAPI.sqliteApi.each1(query);
+  const positiveStock = response.TotalQty >= 0;
+  if (positiveStock) {
+    return true;
+  }
+  if (!positiveStock) {
+    const msg = `Failed to delete, If Succeed to delete, The total Stock is : ${response}`;
+    throw new Error(msg);
+  }
 };
-export const deletePersediaanAll = () => {
+const deletePersediaanAll = () => {
   const query = queryDeletePersediaanAll();
   return new Promise((resolve, reject) => {
     db.all(query, (err) => {
@@ -512,7 +483,7 @@ export const deletePersediaanAll = () => {
     });
   });
 };
-export const deletePersediaanProductId = (valProductId) => {
+const deletePersediaanProductId = (valProductId) => {
   const query = queryDeletePersediaanProductId(valProductId);
   return new Promise((resolve, reject) => {
     db.run(query, (err) => {
@@ -525,7 +496,7 @@ export const deletePersediaanProductId = (valProductId) => {
     });
   });
 };
-export const deletePersediaanCategoryId = (categoryId) => {
+const deletePersediaanCategoryId = (categoryId) => {
   const query = queryDeletePersediaanProductId(categoryId);
   return new Promise((resolve, reject) => {
     db.run(query, (err) => {
@@ -537,4 +508,37 @@ export const deletePersediaanCategoryId = (categoryId) => {
       }
     });
   });
+};
+export {
+  createPersediaan,
+  createPersediaan1,
+  deletePersediaan,
+  deletePersediaanAll,
+  deletePersediaanProductId,
+  getPersediaan,
+  getPersediaanCategoryId,
+  getPersediaanDate,
+  getPersediaanDateCategoryId,
+  getPersediaanDateProductId,
+  getPersediaanDateSupplierId,
+  getPersediaanGroupCategory,
+  getPersediaanGroupProduct,
+  getPersediaanGroupProduct1,
+  getPersediaanGroupSupplier,
+  getPersediaanPagination,
+  getPersediaanPagination1,
+  getPersediaanProductId,
+  getPersediaanProductId1,
+  getPersediaanReport,
+  getPersediaanReport1,
+  getPersediaanSumPrice,
+  getPersediaanSumPriceCategoryId,
+  getPersediaanSumPriceDate,
+  getPersediaanSumPriceDateCategoryId,
+  getPersediaanSumPriceDateSupplierId,
+  getPersediaanSumPriceSupplierId,
+  getPersediaanSumQty,
+  getPersediaanSumQtyDateProductId,
+  getPersediaanSupplierId,
+  updatePersediaan,
 };

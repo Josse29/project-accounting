@@ -70,3 +70,6 @@
 - convert pdf and excels accounting 
 - refactor date all models
 - continuee create excels in case cash in 
+12/23/2024
+- refactoring controller hufft, and fixing ui huffttt
+- 

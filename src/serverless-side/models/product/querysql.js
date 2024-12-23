@@ -1,5 +1,5 @@
 // 1.CREATE
-export const queryinsertProducts = (
+const queryinsertProducts = (
   productName,
   productPriceBuy,
   productPriceSell,
@@ -8,19 +8,17 @@ export const queryinsertProducts = (
   productSupplierId,
   imgBase64
 ) => {
-  let query = `INSERT 
-                 INTO Product 
-                 (ProductName, ProductPriceBeli, ProductPriceJual, ProductInfo, ProductCategoryId, ProductSupplierId, ProductImage) 
-                 VALUES 
-                 ('${productName}', ${productPriceBuy}, ${productPriceSell}, '${productInfo}', ${productCategoryId}, ${productSupplierId},'${imgBase64}')`;
+  let query = `
+  INSERT 
+  INTO Product 
+  (ProductName, ProductPriceBeli, ProductPriceJual, ProductInfo, ProductCategoryId, ProductSupplierId, ProductImage) 
+  VALUES
+  ('${productName}', ${productPriceBuy}, ${productPriceSell}, '${productInfo}', ${productCategoryId}, ${productSupplierId},'${imgBase64}')
+  `;
   return query;
 };
 // 2.READ
-export const queryGetProducts = (
-  productSearch,
-  productLimit,
-  productOffset
-) => {
+const queryGetProducts = (productSearch, productLimit, productOffset) => {
   let query = `SELECT *
                FROM Product
                LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
@@ -40,7 +38,7 @@ export const queryGetProducts = (
             OFFSET ${productOffset}`;
   return query;
 };
-export const queryGetListProduct = (productSearch) => {
+const queryGetListProduct = (productSearch) => {
   let query = `SELECT 
                Product.ProductId,
                Product.ProductName,
@@ -60,7 +58,7 @@ export const queryGetListProduct = (productSearch) => {
   query += `ORDER BY Product.ProductName ASC `;
   return query;
 };
-export const queryTotalRowProducts = (productSearch) => {
+const queryTotalRowProducts = (productSearch) => {
   let query = `SELECT COUNT(*) 
                  AS TOTAL_ROW
                  FROM Product
@@ -76,8 +74,30 @@ export const queryTotalRowProducts = (productSearch) => {
   }
   return query;
 };
+const queryGetProductPDF = () => {
+  let query = `SELECT * FROM Product `;
+  // ascending product name
+  query += `ORDER BY Product.ProductName ASC`;
+  return query;
+};
+const queryGetProductCSV = () => {
+  let query = `SELECT 
+               Product.ProductName AS ProductName,
+               Product.ProductPriceBeli AS ProductPriceBuy,
+               Product.ProductPriceJual AS ProductPriceSell,
+               Supplier.SupplierName AS SupplieName,
+               Category.CategoryName AS CategoryName
+               FROM Product `;
+  // left join table supplier
+  query += `LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId `;
+  // left join table Category
+  query += `LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId `;
+  // ascending product name
+  query += `ORDER BY Product.ProductName ASC`;
+  return query;
+};
 // 3.UPDATE
-export const queryUpdateProduct = (
+const queryUpdateProduct = (
   productId,
   productName,
   productPriceBuy,
@@ -104,36 +124,23 @@ export const queryUpdateProduct = (
   if (!productCancelImg && imgBase64 !== "null") {
     query += `, ProductImage = '${imgBase64}' `;
   }
-  // 3. if it isn't change img or remove img , nothing do column image
   query += `WHERE ProductId = ${productId} `;
   return query;
 };
 // 4. DELETE
-export const queryDeleteProductId = (id) => {
+const queryDeleteProductId = (id) => {
   return `DELETE 
             FROM Product 
             WHERE ProductId = ${id} `;
 };
-// convert report
-export const queryGetProductPDF = () => {
-  let query = `SELECT * FROM Product `;
-  // ascending product name
-  query += `ORDER BY Product.ProductName ASC`;
-  return query;
-};
-export const queryGetProductCSV = () => {
-  let query = `SELECT 
-               Product.ProductName AS ProductName,
-               Product.ProductPriceBeli AS ProductPriceBuy,
-               Product.ProductPriceJual AS ProductPriceSell,
-               Supplier.SupplierName AS SupplieName,
-               Category.CategoryName AS CategoryName
-               FROM Product `;
-  // left join table supplier
-  query += `LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId `;
-  // left join table Category
-  query += `LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId `;
-  // ascending product name
-  query += `ORDER BY Product.ProductName ASC`;
-  return query;
+
+export {
+  queryDeleteProductId,
+  queryGetListProduct,
+  queryGetProductCSV,
+  queryGetProductPDF,
+  queryGetProducts,
+  queryTotalRowProducts,
+  queryUpdateProduct,
+  queryinsertProducts,
 };

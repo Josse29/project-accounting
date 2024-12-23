@@ -92,8 +92,7 @@ $("tbody#user")
         const { status, response } = updated;
         if (status) {
           await executeRead();
-          const uiSuccess = uiAlertSuccess(response);
-          $("#crud-success").html(uiSuccess);
+          uiAlertSuccess(response);
           $("#user-update-modal").modal("hide");
         }
         if (!status) {

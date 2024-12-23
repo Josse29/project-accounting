@@ -35,7 +35,7 @@ import {
 // methode = GET
 // payload = 1.searchVal, 2.limitVal, 3.offsetVal
 // return = array persediaan by group product with search, limit, offset
-export const getGroupProduct = async (req) => {
+const getGroupProduct = async (req) => {
   try {
     const req1 = {
       searchVal: req.searchVal,
@@ -52,7 +52,7 @@ export const getGroupProduct = async (req) => {
 // methode = GET
 // payload = 1.searchVal, 2.limitVal
 // return = only row and page by persediaan by group product
-export const getRowPage1 = async (req) => {
+const getRowPage1 = async (req) => {
   try {
     const req1 = {
       searchVal: req.searchVal,
@@ -68,7 +68,7 @@ export const getRowPage1 = async (req) => {
 // method : GET
 // payload : ""
 // return : summary price
-export const getSumPrice = async () => {
+const getSumPrice = async () => {
   try {
     const sumPrice = await getPersediaanSumPrice();
     return { status: true, response: sumPrice };
@@ -80,7 +80,7 @@ export const getSumPrice = async () => {
 // method : GET
 // payload : 1.searchVal, 2.limitVal,
 // return : get all persediaan with search, limit, offset
-export const getAll1 = async (req) => {
+const getAll1 = async (req) => {
   try {
     const payLoad = {
       searchVal: req.searchVal,
@@ -97,7 +97,7 @@ export const getAll1 = async (req) => {
 //  method : GET
 // payload : 1.searchVal, 2.limitVal,
 // return : get pagination
-export const getPagination = async (req) => {
+const getPagination = async (req) => {
   try {
     const payLoad = {
       searchVal: req.searchVal,
@@ -113,7 +113,7 @@ export const getPagination = async (req) => {
 // method : GET
 //  payload : 1.productId
 // return : sum qty by productid
-export const getSumQty = async (productId) => {
+const getSumQty = async (productId) => {
   try {
     const sumQty = await getPersediaanSumQty(productId);
     return { status: true, response: sumQty };
@@ -125,7 +125,7 @@ export const getSumQty = async (productId) => {
 // method : GET
 // payload : 1.productId
 // return : get all stock based on productid
-export const getByProductId2 = async (productId) => {
+const getByProductId2 = async (productId) => {
   try {
     const stock = await getPersediaanProductId1(productId);
     return { status: true, response: stock };
@@ -137,7 +137,7 @@ export const getByProductId2 = async (productId) => {
 // method :GET
 // payload : 1.supplierId
 //  return : sum price based supplierid
-export const getSumPriceSupplierId = async (supplierId) => {
+const getSumPriceSupplierId = async (supplierId) => {
   try {
     const price = await getPersediaanSumPriceSupplierId(supplierId);
     return { status: true, response: price };
@@ -149,7 +149,7 @@ export const getSumPriceSupplierId = async (supplierId) => {
 // method : GET
 // payload : 1.supplierid
 // return : all persediaan by supplierid
-export const getBySupplierId = async (supplierId) => {
+const getBySupplierId = async (supplierId) => {
   try {
     const stock = await getPersediaanSupplierId(supplierId);
     return { status: true, response: stock };
@@ -161,7 +161,7 @@ export const getBySupplierId = async (supplierId) => {
 // method : GET
 // payload : 1.categoryid
 // return : sum price based categoryid
-export const getSumPriceCategoryId = async (categoryId) => {
+const getSumPriceCategoryId = async (categoryId) => {
   try {
     const price = await getPersediaanSumPriceCategoryId(categoryId);
     return { status: true, response: price };
@@ -173,7 +173,7 @@ export const getSumPriceCategoryId = async (categoryId) => {
 // method : GET
 // payload : 1.categoryid
 // return all persediaan based categoryid
-export const getByCategoryId = async (categoryId) => {
+const getByCategoryId = async (categoryId) => {
   try {
     const stock = await getPersediaanCategoryId(categoryId);
     return { status: true, response: stock };
@@ -185,7 +185,7 @@ export const getByCategoryId = async (categoryId) => {
 // method : GET
 // payload : 1.startdate, 2.endate,
 // return : summary of stock by date
-export const getSumPriceDate = async (req) => {
+const getSumPriceDate = async (req) => {
   try {
     const payLoad = {
       startDateVal: req.startDateVal,
@@ -201,7 +201,7 @@ export const getSumPriceDate = async (req) => {
 // method : GET
 // payload : 1.startdate, 2.enddate
 // return : all of stock by date
-export const getByDate = async (req) => {
+const getByDate = async (req) => {
   try {
     const payLoad = {
       startDateVal: req.startDateVal,
@@ -217,7 +217,7 @@ export const getByDate = async (req) => {
 // method : GET
 // payload : 1.startdateVal, 2.endDateVal, 3.productid
 // return : summary of price from product id
-export const getSumQtyDateProduct = async (req) => {
+const getSumQtyDateProduct = async (req) => {
   try {
     const payLoad = {
       startDateVal: req.startDateVal,
@@ -234,7 +234,7 @@ export const getSumQtyDateProduct = async (req) => {
 // method : GET
 // payload : 1.startdateVal, 2.endDateVal, 3.productId
 //  return : get with date and productid
-export const getByDateProductId = async (req) => {
+const getByDateProductId = async (req) => {
   try {
     const payLoad = {
       startDateVal: req.startDateVal,
@@ -251,7 +251,7 @@ export const getByDateProductId = async (req) => {
 // method : GET
 // payload : 1.startdateVal, 2.endDateVal, 3.supplierId
 // return : get summary with date and supplierId
-export const getSumPriceDateSupplier = async (req) => {
+const getSumPriceDateSupplier = async (req) => {
   try {
     const payLoad = {
       startDateVal: req.startDateVal,
@@ -268,7 +268,7 @@ export const getSumPriceDateSupplier = async (req) => {
 // method : GET
 // payload : 1.startdateVal, 2.endDateVal, 3.supplierId
 // return : get with date and supplierId
-export const getByDateSupplierId = async (req) => {
+const getByDateSupplierId = async (req) => {
   try {
     const payLoad = {
       startDateVal: req.startDateVal,
@@ -285,7 +285,7 @@ export const getByDateSupplierId = async (req) => {
 // method : GET
 // payload : 1.startdateVal, 2.endDateVal, 3.categoryid
 // return : get with date and categoryid
-export const getSumPriceDateCategory = async (req) => {
+const getSumPriceDateCategory = async (req) => {
   try {
     const payLoad = {
       startDateVal: req.startDateVal,
@@ -302,7 +302,7 @@ export const getSumPriceDateCategory = async (req) => {
 // method : GET
 // payload : 1.startdateVal, 2.endDateVal, 3.categoryid
 // return : get with date and categoryid
-export const getByDateCategoryId = async (req) => {
+const getByDateCategoryId = async (req) => {
   try {
     const payLoad = {
       startDateVal: req.startDateVal,
@@ -319,7 +319,7 @@ export const getByDateCategoryId = async (req) => {
 // method : POST
 // payload : 1.valProductName, 2.valPersediaanDDMY, 3.valPersediaanHMS, 4.valPersediaanProductId, 5.valPersediaanQty, 6.valPersediaanTotalRp, 7.valPersediaanInfo,
 // return : message succes after create
-export const addStock = async (req) => {
+const addStock = async (req) => {
   try {
     const payload = {
       valProductName: req.valProductName,
@@ -340,7 +340,7 @@ export const addStock = async (req) => {
 // method : GET
 // payload : 1.startdate, 2.endate
 // return all stock
-export const getCSV = async (req) => {
+const getCSV = async (req) => {
   try {
     const payLoad = {
       startDateVal: req.startDateVal,
@@ -356,7 +356,7 @@ export const getCSV = async (req) => {
 // method : GET
 // payload : 1.startdate, 2.endate
 // return all stock with group category
-export const getByGroupCategory = async (req) => {
+const getByGroupCategory = async (req) => {
   try {
     const payLoad = {
       startDateVal: req.startDateVal,
@@ -372,7 +372,7 @@ export const getByGroupCategory = async (req) => {
 // method : GET
 // payload : 1.startDateVal , 2.endDateVal
 // return :  all stock with group product
-export const getByGroupProduct1 = async (req) => {
+const getByGroupProduct1 = async (req) => {
   try {
     const payLoad = {
       startDateVal: req.startDateVal,
@@ -388,7 +388,7 @@ export const getByGroupProduct1 = async (req) => {
 // method : GET
 // payload : 1.startdtate, 2.endate
 // return : all stock as pdf report
-export const getPDF = async (req) => {
+const getPDF = async (req) => {
   try {
     const payLoad = {
       startDateVal: req.startDateVal,
@@ -404,7 +404,7 @@ export const getPDF = async (req) => {
 // method : GET
 // payload : 1.startdtate, 2.endate
 // return : all stock with group supplier
-export const getByGroupSupplier = async (req) => {
+const getByGroupSupplier = async (req) => {
   try {
     const payLoad = {
       startDateVal: req.startDateVal,
@@ -420,7 +420,7 @@ export const getByGroupSupplier = async (req) => {
 // method : DELETE
 // payload : 1.valPersediaanId, 2.valProductName, 3.valPersediaanQty, 4.valPersediaanProductId
 // return : message with delete by id
-export const deleteById = async (req) => {
+const deleteById = async (req) => {
   try {
     const payLoad = {
       valPersediaanId: req.valPersediaanId,
@@ -438,7 +438,7 @@ export const deleteById = async (req) => {
 // method : DELETE
 // payload : ""
 // return : message with delete all
-export const deleteAll = async () => {
+const deleteAll = async () => {
   try {
     const deleted = await deletePersediaanAll();
     return { status: true, response: deleted };
@@ -450,7 +450,7 @@ export const deleteAll = async () => {
 // method : PATCH
 // payload : 1.valPersediaanId, 2.valPersediaanDDMY, 3.valPersediaanHMS, 4.valPersediaanProductId, 5.valPersediaanQty, 6.valPersediaanTotalRp, 7.valPersediaanInfo, 8.valProductName
 // return : message with update all
-export const updateId = async (req) => {
+const updateId = async (req) => {
   try {
     const payLoad = {
       valPersediaanId: req.valPersediaanId,
@@ -472,7 +472,7 @@ export const updateId = async (req) => {
 // method : DELETE
 // payload : product id
 // return : message with delete all
-export const deleteByProductId = async (productId) => {
+const deleteByProductId = async (productId) => {
   try {
     const deleted = await deletePersediaanProductId(productId);
     return { status: true, response: deleted };
@@ -484,11 +484,43 @@ export const deleteByProductId = async (productId) => {
 // method : GET
 // payload productid
 // return :  all stock with productid
-export const getByProductId1 = async (productId) => {
+const getByProductId1 = async (productId) => {
   try {
     const stock = await getPersediaanProductId(productId);
     return { status: true, response: stock };
   } catch (error) {
     return { status: false, response: error };
   }
+};
+export {
+  addStock,
+  deleteAll,
+  deleteById,
+  deleteByProductId,
+  getAll1,
+  getByDate,
+  getByDateCategoryId,
+  getByGroupCategory,
+  getByGroupProduct1,
+  getByCategoryId,
+  getByGroupSupplier,
+  getByDateProductId,
+  getByDateSupplierId,
+  getByProductId1,
+  getByProductId2,
+  getBySupplierId,
+  getCSV,
+  getPDF,
+  getGroupProduct,
+  getPagination,
+  getSumPrice,
+  getSumPriceDate,
+  getSumPriceDateCategory,
+  getSumPriceDateSupplier,
+  getSumPriceCategoryId,
+  getSumPriceSupplierId,
+  getSumQty,
+  getSumQtyDateProduct,
+  getRowPage1,
+  updateId,
 };

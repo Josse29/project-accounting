@@ -115,17 +115,21 @@ export const uiAlertFail = (res) => {
   return alert;
 };
 export const uiAlertSuccess = (res) => {
-  const alert = `<div class="alert alert-success alert-dismissible fade show text-start"
-                      role="alert">
-                  <strong class="text-capitalize">${res}</strong>
-                  <button
-                    type="button"
-                    class="btn-close"
-                    data-bs-dismiss="alert"
-                    aria-label="Close"
-                  ></button>
-                </div>`;
-  return alert;
+  const alert = `
+  <div
+    class="alert alert-success alert-dismissible fade show text-start"
+    role="alert"
+  >
+    <strong class="text-capitalize">${res}</strong>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  </div>
+  `;
+  $("#section-user #crud-success").html(alert);
 };
 export const uiReset = () => {
   $("#user-create #useremail").val("");

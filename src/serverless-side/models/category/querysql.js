@@ -1,5 +1,5 @@
 // 1.CREATE
-export const queryInsertCategory = (categoryName, categoryInfo) => {
+const queryInsertCategory = (categoryName, categoryInfo) => {
   let query = `INSERT 
                INTO Category
                (CategoryName, CategoryInfo) 
@@ -8,7 +8,7 @@ export const queryInsertCategory = (categoryName, categoryInfo) => {
   return query;
 };
 // 2.READ
-export const queryGetCategory = (
+const queryGetCategory = (
   categorySearch,
   categoryLimit,
   categoryStartOffset
@@ -30,7 +30,7 @@ export const queryGetCategory = (
             OFFSET ${categoryStartOffset}`;
   return query;
 };
-export const queryTotalRowCategory = (categorySearch) => {
+const queryTotalRowCategory = (categorySearch) => {
   let query = `SELECT COUNT(*) AS TOTAL_ROW
                FROM Category `;
   // with search value categories
@@ -40,7 +40,7 @@ export const queryTotalRowCategory = (categorySearch) => {
   }
   return query;
 };
-export const queryGetListCategory = (categorySearch) => {
+const queryGetListCategory = (categorySearch) => {
   let query = `SELECT *
                FROM Category `;
   // with search value categories
@@ -53,7 +53,7 @@ export const queryGetListCategory = (categorySearch) => {
   return query;
 };
 // 3.UPDATE
-export const queryUpdateCategory = (categoryId, categoryName, categoryInfo) => {
+const queryUpdateCategory = (categoryId, categoryName, categoryInfo) => {
   let query = `UPDATE 
                Category
                SET CategoryName = '${categoryName}',
@@ -62,9 +62,18 @@ export const queryUpdateCategory = (categoryId, categoryName, categoryInfo) => {
   return query;
 };
 // 4.DELETE
-export const queryDeleteCategory = (categoryId) => {
+const queryDeleteCategory = (categoryId) => {
   let query = `DELETE 
                FROM Category
                WHERE CategoryId = '${categoryId}'`;
   return query;
+};
+
+export {
+  queryDeleteCategory,
+  queryGetCategory,
+  queryGetListCategory,
+  queryInsertCategory,
+  queryTotalRowCategory,
+  queryUpdateCategory,
 };

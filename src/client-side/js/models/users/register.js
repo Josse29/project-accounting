@@ -74,8 +74,7 @@ $("#user-create button#send-to-db")
     const { status, response } = await addUser(req);
     if (status) {
       await executeRead();
-      const alert = uiAlertSuccess(response);
-      $("#section-user #crud-success").html(alert);
+      uiAlertSuccess(response);
       uiReset();
       $("#user-create").modal("hide");
     }

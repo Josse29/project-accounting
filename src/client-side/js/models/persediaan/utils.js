@@ -114,7 +114,6 @@ export const getAll2 = async (data) => {
   }
 };
 
-// to pdf
 // get by group product
 export async function getPage1(req) {
   const stock = await getGroupProduct(req);

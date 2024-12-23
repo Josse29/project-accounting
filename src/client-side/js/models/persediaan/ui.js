@@ -217,27 +217,36 @@ export const uiBtnPageActive = (activePage) => {
 };
 // when total row 0 being seaching
 export const uiTbodyEmpty = (searchVal) => {
-  let search = `Product Empty...`;
+  let search = `Stock Empty...`;
   if (searchVal !== "") {
     search = `${searchVal} Not Found ....`;
   }
   const tr = `
-    <tr>
-      <td
-        colspan="10"
-        class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize"
-        style="background-color: #f2f2f2"
-      >
-        ${search}
-      </td>
-    </tr>`;
+  <tr>
+    <td
+      colspan="10"
+      class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize"
+      style="background-color: #f2f2f2"
+    >
+      ${search}
+    </td>
+  </tr>
+  `;
   $("tbody#persediaan-table").html(tr);
   $("#persediaan-pagination").addClass("d-none");
 };
 export const uiTbodyLoad = () => {
-  const tr = `<tr>
-                <td colspan="10" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">loading...</td>
-              </tr>`;
+  const tr = `
+  <tr>
+    <td
+      colspan="10"
+      class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize"
+      style="background-color: #f2f2f2"
+    >
+      loading...
+    </td>
+  </tr>
+  `;
   $("tbody#persediaan-table").html(tr);
   $("#persediaan-pagination").addClass("d-none");
 };

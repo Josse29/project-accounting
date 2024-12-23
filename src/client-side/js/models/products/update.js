@@ -16,13 +16,12 @@ $("tbody#product-table")
     $("#edit-product-image-file").val("");
     // get value from params
     const product = $(this).closest("tr")[0].dataset;
-    console.log(product);
     const productName = product.productname;
     const productPriceBeli = formatRupiah1(product.productpricebeli);
     const productPriceSell = formatRupiah1(product.productpricejual);
     const productImg = product.productimage;
-    const productCategoryId = parseInt(product.productcategoryid);
-    const productSupplierId = parseInt(product.productsupplierid);
+    const productCategoryId = product.productcategoryid;
+    const productSupplierId = product.productsupplierid;
     const productInfo = product.productketerangan;
     // list option
     await listCategoryRefProductUpdate(productCategoryId);
@@ -77,6 +76,7 @@ $("tbody#product-table")
           productCancelImg = false;
         } catch (error) {
           console.error(error);
+          throw new Error(error);
         }
       });
     // remove-image
@@ -139,6 +139,7 @@ $("tbody#product-table")
           productImgVal,
           productCancelImg,
         };
+        console.log(req);
         const { status, response } = await update(req);
         if (status) {
           await getProductAll();

@@ -12,7 +12,7 @@ import {
 // method : GET
 // payload : 1.searchVal, 2.limitVal, 3.offsetVal,
 // return : all users with search, limit, offset
-export const fetchLimitOffset = async (req) => {
+const fetchLimitOffset = async (req) => {
   try {
     const req1 = {
       searchVal: req.searchVal,
@@ -29,7 +29,7 @@ export const fetchLimitOffset = async (req) => {
 // method : get
 // payload : 1.searchVal, 2.limitVal
 // return : total page and row
-export const fetchRowPage = async (req) => {
+const fetchRowPage = async (req) => {
   try {
     const req1 = {
       searchVal: req.searchVal,
@@ -45,7 +45,7 @@ export const fetchRowPage = async (req) => {
 // method : POST
 // payload  : 1.UserEmailVal, 2.UserFullnameVal, 3.UserPasswordVal, 4.UserPassword1Val, 5.UserImgVal, 6.UserPositionVal
 // return message has been registered
-export const addUser = async (req) => {
+const addUser = async (req) => {
   try {
     const req1 = {
       UserEmailVal: req.UserEmailVal,
@@ -65,7 +65,7 @@ export const addUser = async (req) => {
 // method : DELETE
 // payload : 1.userId , 2.userFullname
 // return message has been registered
-export const deleteById = async (req) => {
+const deleteById = async (req) => {
   try {
     const req1 = {
       userId: req.userId,
@@ -80,7 +80,7 @@ export const deleteById = async (req) => {
 // 5.endpoint : api/user/:userid
 // method : UPDATE
 // payload : UserEmailVal, UserFullnameVal, UserPasswordVal, UserPositionVal, UserId
-export const update = async (req) => {
+const update = async (req) => {
   try {
     const payLoad = {
       UserEmailVal: req.userEmail,
@@ -100,7 +100,7 @@ export const update = async (req) => {
 // method : GET
 // payload : ""
 // return : list of customer
-export const getListCustomer = async () => {
+const getListCustomer = async () => {
   try {
     const customer = await getUserCustomer();
     return { status: true, response: customer };
@@ -112,11 +112,20 @@ export const getListCustomer = async () => {
 // method : GET
 // payload : ""
 // return : list of salesuser
-export const getListSales = async () => {
+const getListSales = async () => {
   try {
     const sales = await getUserSale();
     return { status: true, response: sales };
   } catch (error) {
     return { status: false, response: error };
   }
+};
+export {
+  addUser,
+  deleteById,
+  fetchLimitOffset,
+  fetchRowPage,
+  getListCustomer,
+  getListSales,
+  update,
 };

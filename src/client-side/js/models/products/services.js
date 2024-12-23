@@ -12,7 +12,7 @@ import {
 // method : GET
 // payload : 1.searchVal, 2.limitVal, 3.offsetVal
 // return all product with searchval, limitVal, offsetVal
-export const getLimitOffset = async (req) => {
+const getLimitOffset = async (req) => {
   try {
     const payLoad = {
       searchVal: req.searchVal,
@@ -29,7 +29,7 @@ export const getLimitOffset = async (req) => {
 // method : GET
 // payload : 1.searchVal, 2.limitVal
 // return pagination with searchval, limitVal
-export const getPagination = async (req) => {
+const getPagination = async (req) => {
   try {
     const payLoad = {
       searchVal: req.searchVal,
@@ -45,7 +45,7 @@ export const getPagination = async (req) => {
 // method : POST
 // payload : 1.productName, 2.productPriceBuy, 3.productPriceSell, 4.productInfo, 5.productCategoryId, 6.productSupplierId, 7.productImg, 8.imgBase64
 // return : message success create
-export const addProduct = async (req) => {
+const addProduct = async (req) => {
   try {
     const payLoad = {
       productName: req.productName,
@@ -66,7 +66,7 @@ export const addProduct = async (req) => {
 // method : PUT
 // payload : 1.productId, 2.productName, 3.productPriceBuy, 4.productPriceSell, 5.productCategoryId, 6.productSupplierId, 7.productInfo, 8.productImgVal, 9.productCancelImg
 // return : message success update
-export const update = async (req) => {
+const update = async (req) => {
   try {
     const payLoad = {
       productId: req.productId,
@@ -89,7 +89,7 @@ export const update = async (req) => {
 // method : DELETE
 // payload : productid, productname
 // return :  message success deleted
-export const deletedById = async (req) => {
+const deletedById = async (req) => {
   try {
     const payLoad = {
       productid: req.productid,
@@ -105,7 +105,7 @@ export const deletedById = async (req) => {
 // method : GET
 // payload : ""
 // return : get all product
-export const getPDF = async () => {
+const getPDF = async () => {
   try {
     const products = await getProductReport();
     return { status: true, response: products };
@@ -113,11 +113,11 @@ export const getPDF = async () => {
     return { status: false, response: error };
   }
 };
-// 6.enpoint : api/product/report-csv
+// 7.enpoint : api/product/report-csv
 // method : GET
 // payload : ""
 // return : get all product
-export const getCSV = async () => {
+const getCSV = async () => {
   try {
     const products = await getProductReport1();
     return { status: true, response: products };
@@ -125,15 +125,25 @@ export const getCSV = async () => {
     return { status: false, response: error };
   }
 };
-// 7.endpoint : api/product/list
+// 8.endpoint : api/product/list
 // method : GET
 // payload : 1.searchVal
 // return : product list
-export const getList = async (req) => {
+const getList = async (req) => {
   try {
     const list = await getProductList(req);
     return { status: true, response: list };
   } catch (error) {
     return { status: false, response: error };
   }
+};
+export {
+  addProduct,
+  deletedById,
+  getPDF,
+  getCSV,
+  getLimitOffset,
+  getList,
+  getPagination,
+  update,
 };
