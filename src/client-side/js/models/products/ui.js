@@ -6,14 +6,14 @@ export const uiTbody = (response) => {
   response.forEach((el) => {
     const productId = el.ProductId;
     const productName = el.ProductName;
-    const productBuy = el.ProductPriceBeli;
-    const productSell = el.ProductPriceJual;
+    const productBuy = el.ProductPriceBuy;
+    const productSell = el.ProductPriceSell;
     const productInfo = el.ProductInfo;
     const productImg = el.ProductImage;
     const categoryId = el.CategoryId;
     const categoryName = el.CategoryName;
-    const supplierId = el.SupplierId;
-    const supplierName = el.SupplierName;
+    const supplierId = el.UserId;
+    const supplierName = el.UserFullname;
     const priceBuy = formatRupiah2(productBuy);
     const priceSell = formatRupiah2(productSell);
     const supplierNameTxt = supplierName === null ? " - " : supplierName;

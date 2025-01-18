@@ -6,9 +6,11 @@ $("tbody#user")
     const userFullname = user.userfullname;
     const userImg = user.userimg;
     const userPosition = user.userposition;
+    const userInformation = user.userinfo ? user.userinfo : "-";
     $("#user-detail-modal h1.modal-title").text(userFullname);
     $("#user-detail-modal #email").text(userEmail);
     $("#user-detail-modal #fullname").text(userFullname);
+    $("#user-detail-modal #information").text(userInformation);
     if (userImg !== "null") {
       const img = `<img src=${userImg} class="w-100 h-auto mb-3"/>`;
       $("div#photo").html(img);

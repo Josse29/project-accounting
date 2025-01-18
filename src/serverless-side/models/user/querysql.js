@@ -3,13 +3,14 @@ const queryRegister = (
   UserFullnameVal,
   UserPasswordVal,
   imgBase64,
-  UserPositionVal
+  UserPositionVal,
+  UserInfoVal
 ) => {
   let query = `INSERT 
                INTO User
-               (UserEmail, UserFullname, UserPassword, UserImg, UserPosition) 
+               (UserEmail, UserFullname, UserPassword, UserImg, UserPosition, UserInfo) 
                VALUES 
-               ('${UserEmailVal}', '${UserFullnameVal}', '${UserPasswordVal}', '${imgBase64}', '${UserPositionVal}') `;
+               ('${UserEmailVal}', '${UserFullnameVal}', '${UserPasswordVal}', '${imgBase64}', '${UserPositionVal}', '${UserInfoVal}') `;
   return query;
 };
 const queryGetTotal = (searchVal) => {
@@ -25,11 +26,12 @@ const queryGetTotal = (searchVal) => {
 };
 const queryGet = (searchVal, limitVal, offsetVal) => {
   let query = `SELECT
-               User.UserId, 
-               User.UserFullname,
-               User.UserEmail,
-               User.UserImg,
-               User.UserPosition
+               UserId,
+               UserEmail,
+               UserFullname,
+               UserImg,
+               UserPosition,
+               UserInfo
                FROM User `;
   //  with search value
   if (searchVal !== "") {
@@ -61,6 +63,17 @@ const queryGetSales = () => {
                FROM User `;
   //  ONlY sales
   query += `WHERE UserPosition = 'sales' `;
+  // sort by fullname ascending
+  query += `ORDER BY UserFullname ASC`;
+  return query;
+};
+const queryGetSupplier = () => {
+  let query = `SELECT 
+               UserId,
+               UserFullname
+               FROM User `;
+  //  ONlY sales
+  query += `WHERE UserPosition = 'supplier' `;
   // sort by fullname ascending
   query += `ORDER BY UserFullname ASC`;
   return query;
@@ -97,6 +110,7 @@ export {
   queryGet,
   queryGetCustomer,
   queryGetSales,
+  queryGetSupplier,
   queryGetTotal,
   queryRegister,
   queryUpdate,

@@ -1,23 +1,30 @@
 export const uiTbody = (response) => {
   let tr = ``;
   response.forEach((el) => {
+    const userId = el.UserId;
+    const userEmail = el.UserEmail;
+    const userFullname = el.UserFullname;
+    const userPosition = el.UserPosition;
+    const userImg = el.UserImg;
+    const userInfo = el.UserInfo;
     tr += `
     <tr
-      data-userid="${el.UserId}"
-      data-useremail="${el.UserEmail}"
-      data-userfullname="${el.UserFullname}"
-      data-userposition="${el.UserPosition}"
-      data-userimg="${el.UserImg}"
+      data-userid="${userId}"
+      data-useremail="${userEmail}"
+      data-userfullname="${userFullname}"
+      data-userposition="${userPosition}"
+      data-userimg="${userImg}"
+      data-userinfo="${userInfo}"
     >
       <td class="text-center align-content-center text-truncate pe-3">
-        ${el.UserId}
+        ${userId}
       </td>
       <td class="text-capitalize align-content-center text-truncate pe-3">
-        ${el.UserFullname}
+        ${userFullname}
       </td>
-      <td class="align-content-center text-truncate pe-3">${el.UserEmail}</td>
+      <td class="align-content-center text-truncate pe-3">${userEmail}</td>
       <td class="text-capitalize align-content-center text-truncate pe-3">
-        ${el.UserPosition}
+        ${userPosition}
       </td>
       <td class="align-content-center">
         <div class="d-flex gap-2 justify-content-center">
@@ -31,7 +38,7 @@ export const uiTbody = (response) => {
               class="fa-solid fa-eye"
               data-bs-toggle="tooltip"
               data-bs-html="true"
-              data-bs-title="<span>See-${el.UserFullname}</span>"
+              data-bs-title="<span>See-${userFullname}</span>"
               data-bs-placement="bottom"
             ></i>
           </button>
@@ -45,7 +52,7 @@ export const uiTbody = (response) => {
               class="fa-solid fa-pencil"
               data-bs-toggle="tooltip"
               data-bs-html="true"
-              data-bs-title="<span>Update-${el.UserFullname}</span>"
+              data-bs-title="<span>Update-${userFullname}</span>"
               data-bs-placement="bottom"
             ></i>
           </button>
@@ -59,7 +66,7 @@ export const uiTbody = (response) => {
               class="fa-solid fa-trash-can"
               data-bs-toggle="tooltip"
               data-bs-html="true"
-              data-bs-title="<span>Delete-${el.UserFullname}</span>"
+              data-bs-title="<span>Delete-${userFullname}</span>"
               data-bs-placement="bottom"
             ></i>
           </button>
@@ -138,6 +145,8 @@ export const uiReset = () => {
   $("#user-create #userpassword").val("");
   $("#user-create #userpassword1").val("");
   $("#user-create input#userimg").val("");
+  $("#user-create textarea#userinfo").val("");
+  $("#user-create #section-img").addClass("d-none");
 };
 export const uiLoad = () => {
   const tr = `<tr>
@@ -147,4 +156,23 @@ export const uiLoad = () => {
               </tr>`;
   $("tbody#user").html(tr);
   $("div#user-pagination").addClass("d-none");
+};
+export const uiAlertFailCreate = (res) => {
+  const alert = `<div class="alert alert-danger" role="alert">
+                    <i class="fa-solid fa-triangle-exclamation me-1"></i> ${res}
+                 </div>`;
+  $("#supplier-create-failed").html(alert);
+};
+export const uiAlertSuccess1 = (res) => {
+  const alertSuccessMe = `<div class="alert alert-success alert-dismissible fade show text-start" role="alert">
+                            <strong class="text-capitalize">${res}</strong> 
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                          </div>`;
+  $("#sectionSuccessActionSupply").html(alertSuccessMe);
+};
+export const uiBlankVal = () => {
+  $("#supplier-create-name").val("");
+  $("#supplier-create-img").val("");
+  $("#supplier-create-info").val("");
+  $("#supplier-create-img-section").addClass("d-none");
 };

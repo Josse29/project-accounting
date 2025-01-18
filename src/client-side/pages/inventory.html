@@ -543,129 +543,6 @@
               </div>
             </div>
           </div>
-          <!-- supplier -->
-          <div class="card w-50" id="supplier-section">
-            <div
-              class="card-header text-white fs-3"
-              style="background-color: #3b82f6"
-            >
-              Supplier
-            </div>
-            <div class="card-body">
-              <!-- btn group & totalrow -->
-              <div class="d-flex justify-content-between mb-3">
-                <!-- btn group create, pdf, print, excel, dll -->
-                <div class="btn-group gap-2">
-                  <!-- tambah supplier -->
-                  <button
-                    id="btnCreateSupplier"
-                    class="btn text-white tooltip-bottom-container"
-                    style="background-color: #3b82f6"
-                    data-bs-toggle="modal"
-                    data-bs-target="#supplierCreate"
-                  >
-                    <div class="tooltip-bottom-text">add-supplier</div>
-                    <span class="d-flex gap-2 align-items-center">
-                      <i class="fa-solid fa-folder-plus fs-5"></i>
-                      <span class="text-nowrap fs-6 ms-1">Add Supplier</span>
-                    </span>
-                  </button>
-                </div>
-                <!-- total row -->
-                <p id="supplier-total-row" class="fs-4 mb-0"></p>
-              </div>
-              <!-- section limit and search -->
-              <div class="d-flex gap-2 mb-3">
-                <!-- limit supplier -->
-                <select
-                  class="form-select w-auto"
-                  aria-label="Default select example"
-                  id="supplier-limit"
-                >
-                  <option value="10">10</option>
-                  <option value="20">20</option>
-                  <option value="50">50</option>
-                </select>
-                <!-- search supplier -->
-                <div class="input-group">
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="masukkan keyword supplier..."
-                    id="supplier-search-input"
-                  />
-                  <span
-                    class="input-group-text text-white"
-                    style="background-color: #3b82f6"
-                    id="supplier-search-btn"
-                    >Search</span
-                  >
-                </div>
-              </div>
-              <!-- section alert -->
-              <div id="sectionSuccessActionSupply"></div>
-              <!-- table supplier  -->
-              <div class="py-2" id="supplier-table-container">
-                <table class="table table-striped" style="table-layout: fixed">
-                  <thead>
-                    <tr>
-                      <th class="text-center text-nowrap" style="width: 100px">
-                        #
-                      </th>
-                      <th class="text-nowrap" style="width: 200px">
-                        Supplier Name
-                      </th>
-                      <th class="text-center" style="width: 220px">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody id="supplier-table">
-                    <tr>
-                      <td colspan="3" class="fst-italic text-center fw-bold">
-                        loading....
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <!-- pagination supplier -->
-              <div
-                class="w-100 d-flex justify-content-center py-2 pt-3 d-none"
-                id="supplier-pagination"
-              >
-                <div class="btn-group">
-                  <button
-                    type="button"
-                    class="btn border border-2"
-                    id="supplier-first-page"
-                  >
-                    <i class="fa-solid fa-backward-fast fs-6"></i>
-                  </button>
-                  <button
-                    type="button"
-                    class="btn border border-2"
-                    id="supplier-prev-page"
-                  >
-                    <i class="fa-solid fa-backward-step fs-6"></i>
-                  </button>
-                  <div id="supplier-number-page"></div>
-                  <button
-                    type="button"
-                    class="btn border border-2"
-                    id="supplier-next-page"
-                  >
-                    <i class="fa-solid fa-forward-step fs-6"></i>
-                  </button>
-                  <button
-                    type="button"
-                    class="btn border border-2"
-                    id="supplier-last-page"
-                  >
-                    <i class="fa-solid fa-forward-fast fs-6"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -1263,7 +1140,7 @@
                     type="text"
                     class="form-control text-capitalize"
                     id="product-name"
-                    placeholder="masukkan nama menu..."
+                    placeholder="ex : product-1."
                   />
                 </div>
                 <!-- price beli-->
@@ -1275,7 +1152,7 @@
                     type="text"
                     class="form-control"
                     id="product-price-beli"
-                    placeholder="masukkan harga product beli..."
+                    placeholder="ex : $ 1.2"
                   />
                 </div>
                 <!-- price jual -->
@@ -1287,7 +1164,7 @@
                     type="text"
                     class="form-control"
                     id="product-price-jual"
-                    placeholder="masukkan harga product jual..."
+                    placeholder="ex : $ 1.9"
                   />
                 </div>
                 <!-- kategori -->
@@ -1759,286 +1636,6 @@
           </div>
         </div>
       </div>
-      <!-- Supplier-Modal -->
-      <div>
-        <!-- supplierCreate -->
-        <div class="modal fade" id="supplierCreate" tabindex="-1">
-          <div
-            class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
-          >
-            <div class="modal-content">
-              <div class="modal-header py-2" style="background-color: #3b82f6">
-                <h1 class="modal-title fs-3 text-white" id="exampleModalLabel">
-                  Supplier
-                </h1>
-              </div>
-              <div class="modal-body" id="supplier-create-modalBody">
-                <!-- alert failed -->
-                <div id="supplier-create-failed"></div>
-                <!--supplierCreateName -->
-                <div class="mb-3">
-                  <label for="supplier-create-name" class="form-label fs-4"
-                    >Supplier Name</label
-                  >
-                  <input
-                    type="text"
-                    id="supplier-create-name"
-                    class="form-control"
-                    placeholder="ex : supplier-name"
-                  />
-                </div>
-                <!-- supplierCreateImg -->
-                <div class="mb-3">
-                  <label
-                    for="supplier-create-img"
-                    class="form-label fs-4 d-block"
-                    >Image :</label
-                  >
-                  <div
-                    class="position-relative d-none"
-                    id="supplier-create-img-section"
-                  >
-                    <i
-                      class="fa-solid fa-circle-xmark text-danger"
-                      id="supplier-create-img-cancel"
-                    ></i>
-                    <img
-                      src=""
-                      alt=""
-                      class="w-100 h-auto mb-3"
-                      id="supplier-create-img-preview"
-                    />
-                  </div>
-                  <input
-                    class="form-control"
-                    type="file"
-                    id="supplier-create-img"
-                  />
-                </div>
-                <!-- supplierCreateInfo -->
-                <div class="mb-3">
-                  <label for="supplier-create-info" class="form-label fs-4"
-                    >Information</label
-                  >
-                  <textarea
-                    class="form-control"
-                    id="supplier-create-info"
-                  ></textarea>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-danger"
-                  data-bs-dismiss="modal"
-                >
-                  Close
-                </button>
-                <button
-                  id="supplier-create-submit"
-                  type="button"
-                  class="btn btn-primary"
-                >
-                  Save
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- supplierDetail -->
-        <div class="modal fade" id="supplierDetailModal" tabindex="-1">
-          <div
-            class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
-          >
-            <div class="modal-content">
-              <div class="modal-header py-2" style="background-color: #3b82f6">
-                <h1
-                  class="modal-title fs-3 text-white text-capitalize"
-                  id="supplierDetailModalLabel"
-                >
-                  Supplier
-                </h1>
-              </div>
-              <div class="modal-body">
-                <!-- supplierDate -->
-                <div class="mb-3">
-                  <p class="fs-5 text-end" id="supplier-date-detail">Date</p>
-                </div>
-                <!--supplierDetailName -->
-                <div class="mb-3">
-                  <label class="form-label fs-4 d-block">Supplier Name</label>
-                  <label
-                    id="supplier-detail-name"
-                    class="form-label fs-4 text-capitalize ms-2"
-                  ></label>
-                </div>
-                <!-- supplierProductId -->
-                <div class="mb-3">
-                  <label class="form-label fs-4">Product List</label>
-                  <div id="supplier-detail-productid"></div>
-                </div>
-                <!-- supplierDetailImg -->
-                <div class="">
-                  <label class="form-label fs-4">Image</label>
-                  <img
-                    src=""
-                    alt=""
-                    id="supplier-detail-img"
-                    class="w-100 mb-3"
-                  />
-                  <h5
-                    id="no-image"
-                    class="mb-4 ms-2 text-muted fst-italic d-none"
-                  >
-                    no image preview
-                  </h5>
-                </div>
-                <!-- supplierDetailInfo -->
-                <div class="mb-3">
-                  <label class="form-label fs-4 d-block">Information</label>
-                  <label id="supplier-detail-info" class="form-label fs-5 ms-2"
-                    >Keterangan</label
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- supplierUpdate -->
-        <div class="modal fade" id="supplierUpdateModal" tabindex="-1">
-          <div
-            class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
-          >
-            <div class="modal-content">
-              <div class="modal-header py-2" style="background-color: #3b82f6">
-                <h1
-                  class="modal-title fs-3 text-white text-capitalize"
-                  id="supplierUpdateModalLabel"
-                >
-                  Supplier
-                </h1>
-              </div>
-              <div class="modal-body" id="supplier-update-modalBody">
-                <!-- alert failed -->
-                <div id="supplier-update-failed"></div>
-                <!--supplierUpdateName -->
-                <div class="mb-3">
-                  <label for="supplier-update-name" class="form-label fs-4"
-                    >Nama Supplier</label
-                  >
-                  <input
-                    type="text"
-                    id="supplier-update-name"
-                    class="form-control"
-                    placeholder="masukkan nama supplier"
-                  />
-                </div>
-                <!-- supplierUpdateInfo -->
-                <div class="mb-3">
-                  <label for="supplier-update-info" class="form-label fs-4"
-                    >Keterangan</label
-                  >
-                  <textarea
-                    class="form-control"
-                    id="supplier-update-info"
-                  ></textarea>
-                </div>
-                <!-- supplierupdateImg -->
-                <div class="mb-3">
-                  <label
-                    for="supplier-update-img"
-                    class="form-label fs-4 d-block"
-                    >Image :</label
-                  >
-                  <!-- preview image -->
-                  <div
-                    class="position-relative"
-                    id="supplier-update-img-section"
-                  >
-                    <!-- cancle image -->
-                    <label
-                      id="supplier-update-img-cancel"
-                      class="fa-solid fa-circle-xmark text-danger"
-                    ></label>
-                    <!-- img -->
-                    <img
-                      src=""
-                      alt=""
-                      class="w-100 mb-3"
-                      id="supplier-update-img-preview"
-                    />
-                  </div>
-                  <!-- input image -->
-                  <input
-                    class="form-control"
-                    type="file"
-                    id="supplier-update-img"
-                  />
-                </div>
-              </div>
-              <!-- section button submit -->
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-danger"
-                  data-bs-dismiss="modal"
-                >
-                  Close
-                </button>
-                <button
-                  id="supplier-update-submit"
-                  type="button"
-                  class="btn btn-primary"
-                >
-                  Save
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- supplierDelete -->
-        <div class="modal fade" id="supplierDeleteModal" tabindex="-1">
-          <div
-            class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
-          >
-            <div class="modal-content">
-              <div class="modal-header bg-danger">
-                <h1
-                  class="modal-title fs-2 text-white text-capitalize"
-                  id="supplierDeleteModalLabel"
-                >
-                  Modal
-                </h1>
-              </div>
-              <div class="modal-body text-center">
-                <i
-                  class="fa-solid fa-triangle-exclamation text-danger"
-                  style="font-size: 120px"
-                ></i>
-                <h4 class="my-3" id="supplier-delete-name"></h4>
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary d-flex align-items-center gap-2"
-                  data-bs-dismiss="modal"
-                >
-                  <i class="fa-solid fa-times me-1 fs-4"></i>
-                  <span class="fs-5">No</span>
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-danger d-flex align-items-center gap-2"
-                  id="supplier-delete-submit"
-                >
-                  <i class="fa-solid fa-check me-1 fs-4"></i>
-                  <span class="fs-5">Yes</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
     <!-- jquery -->
     <script>
@@ -2057,7 +1654,7 @@
     <script type="module" src="./../js/navigation/index.js"></script>
     <script type="module" src="./../js/utils/updateUi.js"></script>
     <script type="module" src="./../js/models/categories/index.js"></script>
-    <script type="module" src="./../js/models/supplier/index.js"></script>
+    <!-- <script type="module" src="./../js/models/users/index.js"></script> -->
     <script type="module" src="./../js/models/products/index.js"></script>
     <script type="module" src="./../js/models/persediaan/index.js"></script>
   </body>

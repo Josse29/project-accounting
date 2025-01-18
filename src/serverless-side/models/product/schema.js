@@ -5,11 +5,11 @@ TABLE Product (
   ProductName VARCHAR(255),
   ProductImage BLOB,
   ProductInfo TEXT,
-  ProductPriceBeli REAL,
-  ProductPriceJual REAL,
+  ProductPriceBuy TEXT,
+  ProductPriceSell TEXT,
   ProductCategoryId INTEGER,
   ProductSupplierId INTEGER,
   FOREIGN KEY (ProductCategoryId) REFERENCES Category(CategoryId)
-  FOREIGN KEY (ProductSupplierId) REFERENCES Supplier(SupplierId)
+  FOREIGN KEY (ProductSupplierId) REFERENCES User(UserId)
 );`;
 export default productSchema;

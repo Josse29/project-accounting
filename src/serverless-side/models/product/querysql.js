@@ -11,7 +11,7 @@ const queryinsertProducts = (
   let query = `
   INSERT 
   INTO Product 
-  (ProductName, ProductPriceBeli, ProductPriceJual, ProductInfo, ProductCategoryId, ProductSupplierId, ProductImage) 
+  (ProductName, ProductPriceBuy, ProductPriceSell, ProductInfo, ProductCategoryId, ProductSupplierId, ProductImage) 
   VALUES
   ('${productName}', ${productPriceBuy}, ${productPriceSell}, '${productInfo}', ${productCategoryId}, ${productSupplierId},'${imgBase64}')
   `;
@@ -19,18 +19,30 @@ const queryinsertProducts = (
 };
 // 2.READ
 const queryGetProducts = (productSearch, productLimit, productOffset) => {
-  let query = `SELECT *
+  let query = `SELECT
+               Product.ProductId,
+               Product.ProductName,
+               Product.ProductPriceBuy,
+               Product.ProductPriceSell,
+               Product.ProductInfo,
+               Product.ProductImage,
+               Product.ProductCategoryId,
+               Category.CategoryId,
+               Category.CategoryName,
+               Product.ProductSupplierId,
+               User.UserId,
+               User.UserFullname
                FROM Product
                LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
-               LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId `;
+               LEFT JOIN User ON Product.ProductSupplierId = User.UserId `;
   //  with search value
   if (productSearch !== "") {
     query += `WHERE Product.ProductName LIKE '%${productSearch}%' ESCAPE '!' OR
-                    Product.ProductPriceBeli LIKE '%${productSearch}%' ESCAPE '!' OR
-                    Product.ProductPriceJual LIKE '%${productSearch}%' ESCAPE '!' OR
+                    Product.ProductPriceBuy LIKE '%${productSearch}%' ESCAPE '!' OR
+                    Product.ProductPriceSell LIKE '%${productSearch}%' ESCAPE '!' OR
                     Product.ProductInfo LIKE '%${productSearch}%' ESCAPE '!' OR
                     Category.CategoryName LIKE '%${productSearch}%' ESCAPE '!' OR 
-                    Supplier.SupplierName LIKE '%${productSearch}%' ESCAPE '!' `;
+                    User.UserFullname LIKE '%${productSearch}%' ESCAPE '!' `;
   }
   // witth order limit offset
   query += `ORDER BY Product.ProductName ASC
@@ -42,18 +54,18 @@ const queryGetListProduct = (productSearch) => {
   let query = `SELECT 
                Product.ProductId,
                Product.ProductName,
-               Product.ProductPriceBeli,
-               Product.ProductPriceJual
+               Product.ProductPriceBuy,
+               Product.ProductPriceSell
                FROM Product
                LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
-               LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId `;
+               LEFT JOIN User ON Product.ProductSupplierId = User.UserId `;
   //  with search value
   if (productSearch !== "") {
     query += `WHERE Product.ProductName LIKE '%${productSearch}%' ESCAPE '!' OR
-                      Product.ProductPriceBeli LIKE '%${productSearch}%' ESCAPE '!' OR
+                      Product.ProductPriceBuy LIKE '%${productSearch}%' ESCAPE '!' OR
                       Product.ProductInfo LIKE '%${productSearch}%' ESCAPE '!' OR
                       Category.CategoryName LIKE '%${productSearch}%' ESCAPE '!' OR 
-                      Supplier.SupplierName LIKE '%${productSearch}%' ESCAPE '!' `;
+                      User.UserFullname LIKE '%${productSearch}%' ESCAPE '!' `;
   }
   query += `ORDER BY Product.ProductName ASC `;
   return query;
@@ -63,14 +75,14 @@ const queryTotalRowProducts = (productSearch) => {
                  AS TOTAL_ROW
                  FROM Product
                  LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
-                 LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId `;
+                 LEFT JOIN User ON Product.ProductSupplierId = User.UserId `;
   // with search value product
   if (productSearch !== "") {
     query += `WHERE Product.ProductName LIKE '%${productSearch}%' ESCAPE '!' OR 
-                      Product.ProductPriceBeli LIKE '%${productSearch}%' ESCAPE '!' OR 
+                      Product.ProductPriceBuy LIKE '%${productSearch}%' ESCAPE '!' OR 
                       Product.ProductInfo LIKE '%${productSearch}%' ESCAPE '!' OR
                       Category.CategoryName LIKE '%${productSearch}%' ESCAPE '!' OR 
-                      Supplier.SupplierName LIKE '%${productSearch}%' ESCAPE '!' `;
+                      User.UserFullname LIKE '%${productSearch}%' ESCAPE '!' `;
   }
   return query;
 };
@@ -83,8 +95,8 @@ const queryGetProductPDF = () => {
 const queryGetProductCSV = () => {
   let query = `SELECT 
                Product.ProductName AS ProductName,
-               Product.ProductPriceBeli AS ProductPriceBuy,
-               Product.ProductPriceJual AS ProductPriceSell,
+               Product.ProductPriceBuy AS ProductPriceBuy,
+               Product.ProductPriceSell AS ProductPriceSell,
                Supplier.SupplierName AS SupplieName,
                Category.CategoryName AS CategoryName
                FROM Product `;
@@ -110,8 +122,8 @@ const queryUpdateProduct = (
 ) => {
   let query = `UPDATE Product
                  SET ProductName = '${productName}',
-                     ProductPriceBeli = ${productPriceBuy},
-                     ProductPriceJual = ${productPriceSell},
+                     ProductPriceBuy = ${productPriceBuy},
+                     ProductPriceSell = ${productPriceSell},
                      ProductCategoryId = ${productCategoryId},
                      ProductSupplierId = ${productSupplierId}, 
                      ProductInfo = '${productInfo}' `;

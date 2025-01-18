@@ -274,12 +274,12 @@ const queryGetPersediaanPagination = (searchVal) => {
                  FROM Persediaan
                  LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
                  LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
-                 LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId `;
+                 LEFT JOIN User ON Product.ProductSupplierId = User.UserId `;
   if (searchVal !== "") {
     //  with searhing value
     query += `WHERE Product.ProductName LIKE '%${searchVal}%' ESCAPE '!' OR
                       Category.CategoryName LIKE '%${searchVal}%' ESCAPE '!' OR
-                      Supplier.SupplierName LIKE '%${searchVal}%' ESCAPE '!'
+                      USer.UserFullname LIKE '%${searchVal}%' ESCAPE '!'
    `;
   }
   return query;

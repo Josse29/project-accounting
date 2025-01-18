@@ -24,7 +24,7 @@ $("tbody#user")
     // fullname
     $("#user-update-modal input#userfullname1").val(userFullname);
     // position
-    const position = ["admin", "sales", "customer"];
+    const position = ["admin", "sale", "customer", "supplier"];
     let option = ``;
     position.forEach((el) => {
       let selected = userPosition === el && "selected";

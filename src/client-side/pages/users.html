@@ -208,8 +208,9 @@
                 <select class="form-select" id="userposition">
                   <option selected disabled>Open this select position</option>
                   <option value="admin">Admin</option>
-                  <option value="sales">Sales</option>
+                  <option value="sale">Sale</option>
                   <option value="customer">Customer</option>
+                  <option value="supplier">Supplier</option>
                 </select>
               </div>
               <!-- photo -->
@@ -265,6 +266,13 @@
                   id="userpassword1"
                   placeholder="*******"
                 />
+              </div>
+              <!-- information val -->
+              <div class="mb-3">
+                <label for="userinfo" class="form-label fs-4"
+                  >Information</label
+                >
+                <textarea class="form-control" id="userinfo"></textarea>
               </div>
             </div>
             <div class="modal-footer">
@@ -323,6 +331,13 @@
               <div class="mb-3">
                 <p class="fs-4 mb-2">Photo</p>
                 <div id="photo"></div>
+              </div>
+              <!-- information -->
+              <div class="mb-3">
+                <p class="fs-4 mb-1">Information</p>
+                <p class="fs-5 ms-2 mb-0 text-capitalize" id="information">
+                  information
+                </p>
               </div>
             </div>
           </div>
@@ -464,7 +479,6 @@
     <!-- Impor JS Bootstrap -->
     <script src="./../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <!-- myscript -->
-    <script src="./../require/index.js"></script>
     <script type="module" src="./../js/navigation/index.js"></script>
     <script type="module" src="./../js/models/users/index.js"></script>
     <script type="module" src="./../js/utils/updateUi.js"></script>

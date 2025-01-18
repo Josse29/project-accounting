@@ -79,6 +79,8 @@ $("#persediaan-create-submit")
       valPersediaanTotalRp,
       valPersediaanInfo,
     };
+    console.log(req);
+    return false;
     const { status, response } = await addStock(req);
     if (status) {
       await getAll();

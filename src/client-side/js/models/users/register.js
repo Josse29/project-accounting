@@ -61,6 +61,7 @@ $("#user-create button#send-to-db")
     const userPositionVal = $("#user-create #userposition").val();
     const userPasswordVal = $("#user-create #userpassword").val();
     const userPassword1Val = $("#user-create #userpassword1").val();
+    const userInfoVal = $("#user-create #userinfo").val();
     const userImgVal = $("#user-create input#userimg")[0].files;
     const req = {
       UserEmailVal: userEmailVal,
@@ -69,6 +70,7 @@ $("#user-create button#send-to-db")
       UserPassword1Val: userPassword1Val,
       UserImgVal: userImgVal,
       UserPositionVal: userPositionVal,
+      UserInfoVal: userInfoVal,
     };
     // req-to-db
     const { status, response } = await addUser(req);

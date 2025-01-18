@@ -4,10 +4,10 @@ import {
   getUserCustomer,
   getUserPageRow,
   getUserSale,
+  getUserSupplier,
   register,
   updateUser,
 } from "../../../../serverless-side/models/user/controller.js";
-
 // 1. endpoint : api/user/:limit/:offset
 // method : GET
 // payload : 1.searchVal, 2.limitVal, 3.offsetVal,
@@ -54,6 +54,7 @@ const addUser = async (req) => {
       UserPassword1Val: req.UserPassword1Val,
       UserImgVal: req.UserImgVal,
       UserPositionVal: req.UserPositionVal,
+      UserInfoVal: req.UserInfoVal,
     };
     const response = await register(req1);
     return { status: true, response };
@@ -120,6 +121,19 @@ const getListSales = async () => {
     return { status: false, response: error };
   }
 };
+// 8.endpoint : api/user/supplier
+// method : GET
+// payload :
+// return : user only supplier
+const getListSupplier = async () => {
+  try {
+    const supplier = await getUserSupplier();
+    return { status: true, response: supplier };
+  } catch (error) {
+    return { status: false, response: error };
+  }
+};
+
 export {
   addUser,
   deleteById,
@@ -127,5 +141,6 @@ export {
   fetchRowPage,
   getListCustomer,
   getListSales,
+  getListSupplier,
   update,
 };

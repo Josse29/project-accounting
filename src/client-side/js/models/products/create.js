@@ -1,7 +1,8 @@
 import { addProduct } from "./services.js";
-import { uiAlertFailCreate, uiAlertSuccess, uiBlankVal } from "./ui.js";
+
+import { listUserRefProductCreate } from "../users/list.js";
 import { listCategoryRefProductCreate } from "./../categories/list.js";
-import { listSupplierRefProductCreate } from "../supplier/list.js";
+import { uiAlertFailCreate, uiAlertSuccess, uiBlankVal } from "./ui.js";
 import { disFormatRupiah1, formatRupiah1 } from "../../utils/formatPrice.js";
 import { capitalizeWord } from "../../utils/formatCapitalize.js";
 import { listProductRefPersediaanCreate } from "./list.js";
@@ -13,7 +14,7 @@ $("button#product-create")
   .on("click", async function () {
     $("div#productCreateFailed").html("");
     await listCategoryRefProductCreate();
-    await listSupplierRefProductCreate();
+    await listUserRefProductCreate();
   });
 // Format as Rupiah when input
 $("input#product-price-beli")
@@ -66,9 +67,9 @@ $("#submit_product")
     if (status) {
       await getProductAll();
       await getProductRef();
+      await listProductRefPersediaanCreate();
       uiAlertSuccess(response);
       uiBlankVal();
-      listProductRefPersediaanCreate();
       $("#productCreateModal").modal("hide");
     }
     if (!status) {

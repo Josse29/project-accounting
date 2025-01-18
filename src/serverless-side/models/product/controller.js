@@ -105,7 +105,6 @@ const updateProduct = async (req) => {
     imgBase64,
     productCancelImg
   );
-  console.log(query);
   const msg = `Product <b class='text-capitalize'>${productName}</b> has been updated`;
   const updated = await window.electronAPI.sqliteApi.run(query, msg);
   return updated;

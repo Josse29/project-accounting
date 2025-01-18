@@ -3,10 +3,12 @@ import {
   queryGet,
   queryGetCustomer,
   queryGetSales,
+  queryGetSupplier,
   queryGetTotal,
   queryRegister,
   queryUpdate,
 } from "./querysql.js";
+
 import {
   validateEmail,
   validateLoadImg,
@@ -25,6 +27,7 @@ const register = async (req) => {
     UserPassword1Val,
     UserImgVal,
     UserPositionVal,
+    UserInfoVal,
   } = req;
   // 1.validation email
   validateEmail(UserEmailVal);
@@ -44,7 +47,8 @@ const register = async (req) => {
     UserFullnameVal.trim(),
     UserPasswordVal,
     imgBase64,
-    UserPositionVal
+    UserPositionVal,
+    UserInfoVal
   );
   const msg = `${UserFullnameVal} has been registered!`;
   const created = await window.electronAPI.sqliteApi.run(query, msg);
@@ -73,6 +77,11 @@ const getUserSale = async () => {
   const query = queryGetSales();
   const userSale = await window.electronAPI.sqliteApi.all(query);
   return userSale;
+};
+const getUserSupplier = async () => {
+  const query = queryGetSupplier();
+  const supplier = await window.electronAPI.sqliteApi.all(query);
+  return supplier;
 };
 // 3.UPDATE
 const updateUser = async (req) => {
@@ -120,6 +129,7 @@ export {
   getUserCustomer,
   getUserPageRow,
   getUserSale,
+  getUserSupplier,
   register,
   updateUser,
 };
