@@ -6,32 +6,17 @@ import { formatWaktuIndo, timeIndonesian } from "../../utils/formatTime.js";
 export const uiTbody = (response) => {
   let tr = ``;
   response.forEach((el) => {
-    // persediaanId
     const persediaanId = parseInt(el.PersediaanId);
-    // persediaanDMY
     const persediaanDDMY = formatWaktuIndo(el.PersediaanDDMY);
-    // persediaanHMS
     const persediaanHMS = el.PersediaanHMS;
-    // persediaanInfo
-    const persediaanInfo = el.PersediaanInfo;
-    // productId
+    const persediaanInfo = el.PersediaanInfo !== "" ? el.PersediaanInfo : "-";
     const productId = el.ProductId;
-    // productName
     const productName = el.ProductName;
-    // productPriceBuy
-    const productPriceBuy = formatPrice(el.ProductPriceBeli);
-    // supplier-name
-    const supplierName = el.SupplierName === null ? "-" : el.SupplierName;
-    // categoryName
-    const categoryName = el.CategoryName === null ? "-" : el.CategoryName;
-    // qty
+    const supplierName = el.UserFullname !== null ? el.UserFullname : "-";
+    const categoryName = el.CategoryName !== null ? el.CategoryName : "-";
     const persediaanQty = el.PersediaanQty;
-    // totaPrice
     const persediaanRp = formatPrice(el.PersediaanRp);
-
-    const spanColor =
-      el.PersediaanQty >= 1 ? "text-bg-success" : "text-bg-danger";
-
+    const spanColor = persediaanQty >= 1 ? "text-bg-success" : "text-bg-danger";
     tr += `
     <tr
       data-persediaanid="${persediaanId}"
@@ -42,7 +27,8 @@ export const uiTbody = (response) => {
       data-persediaaninfo="${persediaanInfo}"
       data-productid="${productId}"
       data-productname="${productName}"
-      data-productpricebuy="${productPriceBuy}"
+      data-suppliername="${supplierName}"
+      data-categoryname="${categoryName}"
     >
       <td class="align-content-center text-center pe-3 text-truncate">
         ${persediaanId}
@@ -473,130 +459,6 @@ export const uiPDF = (
   </div>          
   `;
   return html;
-};
-// group by product
-export const uiLoad = () => {
-  const div = `
-  <div class="container-by-me">
-    <div class="card">
-      <div class="animate-load" style="width: 100%; height: 200px"></div>
-      <div class="card-body">
-        <div class="mb-4">
-          <div class="animate-load mb-2 w-75" style="height: 30px"></div>
-          <div class="animate-load w-50 mb-2" style="height: 30px"></div>
-          <div class="animate-load w-25" style="height: 25px"></div>
-        </div>
-        <div class="d-flex justify-content-end gap-2">
-          <div class="animate-load" style="height: 35px; width: 35px"></div>
-          <div class="animate-load" style="height: 35px; width: 35px"></div>
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="animate-load" style="width: 100%; height: 200px"></div>
-      <div class="card-body">
-        <div class="mb-4">
-          <div class="animate-load mb-2 w-75" style="height: 30px"></div>
-          <div class="animate-load w-50 mb-2" style="height: 30px"></div>
-          <div class="animate-load w-25" style="height: 25px"></div>
-        </div>
-        <div class="d-flex justify-content-end gap-2">
-          <div class="animate-load" style="height: 35px; width: 35px"></div>
-          <div class="animate-load" style="height: 35px; width: 35px"></div>
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="animate-load" style="width: 100%; height: 200px"></div>
-      <div class="card-body">
-        <div class="mb-4">
-          <div class="animate-load mb-2 w-75" style="height: 30px"></div>
-          <div class="animate-load w-50 mb-2" style="height: 30px"></div>
-          <div class="animate-load w-25" style="height: 25px"></div>
-        </div>
-        <div class="d-flex justify-content-end gap-2">
-          <div class="animate-load" style="height: 35px; width: 35px"></div>
-          <div class="animate-load" style="height: 35px; width: 35px"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-  `;
-  $("div#product-refpersediaan-read").html(div);
-  $("div#product-refpersediaan-pagination").addClass("d-none");
-};
-export const uiCard = (response) => {
-  let card = ``;
-  response.forEach((rows) => {
-    const productId = parseInt(rows.PersediaanProductId);
-    const productName = rows.ProductName;
-    const priceBuy = formatRupiah2(parseFloat(rows.PriceBuy));
-    const priceSell = formatRupiah2(parseFloat(rows.PriceSell));
-    const productStock = parseInt(rows.TotalQty);
-    let imgSrc = ``;
-    if (rows.ProductImage !== "null") {
-      imgSrc = rows.ProductImage;
-    } else {
-      imgSrc = "./../images/no-img.jpg";
-    }
-    const productImg = `
-    <img src="${imgSrc}" class="card-img-top" alt="..." />`;
-    card += `
-    <div class="card w-full shadow-sm">
-      ${productImg}
-      <div
-        class="card-body"
-        data-productid="${productId}"
-        data-productname="${productName}"
-        data-productstock="${productStock}"
-        data-productpricesell="${priceSell}"
-        data-productpricebuy="${priceBuy}"
-      >
-        <h4 class="fw-bold text-truncate" id="order-productname">
-          ${productName}
-        </h4>
-        <h4 class="text-truncate" id="order-productprice">${priceSell}</h4>
-        <p class="fs-5">Stock : ${productStock}</p>
-        <div class="mt-3 d-flex justify-content-between align-items-center">
-          <div id="order-create-qty"></div>
-          <div>
-            <button id="order-create-qty-plus" class="btn btn-success">
-              <i class="fa-solid fa-plus" style="font-size: 18px"></i>
-            </button>
-            <button class="btn btn-danger" id="order-create-qty-minus">
-              <i class="fa-solid fa-minus" style="font-size: 18px"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>`;
-  });
-  const parentCard = `<div class="container-by-me">${card}</div>`;
-  $("div#product-refpersediaan-read").html(parentCard);
-};
-export const uiCardEmpty = (searchVal) => {
-  let search = `stock empty...`;
-  if (searchVal !== "") {
-    search = `${searchVal} - not found....`;
-  }
-  const emptyP = `
-  <div class="d-flex justify-content-center align-items-center" style="height:400px;">
-      <p class="d-block fs-4 fst-italic text-capitalize fw-bold">${search}</p>
-  </div>
-  `;
-  $("div#product-refpersediaan-read").html(emptyP);
-  $("div#product-refpersediaan-pagination").addClass("d-none");
-};
-export const uiBtnPage1 = (totalPage) => {
-  let btn = ``;
-  for (let i = 1; i <= totalPage; i++) {
-    const activePage = i === 1 ? "product-ref-persediaan-page-active" : "";
-    btn += `<button 
-              type="button" 
-              class="btn fs-4 product-ref-persediaan-page border border-2 ${activePage}">${i}</button>`;
-  }
-  $("div#product-ref-persediaan-page-number").html(btn);
-  $("div#product-refpersediaan-pagination").removeClass("d-none");
 };
 // update ui Active
 export const uiBtnPageActive1 = (pageNumber) => {

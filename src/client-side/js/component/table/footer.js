@@ -7,6 +7,6 @@ export const tFooter = () => {
   const terbilang = terbilangIndonesia(totalRp);
   const numberRp = formatRupiah2(totalRp);
   $("span#order-total-cart").text(formatRupiah2(totalRp));
-  $("span#order-terbilang").text(`${terbilang} rupiah`);
+  $("span#order-terbilang").text(`${terbilang}`);
   $("i#order-total-cart").text(numberRp);
 };

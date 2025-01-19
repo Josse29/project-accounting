@@ -1,0 +1,2 @@
+webpack 
+sebuah tool yang mengambil code code javascript yang kita gunakan (beserta librarynya) dan mengubahnya menjadi sebuah file yang dapat dijalankan di browser

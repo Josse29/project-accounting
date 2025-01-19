@@ -66,6 +66,7 @@ export async function getSummary1(req) {
 // 3. get sales by limit and offset
 export async function getPage(req) {
   const { status, response } = await getLimitOffset(req);
+  console.log(response);
   if (status) {
     uiTbody(response);
     uiBtnPageActive(req.offsetVal);

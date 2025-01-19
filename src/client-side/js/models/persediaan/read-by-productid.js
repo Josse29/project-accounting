@@ -1,7 +1,7 @@
 import { formatPrice, formatRupiah2 } from "../../utils/formatPrice.js";
 import { animateFade, reinitTooltip } from "../../utils/updateUi.js";
 import { listProductRefPersediaanRead } from "../products/list.js";
-import { getByProductId2, getSumQty } from "./services.js";
+import { getByProductId2 } from "./services.js";
 import { uiTbody, uiTbodyEmpty } from "./ui.js";
 
 await listProductRefPersediaanRead();
@@ -16,26 +16,16 @@ $("select#persediaan-refproduct-search")
     const productName = selectedOption.text();
     // 3. price-buy
     const priceBuy = selectedOption.data("pricebuy");
-    const priceBuyRp = formatRupiah2(priceBuy);
     // 4. sum-qty and sum-price
-    const sumQty = await getSumQty(selectedProductId);
-    const sumQtyStatus = sumQty.status;
-    const sumQtyRes = sumQty.response;
-    if (sumQtyStatus) {
-      const sumRp = priceBuy * sumQtyRes;
-      const sumRp1 = formatPrice(parseFloat(sumRp));
-      // insert - to - html sumpersediaan
-      const sumSectionHTML = `
-      <p class="fs-5 ms-2 mb-1 text-capitalize fw-bold ms-2">${productName}</p> 
-      <p class="fs-5 ms-4 mb-1">Price : ${priceBuyRp}</p> 
-      <p class="fs-5 ms-4 mb-1">Total Qty : ${sumQtyRes}</p> 
-      <p class="fs-5 ms-4">Total Price : ${sumRp1} </p>`;
-      $("div#persediaan-sum-section").html(sumSectionHTML);
-    }
-    if (!sumQtyStatus) {
-      console.error(sumQtyRes);
-    }
-    // 5. stock-tables
+    const sumQty = selectedOption.data("qty");
+    // 5. insert - to - html sumpersediaan
+    const sumSectionHTML = `
+    <p class="fs-5 ms-2 mb-1 text-capitalize fw-bold ms-2">${productName}</p> 
+    <p class="fs-5 ms-4 mb-1">Price : ${formatRupiah2(priceBuy)}</p> 
+    <p class="fs-5 ms-4 mb-1">Total Qty : ${sumQty}</p> 
+    <p class="fs-5 ms-4">Total Price : ${formatPrice(priceBuy * sumQty)} </p>`;
+    $("div#persediaan-sum-section").html(sumSectionHTML);
+    // 6. stock-tables
     const byProduct = await getByProductId2(selectedProductId);
     const resByProduct = byProduct.response;
     const statusByProduct = byProduct.status;

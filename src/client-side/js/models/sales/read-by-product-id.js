@@ -1,4 +1,5 @@
-import { getByProductId, getSumProductId } from "./services.js";
+import { getByProductId } from "./services.js";
+
 import { uiTbody, uiTbodyEmpty } from "./ui.js";
 import { listProductRefSalesRead } from "../products/list.js";
 import { formatRupiah2 } from "./../../utils/formatPrice.js";
@@ -17,23 +18,16 @@ $("select#sales-read-productid")
     const selectedOption = $(this).find("option:selected");
     const productName = selectedOption.text();
     const priceSell = selectedOption.data("pricesell");
-    const priceSellRp = formatRupiah2(priceSell);
+    const totalQty = selectedOption.data("totalqty");
+    const totalPrice = selectedOption.data("totalprice");
     // 3. summary
-    const sum = await getSumProductId(seletedProductId);
-    const sumStatus = sum.status;
-    const sumRes = sum.response;
-    if (sumStatus) {
-      const rupiah = formatRupiah2(sumRes * priceSell);
-      const qty = sumRes;
-      const summary = `<p class="fs-4 mb-1 fw-bold text-capitalize">${productName}</p>
-                       <p class="fs-5 ms-1 mb-1">Price Sell : ${priceSellRp}</p>
-                       <p class="fs-5 ms-1 mb-1">Qty : ${qty}</p>
-                       <p class="fs-5 ms-1 mb-1">Total : ${rupiah}</p> `;
-      $("div#summary").html(summary);
-    }
-    if (!sumStatus) {
-      console.error(sumRes);
-    }
+    const summary = `
+    <p class="fs-4 mb-1 fw-bold text-capitalize">${productName}</p>
+    <p class="fs-5 ms-1 mb-1">Price Sell : ${formatRupiah2(priceSell)}</p>
+    <p class="fs-5 ms-1 mb-1">Qty : ${totalQty}</p>
+    <p class="fs-5 ms-1 mb-1">Total : ${formatRupiah2(totalPrice)}</p>
+    `;
+    $("div#summary").html(summary);
     // 4. getAll
     const sales = await getByProductId(seletedProductId);
     const salesStatus = sales.status;

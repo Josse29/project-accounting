@@ -11,17 +11,17 @@ import {
   removeStorageCartSUM,
 } from "../../utils/localStorage.js";
 import { listUserRefSalesCreate } from "../users/list.js";
-import { getAll2 } from "../persediaan/utils.js";
 import { getAll } from "./utils.js";
+import { getProductAll1 } from "../products/utils.js";
 
-// init table order
+// 1. init table order
 $(".card-footer ")
   .off("click")
   .on("click", async function () {
     table();
     await listUserRefSalesCreate();
   });
-// for change result
+// 2. for change result
 $("input#order-payment")
   .off("input")
   .on("input", function () {
@@ -42,7 +42,7 @@ $("input#order-payment")
       if (totalCart >= 1 && resultChange >= 0) {
         const txtTerbilang = `${formatRupiah1(
           resultChange
-        )} | ${terbilangIndonesia(resultChange)} rupiah `;
+        )} | ${terbilangIndonesia(resultChange)} `;
         $("span#order-change").text(txtTerbilang);
       }
     }
@@ -114,8 +114,8 @@ $("button#order-done")
       if (status) {
         // get again sales
         await getAll();
-        // get again persediaan
-        await getAll2();
+        // get again product ref persediaan
+        await getProductAll1();
         // remove storage cart and sum storage card
         removeStorageCart();
         removeStorageCartSUM();

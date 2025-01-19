@@ -1,6 +1,6 @@
 export function terbilangIndonesia(angka) {
-  const satuan = [
-    "",
+  const angkaTerbilang = [
+    "nol",
     "satu",
     "dua",
     "tiga",
@@ -12,57 +12,77 @@ export function terbilangIndonesia(angka) {
     "sembilan",
     "sepuluh",
     "sebelas",
+    "dua belas",
+    "tiga belas",
+    "empat belas",
+    "lima belas",
+    "enam belas",
+    "tujuh belas",
+    "delapan belas",
+    "sembilan belas",
+    "dua puluh",
+    "tiga puluh",
+    "empat puluh",
+    "lima puluh",
+    "enam puluh",
+    "tujuh puluh",
+    "delapan puluh",
+    "sembilan puluh",
   ];
-
-  function terbilang(angka) {
-    if (angka < 12) {
-      return satuan[angka];
-    } else if (angka < 20) {
-      return terbilang(angka - 10) + " belas";
-    } else if (angka < 100) {
-      return (
-        terbilang(Math.floor(angka / 10)) + " puluh " + terbilang(angka % 10)
-      );
-    } else if (angka < 200) {
-      return "seratus " + terbilang(angka - 100);
-    } else if (angka < 1000) {
-      return (
-        terbilang(Math.floor(angka / 100)) + " ratus " + terbilang(angka % 100)
-      );
-    } else if (angka < 2000) {
-      return "seribu " + terbilang(angka - 1000);
-    } else if (angka < 1000000) {
-      return (
-        terbilang(Math.floor(angka / 1000)) + " ribu " + terbilang(angka % 1000)
-      );
-    } else if (angka < 1000000000) {
-      return (
-        terbilang(Math.floor(angka / 1000000)) +
-        " juta " +
-        terbilang(angka % 1000000)
-      );
-    } else if (angka < 1000000000000) {
-      return (
-        terbilang(Math.floor(angka / 1000000000)) +
-        " milyar " +
-        terbilang(angka % 1000000000)
-      );
-    } else if (angka < 1000000000000000) {
-      return (
-        terbilang(Math.floor(angka / 1000000000000)) +
-        " triliun " +
-        terbilang(angka % 1000000000000)
-      );
+  const angkaBilangan = ["", "ribu", "juta", "miliar", "triliun"];
+  function convertToWords(number) {
+    if (number < 20) {
+      return angkaTerbilang[number];
+    } else if (number < 100) {
+      const tens = Math.floor(number / 10);
+      const ones = number % 10;
+      return ones === 0
+        ? angkaTerbilang[tens + 18]
+        : angkaTerbilang[tens + 18] + " " + angkaTerbilang[ones];
+    } else if (number < 1000) {
+      const hundreds = Math.floor(number / 100);
+      const remainder = number % 100;
+      if (remainder === 0) {
+        return angkaTerbilang[hundreds] + " ratus";
+      } else {
+        return angkaTerbilang[hundreds] + " ratus " + convertToWords(remainder);
+      }
+    } else {
+      let result = "";
+      let part = 0;
+      while (number > 0) {
+        const partValue = number % 1000;
+        if (partValue > 0) {
+          result =
+            convertToWords(partValue) +
+            " " +
+            angkaBilangan[part] +
+            (result ? " " + result : "");
+        }
+        number = Math.floor(number / 1000);
+        part++;
+      }
+      return result.trim();
     }
   }
-
-  return angka === 0 ? "nol" : terbilang(angka);
+  // Convert integer part
+  const integerPart = Math.floor(angka);
+  const integerWords = convertToWords(integerPart);
+  // Convert decimal part (if exists)
+  const decimalPart = angka % 1;
+  let decimalWords = "";
+  if (decimalPart > 0) {
+    const decimalString = decimalPart.toFixed(2).split(".")[1];
+    decimalWords = " koma";
+    for (let i = 0; i < decimalString.length; i++) {
+      decimalWords += " " + angkaTerbilang[parseInt(decimalString.charAt(i))];
+    }
+  }
+  return integerWords + decimalWords + " rupiah";
 }
 export function numberToWordsEnglish(num) {
-  if (num === 0) return "zero";
-
-  const belowTwenty = [
-    "",
+  const ones = [
+    "zero",
     "one",
     "two",
     "three",
@@ -95,39 +115,61 @@ export function numberToWordsEnglish(num) {
     "eighty",
     "ninety",
   ];
+
   const thousands = ["", "thousand", "million", "billion", "trillion"];
 
-  function helper(n) {
-    if (n < 20) return belowTwenty[n];
-    else if (n < 100)
-      return (
-        tens[Math.floor(n / 10)] + (n % 10 ? " " + belowTwenty[n % 10] : "")
-      );
-    else if (n < 1000)
-      return (
-        belowTwenty[Math.floor(n / 100)] +
-        " hundred" +
-        (n % 100 ? " " + helper(n % 100) : "")
-      );
-    return "";
-  }
-
-  function toWords(n) {
-    if (n === 0) return "";
-    let index = 0;
-    let words = "";
-    while (n > 0) {
-      if (n % 1000 !== 0) {
-        words =
-          helper(n % 1000) +
-          (index ? " " + thousands[index] + " " : "") +
-          words;
-      }
-      n = Math.floor(n / 1000);
-      index++;
+  function convertToWords(number) {
+    if (number === 0) {
+      return ones[0];
     }
-    return words.trim();
-  }
+    let result = "";
+    let part = 0;
 
-  return toWords(num);
+    while (number > 0) {
+      if (number % 1000 !== 0) {
+        result =
+          convertChunk(number % 1000) +
+          " " +
+          thousands[part] +
+          (result ? " " + result : "");
+      }
+      number = Math.floor(number / 1000);
+      part++;
+    }
+
+    return result.trim();
+  }
+  function convertChunk(number) {
+    if (number === 0) {
+      return "";
+    }
+    if (number < 20) {
+      return ones[number];
+    } else if (number < 100) {
+      const tenPart = Math.floor(number / 10);
+      const onePart = number % 10;
+      return tens[tenPart] + (onePart !== 0 ? " " + ones[onePart] : "");
+    } else {
+      const hundredPart = Math.floor(number / 100);
+      const remainder = number % 100;
+      return (
+        ones[hundredPart] +
+        " hundred" +
+        (remainder !== 0 ? " " + convertChunk(remainder) : "")
+      );
+    }
+  }
+  const integerPart = Math.floor(num);
+  const integerWords = convertToWords(integerPart);
+  // Handle decimal part
+  const decimalPart = num % 1;
+  let decimalWords = "";
+  if (decimalPart > 0) {
+    const decimalString = decimalPart.toFixed(2).split(".")[1];
+    decimalWords = " point";
+    for (let i = 0; i < decimalString.length; i++) {
+      decimalWords += " " + ones[parseInt(decimalString.charAt(i))];
+    }
+  }
+  return integerWords + decimalWords + " dollars";
 }

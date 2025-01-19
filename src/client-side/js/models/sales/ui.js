@@ -12,7 +12,7 @@ export const uiTbody = (sales) => {
     const productQty = el.SalesProductQty;
     const customerSaleName = el.SalesCustomerName;
     const salesStatus = el.SalesStatus;
-    const rupiahProduct = formatRupiah2(el.ProductPriceJual);
+    const rupiahProduct = formatRupiah2(el.ProductPriceSell);
     const rupiahTotal = formatRupiah2(el.SalesProductRp);
     tr += `
     <tr>
@@ -264,7 +264,7 @@ export const uiPDF = (
   let tbody2 = ``;
   productGroup.forEach((el) => {
     const productName = el.ProductName;
-    const productPriceSell = el.ProductPriceJual;
+    const productPriceSell = el.ProductPriceSell;
     const salesQty = el.Sales_Qty;
     const salesTotal = el.Sales_Total;
     tbody2 += `

@@ -3,6 +3,7 @@ import { formatWaktuIndo } from "../../utils/formatTime.js";
 import { animateFade, reinitTooltip } from "../../utils/updateUi.js";
 import { getByDateSupplierId, getSumPriceDateSupplier } from "./services.js";
 import { uiTbody, uiTbodyEmpty } from "./ui.js";
+
 // get persediaan date and supplier
 $("div#persediaan-date-all-search")
   .off("change", "select#persediaan-date-supplier")

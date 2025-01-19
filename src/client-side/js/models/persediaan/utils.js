@@ -5,22 +5,13 @@ import {
   getByGroupSupplier,
   getGroupProduct,
   getPagination,
-  getRowPage1,
   getSumPrice,
   getSumPriceDate,
 } from "./services.js";
 import { handlePagination } from "./pagination.js";
-import {
-  uiBtnPageActive,
-  uiBtnPageActive1,
-  uiCard,
-  uiCardEmpty,
-  uiTbody,
-  uiTbodyEmpty,
-} from "./ui.js";
+import { uiBtnPageActive, uiTbody, uiTbodyEmpty } from "./ui.js";
 import { formatPrice, formatRupiah2 } from "../../utils/formatPrice.js";
 import { reinitTooltip } from "../../utils/updateUi.js";
-import { handlePagination1 } from "./pagination-1.js";
 import { uiQty } from "../../component/card/qty.js";
 import { list } from "../../component/list/index.js";
 
@@ -83,37 +74,6 @@ export async function get3(req) {
     console.error(response);
   }
 }
-// get pagination by group product and all
-export const getAll2 = async (data) => {
-  // 1. get total page and row
-  const req =
-    data !== undefined
-      ? {
-          searchVal: data.searchVal,
-          limitVal: data.limitVal,
-          offsetVal: data.offsetVal,
-        }
-      : {
-          searchVal: "",
-          limitVal: 3,
-          offsetVal: 1,
-        };
-  const { status, response } = await getRowPage1(req);
-  if (status) {
-    const { totalPage, totalRow } = response;
-    if (totalRow >= 1) {
-      await getPage1(req);
-      handlePagination1(totalPage);
-    }
-    if (totalRow < 1) {
-      uiCardEmpty(req.searchVal);
-    }
-  }
-  if (!status) {
-    console.error(response);
-  }
-};
-
 // get by group product
 export async function getPage1(req) {
   const stock = await getGroupProduct(req);

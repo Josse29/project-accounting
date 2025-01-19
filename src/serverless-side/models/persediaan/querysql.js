@@ -30,24 +30,25 @@ const queryGetPersediaan = (searchVal, limitVal, offsetStartVal) => {
                  Persediaan.PersediaanInfo,
                  Product.ProductId,
                  Product.ProductName,
-                 Product.ProductPriceBeli,
-                 Product.ProductPriceJual,
+                 Product.ProductPriceBuy,
+                 Product.ProductPriceSell,
                  Category.CategoryName,
-                 Supplier.SupplierName
+                 USer.UserFullname
                  FROM Persediaan
                  LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
                  LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
-                 LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId `;
+                 LEFT JOIN User ON Product.ProductSupplierId = User.UserId `;
   //  with searhing value
   if (searchVal !== "") {
     query += `WHERE Product.ProductName LIKE '%${searchVal}%' ESCAPE '!' OR
                       Category.CategoryName LIKE '%${searchVal}%' ESCAPE '!' OR
-                      Supplier.SupplierName LIKE '%${searchVal}%' ESCAPE '!' `;
+                      User.UserFullname LIKE '%${searchVal}%' ESCAPE '!' `;
   }
   // with order limit offset
-  query += `ORDER BY Persediaan.PersediaanDDMY DESC, Persediaan.PersediaanHMS DESC
-              LIMIT ${limitVal} 
-              OFFSET ${offsetStartVal}`;
+  query += `ORDER BY 
+              Persediaan.PersediaanDDMY DESC, Persediaan.PersediaanHMS DESC
+            LIMIT ${limitVal} 
+            OFFSET ${offsetStartVal}`;
   return query;
 };
 const queryGetPersediaanCategoryId = (valCategoryId) => {
@@ -60,13 +61,13 @@ const queryGetPersediaanCategoryId = (valCategoryId) => {
                  Persediaan.PersediaanInfo,
                  Product.ProductId,
                  Product.ProductName,
-                 Product.ProductPriceBeli,
+                 Product.ProductPriceBuy,
                  Category.CategoryName,
-                 Supplier.SupplierName
+                 User.Userfullname
                  FROM Persediaan
                  LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
                  LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
-                 LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId `;
+                 LEFT JOIN User ON Product.ProductSupplierId = User.UserId `;
   //  with valCategoryId
   query += `WHERE Category.CategoryId = ${valCategoryId} `;
   // with order
@@ -83,13 +84,13 @@ const queryGetPersediaanDate = (startDate, endDate) => {
                  Persediaan.PersediaanInfo,
                  Product.ProductId,
                  Product.ProductName,
-                 Product.ProductPriceBeli,
+                 Product.ProductPriceBuy,
                  Category.CategoryName,
-                 Supplier.SupplierName
+                 User.Userfullname
                  FROM Persediaan
                  LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
                  LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
-                 LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId `;
+                 LEFT JOIN User ON Product.ProductSupplierId = User.UserId `;
   //  with valstartDate - endDate
   query += `WHERE Persediaan.PersediaanDDMY BETWEEN  '${startDate}' AND '${endDate}' `;
   // with order
@@ -108,9 +109,9 @@ const queryGetPersediaanDateCategoryId = (
                  Persediaan.PersediaanHMS,
                  Persediaan.PersediaanProductId,
                  Product.ProductName,
-                 Product.ProductPriceBeli,
+                 Product.ProductPriceBuy,
                  Category.CategoryName,
-                 Supplier.SupplierName,
+                 User.Userfullname,
                  Persediaan.PersediaanRp,
                  Persediaan.PersediaanQty,
                  Persediaan.PersediaanInfo
@@ -118,7 +119,7 @@ const queryGetPersediaanDateCategoryId = (
   // with left join table 2
   query += `LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
               LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
-              LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId `;
+              LEFT JOIN User ON Product.ProductSupplierId = User.UserId `;
   // with between date and supplier id
   query += `WHERE Persediaan.PersediaanDDMY BETWEEN '${valStartDate}' AND '${valEndDate}' `;
   // with category id
@@ -144,16 +145,16 @@ const queryGetPersediaanDateProductId = (
                  Persediaan.PersediaanInfo, `;
   //  table product
   query += `Product.ProductName,
-              Product.ProductPriceBeli, `;
+              Product.ProductPriceBuy, `;
   // table category
   query += `Category.CategoryName, `;
   //table supplier
-  query += `Supplier.SupplierName `;
+  query += `User.Userfullname `;
   // from table and left join
   query += `FROM Persediaan
               LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
               LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
-              LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId `;
+              LEFT JOIN User ON Product.ProductSupplierId = User.UserId `;
   // with between date
   query += `WHERE Persediaan.PersediaanDDMY BETWEEN '${valStartDate}' AND '${valEndDate}'
               AND Persediaan.PersediaanProductId = ${valProductId} `;
@@ -173,9 +174,9 @@ const queryGetPersediaanDateSupplierId = (
                  Persediaan.PersediaanHMS,
                  Persediaan.PersediaanProductId,
                  Product.ProductName,
-                 Product.ProductPriceBeli,
+                 Product.ProductPriceBuy,
                  Category.CategoryName,
-                 Supplier.SupplierName,
+                 User.Userfullname,
                  Persediaan.PersediaanRp,
                  Persediaan.PersediaanQty,
                  Persediaan.PersediaanInfo
@@ -183,10 +184,10 @@ const queryGetPersediaanDateSupplierId = (
   // with left join table 2
   query += `LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
               LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
-              LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId `;
+              LEFT JOIN User ON Product.ProductSupplierId = User.UserId `;
   // with between date and supplier id
   query += `WHERE Persediaan.PersediaanDDMY BETWEEN '${valStartDate}' AND '${valEndDate}'
-                    AND Supplier.SupplierId = ${valSupplierId} `;
+                    AND User.UserId = ${valSupplierId} `;
   // with order persediaan date desc
   query += `ORDER BY Persediaan.PersediaanDDMY DESC,
               Persediaan.PersediaanHMS DESC`;
@@ -215,7 +216,7 @@ const queryGetPersediaanGroupProduct = (searchVal, limitVal, offsetVal) => {
                Persediaan.PersediaanProductId,
                Product.ProductName,
                Product.ProductImage,
-               Product.ProductPriceBeli AS PriceBuy,
+               Product.ProductPriceBuy AS PriceBuy,
                Product.ProductPriceJual AS PriceSell,
                SUM(Persediaan.PersediaanQty) AS TotalQty
                FROM Persediaan `;
@@ -238,7 +239,7 @@ const queryGetPersediaanGroupProduct = (searchVal, limitVal, offsetVal) => {
 const queryGetPersediaanGroupProduct1 = (startDateVal, endDateVal) => {
   let query = `SELECT
                    Product.ProductName,
-                   Product.ProductPriceBeli,
+                   Product.ProductPriceBuy,
                    SUM(Persediaan.PersediaanQty) AS TotalQty,
                    SUM(Persediaan.PersediaanRp) AS TotalRp
                    FROM Persediaan
@@ -254,18 +255,18 @@ const queryGetPersediaanGroupProduct1 = (startDateVal, endDateVal) => {
 };
 const queryGetPersediaanGroupSupplier = (startDateVal, endDateVal) => {
   let query = `SELECT
-               Supplier.SupplierName,
+               User.Userfullname,
                SUM(Persediaan.PersediaanRp) AS TotalRp
                FROM Persediaan
                LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
-               LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId 
-               WHERE Supplier.SupplierId IS NOT NULL `;
+               LEFT JOIN User ON Product.ProductSupplierId = User.UserId 
+               WHERE User.UserId IS NOT NULL `;
   if (startDateVal !== "" && endDateVal !== "") {
     query += `AND Persediaan.PersediaanDDMY BETWEEN '${startDateVal}' AND '${endDateVal}' `;
   }
   // group
-  query += `GROUP BY Supplier.SupplierId 
-            ORDER BY Supplier.SupplierName ASC `;
+  query += `GROUP BY User.UserId 
+            ORDER BY User.Userfullname ASC `;
   return query;
 };
 const queryGetPersediaanPagination = (searchVal) => {
@@ -278,8 +279,8 @@ const queryGetPersediaanPagination = (searchVal) => {
   if (searchVal !== "") {
     //  with searhing value
     query += `WHERE Product.ProductName LIKE '%${searchVal}%' ESCAPE '!' OR
-                      Category.CategoryName LIKE '%${searchVal}%' ESCAPE '!' OR
-                      USer.UserFullname LIKE '%${searchVal}%' ESCAPE '!'
+                    Category.CategoryName LIKE '%${searchVal}%' ESCAPE '!' OR
+                    USer.UserFullname LIKE '%${searchVal}%' ESCAPE '!'
    `;
   }
   return query;
@@ -322,13 +323,13 @@ const queryGetPersediaanProductId1 = (valPersediaanProductId) => {
                  Persediaan.PersediaanInfo,
                  Product.ProductId,
                  Product.ProductName,
-                 Product.ProductPriceBeli,
+                 Product.ProductPriceBuy,
                  Category.CategoryName,
-                 Supplier.SupplierName
+                 User.Userfullname
                  FROM Persediaan
                  LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
                  LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
-                 LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId `;
+                 LEFT JOIN User ON Product.ProductSupplierId = User.UserId `;
   //  with valPersediaanProductId
   query += `WHERE Persediaan.PersediaanProductId = ${valPersediaanProductId} `;
   // with order
@@ -357,14 +358,14 @@ const queryGetPersediaanReport = (startDateVal, endDateVal) => {
                Persediaan.PersediaanHMS AS Waktu, 
                Product.ProductName AS NamaProduk,
                Category.CategoryName AS Kategori, 
-               Product.ProductPriceBeli AS HargaBeli,
-               Supplier.SupplierName AS Supplier,  
+               Product.ProductPriceBuy AS HargaBeli,
+               User.Userfullname AS Supplier,  
                Persediaan.PersediaanQty AS TotalQty,
                Persediaan.PersediaanRp AS TotalRupiah
                FROM Persediaan
                LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
                LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
-               LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId `;
+               LEFT JOIN User ON Product.ProductSupplierId = User.UserId `;
   // with date
   if (startDateVal !== "" && endDateVal !== "") {
     query += `WHERE Persediaan.PersediaanDDMY BETWEEN '${startDateVal}' AND '${endDateVal}' `;
@@ -379,7 +380,7 @@ const queryGetPersediaanReport1 = (startDateVal, endDateVal) => {
                Persediaan.PersediaanDDMY,
                Persediaan.PersediaanHMS, 
                Product.ProductName, 
-               Product.ProductPriceBeli AS HargaBeli,
+               Product.ProductPriceBuy AS HargaBeli,
                Persediaan.PersediaanQty,
                Persediaan.PersediaanRp
                FROM Persediaan
@@ -452,9 +453,9 @@ const queryGetPersediaanSumPriceSupplierId = (supplierIdVal) => {
                  SUM(Persediaan.PersediaanRp) AS TotalRp
                  FROM Persediaan
                  LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
-                 LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId
-                 WHERE Supplier.SupplierId IS NOT NULL 
-                       AND Supplier.SupplierId = ${supplierIdVal}`;
+                 LEFT JOIN User ON Product.ProductSupplierId = User.UserId
+                 WHERE User.UserId IS NOT NULL 
+                       AND User.UserId = ${supplierIdVal}`;
   return query;
 };
 const queryGetPersediaanSumQty = (valPersediaanProductId) => {
@@ -491,15 +492,15 @@ const queryGetPersediaanSupplierId = (valSupplierId) => {
                  Persediaan.PersediaanInfo,
                  Product.ProductId,
                  Product.ProductName,
-                 Product.ProductPriceBeli,
+                 Product.ProductPriceBuy,
                  Category.CategoryName,
-                 Supplier.SupplierName
+                 User.Userfullname
                  FROM Persediaan
                  LEFT JOIN Product ON Persediaan.PersediaanProductId = Product.ProductId
                  LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
-                 LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId `;
+                 LEFT JOIN User ON Product.ProductSupplierId = User.UserId `;
   //  with supplier id
-  query += `WHERE Supplier.SupplierId = ${valSupplierId} `;
+  query += `WHERE User.UserId = ${valSupplierId} `;
   // with order
   query += `ORDER BY Persediaan.PersediaanDDMY DESC, Persediaan.PersediaanHMS DESC `;
   return query;

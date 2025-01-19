@@ -8,6 +8,7 @@ import {
   register,
   updateUser,
 } from "../../../../serverless-side/models/user/controller.js";
+
 // 1. endpoint : api/user/:limit/:offset
 // method : GET
 // payload : 1.searchVal, 2.limitVal, 3.offsetVal,

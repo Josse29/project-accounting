@@ -139,11 +139,27 @@ export const uiBtnPage = (totalPage) => {
   $("#product-number-page").html(btn);
   $("#product-pagination").removeClass("d-none");
 };
+export const uiBtnPage1 = (totalPage) => {
+  let btn = ``;
+  for (let i = 1; i <= totalPage; i++) {
+    const activePage = i === 1 ? "product-ref-persediaan-page-active" : "";
+    btn += `<button 
+              type="button" 
+              class="btn fs-4 product-ref-persediaan-page border border-2 ${activePage}">${i}</button>`;
+  }
+  $("div#product-ref-persediaan-page-number").html(btn);
+  $("div#product-refpersediaan-pagination").removeClass("d-none");
+};
 // Function to update active page button
 export const uiBtnPageActive = (numberPage) => {
   const btnPage = $("button.product-btn-page");
   btnPage.removeClass("product-active-page");
   btnPage.eq(numberPage - 1).addClass("product-active-page");
+};
+export const uiBtnPageActive1 = (pageNumber) => {
+  const btnPage = $("button.product-ref-persediaan-page");
+  btnPage.removeClass("product-ref-persediaan-page-active");
+  btnPage.eq(pageNumber - 1).addClass("product-ref-persediaan-page-active");
 };
 // make alert success after action crud
 export const uiAlertSuccess = (res) => {
@@ -255,4 +271,116 @@ export const uiPDF = (response) => {
     </div>
   </div>`;
   return html2;
+};
+export const uiCard = (response) => {
+  let card = ``;
+  response.forEach((rows) => {
+    const productId = parseInt(rows.ProductId);
+    const productName = rows.ProductName;
+    const priceBuy = formatRupiah2(parseFloat(rows.PriceBuy));
+    const priceSell = formatRupiah2(parseFloat(rows.PriceSell));
+    const productStock = parseInt(rows.TotalQty);
+    let imgSrc = ``;
+    if (rows.ProductImage !== "null") {
+      imgSrc = rows.ProductImage;
+    } else {
+      imgSrc = "./../images/no-img.jpg";
+    }
+    const productImg = `
+    <img src="${imgSrc}" class="card-img-top" alt="..." />`;
+    card += `
+    <div class="card w-full shadow-sm">
+      ${productImg}
+      <div
+        class="card-body"
+        data-productid="${productId}"
+        data-productname="${productName}"
+        data-productstock="${productStock}"
+        data-productpricesell="${priceSell}"
+        data-productpricebuy="${priceBuy}"
+      >
+        <h4 class="fw-bold text-truncate" id="order-productname">
+          ${productName}
+        </h4>
+        <h4 class="text-truncate" id="order-productprice">${priceSell}</h4>
+        <p class="fs-5">Stock : ${productStock}</p>
+        <div class="mt-3 d-flex justify-content-between align-items-center">
+          <div id="order-create-qty"></div>
+          <div>
+            <button id="order-create-qty-plus" class="btn btn-success">
+              <i class="fa-solid fa-plus" style="font-size: 18px"></i>
+            </button>
+            <button class="btn btn-danger" id="order-create-qty-minus">
+              <i class="fa-solid fa-minus" style="font-size: 18px"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  });
+  const parentCard = `<div class="container-by-me">${card}</div>`;
+  $("div#product-refpersediaan-read").html(parentCard);
+};
+export const uiCardLoad = () => {
+  const div = `
+  <div class="container-by-me">
+    <div class="card">
+      <div class="animate-load" style="width: 100%; height: 200px"></div>
+      <div class="card-body">
+        <div class="mb-4">
+          <div class="animate-load mb-2 w-75" style="height: 30px"></div>
+          <div class="animate-load w-50 mb-2" style="height: 30px"></div>
+          <div class="animate-load w-25" style="height: 25px"></div>
+        </div>
+        <div class="d-flex justify-content-end gap-2">
+          <div class="animate-load" style="height: 35px; width: 35px"></div>
+          <div class="animate-load" style="height: 35px; width: 35px"></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="animate-load" style="width: 100%; height: 200px"></div>
+      <div class="card-body">
+        <div class="mb-4">
+          <div class="animate-load mb-2 w-75" style="height: 30px"></div>
+          <div class="animate-load w-50 mb-2" style="height: 30px"></div>
+          <div class="animate-load w-25" style="height: 25px"></div>
+        </div>
+        <div class="d-flex justify-content-end gap-2">
+          <div class="animate-load" style="height: 35px; width: 35px"></div>
+          <div class="animate-load" style="height: 35px; width: 35px"></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="animate-load" style="width: 100%; height: 200px"></div>
+      <div class="card-body">
+        <div class="mb-4">
+          <div class="animate-load mb-2 w-75" style="height: 30px"></div>
+          <div class="animate-load w-50 mb-2" style="height: 30px"></div>
+          <div class="animate-load w-25" style="height: 25px"></div>
+        </div>
+        <div class="d-flex justify-content-end gap-2">
+          <div class="animate-load" style="height: 35px; width: 35px"></div>
+          <div class="animate-load" style="height: 35px; width: 35px"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  `;
+  $("div#product-refpersediaan-read").html(div);
+  $("div#product-refpersediaan-pagination").addClass("d-none");
+};
+export const uiCardEmpty = (searchVal) => {
+  let search = `stock empty...`;
+  if (searchVal !== "") {
+    search = `${searchVal} - not found....`;
+  }
+  const emptyP = `
+  <div class="d-flex justify-content-center align-items-center" style="height:400px;">
+      <p class="d-block fs-4 fst-italic text-capitalize fw-bold">${search}</p>
+  </div>
+  `;
+  $("div#product-refpersediaan-read").html(emptyP);
+  $("div#product-refpersediaan-pagination").addClass("d-none");
 };

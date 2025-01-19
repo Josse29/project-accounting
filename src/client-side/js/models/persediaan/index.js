@@ -7,19 +7,22 @@ import "./delete.js";
 // import "./export-pdf.js";
 // import "./export-csv.js";
 
-// import "./read-by-id.js";
+import "./read-by-id.js";
 
 // // by category
-// import "./read-by-categoryid.js";
+import "./read-by-categoryid.js";
 // import "./read-by-date-category.js";
+
 // // by date
 // import "./read-by-date.js";
+
 // // by product
-// import "./read-by-productid.js";
+import "./read-by-productid.js";
 // import "./read-by-date-product.js";
+
 // // by supplier
+import "./read-by-supplierid.js";
 // import "./read-by-date-supplier.js";
-// import "./read-by-supplierid.js";
 
 // // by group-product
 // import "./read-by-group-product.js";

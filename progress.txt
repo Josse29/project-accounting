@@ -73,3 +73,10 @@
 12/23/2024
 - refactoring controller hufft, and fixing ui huffttt
 - 
+
+18/01/2025
+- refactoring supplier change to table user
+19/01/2025
+- refactoring persediaan to product hufft 
+- refactoring list product be better
+- accounting advance....

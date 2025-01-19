@@ -1,10 +1,10 @@
 import { formatPrice } from "../../utils/formatPrice.js";
 import { animateFade, reinitTooltip } from "../../utils/updateUi.js";
-import { listSupplierRefPersediaanRead } from "../supplier/list.js";
+import { listUserRefPersediaanRead } from "../users/list.js";
 import { getBySupplierId, getSumPriceSupplierId } from "./services.js";
 import { uiTbody, uiTbodyEmpty } from "./ui.js";
 
-await listSupplierRefPersediaanRead();
+await listUserRefPersediaanRead();
 $("select#persediaan-refsupplier-search")
   .off("change")
   .on("change", async function () {

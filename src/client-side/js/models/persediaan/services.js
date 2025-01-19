@@ -492,6 +492,7 @@ const getByProductId1 = async (productId) => {
     return { status: false, response: error };
   }
 };
+
 export {
   addStock,
   deleteAll,

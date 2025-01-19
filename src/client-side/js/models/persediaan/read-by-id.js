@@ -11,6 +11,8 @@ $("tbody#persediaan-table")
     const persediaaanRp = persediaan.persediaanrp;
     const productName = persediaan.productname;
     const productPriceBuy = persediaan.productpricebuy;
+    const categoryName = persediaan.categoryname;
+    const supplierName = persediaan.suppliername;
     // time
     $("#persediaan-detail-productname").text(productName);
     $("#persediaan-detail-date").text(persediaanYMD);
@@ -26,7 +28,10 @@ $("tbody#persediaan-table")
     $("#persediaan-detail-productprice").text(productPriceBuy);
     // persediaan rp
     $("#persediaan-detail-rp").text(persediaaanRp);
+    // categoryname
+    $("#persediaan-detail-category").text(categoryName);
+    // suppliername
+    $("#persediaan-detail-supplier").text(supplierName);
     // information
-    const persediaanInfoTxt = persediaanInfo !== "" ? persediaanInfo : "-";
-    $("#persediaan-detail-info").text(persediaanInfoTxt);
+    $("#persediaan-detail-info").text(persediaanInfo);
   });

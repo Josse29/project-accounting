@@ -7,7 +7,7 @@ import { getProductAll } from "../products/utils.js";
 import { getAll } from "../persediaan/utils.js";
 import { uiInit } from "../persediaan/ui.js";
 
-// get pagination
+// get all and pagination
 export const executeRead = async (data) => {
   // get all value
   const req =

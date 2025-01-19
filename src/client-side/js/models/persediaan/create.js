@@ -1,7 +1,7 @@
 import { getTimeNow } from "../../utils/formatTime.js";
 import { uiBlankValue, uiAlertFailCreate, uiAlertSuccess } from "./ui.js";
 import { listProductRefPersediaanCreate } from "../products/list.js";
-import { addStock, getSumQty } from "./services.js";
+import { addStock } from "./services.js";
 import { getAll } from "./utils.js";
 
 // 1.init-ui-modal-create
@@ -39,21 +39,13 @@ $("select#persediaan-refproduct-search-name")
   .on("change", async function () {
     const selectedOption = $(this).find("option:selected");
     const productId = parseInt($(this).val());
-    const productName = selectedOption.text();
+    const productName = selectedOption.data("productname");
     const pricebuy = selectedOption.data("pricebuy");
-    const { status, response } = await getSumQty(productId);
-    if (status) {
-      $("p#persediaan-create-product-qty").text(response);
-      $("input#persediaan-refproduct-create-id").val(productId);
-      $("#persediaan-refproduct-create-name").val(productName);
-      $("input#persediaan-refproduct-create-rp").val(pricebuy);
-      $("div#persediaan-create-stock").removeClass("d-none");
-    }
-    if (!status) {
-      console.error(response);
-    }
+    $("input#persediaan-refproduct-create-id").val(productId);
+    $("#persediaan-refproduct-create-name").val(productName);
+    $("input#persediaan-refproduct-create-rp").val(pricebuy);
   });
-// req-to-db
+// 4.req-to-db
 $("#persediaan-create-submit")
   .off("click")
   .on("click", async () => {
@@ -79,8 +71,6 @@ $("#persediaan-create-submit")
       valPersediaanTotalRp,
       valPersediaanInfo,
     };
-    console.log(req);
-    return false;
     const { status, response } = await addStock(req);
     if (status) {
       await getAll();

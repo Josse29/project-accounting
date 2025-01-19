@@ -79,6 +79,26 @@ const listSupplier1 = async (selectedId) => {
     console.error(response);
   }
 };
+const listSupplier2 = async () => {
+  const { status, response } = await getListSupplier();
+  if (status) {
+    const existed1 = response.length >= 1;
+    let option = `<option selected disabled>Choose One Of Suppliers</option>`;
+    if (existed1) {
+      response.forEach((el) => {
+        option += `<option value="${el.UserId}" class="text-capitalize p-0">${el.UserFullname}</option>`;
+      });
+    }
+    if (!existed1) {
+      option += `<option disabled class="fst-italic text-center">Supplier Empty...</option>`;
+    }
+    return option;
+  }
+  if (!status) {
+    console.error(response);
+  }
+};
+
 export const listUserRefSalesCreate = async () => {
   const sales = await listSales();
   $("select#order-create-usersalesid").html(sales);
@@ -100,6 +120,10 @@ export const listUserRefSalesReadDate = async () => {
 export const listUserRefProductCreate = async () => {
   const supplier = await listSupplier();
   $("select#product-refsupplier-create").html(supplier);
+};
+export const listUserRefPersediaanRead = async () => {
+  const supplier = await listSupplier2();
+  $("select#persediaan-refsupplier-search").html(supplier);
 };
 export const listUserRefProductUpdate = async (selectedId) => {
   const supplier = await listSupplier1(selectedId);

@@ -1,5 +1,5 @@
 // 1.CREATE
-const queryinsertProducts = (
+const queryInsertProduct = (
   productName,
   productPriceBuy,
   productPriceSell,
@@ -18,7 +18,7 @@ const queryinsertProducts = (
   return query;
 };
 // 2.READ
-const queryGetProducts = (productSearch, productLimit, productOffset) => {
+const queryGetProduct = (productSearch, productLimit, productOffset) => {
   let query = `SELECT
                Product.ProductId,
                Product.ProductName,
@@ -50,27 +50,84 @@ const queryGetProducts = (productSearch, productLimit, productOffset) => {
             OFFSET ${productOffset}`;
   return query;
 };
-const queryGetListProduct = (productSearch) => {
+const queryGetProductRefPersediaan = (searchVal, limitVal, offsetVal) => {
+  let query = `SELECT
+               Product.ProductId,
+               Product.ProductName,
+               Product.ProductImage,
+               Product.ProductPriceBuy AS PriceBuy,
+               Product.ProductPriceSell AS PriceSell,
+               SUM(Persediaan.PersediaanQty) AS TotalQty
+               FROM Product `;
+  // left join
+  query += `LEFT JOIN Persediaan ON Product.ProductId = Persediaan.PersediaanProductId `;
+  // with search AND PRODUCT IS STILL EXIST
+  if (searchVal !== "") {
+    query += `WHERE Product.ProductName LIKE '%${searchVal}%' ESCAPE '!' `;
+  }
+  // with group,HAVING
+  query += `GROUP BY Persediaan.PersediaanProductId 
+            HAVING TotalQty >= 1 `;
+  // order, limit, offset
+  query += `ORDER BY Product.ProductName ASC 
+            LIMIT ${limitVal}
+            OFFSET ${offsetVal}`;
+  return query;
+};
+const queryGetProductListRefPersediaan = () => {
   let query = `SELECT 
                Product.ProductId,
                Product.ProductName,
                Product.ProductPriceBuy,
-               Product.ProductPriceSell
-               FROM Product
-               LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
-               LEFT JOIN User ON Product.ProductSupplierId = User.UserId `;
-  //  with search value
-  if (productSearch !== "") {
-    query += `WHERE Product.ProductName LIKE '%${productSearch}%' ESCAPE '!' OR
-                      Product.ProductPriceBuy LIKE '%${productSearch}%' ESCAPE '!' OR
-                      Product.ProductInfo LIKE '%${productSearch}%' ESCAPE '!' OR
-                      Category.CategoryName LIKE '%${productSearch}%' ESCAPE '!' OR 
-                      User.UserFullname LIKE '%${productSearch}%' ESCAPE '!' `;
-  }
-  query += `ORDER BY Product.ProductName ASC `;
+               Product.ProductPriceSell,
+               COALESCE(SUM(Persediaan.PersediaanQty), 0) AS TotalPersediaanQty,
+               COALESCE(SUM(Persediaan.PersediaanRp), 0) AS TotalPersediaanRp
+               FROM Product `;
+  //  left join with persediaan table
+  query += `LEFT JOIN 
+            Persediaan ON Product.ProductId = Persediaan.PersediaanProductId `;
+  // group by
+  query += `GROUP BY 
+            Product.ProductId `;
+  //  with ascending ordername
+  query += `ORDER BY 
+            Product.ProductName ASC `;
   return query;
 };
-const queryTotalRowProducts = (productSearch) => {
+const queryGetProductListRefSale = () => {
+  let query = `SELECT 
+               Product.ProductId,
+               Product.ProductName,
+               Product.ProductPriceBuy,
+               Product.ProductPriceSell,
+               COALESCE(SUM(Sales.SalesProductQty), 0) AS TotalSalesProductQty,
+               COALESCE(SUM(Sales.SalesProductRp), 0) AS TotalSalesProductRp
+               FROM Product `;
+  //  left join with persediaan table
+  query += `LEFT JOIN 
+            Sales ON Product.ProductId = Sales.SalesProductId `;
+  // group by
+  query += `GROUP BY 
+            Product.ProductId `;
+  //  with ascending ordername
+  query += `ORDER BY 
+            Product.ProductName ASC `;
+  return query;
+};
+const queryGetProductTotalRow1 = (searchVal) => {
+  let query = `SELECT 
+               COUNT(*) AS TOTAL_ROW `;
+  //  with subquery
+  query += `FROM (
+            SELECT Product.ProductId
+            FROM Product
+            LEFT JOIN Persediaan ON Product.ProductId = Persediaan.PersediaanProductId
+            WHERE Product.ProductName LIKE '%${searchVal}%' ESCAPE '!'
+            GROUP BY Product.ProductId
+            HAVING SUM(Persediaan.PersediaanQty) > 0) AS Subquery`;
+  return query;
+};
+const queryGetProductTotalRow = (productSearch) => {
   let query = `SELECT COUNT(*) 
                  AS TOTAL_ROW
                  FROM Product
@@ -142,17 +199,20 @@ const queryUpdateProduct = (
 // 4. DELETE
 const queryDeleteProductId = (id) => {
   return `DELETE 
-            FROM Product 
-            WHERE ProductId = ${id} `;
+          FROM Product 
+          WHERE ProductId = ${id} `;
 };
 
 export {
   queryDeleteProductId,
-  queryGetListProduct,
+  queryGetProduct,
   queryGetProductCSV,
+  queryGetProductListRefPersediaan,
+  queryGetProductListRefSale,
   queryGetProductPDF,
-  queryGetProducts,
-  queryTotalRowProducts,
+  queryGetProductRefPersediaan,
+  queryGetProductTotalRow,
+  queryGetProductTotalRow1,
   queryUpdateProduct,
-  queryinsertProducts,
+  queryInsertProduct,
 };

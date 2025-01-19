@@ -142,7 +142,7 @@
               </select>
               <!-- for supplier -->
               <select
-                class="form-select w-auto py-2"
+                class="form-select w-auto py-2 text-capitalize"
                 id="persediaan-refsupplier-search"
               >
                 <option>Choose One Of Suppliers</option>
@@ -586,14 +586,6 @@
                     <option>Choose One Of Products</option>
                   </select>
                 </div>
-                <!-- stock -->
-                <div
-                  id="persediaan-create-stock"
-                  class="d-flex justify-content-between"
-                >
-                  <p class="fs-5">Stock :</p>
-                  <p class="fs-5 me-4" id="persediaan-create-product-qty">1</p>
-                </div>
                 <!-- QTY -->
                 <div
                   class="mb-3 d-flex justify-content-between align-items-center w-100"
@@ -716,9 +708,29 @@
                   <div class="fs-4">Price</div>
                   <div id="persediaan-detail-rp" class="fs-5 ms-3"></div>
                 </div>
+                <!-- Supplier name -->
+                <div class="mb-3">
+                  <p class="fs-4 mb-1">Supplier Name</p>
+                  <p
+                    id="persediaan-detail-supplier"
+                    class="fs-5 ms-3 mb-0 text-capitalize"
+                  >
+                    suppliername
+                  </p>
+                </div>
+                <!-- Category name -->
+                <div class="mb-3">
+                  <p class="fs-4 mb-1">Category Name</p>
+                  <p
+                    id="persediaan-detail-category"
+                    class="fs-5 ms-3 mb-0 text-capitalize"
+                  >
+                    category
+                  </p>
+                </div>
                 <!-- info product -->
                 <div class="mb-3">
-                  <p class="fs-4 mb-1">Keterangan</p>
+                  <p class="fs-4 mb-1">Information</p>
                   <p id="persediaan-detail-info" class="fs-5 ms-3 mb-0"></p>
                 </div>
               </div>
@@ -1310,7 +1322,7 @@
                     >Category Name :</label
                   >
                   <select
-                    class="form-control"
+                    class="form-control text-capitalize"
                     id="product-refcategory-update"
                   ></select>
                 </div>
@@ -1320,12 +1332,9 @@
                     >Supplier Name :</label
                   >
                   <select
-                    class="form-control"
-                    name=""
+                    class="form-control text-capitalize"
                     id="product-refsupplier-update"
-                  >
-                    <option value=""></option>
-                  </select>
+                  ></select>
                 </div>
                 <!-- image product -->
                 <div class="mb-3">

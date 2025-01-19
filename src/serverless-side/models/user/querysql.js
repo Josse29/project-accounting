@@ -62,7 +62,7 @@ const queryGetSales = () => {
                UserFullname
                FROM User `;
   //  ONlY sales
-  query += `WHERE UserPosition = 'sales' `;
+  query += `WHERE UserPosition = 'sale' `;
   // sort by fullname ascending
   query += `ORDER BY UserFullname ASC`;
   return query;
