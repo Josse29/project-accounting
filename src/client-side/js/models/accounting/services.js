@@ -1,5 +1,6 @@
 import {
   createAccounting,
+  createAccounting1,
   getAccounting,
   getAccounting1,
   getAccountingDate,
@@ -11,7 +12,7 @@ import {
 // method : POST
 // payload : 1.accountingYMDVal, 2.accountingHMSVal, 3.accountingRefVal, 4.accountingNameVal, 5.accountingPositionVal, 6.accountingRpVal, 7.accountingInfoVal
 //  return : message has been created
-export const addAccounting = async (req) => {
+const addAccounting = async (req) => {
   try {
     const payLoad = {
       accountingYMDVal: req.formattedDDMY,
@@ -32,7 +33,7 @@ export const addAccounting = async (req) => {
 // method : GET
 // payLoad : 1.searchVal, 2.limitVal
 // return : totalPage, totalRow
-export const getPagination = async (req) => {
+const getPagination = async (req) => {
   try {
     const payLoad = {
       searchVal: req.searchVal,
@@ -48,7 +49,7 @@ export const getPagination = async (req) => {
 // method : GET
 // payLoad : 1.searchVal, 2.limitVal, 3.offsetVal
 // return : general entries
-export const getGeneralEntry = async (req) => {
+const getGeneralEntry = async (req) => {
   try {
     const payLoad = {
       searchVal: req.searchVal,
@@ -65,7 +66,7 @@ export const getGeneralEntry = async (req) => {
 // method : GET
 // payLoad :
 // return : balance sheet
-export const getBalanceSheet = async () => {
+const getBalanceSheet = async () => {
   try {
     const accounting = await getAccounting1();
     return { status: true, response: accounting };
@@ -77,7 +78,7 @@ export const getBalanceSheet = async () => {
 // method : GET
 // payLoad : ""
 // return : summary credit
-export const getSumDebtCredit = async (req) => {
+const getSumDebtCredit = async (req) => {
   try {
     const payLoad = {
       startDateVal: req.startDateVal,
@@ -93,7 +94,7 @@ export const getSumDebtCredit = async (req) => {
 // method : GET
 // payLoad : startDate, endDate,
 // return : accounting by date
-export const getByDate = async (req) => {
+const getByDate = async (req) => {
   try {
     const payLoad = {
       startDateVal: req.startDateVal,
@@ -104,4 +105,34 @@ export const getByDate = async (req) => {
   } catch (error) {
     return { status: false, response: error };
   }
+};
+// 7. endpoint = api/accounting-1/
+// method : POST
+// payload : 1.accountingYMDVal, 2.accountingHMSVal, 3.accountingMethodVal, 4.accountingRefInvestorVal, 5.accountingPriceVal, 6.accountingImgVal, 7.accountingInfoVal
+//  return : message has been created
+const addAccounting1 = async (req) => {
+  try {
+    const payLoad = {
+      accountingYMDVal: req.accountingDate,
+      accountingHMSVal: req.accountingTime,
+      accountingMethodVal: req.accountingMethod,
+      accountingRefInvestorVal: req.accountingRefInvestor,
+      accountingPriceVal: req.accountingPrice,
+      accountingImgVal: req.accountingImg,
+      accountingInfoVal: req.accountingInfo,
+    };
+    const response = await createAccounting1(payLoad);
+    return { status: true, response };
+  } catch (error) {
+    return { status: false, response: error };
+  }
+};
+export {
+  addAccounting,
+  addAccounting1,
+  getByDate,
+  getGeneralEntry,
+  getBalanceSheet,
+  getSumDebtCredit,
+  getPagination,
 };

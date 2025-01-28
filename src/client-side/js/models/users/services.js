@@ -2,7 +2,8 @@ import {
   deleteUserId,
   getUser,
   getUserCustomer,
-  getUserPageRow,
+  getUserInvestor,
+  getUserPagination,
   getUserSale,
   getUserSupplier,
   register,
@@ -36,7 +37,7 @@ const fetchRowPage = async (req) => {
       searchVal: req.searchVal,
       limitVal: req.limitVal,
     };
-    const response = await getUserPageRow(req1);
+    const response = await getUserPagination(req1);
     return { status: true, response };
   } catch (error) {
     return { status: false, response: error };
@@ -134,6 +135,18 @@ const getListSupplier = async () => {
     return { status: false, response: error };
   }
 };
+// 8.endpoint : api/user/investor
+// method : GET
+// payload :
+// return : user only investor
+const getListInvestor = async () => {
+  try {
+    const supplier = await getUserInvestor();
+    return { status: true, response: supplier };
+  } catch (error) {
+    return { status: false, response: error };
+  }
+};
 
 export {
   addUser,
@@ -141,6 +154,7 @@ export {
   fetchLimitOffset,
   fetchRowPage,
   getListCustomer,
+  getListInvestor,
   getListSales,
   getListSupplier,
   update,

@@ -1,4 +1,9 @@
-import { getListCustomer, getListSales, getListSupplier } from "./services.js";
+import {
+  getListCustomer,
+  getListInvestor,
+  getListSales,
+  getListSupplier,
+} from "./services.js";
 
 const listSales = async () => {
   // user sales
@@ -98,6 +103,26 @@ const listSupplier2 = async () => {
     console.error(response);
   }
 };
+const listInvestor = async () => {
+  const { status, response } = await getListInvestor();
+  if (status) {
+    const existed1 = response.length >= 1;
+    let option = `<option selected disabled>Choose One Of Investor</option>`;
+    if (existed1) {
+      response.forEach((el) => {
+        option += `<option value="${el.UserId}" class="text-capitalize p-0">${el.UserFullname}</option>`;
+      });
+    }
+    if (!existed1) {
+      option += `<option disabled class="fst-italic text-center">Investor Empty...</option>`;
+    }
+    return option;
+  }
+  if (!status) {
+    console.error(response);
+    throw new Error(response);
+  }
+};
 
 export const listUserRefSalesCreate = async () => {
   const sales = await listSales();
@@ -128,4 +153,8 @@ export const listUserRefPersediaanRead = async () => {
 export const listUserRefProductUpdate = async (selectedId) => {
   const supplier = await listSupplier1(selectedId);
   $("select#product-refsupplier-update").html(supplier);
+};
+export const listUserRefAccountingCreate = async () => {
+  const investor = await listInvestor();
+  $("div#cashin_other_value select#investor").html(investor);
 };

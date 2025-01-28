@@ -12,6 +12,7 @@ import {
   querySumCash1,
   queryUpdateCash,
 } from "./querysql.js";
+
 // create
 export const createCash = async (req) => {
   const { CashYYYYMMDDVal, CashHMSVal, CashNameVal, CashRpVal, CashInfoVal } =

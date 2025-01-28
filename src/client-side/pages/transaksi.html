@@ -221,7 +221,7 @@
                 class="btn d-flex gap-2 align-items-center text-white cash-in"
                 style="background-color: #119687"
                 data-bs-toggle="modal"
-                data-bs-target="#cashInModal"
+                data-bs-target="#accountingCashInModal"
               >
                 <i class="fa-solid fa-square-plus fs-5"></i>
                 <span class="">Cash-in</span>
@@ -244,7 +244,7 @@
                 data-bs-target="#entrySales"
               >
                 <i class="fa-solid fa-money-check-dollar fs-5"></i>
-                <span>Sales</span>
+                <span>Receivable</span>
               </button>
               <!-- entry - purchase -->
               <button
@@ -252,8 +252,8 @@
                 data-bs-toggle="modal"
                 data-bs-target="#entryPurchase"
               >
-                <i class="fa-solid fa-cart-shopping fs-5"></i>
-                <span>Purchase</span>
+                <i class="fa-solid fa-receipt fs-5"></i>
+                <span>Payable</span>
               </button>
             </div>
             <!-- create, convert ,reset -->
@@ -660,13 +660,7 @@
           </div>
         </div>
         <!-- Modal Cash in -->
-        <div
-          class="modal fade"
-          id="cashInModal"
-          tabindex="-1"
-          aria-labelledby="cashInModalLabel"
-          aria-hidden="true"
-        >
+        <div class="modal fade" id="accountingCashInModal">
           <div
             class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
           >
@@ -675,54 +669,104 @@
                 class="modal-header text-white"
                 style="background-color: #119687"
               >
-                <h1 class="modal-title fs-2" id="cashInModal">Cash in</h1>
+                <h1 class="modal-title fs-2">Cash in</h1>
               </div>
               <div class="modal-body">
                 <!-- date -->
                 <div class="mb-3">
-                  <label for="" class="form-label fs-4">Input Date :</label>
-                  <input type="date" class="form-control" id="" />
-                </div>
-                <!-- transaction -->
-                <div class="mb-3">
-                  <label class="form-label fs-4">Metode</label>
-                  <select
-                    class="form-select"
-                    aria-label="Default select example"
+                  <label for="cashin_date" class="form-label fs-4"
+                    >Input Date :</label
                   >
-                    <option selected>Open this select menu</option>
-                    <option>Receivable</option>
-                    <option>Payable</option>
-                    <option>Equity</option>
-                    <option>Sales</option>
+                  <input type="date" class="form-control" id="cashin_date" />
+                </div>
+                <!-- time -->
+                <div class="mb-3">
+                  <label for="cashin_time" class="form-label fs-4"
+                    >Input Time :</label
+                  >
+                  <input type="time" class="form-control" id="cashin_time" />
+                </div>
+                <!-- methode -->
+                <div class="mb-3">
+                  <label class="form-label fs-4" for="cashin_method"
+                    >Method</label
+                  >
+                  <select class="form-select" id="cashin_method">
+                    <option disabled selected>Open this select menu</option>
+                    <option value="invest">
+                      Receipt of Investment with cash
+                    </option>
+                    <option value="sale">Receipt of Sale with cash</option>
+                    <option value="payable">
+                      Receipt of Payable with cash
+                    </option>
+                    <option value="receivable">
+                      Receipt of Receivable with cash
+                    </option>
                   </select>
                 </div>
-                <!-- nominal -->
-                <div class="mb-3">
-                  <label for="nominal" class="form-label fs-4">Nominal</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="nominal"
-                    placeholder="$ 10.0"
-                  />
-                </div>
-                <!-- image -->
-                <div class="mb-3">
-                  <label for="proof" class="form-label fs-4">Image</label>
-                  <input class="form-control" type="file" id="proof" />
-                </div>
-                <!-- further information -->
-                <div class="mb-3">
-                  <label for="information" class="form-label fs-4"
-                    >Information</label
-                  >
-                  <textarea
-                    class="form-control"
-                    placeholder="furhter information"
-                    style="height: 100px"
-                    id="information"
-                  ></textarea>
+                <!-- user - product -->
+                <div id="cashin_other_value">
+                  <!-- user investor -->
+                  <div class="mb-3" id="user_investor" style="display: none">
+                    <label for="investor" class="form-label fs-4"
+                      >Investor</label
+                    >
+                    <select id="investor" class="form-select text-capitalize">
+                      <option value="null">Choose One of Investor</option>
+                    </select>
+                  </div>
+                  <!-- price -->
+                  <div class="mb-3">
+                    <label for="cashin_price" class="form-label fs-4"
+                      >Price</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="cashin_price"
+                      placeholder="$ 10.0"
+                    />
+                  </div>
+                  <!-- image -->
+                  <div class="mb-3">
+                    <label for="cashin_img" class="form-label fs-4"
+                      >Image</label
+                    >
+                    <!-- section img -->
+                    <div class="position-relative d-none" id="section_img">
+                      <i
+                        class="fa-solid fa-circle-xmark text-danger"
+                        style="
+                          position: absolute;
+                          right: -10px;
+                          top: -22px;
+                          font-size: 32px;
+                          cursor: pointer;
+                        "
+                        id="cancel_img"
+                      ></i>
+                      <img
+                        src=""
+                        alt=""
+                        class="w-100 h-auto mb-3"
+                        id="preview_img"
+                      />
+                    </div>
+                    <input class="form-control" type="file" id="cashin_img" />
+                  </div>
+                  <!-- further information -->
+                  <div class="mb-3">
+                    <label for="cashin_info" class="form-label fs-4"
+                      >Information</label
+                    >
+                    <textarea
+                      class="form-control"
+                      placeholder="furhter information"
+                      style="height: 100px"
+                      id="cashin_info"
+                    ></textarea>
+                  </div>
                 </div>
               </div>
               <div class="modal-footer">
@@ -737,6 +781,7 @@
                   type="button"
                   class="btn text-white"
                   style="background-color: #119687"
+                  id="cashin_create"
                 >
                   Save changes
                 </button>

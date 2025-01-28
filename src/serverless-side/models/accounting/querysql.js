@@ -1,4 +1,4 @@
-export const queryCreateAccounting = (
+const queryCreate = (
   accountingYMDVal,
   accountingHMSVal,
   accountingRefVal,
@@ -10,16 +10,16 @@ export const queryCreateAccounting = (
   let query = `INSERT INTO Accounting
                (AccountingYMD, AccountingHMS, AccountingRef, AccountingName, AccountingDebt, AccountingCredit, AccountingInfo)
                VALUES
-               ('${accountingYMDVal}', '${accountingHMSVal}', ${accountingRefVal}, '${accountingNameVal}', ${accountingDebtVal}, ${accountingCreditVal}, '${accountingInfoVal}')`;
+               ('${accountingYMDVal}', '${accountingHMSVal}', '${accountingRefVal}', '${accountingNameVal}', '${accountingDebtVal}', '${accountingCreditVal}', '${accountingInfoVal}')`;
   return query;
 };
-export const queryInitAccounting = () => {
+const queryReadTotal = () => {
   let query = `SELECT 
                COUNT(*) AS TOTAL_ROW
                FROM Accounting `;
   return query;
 };
-export const queryReadAccounting = (limitVal, startoffsetVal) => {
+const queryRead = (limitVal, startoffsetVal) => {
   let query = `SELECT * FROM Accounting `;
   query += `ORDER BY AccountingYMD DESC, 
                      AccountingHMS DESC
@@ -27,7 +27,7 @@ export const queryReadAccounting = (limitVal, startoffsetVal) => {
             OFFSET ${startoffsetVal} `;
   return query;
 };
-export const queryReadAccountingDate = (startDateVal, endDateVal) => {
+const queryReadDate = (startDateVal, endDateVal) => {
   let query = `SELECT * FROM Accounting `;
   query += `WHERE AccountingYMD BETWEEN '${startDateVal}' AND '${endDateVal}' `;
   query += `ORDER BY AccountingYMD DESC, 
@@ -35,7 +35,7 @@ export const queryReadAccountingDate = (startDateVal, endDateVal) => {
   return query;
 };
 // balance sheet
-export const querySumDate = (startDateVal, endDateVal) => {
+const queryReadSumDate = (startDateVal, endDateVal) => {
   let query = `SELECT
                SUM(AccountingDebt) AS Total_Debt,
                SUM(AccountingCredit) AS Total_Credit 
@@ -43,7 +43,7 @@ export const querySumDate = (startDateVal, endDateVal) => {
   query += `WHERE AccountingYMD BETWEEN '${startDateVal}' AND '${endDateVal}' `;
   return query;
 };
-export const queryReadAccounting1 = () => {
+const queryRead1 = () => {
   let query = `SELECT 
                AccountingName, 
                AccountingRef, 
@@ -54,30 +54,40 @@ export const queryReadAccounting1 = () => {
             ORDER BY Accounting.AccountingRef ASC `;
   return query;
 };
-export const queryUpdateAccounting = (req) => {
-  const {
-    accountingYMDVal,
-    accountingHMSVal,
-    accountingRefVal,
-    accountingNameVal,
-    accountingPositionVal,
-    accountingRpVal,
-    accountingInfoVal,
-    accountingId,
-  } = req;
-  let query = `UPDATE Accounting 
-                 SET AccountingYMD = '${accountingYMDVal}',
-                     AccountingHMS = '${accountingHMSVal}',
-                     AccountingRef = '${accountingRefVal}',
-                     AccountingName = '${accountingNameVal}',
-                     AccountingPosition = '${accountingPositionVal}',
-                     AccountingRp = ${accountingRpVal},
-                     AccountingInfo = '${accountingInfoVal}'
-                 WHERE AccountingId = ${accountingId}`;
-  return query;
-};
-export const queryDeleteAccounting = (accountingIdVal) => {
-  let query = `DELETE FROM Accounting 
-               WHERE AccountingId = ${accountingIdVal}`;
-  return query;
+// const queryUpdate = (req) => {
+//   const {
+//     accountingYMDVal,
+//     accountingHMSVal,
+//     accountingRefVal,
+//     accountingNameVal,
+//     accountingPositionVal,
+//     accountingRpVal,
+//     accountingInfoVal,
+//     accountingId,
+//   } = req;
+//   let query = `UPDATE Accounting
+//                  SET AccountingYMD = '${accountingYMDVal}',
+//                      AccountingHMS = '${accountingHMSVal}',
+//                      AccountingRef = '${accountingRefVal}',
+//                      AccountingName = '${accountingNameVal}',
+//                      AccountingPosition = '${accountingPositionVal}',
+//                      AccountingRp = ${accountingRpVal},
+//                      AccountingInfo = '${accountingInfoVal}'
+//                  WHERE AccountingId = ${accountingId}`;
+//   return query;
+// };
+// const queryDelete = (accountingIdVal) => {
+//   let query = `DELETE FROM Accounting
+//                WHERE AccountingId = ${accountingIdVal}`;
+//   return query;
+// };
+export {
+  queryCreate,
+  queryRead,
+  queryRead1,
+  queryReadDate,
+  queryReadTotal,
+  queryReadSumDate,
+  // queryUpdate,
+  // queryDelete,
 };

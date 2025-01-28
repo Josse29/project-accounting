@@ -12,5 +12,5 @@ TABLE Persediaan (
   PersediaanPersonId INTEGER,
   FOREIGN KEY (PersediaanProductId) REFERENCES Product(ProductId)
   FOREIGN KEY (PersediaanPersonId) REFERENCES User(UserId)
-)`;
+); `;
 export default persediaanSchema;

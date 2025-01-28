@@ -1,15 +1,15 @@
 import {
   queryDeleteProductId,
   queryGetProductCSV,
-  queryGetProductListRefPersediaan,
-  queryGetProductPDF,
-  queryGetProductTotalRow,
   queryGetProduct,
+  queryGetProductListRefPersediaan,
+  queryGetProductListRefSale,
+  queryGetProductPDF,
+  queryGetProductRefPersediaan,
+  queryGetProductTotalRow,
+  queryGetProductTotalRow1,
   queryInsertProduct,
   queryUpdateProduct,
-  queryGetProductTotalRow1,
-  queryGetProductRefPersediaan,
-  queryGetProductListRefSale,
 } from "./querysql.js";
 
 import {

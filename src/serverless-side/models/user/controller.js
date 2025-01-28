@@ -2,7 +2,8 @@ import {
   queryDeleteUser,
   queryGet,
   queryGetCustomer,
-  queryGetSales,
+  queryGetInvestor,
+  queryGetSale,
   queryGetSupplier,
   queryGetTotal,
   queryRegister,
@@ -62,7 +63,7 @@ const getUser = async (req) => {
   const user = await window.electronAPI.sqliteApi.all(query);
   return user;
 };
-const getUserPageRow = async (req) => {
+const getUserPagination = async (req) => {
   const { searchVal, limitVal } = req;
   const query = queryGetTotal(searchVal);
   const totalPageRow = await window.electronAPI.sqliteApi.each(query, limitVal);
@@ -74,7 +75,12 @@ const getUserCustomer = async () => {
   return userCustomer;
 };
 const getUserSale = async () => {
-  const query = queryGetSales();
+  const query = queryGetSale();
+  const userSale = await window.electronAPI.sqliteApi.all(query);
+  return userSale;
+};
+const getUserInvestor = async () => {
+  const query = queryGetInvestor();
   const userSale = await window.electronAPI.sqliteApi.all(query);
   return userSale;
 };
@@ -127,7 +133,8 @@ export {
   deleteUserId,
   getUser,
   getUserCustomer,
-  getUserPageRow,
+  getUserPagination,
+  getUserInvestor,
   getUserSale,
   getUserSupplier,
   register,

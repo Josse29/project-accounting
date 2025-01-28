@@ -80,3 +80,6 @@
 - refactoring persediaan to product hufft 
 - refactoring list product be better
 - accounting advance....
+
+28/01/2025
+- rethink and implement accounting cash in hufftttt.......

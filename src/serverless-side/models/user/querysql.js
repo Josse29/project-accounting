@@ -56,13 +56,24 @@ const queryGetCustomer = () => {
   query += `ORDER BY UserFullname ASC`;
   return query;
 };
-const queryGetSales = () => {
+const queryGetSale = () => {
   let query = `SELECT 
                UserId,
                UserFullname
                FROM User `;
   //  ONlY sales
   query += `WHERE UserPosition = 'sale' `;
+  // sort by fullname ascending
+  query += `ORDER BY UserFullname ASC`;
+  return query;
+};
+const queryGetInvestor = () => {
+  let query = `SELECT 
+               UserId,
+               UserFullname
+               FROM User `;
+  //  ONlY sales
+  query += `WHERE UserPosition = 'investor' `;
   // sort by fullname ascending
   query += `ORDER BY UserFullname ASC`;
   return query;
@@ -109,7 +120,8 @@ export {
   queryDeleteUser,
   queryGet,
   queryGetCustomer,
-  queryGetSales,
+  queryGetInvestor,
+  queryGetSale,
   queryGetSupplier,
   queryGetTotal,
   queryRegister,
