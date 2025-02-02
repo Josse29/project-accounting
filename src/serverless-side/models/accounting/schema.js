@@ -1,6 +1,6 @@
 const AccountingSchema = `
-CREATE 
-TABLE Accounting(
+CREATE TABLE IF NOT EXISTS
+Accounting (
   AccountingId INTEGER PRIMARY KEY AUTOINCREMENT,                
   AccountingYMD VARCHAR(255),                
   AccountingHMS VARCHAR(255),                

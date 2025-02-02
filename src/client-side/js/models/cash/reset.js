@@ -1,10 +1,10 @@
 import { debounce } from "../../utils/debounce.js";
 import { animateFade } from "../../utils/updateUi.js";
 import { uiTbodyLoad } from "./ui.js";
-import { getAll } from "./utils.js";
+import { getCashAll } from "./utils.js";
 
 const handleBounce = debounce(() => {
-  getAll();
+  getCashAll();
 }, 1000);
 
 $("button#cash-read-reset")

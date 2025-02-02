@@ -4,24 +4,20 @@ import { formatWaktuIndo, timeIndonesian } from "../../utils/formatTime.js";
 export const uiTbody = (response) => {
   let tBody = ``;
   response.forEach((rows) => {
-    // AccountingYMD
     const accountingYMD = rows.AccountingYMD;
     const dateByMe = formatWaktuIndo(accountingYMD);
-    // accountingName
     const accountingName = rows.AccountingName;
-    // accountingRef
     const accountingRef = rows.AccountingRef;
-    // accountingDebt
     const accountingDebt = rows.AccountingDebt;
     const rupiahDebt =
       accountingDebt >= 1 ? formatRupiah2(accountingDebt) : formatRupiah2(0);
-    // accountingCredit
     const accountingCredit = rows.AccountingCredit;
     const positionCredit = accountingCredit >= 1 && "ps-4";
     const rupiahCredit =
       accountingCredit >= 1
         ? formatRupiah2(accountingCredit)
         : formatRupiah2(0);
+
     tBody += `
     <tr>
       <td class="text-center align-content-center">${accountingRef}</td>
@@ -173,7 +169,6 @@ export const uiBtnPageActived = (number) => {
   btnGeneralEntry.removeClass("general-entries-page-active");
   btnGeneralEntry.eq(number - 1).addClass("general-entries-page-active");
 };
-
 export const uiTbody1 = (response) => {
   let tbody = ``;
   response.forEach((rows) => {
@@ -228,6 +223,22 @@ export const uiTbodyZero1 = () => {
   </tr>`;
   $("tbody#balance-sheet").html(tr);
 };
+export const uiAlertSuccess = (res) => {
+  const alert = `
+    <div
+    class="alert alert-success alert-dismissible fade show text-start"
+    role="alert"
+  >
+    <strong class="text-capitalize">${res}</strong>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  </div>`;
+  $("#accounting-card .section-alert").html(alert);
+};
 export const uiAlertFailed = (res) => {
   const alert = `
   <div class="alert alert-danger alert-dismissible fade show text-start" role="alert">
@@ -244,17 +255,29 @@ export const uiAlertFailed1 = (res) => {
   </div>`;
   $("div#accounting-modal-convert-pdf div.failed").html(alert);
 };
-export const uiAlertSuccess = (res) => {
-  const alert = `<div class="alert alert-success alert-dismissible fade show text-start" role="alert">
-                    <strong class="text-capitalize">${res}</strong>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                 </div>`;
+export const uiAlertFailed2 = (res) => {
+  const alert = `
+  <div
+    class="alert alert-danger alert-dismissible fade show text-start"
+    role="alert"
+  >
+    <strong class="text-capitalize">${res}</strong>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  </div>
+  `;
   $("#accounting-card .section-alert").html(alert);
 };
-export const uiAlertFailed2 = (res) => {
-  const alert = `<div class="alert alert-danger alert-dismissible fade show text-start" role="alert">
-                    <strong class="text-capitalize">${res}</strong>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                 </div>`;
-  $("#accounting-card .section-alert").html(alert);
+export const uiAlertFailed3 = (res) => {
+  const alertFailed = `
+  <div class="alert alert-danger alert-dismissible fade show text-start" role="alert">
+    <strong class="text-capitalize">${res}</strong>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  `;
+  $("#accountingCashInModal #failed").html(alertFailed);
 };

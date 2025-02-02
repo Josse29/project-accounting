@@ -8,7 +8,7 @@ import {
 } from "./services.js";
 import { uiBtnPageActive, uiTbody, uiTbodyEmpty } from "./ui.js";
 
-export const getAll = async (data) => {
+export const getCashAll = async (data) => {
   // request
   const req =
     data !== undefined

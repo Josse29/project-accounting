@@ -116,10 +116,20 @@ export const uiTbody = (response) => {
 };
 // make alert success after action crud
 export const uiAlertSuccess = (res) => {
-  const alertSuccess = `<div class="alert alert-success alert-dismissible fade show text-start" role="alert">
-                            <strong class="text-capitalize">${res}</strong>
-                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>`;
+  const alertSuccess = `
+  <div
+    class="alert alert-success alert-dismissible fade show text-start"
+    role="alert"
+  >
+    <strong class="text-capitalize">${res}</strong>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  </div>
+  `;
   $("#section-alert").html(alertSuccess);
 };
 export const uiAlertFail = (res) => {

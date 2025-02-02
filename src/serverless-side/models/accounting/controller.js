@@ -1,5 +1,8 @@
 import db from "../../database/config.js";
-import { validateDate } from "../../utils/validation.js";
+import { validateInvestor, validatePrice1 } from "../../etc/validation.js";
+import { validateDate, validateLoadImg } from "../../utils/validation.js";
+import { createCash } from "../cash/controller.js";
+import { createEquity } from "../equity/controller.js";
 import {
   queryCreate,
   queryRead,
@@ -38,13 +41,38 @@ const createAccounting1 = async (req) => {
     accountingHMSVal,
     accountingMethodVal,
     accountingRefInvestorVal,
+    accountingRefInvestorVal1,
     accountingPriceVal,
     accountingImgVal,
     accountingInfoVal,
   } = req;
   // 1. investment-activities
   if (accountingMethodVal === "invest") {
-    // 1. create to table accounting
+    // 1.validate price
+    validatePrice1(accountingPriceVal);
+    // 2.validate investor
+    validateInvestor(accountingRefInvestorVal);
+    // 3.validate img
+    const accountingImg = await validateLoadImg(accountingImgVal);
+
+    // 1. create to table cash
+    const req = {
+      CashDateVal: accountingYMDVal,
+      CashTimeVal: accountingHMSVal,
+      CashNameVal: `Investment - ${accountingRefInvestorVal1}`,
+      CashBalanceVal: accountingPriceVal,
+      CashInfoVal: accountingInfoVal,
+      CashImgVal: accountingImg,
+    };
+    await createCash(req);
+    // 2. create to table equity
+    const req1 = {
+      EquityUserIdVal: accountingRefInvestorVal,
+      EquityBalanceVal: accountingPriceVal,
+      EquityInformationVal: accountingInfoVal,
+    };
+    await createEquity(req1);
+    // 3. create to table accounting
     const queryDebt = queryCreate(
       accountingYMDVal,
       accountingHMSVal,
@@ -63,18 +91,11 @@ const createAccounting1 = async (req) => {
       accountingPriceVal,
       accountingInfoVal
     );
-    console.log(queryDebt);
-    console.log(queryCredit);
-    // const msg = "accounting has been added";
-    // await window.electronAPI.sqliteApi.run(queryDebt, msg);
-    // await window.electronAPI.sqliteApi.run(queryCredit, msg);
-    // 2. create to table cash
-    // 3. create to table equity
+    const msg = "accounting has been added";
+    await window.electronAPI.sqliteApi.run(queryDebt, msg);
+    await window.electronAPI.sqliteApi.run(queryCredit, msg);
+    return msg;
   }
-  return false;
-  const msg = "accounting has been added";
-  const created = await window.electronAPI.sqliteApi.run(query, msg);
-  return created;
 };
 // general-entries
 const getAccountingPagination = async (req) => {

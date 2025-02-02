@@ -108,7 +108,7 @@ const getByDate = async (req) => {
 };
 // 7. endpoint = api/accounting-1/
 // method : POST
-// payload : 1.accountingYMDVal, 2.accountingHMSVal, 3.accountingMethodVal, 4.accountingRefInvestorVal, 5.accountingPriceVal, 6.accountingImgVal, 7.accountingInfoVal
+// payload : 1.accountingYMDVal, 2.accountingHMSVal, 3.accountingMethodVal, 4.accountingRefInvestorVal, 5.accountingRefInvestorVal, 6.accountingPriceVal, 7.accountingImgVal, 8.accountingInfoVal
 //  return : message has been created
 const addAccounting1 = async (req) => {
   try {
@@ -117,6 +117,7 @@ const addAccounting1 = async (req) => {
       accountingHMSVal: req.accountingTime,
       accountingMethodVal: req.accountingMethod,
       accountingRefInvestorVal: req.accountingRefInvestor,
+      accountingRefInvestorVal1: req.accountingRefInvestor1,
       accountingPriceVal: req.accountingPrice,
       accountingImgVal: req.accountingImg,
       accountingInfoVal: req.accountingInfo,

@@ -1,4 +1,4 @@
-import { readpage } from "./read.js";
+import { readpage } from "./utils.js";
 import { uiBtnPage } from "./ui.js";
 
 function handlePagination(totalPage) {

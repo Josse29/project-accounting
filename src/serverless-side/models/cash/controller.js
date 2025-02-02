@@ -15,14 +15,21 @@ import {
 
 // create
 export const createCash = async (req) => {
-  const { CashYYYYMMDDVal, CashHMSVal, CashNameVal, CashRpVal, CashInfoVal } =
-    req;
-  const query = queryInsertCash(
-    CashYYYYMMDDVal,
-    CashHMSVal,
+  const {
+    CashDateVal,
+    CashTimeVal,
     CashNameVal,
-    CashRpVal,
-    CashInfoVal
+    CashBalanceVal,
+    CashInfoVal,
+    CashImgVal,
+  } = req;
+  const query = queryInsertCash(
+    CashDateVal,
+    CashTimeVal,
+    CashNameVal,
+    CashBalanceVal,
+    CashInfoVal,
+    CashImgVal
   );
   const msg = `cash has been added `;
   const created = await window.electronAPI.sqliteApi.run(query, msg);

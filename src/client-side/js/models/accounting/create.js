@@ -1,7 +1,10 @@
 import { disFormatRupiah1, formatRupiah1 } from "../../utils/formatPrice.js";
 import { previewLoadImg } from "../../utils/loadImg.js";
+import { getCashAll } from "../cash/utils.js";
 import { listUserRefAccountingCreate } from "../users/list.js";
 import { addAccounting1 } from "./services.js";
+import { uiAlertFailed3, uiAlertSuccess } from "./ui.js";
+import { getAccountingAll } from "./utils.js";
 
 // increase cash  =
 // 1. a receipt of investor with cash
@@ -71,6 +74,7 @@ $("div#accountingCashInModal button#cashin_create")
     const accountingTime = $("input#cashin_time").val();
     const accountingMethod = $("select#cashin_method").val();
     const accountingRefInvestor = $("select#investor").val();
+    const accountingRefInvestor1 = $("#investor option:selected").text();
     const accountingPrice = disFormatRupiah1($("input#cashin_price").val());
     const accountingImg = $("input#cashin_img")[0].files;
     const accountingInfo = $("textarea#cashin_info").val();
@@ -79,16 +83,27 @@ $("div#accountingCashInModal button#cashin_create")
       accountingTime,
       accountingMethod,
       accountingRefInvestor,
+      accountingRefInvestor1,
       accountingPrice,
       accountingImg,
       accountingInfo,
     };
     const { status, response } = await addAccounting1(req);
     if (status) {
-      console.log(response);
+      await getAccountingAll();
+      await getCashAll();
+      uiAlertSuccess(response);
+      $("#accountingCashInModal").modal("hide");
     }
     if (!status) {
-      console.error(response);
+      uiAlertFailed3(response);
+      const modalBody = $(
+        "#accountingCashInModal .modal-content .modal-body"
+      ).get(0);
+      modalBody.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
       throw new Error(response);
     }
   });

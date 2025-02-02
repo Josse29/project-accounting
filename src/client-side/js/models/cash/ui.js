@@ -4,34 +4,29 @@ import { formatWaktuIndo, timeIndonesian } from "../../utils/formatTime.js";
 export const uiTbody = (response) => {
   let tbody = ``;
   response.forEach((rows) => {
-    // cashYMD
-    const formatYMD = formatWaktuIndo(rows.CashYYYYMMDD);
-    // cashHMS
-    const HMS = rows.CashHMS;
-    // cashId
+    const CashDate = formatWaktuIndo(rows.CashDate);
+    const CashTime = rows.CashTime;
     const cashId = rows.CashId;
-    // cashName
     const cashName = rows.CashName;
-    // cashRp
-    const cashRp = rows.CashRp;
-    const bgCashRp = cashRp >= 1 ? "#119687" : "#e11d48";
+    const CashBalance = rows.CashBalance;
+    const bgCashBalance = CashBalance >= 1 ? "#119687" : "#e11d48";
     const rupiah =
-      cashRp >= 1
-        ? `+ ${formatRupiah2(cashRp)}`
-        : `- ${formatRupiah2(Math.abs(cashRp))}`;
+      CashBalance >= 1
+        ? `+ ${formatRupiah2(CashBalance)}`
+        : `- ${formatRupiah2(Math.abs(CashBalance))}`;
     tbody += `
     <tr>
       <td class="text-center align-content-center">${cashId}</td>
       <td class="text-truncate align-content-center pe-3">
-        ${formatYMD}
+        ${CashDate}
       </td>
       <td class="text-truncate align-content-center pe-3">
-        ${HMS}
+        ${CashTime}
       </td>
       <td class="text-truncate align-content-center pe-3">${cashName}</td>
       <td class="text-truncate align-content-center text-center pe-3">
         <span class="text-truncate badge fs-6" 
-              style="background-color: ${bgCashRp}; max-width: 100%"
+              style="background-color: ${bgCashBalance}; max-width: 100%"
           >${rupiah}</span
         >
       </td>
@@ -104,10 +99,20 @@ export const uiBtnPage = (totalPage) => {
   $("div#cash-pagination-container").removeClass("d-none");
 };
 export const uiAlertSuccess = (res) => {
-  const alert = `<div class="alert alert-success alert-dismissible fade show text-start" role="alert">
-                    <strong class="text-capitalize">${res}</strong>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                 </div>`;
+  const alert = `
+  <div
+    class="alert alert-success alert-dismissible fade show text-start"
+    role="alert"
+  >
+    <strong class="text-capitalize">${res}</strong>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  </div>
+  `;
   $("#section-alert").html(alert);
 };
 // for pdf
@@ -130,14 +135,14 @@ export const uiPDF = (response, sumCash) => {
     // cash name
     const cashName = row.CashName;
     // cash date
-    const cashDate = row.CashYYYYMMDD;
+    const cashDate = row.CashDate;
     // cash price
-    const cashRp = row.CashRp;
+    const CashBalance = row.CashBalance;
     tr += `<tr>
             <td>${no++}</td>
             <td>${cashDate}</td>
             <td>${cashName}</td>
-            <td>${formatPrice(cashRp)}</td>
+            <td>${formatPrice(CashBalance)}</td>
            </tr>`;
   });
   const html1 = `

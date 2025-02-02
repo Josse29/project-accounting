@@ -1,5 +1,6 @@
 const categorySchema = `
-CREATE TABLE Category(
+CREATE TABLE IF NOT EXISTS 
+Category(
     CategoryId integer primary key autoincrement,
     CategoryName varchar(100),
     CategoryInfo text

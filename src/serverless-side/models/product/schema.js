@@ -1,6 +1,6 @@
 const productSchema = `
-CREATE 
-TABLE Product (
+CREATE TABLE IF NOT EXISTS 
+Product(
   ProductId INTEGER PRIMARY KEY AUTOINCREMENT,
   ProductName VARCHAR(255),
   ProductImage BLOB,

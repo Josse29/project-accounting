@@ -1,7 +1,8 @@
+import { getPagination } from "./services.js";
+
 import { animateFade } from "../../utils/updateUi.js";
 import handlePagination from "./pagination.js";
-import { readpage } from "./read.js";
-import { getPagination } from "./services.js";
+import { readpage } from "./utils.js";
 import { uiTbodyZero } from "./ui.js";
 
 $("button#accounting-reset")

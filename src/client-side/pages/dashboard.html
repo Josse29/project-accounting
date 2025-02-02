@@ -24,35 +24,52 @@
       <div class="side-navigation"></div>
     </div>
     <div class="container-custome-me">
-      <div class="d-flex w-100 gap-4 mt-2">
+      <div class="d-flex w-100 gap-4 my-2 mb-5">
         <div class="w-50 cash">
-          <div class="d-flex w-100 bg-white custome-me p-3 shadow">
-            <div class="w-25 d-flex align-items-center">
-              <i class="fa-solid fa-coins custome-me"></i>
-            </div>
-            <div class="w-75 px-2 py-1">
+          <div class="d-flex w-100 bg-white custome-me p-4 shadow gap-4">
+            <i class="fa-solid fa-sack-dollar custome-me"></i>
+            <div class="overflow-hidden">
               <h1 class="fw-bolder text-truncate">
                 Rp. 100.000,000,0000,0000 ,-
               </h1>
               <h2>Cash</h2>
-              <h6 class="text-end">Detail &raquo;</h6>
             </div>
           </div>
         </div>
         <div class="w-50 user">
-          <div class="d-flex w-100 bg-white custome-me p-3 shadow">
-            <div class="w-25 d-flex align-items-center">
-              <i class="fa-solid fa-user-tie custome-me"></i>
-            </div>
-            <div class="w-75 px-2 py-1">
-              <h1 class="fw-bolder text-truncate">5</h1>
+          <div class="d-flex w-100 bg-white custome-me p-4 shadow gap-4">
+            <i class="fa-solid fa-user-tie custome-me"></i>
+            <div>
+              <h1 class="fw-bolder text-truncate mb-2">5</h1>
               <h2>User</h2>
-              <h6 class="text-end">Detail &raquo;</h6>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex w-100 gap-4">
+        <div class="w-50 card shadow">
+          <h1 class="card-header text-white" style="background-color: #1c64f2">
+            Sales
+          </h1>
+          <div class="card-body">
+            <div>
+              <canvas id="myChart"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="w-50 card shadow">
+          <h1 class="card-header text-white" style="background-color: #6875f5">
+            Investor
+          </h1>
+          <div class="card-body">
+            <div>
+              <canvas id="myPieChart"></canvas>
             </div>
           </div>
         </div>
       </div>
     </div>
+
     <!-- jquery -->
     <script>
       if (typeof module === "object") {
@@ -69,5 +86,31 @@
     <!-- myscript -->
     <script src="./../require/index.js"></script>
     <script type="module" src="./../js/navigation/index.js"></script>
+    <!-- chartjs -->
+    <script src="./../third-party/chart.js"></script>
+    <script>
+      const ctx = document.getElementById("myChart");
+      new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+          datasets: [
+            {
+              label: "# of Votes",
+              data: [12, 19, 3, 5, 2, 3],
+              borderWidth: 2,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+            },
+          },
+        },
+      });
+    </script>
   </body>
 </html>

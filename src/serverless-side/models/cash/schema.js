@@ -1,11 +1,12 @@
 const CashSchema = `
 CREATE 
-TABLE Cash(
+TABLE Cash (
   CashId INTEGER PRIMARY KEY AUTOINCREMENT,                
-  CashYYYYMMDD TEXT,                
-  CashHMS TEXT,                
+  CashDate TEXT,                
+  CashTime TEXT,                
   CashName TEXT,                
-  CashRp INTEGER,                
-  CashInfo TEXT                
+  CashBalance INTEGER,                
+  CashInfo TEXT,
+  CashImg TEXT                
 )`;
 export default CashSchema;

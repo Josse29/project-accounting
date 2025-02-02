@@ -10,7 +10,7 @@ const listSales = async () => {
   const { status, response } = await getListSales();
   if (status) {
     const existed = response.length >= 1;
-    let option = `<option selected disabled >Choose One Of Sales</option>`;
+    let option = `<option selected disabled>Choose One Of Sales</option>`;
     if (existed) {
       response.forEach((el) => {
         option += `<option value="${el.UserId}" class="text-capitalize p-0">${el.UserFullname}</option>`;

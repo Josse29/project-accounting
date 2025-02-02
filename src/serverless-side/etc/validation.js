@@ -40,3 +40,15 @@ export const validateCategoryName = (categoryName) => {
     throw new Error(msg);
   }
 };
+export const validateInvestor = (investorId) => {
+  if (investorId === null) {
+    const msg = `Invest must be filled`;
+    throw new Error(msg);
+  }
+};
+export const validatePrice1 = (price) => {
+  if (price === 0) {
+    const msg = "Price must be filled";
+    throw new Error(msg);
+  }
+};

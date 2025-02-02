@@ -19,7 +19,11 @@ export function disFormatRupiah1(angka) {
     .replace(/^Rp\s*/, "")
     .replace(/\./g, "")
     .replace(/,/g, ".");
-  return parseFloat(price);
+  if (price > 0) {
+    return parseFloat(price);
+  } else {
+    return 0;
+  }
 }
 export function formatRupiah2(input) {
   let formattedValue = new Intl.NumberFormat("id-ID", {

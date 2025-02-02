@@ -1,6 +1,8 @@
+import { getPagination } from "./services.js";
+
 import handlePagination from "./pagination.js";
-import { getGeneralEntry, getPagination } from "./services.js";
-import { uiBtnPageActived, uiTbody, uiTbodyZero } from "./ui.js";
+import { uiTbodyZero } from "./ui.js";
+import { readpage } from "./utils.js";
 
 // getvalue
 const searchVal = "";
@@ -28,14 +30,5 @@ if (status) {
 }
 if (!status) {
   console.error(response);
-}
-export async function readpage(req) {
-  const { status, response } = await getGeneralEntry(req);
-  if (status) {
-    uiTbody(response);
-    uiBtnPageActived(req.offsetVal);
-  }
-  if (!status) {
-    console.error(response);
-  }
+  throw new Error(response);
 }
