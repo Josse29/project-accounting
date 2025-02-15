@@ -17,9 +17,10 @@ const queryGetCategory = (
   let query = `SELECT * , `;
   // group concate with product to get list product
   query += `(SELECT 
-             GROUP_CONCAT(Product.ProductName) 
+              GROUP_CONCAT(Product.ProductName) 
              FROM Product 
-             WHERE Product.ProductCategoryId = Category.CategoryId) AS CategoryProductList `;
+              WHERE Product.ProductCategoryId = Category.CategoryId) 
+             AS CategoryProductList `;
   query += `FROM Category `;
   //  with search value
   if (categorySearch !== "") {

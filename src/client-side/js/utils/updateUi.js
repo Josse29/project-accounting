@@ -17,78 +17,68 @@ export const reinitTooltip = () => {
   $('[data-bs-toggle="tooltip"]').tooltip();
 };
 export const uiLoad = () => {
-  const html = `<div>
-                <div class="d-flex gap-2">
-                  <p
-                    class="animate-load"
-                    style="
-                      width: 155px;
-                      height: 35px;
-                      background: rgb(171, 169, 169);
-                      border-top-left-radius: 8px;
-                      border-bottom-left-radius: 8px;
-                    "
-                  ></p>
-                  <p
-                    class="animate-load"
-                    style="
-                      width: 50px;
-                      height: 35px;
-                      background: rgb(171, 169, 169);
-                    "
-                  ></p>
-                  <p
-                    class="animate-load"
-                    style="
-                      width: 50px;
-                      height: 35px;
-                      background: rgb(171, 169, 169);
-                      border-top-right-radius: 8px;
-                      border-bottom-right-radius: 8px;
-                    "
-                  ></p>
-                </div>
-                <div class="d-flex gap-3">
-                  <p
-                    class="animate-load"
-                    style="
-                      width: 255px;
-                      height: 35px;
-                      background: rgb(171, 169, 169);
-                      border-top-left-radius: 8px;
-                      border-bottom-left-radius: 8px;
-                    "
-                  ></p>
-                  <p
-                    class="animate-load"
-                    style="
-                      width: 650px;
-                      height: 35px;
-                      background: rgb(171, 169, 169);
-                      border-top-right-radius: 8px;
-                      border-bottom-right-radius: 8px;
-                    "
-                  ></p>
-                </div>
-                <div>
-                  <p
-                    class="animate-load"
-                    style="
-                      width: 100%;
-                      height: 55px;
-                      background: rgb(171, 169, 169);
-                    "
-                  ></p>
-                  <p
-                    class="animate-load"
-                    style="
-                      width: 100%;
-                      height: 355px;
-                      background: rgb(171, 169, 169);
-                    "
-                  ></p>
-                </div>
-                </div>`;
+  const html = `
+  <div>
+    <div class="d-flex gap-2">
+      <p
+        class="animate-load"
+        style="
+          width: 155px;
+          height: 35px;
+          background: rgb(171, 169, 169);
+          border-top-left-radius: 8px;
+          border-bottom-left-radius: 8px;
+        "
+      ></p>
+      <p
+        class="animate-load"
+        style="width: 50px; height: 35px; background: rgb(171, 169, 169)"
+      ></p>
+      <p
+        class="animate-load"
+        style="
+          width: 50px;
+          height: 35px;
+          background: rgb(171, 169, 169);
+          border-top-right-radius: 8px;
+          border-bottom-right-radius: 8px;
+        "
+      ></p>
+    </div>
+    <div class="d-flex gap-3">
+      <p
+        class="animate-load"
+        style="
+          width: 255px;
+          height: 35px;
+          background: rgb(171, 169, 169);
+          border-top-left-radius: 8px;
+          border-bottom-left-radius: 8px;
+        "
+      ></p>
+      <p
+        class="animate-load"
+        style="
+          width: 650px;
+          height: 35px;
+          background: rgb(171, 169, 169);
+          border-top-right-radius: 8px;
+          border-bottom-right-radius: 8px;
+        "
+      ></p>
+    </div>
+    <div>
+      <p
+        class="animate-load"
+        style="width: 100%; height: 55px; background: rgb(171, 169, 169)"
+      ></p>
+      <p
+        class="animate-load"
+        style="width: 100%; height: 355px; background: rgb(171, 169, 169)"
+      ></p>
+    </div>
+  </div>
+  `;
   return html;
 };
 export const animateFade = (el) => {

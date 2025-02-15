@@ -52,6 +52,7 @@ const createPersediaan = async (req) => {
     valPersediaanTotalRp,
     valPersediaanInfo,
   } = req;
+  // dont make valPersediaanTotalRp this
   // 1.validate product exist
   validateProductAdd(valPersediaanProductId);
   // 2.validate numeric on valPersediaanQty
@@ -76,7 +77,7 @@ const createPersediaan = async (req) => {
     accountingYMDVal: valPersediaanDDMY,
     accountingHMSVal: valPersediaanHMS,
     accountingRefVal: 113,
-    accountingNameVal: `Merchandise Inventory`,
+    accountingNameVal: `Merchandise Inventory ${valProductName}`,
     accountingDebtVal: valPersediaanTotalRp,
     accountingCreditVal: 0,
     accountingInfoVal: `${valProductName} has been stored ${qty}`,
@@ -92,6 +93,7 @@ const createPersediaan = async (req) => {
     accountingInfoVal: `${valProductName} has been stored ${qty}`,
   };
   await createAccounting(creditEntry);
+
   // execute insert
   const query = queryInsertPersediaan(
     valPersediaanDDMY,
@@ -129,47 +131,25 @@ const getPersediaanQtyValidate = async (req) => {
   const { valProductName, valPersediaanProductId, valPersediaanQty } = req;
   const query = queryGetPersediaanSumQty(valPersediaanProductId);
   const response = await window.electronAPI.sqliteApi.each1(query);
-  const existItem = response.TotalQty >= 1;
+  const stockQty = response.TotalQty;
+  const existItem = stockQty >= 1;
   // Produk has listed
   if (existItem) {
-    // goods in
-    const stockQty = response.TotalQty;
-    if (valPersediaanQty >= 1) {
-      return true;
-    }
-    // goods out
     if (valPersediaanQty < 0) {
-      // goods out but stock still existed
-      if (stockQty >= 1) {
-        // change min to positive value
-        const qtyOutAbs = Math.abs(parseFloat(valPersediaanQty));
-        // stock sufficient
-        if (qtyOutAbs <= stockQty) {
-          return true;
-        }
-        // stock unsufficient
-        if (qtyOutAbs > stockQty) {
-          const msg = `Upppss Sorry, ${valProductName} only available : ${stockQty}`;
-          throw new Error(msg);
-        }
-      }
-      // goods out but stock still existed
-      if (stockQty < 1) {
-        const msg = `${valProductName} is still empty....`;
+      // change min to positive value
+      const qtyOutAbs = Math.abs(parseFloat(valPersediaanQty));
+      // stock unsufficient
+      if (qtyOutAbs > stockQty) {
+        const msg = `Upppss Sorry, ${valProductName} only available : ${stockQty}`;
         throw new Error(msg);
       }
     }
   }
   // Product hasn't listed yet
   if (!existItem) {
-    // goods in
-    if (valPersediaanQty >= 1) {
-      const msg = `${valProductName} has been added with qty : ${valPersediaanQty}`;
-      return msg;
-    }
     // goods out but stock still existed
     if (valPersediaanQty < 1) {
-      const msg = `Upppsss Sorry... ${valProductName} is'nt listed`;
+      const msg = `Upppsss Sorry... ${valProductName} isn't listed yet`;
       throw new Error(msg);
     }
   }

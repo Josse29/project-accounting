@@ -461,7 +461,7 @@ const queryGetPersediaanSumPriceSupplierId = (supplierIdVal) => {
 const queryGetPersediaanSumQty = (valPersediaanProductId) => {
   let query = `SELECT
                PersediaanProductId,
-               SUM(PersediaanQty) AS TotalQty
+               COALESCE(SUM(PersediaanQty), 0) AS TotalQty
                FROM Persediaan `;
   if (valPersediaanProductId !== "") {
     query += `WHERE PersediaanProductId = ${valPersediaanProductId} `;
@@ -519,7 +519,7 @@ const queryInsertPersediaan = (
   INTO Persediaan
   (PersediaanDDMY,PersediaanHMS,PersediaanProductId,PersediaanQty,PersediaanRp,PersediaanInfo)
   VALUES 
-  ('${valPersediaanDDMY}', '${valPersediaanHMS}',${valPersediaanProductId},${valPersediaanQty},${valPersediaanRp},'${valPersediaanInfo}')
+  ('${valPersediaanDDMY}', '${valPersediaanHMS}','${valPersediaanProductId}','${valPersediaanQty}','${valPersediaanRp}','${valPersediaanInfo}')
   `;
   return query;
 };

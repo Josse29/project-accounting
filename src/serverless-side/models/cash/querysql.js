@@ -1,5 +1,5 @@
 // CREATE
-export const queryInsertCash = (
+const queryInsertCash = (
   CashDateVal,
   CashTimeVal,
   CashNameVal,
@@ -7,15 +7,17 @@ export const queryInsertCash = (
   CashInfoVal,
   CashImgVal
 ) => {
-  let query = `INSERT 
-               INTO Cash
-               (CashDate, CashTime, CashName, CashBalance, CashInfo, CashImg) 
-               VALUES 
-               ('${CashDateVal}', '${CashTimeVal}', '${CashNameVal}', ${CashBalanceVal}, '${CashInfoVal}', '${CashImgVal}')`;
+  let query = `
+  INSERT 
+  INTO Cash 
+  (CashDate, CashTime, CashName, CashBalance, CashInfo, CashImg)
+  VALUES 
+  ('${CashDateVal}', '${CashTimeVal}', '${CashNameVal}', ${CashBalanceVal}, '${CashInfoVal}', '${CashImgVal}')  
+  `;
   return query;
 };
 // READ
-export const queryReadInitCash = (searchVal) => {
+const queryReadInitCash = (searchVal) => {
   let query = `SELECT COUNT(*) AS TOTAL_ROW
                FROM Cash `;
   if (searchVal !== "") {
@@ -23,7 +25,7 @@ export const queryReadInitCash = (searchVal) => {
   }
   return query;
 };
-export const queryReadCash = (searchVal, limitVal, offsetVal) => {
+const queryReadCash = (searchVal, limitVal, offsetVal) => {
   let query = `SELECT * FROM Cash `;
   // with search Value
   if (searchVal !== "") {
@@ -36,7 +38,7 @@ export const queryReadCash = (searchVal, limitVal, offsetVal) => {
             OFFSET ${offsetVal}`;
   return query;
 };
-export const queryReadByDate = (startDateVal, endDateVal) => {
+const queryReadByDate = (startDateVal, endDateVal) => {
   let query = `SELECT * FROM Cash `;
   // condition date
   query += `WHERE CashDate BETWEEN '${startDateVal}' AND '${endDateVal}'`;
@@ -45,7 +47,7 @@ export const queryReadByDate = (startDateVal, endDateVal) => {
                      CashTime DESC`;
   return query;
 };
-export const queryReadCash1 = (startDateVal, endDateVal) => {
+const queryReadCash1 = (startDateVal, endDateVal) => {
   let query = `SELECT * FROM Cash `;
   // with search Value
   if (startDateVal !== "" && endDateVal !== "") {
@@ -55,7 +57,7 @@ export const queryReadCash1 = (startDateVal, endDateVal) => {
   query += `ORDER BY CashDate DESC `;
   return query;
 };
-export const queryReadCash2 = (startDateVal, endDateVal) => {
+const queryReadCash2 = (startDateVal, endDateVal) => {
   let query = `SELECT
                CashDate,
                CashName,
@@ -69,38 +71,34 @@ export const queryReadCash2 = (startDateVal, endDateVal) => {
   query += `ORDER BY CashDate DESC `;
   return query;
 };
-export const querySumCash = () => {
+const querySumCash = () => {
   let query = `SELECT 
-               SUM(Cash.CashBalance) AS Total_Amount
+               COALESCE(SUM(Cash.CashBalance), 0) AS Total_Amount
                FROM Cash `;
   return query;
 };
-export const querySumCash1 = (startDateVal, endDateVal) => {
+const querySumCash1 = (startDateVal, endDateVal) => {
   let query = `SELECT 
                SUM(Cash.CashBalance) AS Total_Amount
                FROM Cash `;
   query += `WHERE CashDate BETWEEN '${startDateVal}' AND '${endDateVal}' `;
   return query;
 };
-// UPDATE
-export const queryUpdateCash = (
-  CashNameVal,
-  CashBalanceVal,
-  CashInfoVal,
-  CashIdVal
-) => {
-  let queryUpdateCash = `UPDATE 
-                          Cash
-                          SET CashName = '${CashNameVal}',
-                              CashBalance = '${CashBalanceVal}'.
-                              CashInfo = '${CashInfoVal}'
-                          WHERE CashId = ${CashIdVal} `;
-  return queryUpdateCash;
-};
 // DELETE
-export const queryDeleteCash = (CashIdVal) => {
-  let queryDeleteCash = `DELETE 
+const queryDeleteCash = (CashIdVal) => {
+  let query = `DELETE 
                           FROM Cash
                           WHERE CashId = ${CashIdVal} `;
-  return queryDeleteCash;
+  return query;
+};
+export {
+  queryDeleteCash,
+  queryInsertCash,
+  queryReadByDate,
+  queryReadCash,
+  queryReadCash1,
+  queryReadCash2,
+  queryReadInitCash,
+  querySumCash,
+  querySumCash1,
 };

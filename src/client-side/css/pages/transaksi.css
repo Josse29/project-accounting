@@ -9,7 +9,10 @@
 
 @import "./../models/cash.css";
 @import "./../models/accounting.css";
-
+@import "./../models/equity.css";
+@import "./../models/asset.css";
+@import "./../models/receivable.css";
+@import "./../models/liability.css";
 .border-l-custome-me {
   border-left: 15px solid #5c5cff;
 }

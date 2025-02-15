@@ -45,6 +45,18 @@ const queryGet = (searchVal, limitVal, offsetVal) => {
             OFFSET ${offsetVal}`;
   return query;
 };
+const queryGetCreditor = () => {
+  let query = `
+  SELECT 
+  UserId,
+  UserFullname
+  FROM User `;
+  //  ONlY CUSTOMER
+  query += `WHERE UserPosition = 'creditor' `;
+  // sort by fullname ascending
+  query += `ORDER BY UserFullname ASC`;
+  return query;
+};
 const queryGetCustomer = () => {
   let query = `SELECT 
                  UserId,
@@ -119,6 +131,7 @@ const queryDeleteUser = (userId) => {
 export {
   queryDeleteUser,
   queryGet,
+  queryGetCreditor,
   queryGetCustomer,
   queryGetInvestor,
   queryGetSale,

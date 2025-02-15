@@ -1,7 +1,7 @@
 // create-table
 const persediaanSchema = `
-CREATE 
-TABLE Persediaan (
+CREATE TABLE IF NOT EXISTS 
+Persediaan (
   PersediaanId INTEGER PRIMARY KEY AUTOINCREMENT,
   PersediaanDDMY TEXT,
   PersediaanHMS TEXT,

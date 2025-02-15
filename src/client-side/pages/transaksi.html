@@ -39,10 +39,10 @@
         <!-- cash-section  -->
         <div class="card w-100 mb-4">
           <div
-            class="card-header text-white d-flex justify-content-between align-items-center py-3"
-            style="background-color: #5c5cff"
+            class="card-header d-flex justify-content-between align-items-center py-3"
+            style="background-color: #612bde"
           >
-            <h2 class="mb-0">Cash</h2>
+            <h2 class="text-white mb-0">Cash</h2>
             <span
               class="badge fs-5"
               style="background-color: #12b2a0"
@@ -51,7 +51,40 @@
             >
           </div>
           <div class="card-body overflow-auto" id="cash-card">
-            <!-- create, convert, etc -->
+            <!-- entry all cases -->
+            <div class="gap-2 mb-3 d-flex justify-content-end">
+              <!-- cash-in -->
+              <button
+                class="btn d-flex gap-2 align-items-center text-white cash-in"
+                style="background-color: #119687"
+                data-bs-toggle="modal"
+                data-bs-target="#accountingCashInModal"
+              >
+                <i class="fa-solid fa-square-plus fs-5"></i>
+                <span class="">Cash-in</span>
+              </button>
+              <!-- cashout -->
+              <button
+                class="btn d-flex gap-2 align-items-center text-white cash-out"
+                style="background-color: #e11d48"
+                data-bs-toggle="modal"
+                data-bs-target="#accountingCashOutModal"
+              >
+                <i class="fa-solid fa-square-minus fs-5"></i>
+                <span class="">Cash-out</span>
+              </button>
+              <!-- etc -->
+              <button
+                class="btn d-flex gap-2 align-items-center entry-sale"
+                style="background-color: #3c50e0; color: white"
+                data-bs-toggle="modal"
+                data-bs-target="#accounting-create-etc"
+              >
+                <i class="fa-solid fa-money-check-dollar fs-5"></i>
+                <span>Etcetera</span>
+              </button>
+            </div>
+            <!-- convert etc -->
             <div class="d-flex justify-content-end mb-3">
               <div class="btn-group gap-2">
                 <!-- excel -->
@@ -72,11 +105,6 @@
                   <i class="fa-solid fa-file-pdf fs-5"></i>
                   <span>PDF</span>
                 </button>
-                <!-- delete -->
-                <button class="btn btn-danger d-flex align-items-center gap-2">
-                  <i class="fa-solid fa-trash fs-5"></i>
-                  <span>Delete</span>
-                </button>
                 <!-- reset -->
                 <button
                   class="btn btn-secondary d-flex align-items-center gap-2"
@@ -92,7 +120,6 @@
               <!-- limit -->
               <select
                 class="form-select me-3"
-                aria-label="Default select example"
                 style="width: auto"
                 id="cash-read-limit"
               >
@@ -101,11 +128,11 @@
                 <option value="50">50</option>
               </select>
               <!-- search -->
-              <div class="input-group" style="width: max-content">
+              <div class="input-group" style="max-width: max-content">
                 <input
                   type="text"
                   class="form-control focus-by-me"
-                  placeholder="masukkan keyword menu..."
+                  placeholder="input cash name..."
                   style="width: 450px"
                   id="cash-read-search"
                 />
@@ -118,7 +145,7 @@
             </div>
             <!-- date -->
             <div class="d-flex justify-content-start mb-3" id="cash-read-date">
-              <div class="input-group" style="width: max-content">
+              <div class="input-group" style="max-width: max-content">
                 <!-- startdate -->
                 <input
                   type="date"
@@ -151,9 +178,9 @@
                   <tr>
                     <th class="text-center" style="width: 120px">No</th>
                     <th style="width: 200px">Day / Date</th>
-                    <th style="width: 100px">Hours</th>
+                    <th style="width: 80px">Hour</th>
                     <th style="width: 310px">Name</th>
-                    <th class="text-center" style="width: 160px">Amount</th>
+                    <th class="text-center" style="width: 160px">Balance</th>
                     <th class="text-center" style="width: 220px">Aksi</th>
                   </tr>
                 </thead>
@@ -205,80 +232,642 @@
             </div>
           </div>
         </div>
-        <!-- equity and customer -->
-        <div class="d-flex gap-3">
-          <!-- equity-section  -->
-          <div class="card w-50 mb-4">
-            <div
-              class="card-header text-white d-flex justify-content-between align-items-center py-3"
-              style="background-color: #4040dc"
-            >
-              <h2 class="mb-0">Equity</h2>
-            </div>
-            <div class="card-body overflow-auto" id="equity-card"></div>
+        <!-- asset - fixed section -->
+        <div class="card w-100 mb-4" id="asset-section">
+          <div class="card-header py-3" style="background-color: #1c1cf0">
+            <h3 class="text-white mb-0">Asset - Fixed</h3>
           </div>
-          <!-- equity-section  -->
-          <div class="card w-50 mb-4">
-            <div
-              class="card-header text-white d-flex justify-content-between align-items-center py-3"
-              style="background-color: #4040dc"
-            >
-              <h2 class="mb-0">Equity</h2>
+          <div class="card-body overflow-x-auto">
+            <!-- create , convert -->
+            <div class="d-flex justify-content-end mb-3">
+              <!-- excel, pdf, reset -->
+              <div class="btn-group gap-2">
+                <!-- excel -->
+                <button
+                  class="btn btn-success d-flex align-items-center gap-2"
+                  data-bs-toggle="modal"
+                  data-bs-target="#asset-convert-csv"
+                >
+                  <i class="fa-solid fa-file-excel fs-5"></i>
+                  <span>Excel</span>
+                </button>
+                <!-- pdf -->
+                <button
+                  class="btn btn-primary d-flex align-items-center gap-2"
+                  data-bs-toggle="modal"
+                  data-bs-target="#asset-convert-pdf"
+                >
+                  <i class="fa-solid fa-file-pdf fs-5"></i>
+                  <span>PDF</span>
+                </button>
+                <!-- reset -->
+                <button
+                  class="btn btn-secondary d-flex align-items-center gap-2"
+                >
+                  <i class="fa-solid fa-arrows-rotate fs-5"></i>
+                  <span>Refresh</span>
+                </button>
+              </div>
             </div>
-            <div class="card-body overflow-auto" id="equity-card"></div>
+            <!-- limit search -->
+            <div class="d-flex gap-2 mb-3">
+              <!-- limit  -->
+              <select class="form-select" style="width: auto" id="asset-limit">
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+              </select>
+              <!-- search -->
+              <div class="input-group" style="width: max-content">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="input keyword asset fixed..."
+                  style="width: 450px"
+                  id="asset-search"
+                />
+                <span
+                  class="input-group-text text-white"
+                  style="background-color: #1c1cf0"
+                  >Search</span
+                >
+              </div>
+            </div>
+            <!-- date -->
+            <div class="mb-3">
+              <div class="input-group" style="width: max-content">
+                <input type="date" class="form-control" style="width: 300px" />
+                <span class="bg-body-secondary p-2">-:-</span>
+                <input type="date" class="form-control" style="width: 300px" />
+                <button class="btn btn-primary">Search</button>
+              </div>
+            </div>
+            <!-- table -->
+            <div class="overflow-x-auto mb-3" id="asset-table">
+              <table
+                class="table table-striped"
+                style="table-layout: fixed; max-width: max-content"
+              >
+                <thead>
+                  <tr>
+                    <th class="text-center" style="width: 100px">#</th>
+                    <th style="width: 210px">Day / Date</th>
+                    <th style="width: 100px" class="text-center">Hour</th>
+                    <th style="width: 210px">Name</th>
+                    <th style="width: 180px">Price</th>
+                    <th style="width: 100px" class="text-center">Qty</th>
+                    <th style="width: 210px">Balance</th>
+                    <th style="width: 180px">Supplier Name</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colspan="8" class="text-center fst-italic fw-bold">
+                      loading....
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- pagination -->
+            <div
+              class="d-flex justify-content-center d-none"
+              id="asset-pagination"
+            >
+              <div class="btn-group">
+                <button class="btn border border-2" id="asset-first-page">
+                  <i class="fa-solid fa-backward-fast fs-6"></i>
+                </button>
+                <button class="btn border border-2" id="asset-prev-page">
+                  <i class="fa-solid fa-backward-step"></i>
+                </button>
+                <div class="btn-group"></div>
+                <button class="btn border border-2" id="asset-next-page">
+                  <i class="fa-solid fa-forward-step fs-6"></i>
+                </button>
+                <button class="btn border border-2" id="asset-last-page">
+                  <i class="fa-solid fa-forward-step fs-6"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- receivable account -->
+        <div class="card w-100 mb-4" id="receivable-section">
+          <div class="card-header py-3" style="background-color: #612bde">
+            <h3 class="text-white mb-0">Receivable</h3>
+          </div>
+          <div class="card-body overflow-x-auto">
+            <!-- create convert reset -->
+            <div class="d-flex justify-content-end mb-3">
+              <div class="btn-group gap-2">
+                <button
+                  class="btn btn-success d-flex align-items-center gap-2"
+                  data-bs-toggle="modal"
+                  data-bs-target="#receivable-convert-csv"
+                >
+                  <i class="fa-solid fa-file-excel fs-5"></i>
+                  <span class="fs-6">Excel</span>
+                </button>
+                <button
+                  class="btn btn-primary d-flex align-items-center gap-2"
+                  data-bs-toggle="modal"
+                  data-bs-target="#receivable-convert-pdf"
+                >
+                  <i class="fa-solid fa-file-pdf fs-5"></i>
+                  <span class="fs-6">PDF</span>
+                </button>
+                <button
+                  class="btn btn-secondary d-flex align-items-center gap-2"
+                >
+                  <i class="fa-solid fa-arrows-rotate fs-5"></i>
+                  <span class="fs-6">Refresh</span>
+                </button>
+              </div>
+            </div>
+            <!--  limit search -->
+            <div class="mb-3 d-flex gap-2">
+              <select id="limit" class="form-select w-auto">
+                <option value="10">10</option>
+                <option value="10">25</option>
+                <option value="10">50</option>
+              </select>
+              <div class="input-group" style="max-width: max-content">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="input keyword receivable....."
+                  style="width: 450px"
+                />
+                <button class="input-group-text bg-primary text-white">
+                  Search
+                </button>
+              </div>
+            </div>
+            <!-- date -->
+            <div class="mb-3">
+              <div class="input-group" style="width: max-content">
+                <input type="date" class="form-control" style="width: 300px" />
+                <span class="bg-body-secondary p-2">-:-</span>
+                <input type="date" class="form-control" style="width: 300px" />
+                <button class="btn btn-primary">Search</button>
+              </div>
+            </div>
+            <!-- table -->
+            <div class="overflow-x-auto mb-3" id="receivable-table">
+              <table
+                class="table table-striped"
+                style="table-layout: fixed; max-width: max-content"
+              >
+                <thead>
+                  <tr>
+                    <th class="text-center" style="width: 100px">#</th>
+                    <th style="width: 250px">Day / Date</th>
+                    <th style="width: 100px" class="text-center">Hour</th>
+                    <th style="width: 210px">Name</th>
+                    <th style="width: 210px">Balance</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colspan="5" class="text-center fst-italic fw-bold">
+                      loading....
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- pagination -->
+            <div
+              class="d-flex justify-content-center d-none"
+              id="receivable-pagination"
+            >
+              <div class="btn-group">
+                <button class="btn border border-2" id="receivable-first-page">
+                  <i class="fa-solid fa-backward-fast fs-6"></i>
+                </button>
+                <button class="btn border border-2" id="receivable-prev-page">
+                  <i class="fa-solid fa-backward-step"></i>
+                </button>
+                <div class="btn-group"></div>
+                <button class="btn border border-2" id="receivable-next-page">
+                  <i class="fa-solid fa-forward-step fs-6"></i>
+                </button>
+                <button class="btn border border-2" id="receivable-last-page">
+                  <i class="fa-solid fa-forward-step fs-6"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- liability section -->
+        <div class="card w-100 mb-4" id="liability-section">
+          <div class="card-header py-3" style="background-color: #1c1cf0">
+            <h3 class="text-white mb-0">Liability</h3>
+          </div>
+          <div class="card-body overflow-x-auto">
+            <!-- create , convert -->
+            <div class="d-flex justify-content-end mb-3">
+              <!-- excel, pdf, reset -->
+              <div class="btn-group gap-2">
+                <!-- excel -->
+                <button
+                  class="btn btn-success d-flex align-items-center gap-2"
+                  data-bs-toggle="modal"
+                  data-bs-target="#liability-convert-csv"
+                >
+                  <i class="fa-solid fa-file-excel fs-5"></i>
+                  <span>Excel</span>
+                </button>
+                <!-- pdf -->
+                <button
+                  class="btn btn-primary d-flex align-items-center gap-2"
+                  data-bs-toggle="modal"
+                  data-bs-target="#liability-convert-pdf"
+                >
+                  <i class="fa-solid fa-file-pdf fs-5"></i>
+                  <span>PDF</span>
+                </button>
+                <!-- reset -->
+                <button
+                  class="btn btn-secondary d-flex align-items-center gap-2"
+                >
+                  <i class="fa-solid fa-arrows-rotate fs-5"></i>
+                  <span>Refresh</span>
+                </button>
+              </div>
+            </div>
+            <!-- limit search -->
+            <div class="d-flex gap-2 mb-3">
+              <!-- limit  -->
+              <select
+                class="form-select"
+                style="width: auto"
+                id="liability-limit"
+              >
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+              </select>
+              <!-- search -->
+              <div class="input-group" style="max-width: max-content">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="input keyword liability..."
+                  style="width: 450px"
+                  id="liability-search"
+                />
+                <span
+                  class="input-group-text text-white"
+                  style="background-color: #1c1cf0"
+                  >Search</span
+                >
+              </div>
+            </div>
+            <!-- date -->
+            <div class="mb-3">
+              <div class="input-group" style="width: max-content">
+                <input type="date" class="form-control" style="width: 300px" />
+                <span class="bg-body-secondary p-2">-:-</span>
+                <input type="date" class="form-control" style="width: 300px" />
+                <button class="btn btn-primary">Search</button>
+              </div>
+            </div>
+            <!-- table -->
+            <div class="overflow-x-auto mb-3" id="liability-table">
+              <table
+                class="table table-striped"
+                style="table-layout: fixed; max-width: max-content"
+              >
+                <thead>
+                  <tr>
+                    <th class="text-center" style="width: 100px">#</th>
+                    <th style="width: 230px">Day / Date</th>
+                    <th style="width: 100px" class="text-center">Hour</th>
+                    <th style="width: 210px">Name</th>
+                    <th style="width: 210px">Balance</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colspan="5" class="text-center fst-italic fw-bold">
+                      loading....
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- pagination -->
+            <div
+              class="d-flex justify-content-center d-none"
+              id="liability-pagination"
+            >
+              <div class="btn-group">
+                <button class="btn border border-2" id="liability-first-page">
+                  <i class="fa-solid fa-backward-fast fs-6"></i>
+                </button>
+                <button class="btn border border-2" id="liability-prev-page">
+                  <i class="fa-solid fa-backward-step"></i>
+                </button>
+                <div class="btn-group"></div>
+                <button class="btn border border-2" id="liability-next-page">
+                  <i class="fa-solid fa-forward-step fs-6"></i>
+                </button>
+                <button class="btn border border-2" id="liability-last-page">
+                  <i class="fa-solid fa-forward-step fs-6"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- expense section -->
+        <div class="card w-100 mb-4" id="expense-section">
+          <div class="card-header py-3" style="background-color: #5c5ce8">
+            <h3 class="text-white mb-0">Expense</h3>
+          </div>
+          <div class="card-body overflow-x-auto">
+            <!-- create , convert -->
+            <div class="d-flex justify-content-end mb-3">
+              <!-- excel, pdf, reset -->
+              <div class="btn-group gap-2">
+                <!-- excel -->
+                <button
+                  class="btn btn-success d-flex align-items-center gap-2"
+                  data-bs-toggle="modal"
+                  data-bs-target="#expense-convert-csv"
+                >
+                  <i class="fa-solid fa-file-excel fs-5"></i>
+                  <span>Excel</span>
+                </button>
+                <!-- pdf -->
+                <button
+                  class="btn btn-primary d-flex align-items-center gap-2"
+                  data-bs-toggle="modal"
+                  data-bs-target="#expense-convert-pdf"
+                >
+                  <i class="fa-solid fa-file-pdf fs-5"></i>
+                  <span>PDF</span>
+                </button>
+                <!-- reset -->
+                <button
+                  class="btn btn-secondary d-flex align-items-center gap-2"
+                >
+                  <i class="fa-solid fa-arrows-rotate fs-5"></i>
+                  <span>Refresh</span>
+                </button>
+              </div>
+            </div>
+            <!-- limit search -->
+            <div class="d-flex gap-2 mb-3">
+              <!-- limit  -->
+              <select
+                class="form-select"
+                style="width: auto"
+                id="expense-limit"
+              >
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+              </select>
+              <!-- search -->
+              <div class="input-group" style="max-width: max-content">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="input keyword expense..."
+                  style="width: 450px"
+                  id="expense-search"
+                />
+                <span
+                  class="input-group-text text-white"
+                  style="background-color: #1c1cf0"
+                  >Search</span
+                >
+              </div>
+            </div>
+            <!-- date -->
+            <div class="mb-3">
+              <div class="input-group" style="width: max-content">
+                <input type="date" class="form-control" style="width: 300px" />
+                <span class="bg-body-secondary p-2">-:-</span>
+                <input type="date" class="form-control" style="width: 300px" />
+                <button class="btn btn-primary">Search</button>
+              </div>
+            </div>
+            <!-- table -->
+            <div class="overflow-x-auto mb-3" id="expense-table">
+              <table
+                class="table table-striped"
+                style="table-layout: fixed; max-width: max-content"
+              >
+                <thead>
+                  <tr>
+                    <th class="text-center" style="width: 100px">#</th>
+                    <th style="width: 230px">Day / Date</th>
+                    <th style="width: 100px" class="text-center">Hour</th>
+                    <th style="width: 210px">Name</th>
+                    <th style="width: 210px">Balance</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colspan="5" class="text-center fst-italic fw-bold">
+                      loading....
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- pagination -->
+            <div
+              class="d-flex justify-content-center d-none"
+              id="expense-pagination"
+            >
+              <div class="btn-group">
+                <button class="btn border border-2" id="expense-first-page">
+                  <i class="fa-solid fa-backward-fast fs-6"></i>
+                </button>
+                <button class="btn border border-2" id="expense-prev-page">
+                  <i class="fa-solid fa-backward-step"></i>
+                </button>
+                <div class="btn-group"></div>
+                <button class="btn border border-2" id="expense-next-page">
+                  <i class="fa-solid fa-forward-step fs-6"></i>
+                </button>
+                <button class="btn border border-2" id="expense-last-page">
+                  <i class="fa-solid fa-forward-step fs-6"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- equity-section  -->
+        <div class="card w-100 mb-4">
+          <div class="card-header py-3" style="background-color: #612bde">
+            <h3 class="mb-0 text-white">Equity</h3>
+          </div>
+          <div class="card-body overflow-auto" id="equity-card">
+            <!-- convert, etc -->
+            <div class="d-flex justify-content-end mb-3">
+              <div class="btn-group gap-2">
+                <!-- excel -->
+                <button
+                  class="btn btn-success d-flex align-items-center gap-2"
+                  data-bs-toggle="modal"
+                  data-bs-target="#equity-convert-csv"
+                >
+                  <i class="fa-solid fa-file-excel fs-5"></i>
+                  <span class="fs-6">Excel</span>
+                </button>
+                <!-- pdf -->
+                <button
+                  class="btn btn-primary d-flex align-items-center gap-2"
+                  data-bs-toggle="modal"
+                  data-bs-target="#equity-convert-pdf"
+                >
+                  <i class="fa-solid fa-file-pdf fs-5"></i>
+                  <span>PDF</span>
+                </button>
+                <!-- reset -->
+                <button
+                  class="btn btn-secondary d-flex align-items-center gap-2"
+                  id="equity-reset"
+                >
+                  <i class="fa-solid fa-arrows-rotate fs-5"></i>
+                  <span>Refresh</span>
+                </button>
+              </div>
+            </div>
+            <!-- limit and search -->
+            <div class="d-flex justify-content-start mb-3" id="limit-search">
+              <!-- limit -->
+              <select
+                class="form-select me-3"
+                style="width: auto"
+                id="equity-read-limit"
+              >
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+              </select>
+              <!-- search -->
+              <div class="input-group" style="width: max-content">
+                <input
+                  type="text"
+                  class="form-control focus-by-me"
+                  placeholder="input keyword equity...."
+                  style="width: 450px"
+                  id="equity-read-search"
+                />
+                <span
+                  class="input-group-text"
+                  style="background-color: #3c50e0; color: white"
+                  >Search</span
+                >
+              </div>
+            </div>
+            <!-- filtered date -->
+            <div
+              class="d-flex justify-content-start mb-3"
+              id="equity-read-date"
+            >
+              <div class="input-group" style="width: max-content">
+                <!-- startdate -->
+                <input
+                  type="date"
+                  class="form-control"
+                  id="startDate"
+                  style="width: 300px"
+                />
+                <span
+                  class="text-center align-content-center p-2 bg-body-secondary"
+                  >s/d</span
+                >
+                <!-- end date -->
+                <input
+                  type="date"
+                  class="form-control"
+                  id="endDate"
+                  style="width: 300px"
+                />
+                <!-- submit -->
+                <button class="btn btn-primary">Search</button>
+              </div>
+            </div>
+            <!-- section-alert -->
+            <div id="section-alert"></div>
+            <!-- table -->
+            <div id="equity-table" class="overflow-x-auto mb-3">
+              <table class="table table-striped" style="table-layout: fixed">
+                <thead>
+                  <tr>
+                    <th class="text-center" style="width: 120px">No</th>
+                    <th style="width: 200px">Day / Date</th>
+                    <th style="width: 80px">Hour</th>
+                    <th style="width: 190px">Fullname</th>
+                    <th style="width: 180px">Email</th>
+                    <th class="text-center" style="width: 220px">Balance</th>
+                    <th class="text-center" style="width: 220px">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td
+                      colspan="7"
+                      class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize"
+                    >
+                      loading....
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- pagination -->
+            <div
+              class="w-100 d-flex justify-content-center d-none"
+              id="equity-pagination-container"
+            >
+              <div class="btn-group">
+                <button
+                  type="button"
+                  class="btn border border-2"
+                  id="equity-first-page"
+                >
+                  <i class="fa-solid fa-backward-fast fs-6"></i>
+                </button>
+                <button
+                  type="button"
+                  class="btn border border-2"
+                  id="equity-prev-page"
+                >
+                  <i class="fa-solid fa-backward-step fs-6"></i>
+                </button>
+                <div class="btn-group" id="equity-pagination"></div>
+                <button
+                  type="button"
+                  class="btn border border-2"
+                  id="equity-next-page"
+                >
+                  <i class="fa-solid fa-forward-step fs-6"></i>
+                </button>
+                <button
+                  type="button"
+                  class="btn border border-2"
+                  id="equity-last-page"
+                >
+                  <i class="fa-solid fa-forward-fast fs-6"></i>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
         <!-- general-entries-section  -->
         <div class="card w-100 mb-4 mb-4">
-          <div
-            class="card-header text-white fs-3"
-            style="background-color: #1c1cf0"
-          >
-            General Entries
+          <div class="card-header py-3" style="background-color: #1c1cf0">
+            <h3 class="mb-0 text-white">Journal</h3>
           </div>
           <div class="card-body overflow-x-auto" id="accounting-card">
-            <!-- entry all cases -->
-            <div class="btn-group gap-2 mb-3">
-              <!-- cash-in -->
-              <button
-                class="btn d-flex gap-2 align-items-center text-white cash-in"
-                style="background-color: #119687"
-                data-bs-toggle="modal"
-                data-bs-target="#accountingCashInModal"
-              >
-                <i class="fa-solid fa-square-plus fs-5"></i>
-                <span class="">Cash-in</span>
-              </button>
-              <!-- cashout -->
-              <button
-                class="btn d-flex gap-2 align-items-center text-white cash-out"
-                style="background-color: #e11d48"
-                data-bs-toggle="modal"
-                data-bs-target="#cashOutModal"
-              >
-                <i class="fa-solid fa-square-minus fs-5"></i>
-                <span class="">Cash-out</span>
-              </button>
-              <!-- entry - sales -->
-              <button
-                class="btn d-flex gap-2 align-items-center entry-sale"
-                style="background-color: #3c50e0; color: white"
-                data-bs-toggle="modal"
-                data-bs-target="#entrySales"
-              >
-                <i class="fa-solid fa-money-check-dollar fs-5"></i>
-                <span>Receivable</span>
-              </button>
-              <!-- entry - purchase -->
-              <button
-                class="btn d-flex gap-2 align-items-center text-white bg-primary"
-                data-bs-toggle="modal"
-                data-bs-target="#entryPurchase"
-              >
-                <i class="fa-solid fa-receipt fs-5"></i>
-                <span>Payable</span>
-              </button>
-            </div>
             <!-- create, convert ,reset -->
             <div class="d-flex gap-1 justify-content-end mb-3">
               <div class="btn-group gap-2">
@@ -402,11 +991,8 @@
         </div>
         <!-- balance-sheet-section  -->
         <div class="card w-100 mb-4">
-          <div
-            class="card-header text-white fs-3"
-            style="background-color: #5c5ce8"
-          >
-            Balance Sheet
+          <div class="card-header py-3" style="background-color: #5c5ce8">
+            <h3 class="text-white mb-0">Balance Sheet</h3>
           </div>
           <div class="card-body overflow-x-auto" id="accounting-1-card">
             <!-- create - convert -->
@@ -528,171 +1114,14 @@
     <div>
       <!-- accounting -->
       <div>
-        <!-- Modal Sales-->
-        <div class="modal fade" id="entrySales" tabindex="-1">
-          <div
-            class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
-          >
-            <div class="modal-content">
-              <div
-                class="modal-header text-white"
-                style="background-color: #3c50e0; color: white"
-              >
-                <h1 class="modal-title fs-2">Sale</h1>
-              </div>
-              <div class="modal-body">
-                <!-- product name -->
-                <div class="mb-3">
-                  <label class="form-label fs-4">Product</label>
-                  <select
-                    class="form-select"
-                    aria-label="Default select example"
-                  >
-                    <option selected>Open this select menu</option>
-                    <option value="cash">Tunai</option>
-                    <option value="2">Kredit</option>
-                  </select>
-                </div>
-                <!-- metode -->
-                <div class="mb-3">
-                  <label class="form-label fs-4">Methode</label>
-                  <select
-                    class="form-select"
-                    aria-label="Default select example"
-                  >
-                    <option selected disabled>Open this select menu</option>
-                    <option value="cash">Cash</option>
-                    <option value="credit">Credit</option>
-                  </select>
-                </div>
-                <div class="mb-3">
-                  <label for="nominal" class="form-label fs-4">Nominal</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="nominal"
-                    placeholder="40,000,00 ,-"
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="bukti" class="form-label fs-4">Bukti</label>
-                  <input class="form-control" type="file" id="bukti" />
-                </div>
-                <div class="mb-3">
-                  <label for="keterangan" class="form-label fs-4"
-                    >Keterangan</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="keterangan"
-                    placeholder="40,000,00 ,-"
-                  />
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
-                  Close
-                </button>
-                <button
-                  type="button"
-                  class="btn text-white"
-                  style="background-color: #3c50e0"
-                >
-                  Save changes
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- Modal Purchase -->
-        <div class="modal fade" id="entryPurchase" tabindex="-1">
-          <div
-            class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
-          >
-            <div class="modal-content">
-              <div class="modal-header text-white bg-primary">
-                <h1 class="modal-title fs-2">Cash in</h1>
-              </div>
-              <div class="modal-body">
-                <div class="mb-3">
-                  <label class="form-label fs-4">Metode</label>
-                  <select
-                    class="form-select"
-                    aria-label="Default select example"
-                  >
-                    <option selected>Open this select menu</option>
-                    <option value="cash">Tunai</option>
-                    <option value="2">Kredit</option>
-                  </select>
-                </div>
-                <div class="mb-3">
-                  <label class="form-label fs-4">Jenis Akun</label>
-                  <select
-                    class="form-select"
-                    aria-label="Default select example"
-                  >
-                    <option selected>Open this select menu</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </select>
-                </div>
-                <div class="mb-3">
-                  <label for="nominal" class="form-label fs-4">Nominal</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="nominal"
-                    placeholder="40,000,00 ,-"
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="bukti" class="form-label fs-4">Bukti</label>
-                  <input class="form-control" type="file" id="bukti" />
-                </div>
-                <div class="mb-3">
-                  <label for="keterangan" class="form-label fs-4"
-                    >Keterangan</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="keterangan"
-                    placeholder="40,000,00 ,-"
-                  />
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
-                  Close
-                </button>
-                <button type="button" class="btn btn-primary text-white">
-                  Save changes
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
         <!-- Modal Cash in -->
         <div class="modal fade" id="accountingCashInModal">
           <div
             class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
           >
             <div class="modal-content">
-              <div
-                class="modal-header text-white"
-                style="background-color: #119687"
-              >
-                <h1 class="modal-title fs-2">Cash in</h1>
+              <div class="modal-header" style="background-color: #119687">
+                <h2 class="modal-title text-white">Cash in</h2>
               </div>
               <div class="modal-body">
                 <!-- failed -->
@@ -718,80 +1147,20 @@
                   >
                   <select class="form-select" id="cashin_method">
                     <option disabled selected>Open this select menu</option>
-                    <option value="invest">
-                      Receipt of Investment with cash
+                    <option value="investment">
+                      Receipt Cash from Investor
                     </option>
-                    <option value="sale">Receipt of Sale with cash</option>
-                    <option value="payable">
-                      Receipt of Payable with cash
+                    <option value="sale">Receipt Cash from Sale Product</option>
+                    <option value="liability">
+                      Receipt Cash from Creditor
                     </option>
                     <option value="receivable">
-                      Receipt of Receivable with cash
+                      Receipt Cash from Receivable
                     </option>
                   </select>
                 </div>
-                <!-- user - product -->
                 <div id="cashin_other_value">
-                  <!-- user investor -->
-                  <div class="mb-3" id="user_investor" style="display: none">
-                    <label for="investor" class="form-label fs-4"
-                      >Investor</label
-                    >
-                    <select id="investor" class="form-select text-capitalize">
-                      <option value="null">Choose One of Investor</option>
-                    </select>
-                  </div>
-                  <!-- price -->
-                  <div class="mb-3">
-                    <label for="cashin_price" class="form-label fs-4"
-                      >Price</label
-                    >
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="cashin_price"
-                      placeholder="$ 10.0"
-                    />
-                  </div>
-                  <!-- image -->
-                  <div class="mb-3">
-                    <label for="cashin_img" class="form-label fs-4"
-                      >Image</label
-                    >
-                    <!-- section img -->
-                    <div class="position-relative d-none" id="section_img">
-                      <i
-                        class="fa-solid fa-circle-xmark text-danger"
-                        style="
-                          position: absolute;
-                          right: -10px;
-                          top: -22px;
-                          font-size: 32px;
-                          cursor: pointer;
-                        "
-                        id="cancel_img"
-                      ></i>
-                      <img
-                        src=""
-                        alt=""
-                        class="w-100 h-auto mb-3"
-                        id="preview_img"
-                      />
-                    </div>
-                    <input class="form-control" type="file" id="cashin_img" />
-                  </div>
-                  <!-- further information -->
-                  <div class="mb-3">
-                    <label for="cashin_info" class="form-label fs-4"
-                      >Information</label
-                    >
-                    <textarea
-                      class="form-control"
-                      placeholder="furhter information"
-                      style="height: 100px"
-                      id="cashin_info"
-                    ></textarea>
-                  </div>
+                  <div class="activity"></div>
                 </div>
               </div>
               <div class="modal-footer">
@@ -817,7 +1186,7 @@
         <!-- Modal Cash Out -->
         <div
           class="modal fade"
-          id="cashOutModal"
+          id="accountingCashOutModal"
           tabindex="-1"
           aria-labelledby="cashOutModalLabel"
           aria-hidden="true"
@@ -830,55 +1199,43 @@
                 class="modal-header text-white"
                 style="background-color: #e11d48"
               >
-                <h1 class="modal-title fs-2" id="cashOutModal">Cash OUt</h1>
+                <h2 class="modal-title" id="cashOutModal">Cash Out</h2>
               </div>
               <div class="modal-body">
+                <!-- failed -->
+                <div id="failed"></div>
+                <!-- date -->
                 <div class="mb-3">
-                  <label class="form-label fs-4">Metode</label>
-                  <select
-                    class="form-select"
-                    aria-label="Default select example"
+                  <label for="cashout_date" class="form-label fs-4"
+                    >Input Date :</label
                   >
-                    <option selected>Open this select menu</option>
-                    <option value="cash">Tunai</option>
-                    <option value="2">Kredit</option>
+                  <input type="date" class="form-control" id="cashout_date" />
+                </div>
+                <!-- time -->
+                <div class="mb-3">
+                  <label for="cashout_time" class="form-label fs-4"
+                    >Input Time :</label
+                  >
+                  <input type="time" class="form-control" id="cashout_time" />
+                </div>
+                <!-- methode -->
+                <div class="mb-3">
+                  <label class="form-label fs-4" for="cashout_method"
+                    >Method</label
+                  >
+                  <select class="form-select" id="cashout_method">
+                    <option disabled selected>Open this select menu</option>
+                    <option value="asset">Payment of Asset</option>
+                    <option value="expense">Payment of Purchase Expense</option>
+                    <option value="liability">Payment of Creditor</option>
+                    <option value="purchase">
+                      Payment of Purchase Product
+                    </option>
                   </select>
                 </div>
-                <div class="mb-3">
-                  <label class="form-label fs-4">Jenis Akun</label>
-                  <select
-                    class="form-select"
-                    aria-label="Default select example"
-                  >
-                    <option selected>Open this select menu</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </select>
-                </div>
-                <div class="mb-3">
-                  <label for="nominal" class="form-label fs-4">Nominal</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="nominal"
-                    placeholder="40,000,00 ,-"
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="bukti" class="form-label fs-4">Bukti</label>
-                  <input class="form-control" type="file" id="bukti" />
-                </div>
-                <div class="mb-3">
-                  <label for="keterangan" class="form-label fs-4"
-                    >Keterangan</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="keterangan"
-                    placeholder="40,000,00 ,-"
-                  />
+                <!-- other value -->
+                <div id="cashout_other_value">
+                  <div class="activity"></div>
                 </div>
               </div>
               <div class="modal-footer">
@@ -893,9 +1250,77 @@
                   type="button"
                   class="btn text-white"
                   style="background-color: #e11d48"
+                  id="cashout_create"
                 >
                   Save changes
                 </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- etcetera -->
+        <div class="modal fade" id="accounting-create-etc">
+          <div
+            class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+          >
+            <div class="modal-content">
+              <div class="modal-header" style="background-color: #3c50e0">
+                <h2 class="modal-title text-white">Etc</h2>
+              </div>
+              <div class="modal-body">
+                <!-- failed -->
+                <div class="failed"></div>
+                <!-- date -->
+                <div class="mb-3">
+                  <label for="accounting-date" class="form-label fs-4"
+                    >Input Date :</label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="accounting-date"
+                  />
+                </div>
+                <!-- time -->
+                <div class="mb-3">
+                  <label for="accounting-time" class="form-label fs-4">
+                    Input Time :
+                  </label>
+                  <input
+                    type="time"
+                    id="accounting-time"
+                    class="form-control"
+                  />
+                </div>
+                <!-- selectMethod -->
+                <div class="mb-3">
+                  <label for="accounting-method" class="form-label fs-4"
+                    >Method</label
+                  >
+                  <select id="accounting-method" class="form-control">
+                    <option selected disabled>Choose One Of Methods</option>
+                    <option value="investment-with-asset">
+                      Investment With Asset
+                    </option>
+                    <option value="purchase-asset-on-credit">
+                      Purchase Asset On Credit
+                    </option>
+                    <option value="purchase-product-on-credit">
+                      Purchase Product On Credit
+                    </option>
+                    <option value="sale-product-on-credit">
+                      Sale Product on Credit
+                    </option>
+                  </select>
+                </div>
+                <!-- activity -->
+                <div class="mb-3" id="activity"></div>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-danger" data-bs-dismiss="modal">
+                  Cancel
+                </button>
+                <button class="btn btn-primary">Save</button>
               </div>
             </div>
           </div>
@@ -1014,14 +1439,14 @@
       <!-- cash -->
       <div>
         <!-- cash - csv -->
-        <div class="modal fade" id="cash-modal-convert-csv" tabindex="-1">
+        <div class="modal fade" id="cash-modal-convert-csv">
           <div
             class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
           >
             <div class="modal-content">
-              <div class="modal-header px-3 py-2 bg-success">
-                <i class="fa-solid fa-file-excel fs-4 text-white"></i>
-                <h4 class="modal-title text-white ms-3">Cash - Excel</h4>
+              <div class="modal-header bg-success">
+                <i class="fa-solid fa-file-excel fs-4 text-white me-3"></i>
+                <h3 class="modal-title text-white mb-0">Cash - Excel</h3>
               </div>
               <div class="modal-body">
                 <!-- alert failed -->
@@ -1065,7 +1490,7 @@
           </div>
         </div>
         <!-- cash -pdf -->
-        <div class="modal fade" id="cash-modal-convert-pdf" tabindex="-1">
+        <div class="modal fade" id="cash-modal-convert-pdf">
           <div
             class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
           >
@@ -1120,6 +1545,381 @@
           </div>
         </div>
       </div>
+      <!-- equity -->
+      <div>
+        <!-- equity - csv -->
+        <div class="modal fade" id="equity-convert-csv" tabindex="-1">
+          <div
+            class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
+          >
+            <div class="modal-content">
+              <div class="modal-header bg-success">
+                <i class="fa-solid fa-file-excel fs-4 text-white"></i>
+                <h3 class="modal-title text-white ms-3 mb-0">Equity - Excel</h3>
+              </div>
+              <div class="modal-body">
+                <!-- alert failed -->
+                <div class="failed"></div>
+                <!-- start date -->
+                <div class="mb-3">
+                  <label for="equity-start-date" class="fs-4 mb-2"
+                    >Start Date :</label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="equity-start-date"
+                  />
+                </div>
+                <!-- endate -->
+                <div class="mb-3">
+                  <label for="equity-end-date" class="fs-4 mb-2"
+                    >End Date :</label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="equity-end-date"
+                  />
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn bg-danger text-white"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button
+                  type="button"
+                  class="btn bg-success text-white"
+                  id="equity-convert-csv"
+                >
+                  Convert
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- equity -pdf -->
+        <div class="modal fade" id="equity-convert-pdf" tabindex="-1">
+          <div
+            class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
+          >
+            <div class="modal-content">
+              <div class="modal-header px-3 py-2 bg-primary">
+                <i class="fa-solid fa-file-pdf fs-4 text-white"></i>
+                <h4 class="modal-title text-white ms-3">Equity - PDF</h4>
+              </div>
+              <div class="modal-body">
+                <!-- failed -->
+                <div class="failed"></div>
+                <!-- start date -->
+                <div class="mb-3">
+                  <label for="equity-start-date-1" class="fs-4 mb-2"
+                    >Start Date :</label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="equity-start-date-1"
+                  />
+                </div>
+                <!-- endate -->
+                <div class="mb-3">
+                  <label for="equity-end-date-1" class="fs-4 mb-2"
+                    >End Date :</label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="equity-end-date-1"
+                  />
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn bg-danger text-white"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  id="equity-convert-pdf"
+                >
+                  Convert
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- asset -->
+      <div>
+        <div class="modal fade" id="asset-convert-csv">
+          <div
+            class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
+          >
+            <div class="modal-content">
+              <div class="modal-header bg-success">
+                <i class="fa-solid fa-file-excel text-white fs-3 me-3"></i>
+                <h3 class="mb-0 text-white">Asset - Excel</h3>
+              </div>
+              <div class="modal-body">
+                <!-- start date -->
+                <div class="mb-3">
+                  <label for="asset-csv-start-date" class="form-label fs-4"
+                    >Start Date</label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="asset-csv-start-date"
+                  />
+                </div>
+                <!-- end date  -->
+                <div class="mb-3">
+                  <label for="asset-csv-end-date" class="form-label fs-4"
+                    >End Date</label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="asset-csv-end-date"
+                  />
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-danger" data-bs-dismiss="modal">
+                  Cancel
+                </button>
+                <button class="btn btn-success">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="asset-convert-pdf">
+          <div
+            class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+          >
+            <div class="modal-content">
+              <div class="modal-header bg-primary">
+                <i class="fa-solid fa-file-pdf text-white fs-3 me-3"></i>
+                <h3 class="mb-0 text-white">Asset - PDF</h3>
+              </div>
+              <div class="modal-body">
+                <!-- start date -->
+                <div class="mb-3">
+                  <label for="asset-pdf-start-date" class="form-label fs-4"
+                    >Start Date</label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="asset-pdf-start-date"
+                  />
+                </div>
+                <!-- end date -->
+                <div class="mb-3">
+                  <label for="asset-pdf-end-date" class="form-label fs-4"
+                    >End Date</label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="asset-pdf-end-date"
+                  />
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-danger" data-bs-dismiss="modal">
+                  Cancel
+                </button>
+                <button class="btn btn-primary">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- receivable  -->
+      <div>
+        <div class="modal fade" id="receivable-convert-csv">
+          <div
+            class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
+          >
+            <div class="modal-content">
+              <div class="modal-header bg-success">
+                <i class="fa-solid fa-file-excel text-white fs-3 me-3"></i>
+                <h3 class="mb-0 text-white">Receivable - Excel</h3>
+              </div>
+              <div class="modal-body">
+                <!-- start date -->
+                <div class="mb-3">
+                  <label for="receivable-csv-start-date" class="form-label fs-4"
+                    >Start Date</label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="receivable-csv-start-date"
+                  />
+                </div>
+                <!-- end date  -->
+                <div class="mb-3">
+                  <label for="receivable-csv-end-date" class="form-label fs-4"
+                    >End Date</label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="receivable-csv-end-date"
+                  />
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-danger" data-bs-dismiss="modal">
+                  Cancel
+                </button>
+                <button class="btn btn-success">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="receivable-convert-pdf">
+          <div
+            class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+          >
+            <div class="modal-content">
+              <div class="modal-header bg-primary">
+                <i class="fa-solid fa-file-pdf text-white fs-3 me-3"></i>
+                <h3 class="mb-0 text-white">Receivable - PDF</h3>
+              </div>
+              <div class="modal-body">
+                <!-- start date -->
+                <div class="mb-3">
+                  <label for="receivable-pdf-start-date" class="form-label fs-4"
+                    >Start Date</label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="receivable-pdf-start-date"
+                  />
+                </div>
+                <!-- end date -->
+                <div class="mb-3">
+                  <label for="receivable-pdf-end-date" class="form-label fs-4"
+                    >End Date</label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="receivable-pdf-end-date"
+                  />
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-danger" data-bs-dismiss="modal">
+                  Cancel
+                </button>
+                <button class="btn btn-primary">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- liability  -->
+      <div>
+        <div class="modal fade" id="liability-convert-csv">
+          <div
+            class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
+          >
+            <div class="modal-content">
+              <div class="modal-header bg-success">
+                <i class="fa-solid fa-file-excel text-white fs-3 me-3"></i>
+                <h3 class="mb-0 text-white">Liability - Excel</h3>
+              </div>
+              <div class="modal-body">
+                <!-- start date -->
+                <div class="mb-3">
+                  <label for="liability-csv-start-date" class="form-label fs-4"
+                    >Start Date</label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="liability-csv-start-date"
+                  />
+                </div>
+                <!-- end date  -->
+                <div class="mb-3">
+                  <label for="liability-csv-end-date" class="form-label fs-4"
+                    >End Date</label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="liability-csv-end-date"
+                  />
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-danger" data-bs-dismiss="modal">
+                  Cancel
+                </button>
+                <button class="btn btn-success">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="liability-convert-pdf">
+          <div
+            class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+          >
+            <div class="modal-content">
+              <div class="modal-header bg-primary">
+                <i class="fa-solid fa-file-pdf text-white fs-3 me-3"></i>
+                <h3 class="mb-0 text-white">Liability - PDF</h3>
+              </div>
+              <div class="modal-body">
+                <!-- start date -->
+                <div class="mb-3">
+                  <label for="liability-pdf-start-date" class="form-label fs-4"
+                    >Start Date</label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="liability-pdf-start-date"
+                  />
+                </div>
+                <!-- end date -->
+                <div class="mb-3">
+                  <label for="liability-pdf-end-date" class="form-label fs-4"
+                    >End Date</label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="liability-pdf-end-date"
+                  />
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-danger" data-bs-dismiss="modal">
+                  Cancel
+                </button>
+                <button class="btn btn-primary">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- -->
     </div>
     <!-- jquery -->
     <script>
@@ -1139,5 +1939,10 @@
     <script type="module" src="./../js/utils/updateUi.js"></script>
     <script type="module" src="./../js/models/cash/index.js"></script>
     <script type="module" src="./../js/models/accounting/index.js"></script>
+    <script type="module" src="./../js/models/equity/index.js"></script>
+    <script type="module" src="./../js/models/receivable/index.js"></script>
+    <script type="module" src="./../js/models/liability/index.js"></script>
+    <script type="module" src="./../js/models/asset/index.js"></script>
+    <script type="module" src="./../js/models/expenselist/index.js"></script>
   </body>
 </html>

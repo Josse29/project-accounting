@@ -1,3 +1,6 @@
+START : 06-05-2024
+END :
+==========================================================
 10/18/2024 
 - refactoring services all models persediaan
 - refactoring service all models product... 
@@ -86,3 +89,29 @@
 
 2/2/2025
 - chartjs | next accounting cash in 
+4/2/2025
+- laptop baru halelluyah, Terpujilah Yah 
+- rethink and implement accounting cash in hufftttt.......
+- models equity fe and be (fetch data, pagination, search, export pdf, export csv) 
+5/2/2025
+- models equity fe and be (fetch data, pagination, search, export pdf, export csv)
+- continue page dashboard....
+- accountingCashOut 
+6/2/2025
+- accountingCashOut next....
+- fixing css 
+7/2/2025
+- assetname fe and be 
+7/2/2025
+- asssetname pagination 
+8.9,10/2025
+- CRUD + pagination assetName
+- CRUD + pagination expense
+11,12/2025
+- accountingCashOut next hufft 
+- update schema assetName and expense with supplier 
+13.14.15/ 2025
+- accounting cashin and cash out 
+- setup vm, react, react native 
+- update schema assetName and expense
+- research flowchart to balance sheet....

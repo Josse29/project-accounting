@@ -1,4 +1,5 @@
 import { getPagination } from "./services.js";
+
 import { uiTbodyEmpty } from "./ui.js";
 import { getCashPage, summary } from "./utils.js";
 import handlePagination from "./pagination.js";
@@ -10,8 +11,8 @@ const offsetVal = 1;
 // request
 const req = {
   searchVal,
-  limitVal: parseInt(limitVal),
-  offsetVal: parseInt(offsetVal),
+  limitVal: limitVal,
+  offsetVal: offsetVal,
 };
 const { status, response } = await getPagination(req);
 if (status) {
@@ -27,4 +28,5 @@ if (status) {
 }
 if (!status) {
   console.error(response);
+  throw new Error(response);
 }

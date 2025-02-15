@@ -1,5 +1,5 @@
 import { animateFade } from "../../utils/updateUi.js";
-import { getByDate, getSum1 } from "./services.js";
+import { getByDate } from "./services.js";
 import { uiAlertFailed2, uiSummary, uiTbody, uiTbodyEmpty } from "./ui.js";
 import { summary1 } from "./utils.js";
 

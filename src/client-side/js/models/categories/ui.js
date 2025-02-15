@@ -7,7 +7,7 @@ export const uiTbody = (response) => {
     const categoryProductList = el.CategoryProductList;
     tr += `
     <tr
-      data-categoryid=${categoryId}
+      data-categoryid="${categoryId}"
       data-categorynama="${categoryName}"
       data-categoryketerangan="${categoryInfo}"
       data-categoryproductlist="${categoryProductList}"
@@ -117,10 +117,20 @@ export const uiBtnPageActive = (pageActive) => {
 };
 // alert
 export const uiAlertSuccess = (res) => {
-  const alertSuccessMe = `<div class="alert alert-success alert-dismissible fade show text-start" role="alert">
-                            <strong class="text-capitalize">${res}</strong> 
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                          </div>`;
+  const alertSuccessMe = `
+  <div
+    class="alert alert-success alert-dismissible fade show text-start"
+    role="alert"
+  >
+    <strong class="text-capitalize">${res}</strong>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  </div>
+  `;
   $("#sectionSuccessActionCategory").html(alertSuccessMe);
 };
 export const uiAlertFailCreate = (res) => {

@@ -1,6 +1,7 @@
 import {
   createAccounting,
   createAccounting1,
+  createAccounting2,
   getAccounting,
   getAccounting1,
   getAccountingDate,
@@ -106,7 +107,7 @@ const getByDate = async (req) => {
     return { status: false, response: error };
   }
 };
-// 7. endpoint = api/accounting-1/
+// 7. endpoint = api/accounting-investment/
 // method : POST
 // payload : 1.accountingYMDVal, 2.accountingHMSVal, 3.accountingMethodVal, 4.accountingRefInvestorVal, 5.accountingRefInvestorVal, 6.accountingPriceVal, 7.accountingImgVal, 8.accountingInfoVal
 //  return : message has been created
@@ -115,10 +116,9 @@ const addAccounting1 = async (req) => {
     const payLoad = {
       accountingYMDVal: req.accountingDate,
       accountingHMSVal: req.accountingTime,
-      accountingMethodVal: req.accountingMethod,
-      accountingRefInvestorVal: req.accountingRefInvestor,
-      accountingRefInvestorVal1: req.accountingRefInvestor1,
-      accountingPriceVal: req.accountingPrice,
+      accountingInvestorIdVal: parseInt(req.accountingInvestorId),
+      accountingInvestorNameVal: req.accountingInvestorName,
+      accountingPriceVal: parseFloat(req.accountingPrice),
       accountingImgVal: req.accountingImg,
       accountingInfoVal: req.accountingInfo,
     };
@@ -127,6 +127,15 @@ const addAccounting1 = async (req) => {
   } catch (error) {
     return { status: false, response: error };
   }
+};
+// 8. endpoint = api/accounting-purchasement/
+// method : POST
+// payLoad : 1.accountingYMDVal, 2.accountingHMSVal, 3.accountingProductId, 4.accountingProductName, 5.accountingBalanceVal, 6.accountingInfoVal
+// createAccounting2
+const addAccounting2 = async (req) => {
+  try {
+    const payLoad = {};
+  } catch (error) {}
 };
 export {
   addAccounting,

@@ -1,6 +1,7 @@
 import {
   queryDeleteUser,
   queryGet,
+  queryGetCreditor,
   queryGetCustomer,
   queryGetInvestor,
   queryGetSale,
@@ -89,6 +90,11 @@ const getUserSupplier = async () => {
   const supplier = await window.electronAPI.sqliteApi.all(query);
   return supplier;
 };
+const getUserCreditor = async () => {
+  const query = queryGetCreditor();
+  const creditor = await window.electronAPI.sqliteApi.all(query);
+  return creditor;
+};
 // 3.UPDATE
 const updateUser = async (req) => {
   const {
@@ -132,6 +138,7 @@ const deleteUserId = async (req) => {
 export {
   deleteUserId,
   getUser,
+  getUserCreditor,
   getUserCustomer,
   getUserPagination,
   getUserInvestor,

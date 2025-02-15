@@ -55,3 +55,29 @@ div#accounting-1-table::-webkit-scrollbar-thumb {
 div#accounting-1-table::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+/* accounting-create-cashin  */
+div#accountingCashInModal input:focus {
+  border: 3px solid #119687;
+  box-shadow: 0 0 0 0.1rem #7ef3e5;
+}
+div#accountingCashInModal select:focus {
+  border: 3px solid #119687;
+  box-shadow: 0 0 0 0.1rem #7ef3e5;
+}
+div#accountingCashInModal textarea:focus {
+  border: 3px solid #119687;
+  box-shadow: 0 0 0 0.1rem #7ef3e5;
+}
+/* accounting-create-cashout  */
+div#accountingCashOutModal input:focus {
+  border: 2px solid #e11d48;
+  box-shadow: 0 0 0 0.1rem #efb1be;
+}
+div#accountingCashOutModal select:focus {
+  border: 2px solid #e11d48;
+  box-shadow: 0 0 0 0.1rem #efb1be;
+}
+div#accountingCashOutModal textarea:focus {
+  border: 2px solid #e11d48;
+  box-shadow: 0 0 0 0.1rem #efb1be;
+}

@@ -5,7 +5,6 @@ const convertPDF = (ipcMain, BrowserWindow, dialog, fs, appPath) => {
       defaultPath: "output.pdf",
       filters: [{ name: "PDF Files", extensions: ["pdf"] }],
     });
-
     if (canceled) {
       return null;
     }

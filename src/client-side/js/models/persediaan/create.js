@@ -33,32 +33,21 @@ $("button#persediaan-create-increase")
     persediaanCreateQty++;
     $("input#persediaan-create-qty").val(persediaanCreateQty);
   });
-// 3.get product id, product Name, price buy, qty from select list product
-$("select#persediaan-refproduct-search-name")
-  .off("change")
-  .on("change", async function () {
-    const selectedOption = $(this).find("option:selected");
-    const productId = parseInt($(this).val());
-    const productName = selectedOption.data("productname");
-    const pricebuy = selectedOption.data("pricebuy");
-    $("input#persediaan-refproduct-create-id").val(productId);
-    $("#persediaan-refproduct-create-name").val(productName);
-    $("input#persediaan-refproduct-create-rp").val(pricebuy);
-  });
-// 4.req-to-db
+// 3.req-to-db
 $("#persediaan-create-submit")
   .off("click")
   .on("click", async () => {
     const { formattedDDMY, formattedHMS } = getTimeNow();
-    const valProductName = $("#persediaan-refproduct-create-name").val().trim();
+    const selectedOption = $("select#persediaan-refproduct-search-name");
+    const valPersediaanProductId = parseInt(selectedOption.val());
+    const valProductName = $(selectedOption)
+      .find("option:selected")
+      .data("productname");
+    const valProductIdPrice = parseFloat(
+      $(selectedOption).find("option:selected").data("pricebuy")
+    );
     const valPersediaanDDMY = formattedDDMY;
     const valPersediaanHMS = formattedHMS;
-    const valPersediaanProductId = parseInt(
-      $("input#persediaan-refproduct-create-id").val()
-    );
-    const valProductIdPrice = parseFloat(
-      $("input#persediaan-refproduct-create-rp").val()
-    );
     const valPersediaanQty = parseFloat($("input#persediaan-create-qty").val());
     const valPersediaanTotalRp = valPersediaanQty * valProductIdPrice;
     const valPersediaanInfo = $("#persediaan-create-info").val();

@@ -17,7 +17,7 @@ const handleBounce = debounce(() => {
   getCashAll(req);
 }, 1000);
 
-// search
+// limit
 $("select#cash-read-limit")
   .off("change")
   .on("change", function () {

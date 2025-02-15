@@ -281,3 +281,16 @@ export const uiAlertFailed3 = (res) => {
   `;
   $("#accountingCashInModal #failed").html(alertFailed);
 };
+export const uiReset = () => {
+  $("input#cashin_date").val("");
+  $("input#cashin_time").val("");
+  $("select#cashin_method").val("Open this select menu");
+  $("div#cashin_other_value").hide();
+  $("select#investor").val("Choose One Of Investor");
+  $("#investor option:selected").text("");
+  $("input#cashin_price").val("");
+  $("input#cashin_img").val("");
+  $("textarea#cashin_info").val("");
+  $("#accountingCashInModal #failed").html(``);
+  $("div#accountingCashInModal div#section_img").addClass("d-none");
+};

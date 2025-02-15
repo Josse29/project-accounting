@@ -13,7 +13,7 @@ const queryInsertProduct = (
   INTO Product 
   (ProductName, ProductPriceBuy, ProductPriceSell, ProductInfo, ProductCategoryId, ProductSupplierId, ProductImage) 
   VALUES
-  ('${productName}', ${productPriceBuy}, ${productPriceSell}, '${productInfo}', ${productCategoryId}, ${productSupplierId},'${imgBase64}')
+  ('${productName}', '${productPriceBuy}', '${productPriceSell}', '${productInfo}', '${productCategoryId}', '${productSupplierId}','${imgBase64}')
   `;
   return query;
 };
@@ -26,10 +26,8 @@ const queryGetProduct = (productSearch, productLimit, productOffset) => {
                Product.ProductPriceSell,
                Product.ProductInfo,
                Product.ProductImage,
-               Product.ProductCategoryId,
                Category.CategoryId,
                Category.CategoryName,
-               Product.ProductSupplierId,
                User.UserId,
                User.UserFullname
                FROM Product
@@ -129,10 +127,11 @@ const queryGetProductTotalRow1 = (searchVal) => {
 };
 const queryGetProductTotalRow = (productSearch) => {
   let query = `SELECT COUNT(*) 
-                 AS TOTAL_ROW
-                 FROM Product
-                 LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
-                 LEFT JOIN User ON Product.ProductSupplierId = User.UserId `;
+               AS TOTAL_ROW
+               FROM Product `;
+  //  left join
+  query += `LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
+            LEFT JOIN User ON Product.ProductSupplierId = User.UserId `;
   // with search value product
   if (productSearch !== "") {
     query += `WHERE Product.ProductName LIKE '%${productSearch}%' ESCAPE '!' OR 

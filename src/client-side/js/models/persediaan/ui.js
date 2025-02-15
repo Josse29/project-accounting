@@ -248,9 +248,7 @@ export const uiTbodyLoad = () => {
 };
 // blank value after submit action
 export const uiBlankValue = () => {
-  $("input#persediaan-refproduct-search-name").val("");
-  $("input#persediaan-refproduct-create-id").val("");
-  $("input#persediaan-refproduct-create-name").val("");
+  $("select#persediaan-refproduct-search-name").val("Choose One Of Products");
   $("input#persediaan-create-qty").val(0);
   $("textarea#persediaan-create-info").val("");
 };
@@ -267,7 +265,7 @@ export const uiInit = () => {
   $("select#persediaan-refsupplier-search").val("Choose One Of Suppliers");
   $("select#persediaan-refcategory-search").val("Choose One Of Categories");
   $("#persediaanList").removeClass("d-none");
-  //remove mode date
+  //r emove mode date
   $("div#persediaan-date-all-search").html(``);
   // remove mode summary
   $("div#persediaan-sum-section").html("");

@@ -1,4 +1,3 @@
-import db from "../../database/config.js";
 import { validateDate } from "../../utils/validation.js";
 import {
   queryDeleteCash,
@@ -10,11 +9,10 @@ import {
   queryReadInitCash,
   querySumCash,
   querySumCash1,
-  queryUpdateCash,
 } from "./querysql.js";
 
 // create
-export const createCash = async (req) => {
+const createCash = async (req) => {
   const {
     CashDateVal,
     CashTimeVal,
@@ -35,7 +33,7 @@ export const createCash = async (req) => {
   const created = await window.electronAPI.sqliteApi.run(query, msg);
   return created;
 };
-export const insertCash1 = (req) => {
+const insertCash1 = (req) => {
   const { CashYYYYMMDDVal, CashHMSVal, CashNameVal, CashRpVal, CashInfoVal } =
     req;
   const query = queryInsertCash(
@@ -57,20 +55,20 @@ export const insertCash1 = (req) => {
   });
 };
 // read
-export const getCashPagination = async (req) => {
+const getCashPagination = async (req) => {
   const { searchVal, limitVal } = req;
   const query = queryReadInitCash(searchVal);
   const totalPageRow = await window.electronAPI.sqliteApi.each(query, limitVal);
   return totalPageRow;
 };
-export const getCash = async (req) => {
+const getCash = async (req) => {
   const { searchVal, limitVal, offsetVal } = req;
   const startOffsetVal = parseInt(parseInt(offsetVal - 1) * parseInt(limitVal));
   const query = queryReadCash(searchVal, limitVal, startOffsetVal);
   const cash = await window.electronAPI.sqliteApi.all(query);
   return cash;
 };
-export const readCash1 = (req) => {
+const readCash1 = (req) => {
   const { searchVal, limitVal, offsetVal } = req;
   const startOffsetVal = parseInt((offsetVal - 1) * limitVal);
   const query = queryReadCash(searchVal, limitVal, startOffsetVal);
@@ -84,41 +82,26 @@ export const readCash1 = (req) => {
     });
   });
 };
-export const getCashSum = async () => {
+const getCashSum = async () => {
   const query = querySumCash();
   const response = await window.electronAPI.sqliteApi.each1(query);
-  const totalCash = response.Total_Amount ? response.Total_Amount : 0;
-  return totalCash;
+  return response.Total_Amount;
 };
-export const getCashSum1 = async (req) => {
+const getCashSum1 = async (req) => {
   const { startDateVal, endDateVal } = req;
   const query = querySumCash1(startDateVal, endDateVal);
   const response = await window.electronAPI.sqliteApi.each1(query);
-  const totalCash = response.Total_Amount ? response.Total_Amount : 0;
-  return totalCash;
+  return response.Total_Amount;
 };
-export const getCashDate = async (req) => {
+const getCashDate = async (req) => {
   const { startDateVal, endDateVal } = req;
   validateDate(startDateVal, endDateVal);
   const query = queryReadByDate(startDateVal, endDateVal);
   const cashByDate = await window.electronAPI.sqliteApi.all(query);
   return cashByDate;
 };
-// update
-export const updateCash = (req, res) => {
-  const { CashNameVal, CashRpVal, CashInfoVal, CashId } = req;
-  const query = queryUpdateCash(CashNameVal, CashRpVal, CashInfoVal, CashId);
-  db.run(query, (err) => {
-    if (!err) {
-      return res(true, "berhasil diupdate");
-    }
-    if (err) {
-      return res(false, err);
-    }
-  });
-};
 // delete
-export const deleteKas = (cashId, callback) => {
+const deleteKas = (cashId, callback) => {
   const query = queryDeleteCash(cashId);
   db.run(query, (err) => {
     if (!err) {
@@ -129,8 +112,8 @@ export const deleteKas = (cashId, callback) => {
     }
   });
 };
-// export csv
-export const getCash1 = async (req) => {
+// csv
+const getCash1 = async (req) => {
   const { startDateVal, endDateVal } = req;
   // validate by date
   validateDate(startDateVal, endDateVal);
@@ -139,12 +122,23 @@ export const getCash1 = async (req) => {
   const cash = await window.electronAPI.sqliteApi.all(query);
   return cash;
 };
-// export to pdf
-export const getCash2 = async (req) => {
+//  to pdf
+const getCash2 = async (req) => {
   const { startDateVal, endDateVal } = req;
   // validate by date
   validateDate(startDateVal, endDateVal);
   const query = queryReadCash2(startDateVal, endDateVal);
   const cash = await window.electronAPI.sqliteApi.all(query);
   return cash;
+};
+export {
+  createCash,
+  insertCash1,
+  getCash,
+  getCash1,
+  getCash2,
+  getCashDate,
+  getCashPagination,
+  getCashSum,
+  getCashSum1,
 };

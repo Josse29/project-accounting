@@ -1,6 +1,13 @@
 import db from "../../database/config.js";
-import { validateInvestor, validatePrice1 } from "../../etc/validation.js";
-import { validateDate, validateLoadImg } from "../../utils/validation.js";
+import {
+  validateCash,
+  validateDate,
+  validateDateAndTime,
+  validateInvestor,
+  validateLoadImg,
+  validatePrice1,
+  validateProductAdd,
+} from "../../utils/validation.js";
 import { createCash } from "../cash/controller.js";
 import { createEquity } from "../equity/controller.js";
 import {
@@ -12,6 +19,7 @@ import {
   queryRead1,
 } from "./querysql.js";
 
+// only create accounting
 const createAccounting = async (req) => {
   const {
     accountingYMDVal,
@@ -35,67 +43,134 @@ const createAccounting = async (req) => {
   const created = await window.electronAPI.sqliteApi.run(query, msg);
   return created;
 };
+// investment with cash
 const createAccounting1 = async (req) => {
   const {
     accountingYMDVal,
     accountingHMSVal,
-    accountingMethodVal,
-    accountingRefInvestorVal,
-    accountingRefInvestorVal1,
+    accountingInvestorIdVal,
+    accountingInvestorNameVal,
     accountingPriceVal,
     accountingImgVal,
     accountingInfoVal,
   } = req;
-  // 1. investment-activities
-  if (accountingMethodVal === "invest") {
-    // 1.validate price
-    validatePrice1(accountingPriceVal);
-    // 2.validate investor
-    validateInvestor(accountingRefInvestorVal);
-    // 3.validate img
-    const accountingImg = await validateLoadImg(accountingImgVal);
+  // 1.validate date and time
+  validateDateAndTime(accountingYMDVal, accountingHMSVal);
+  // 2.validate investor
+  validateInvestor(accountingInvestorNameVal);
+  // 3.validate price
+  validatePrice1(accountingPriceVal);
+  // 4. validate img
+  const accountingImg = await validateLoadImg(accountingImgVal);
 
-    // 1. create to table cash
-    const req = {
-      CashDateVal: accountingYMDVal,
-      CashTimeVal: accountingHMSVal,
-      CashNameVal: `Investment - ${accountingRefInvestorVal1}`,
-      CashBalanceVal: accountingPriceVal,
-      CashInfoVal: accountingInfoVal,
-      CashImgVal: accountingImg,
-    };
-    await createCash(req);
-    // 2. create to table equity
-    const req1 = {
-      EquityUserIdVal: accountingRefInvestorVal,
-      EquityBalanceVal: accountingPriceVal,
-      EquityInformationVal: accountingInfoVal,
-    };
-    await createEquity(req1);
-    // 3. create to table accounting
-    const queryDebt = queryCreate(
-      accountingYMDVal,
-      accountingHMSVal,
-      111,
-      "Cash",
-      accountingPriceVal,
-      0,
-      accountingInfoVal
-    );
-    const queryCredit = queryCreate(
-      accountingYMDVal,
-      accountingHMSVal,
-      311,
-      "Equity",
-      0,
-      accountingPriceVal,
-      accountingInfoVal
-    );
-    const msg = "accounting has been added";
-    await window.electronAPI.sqliteApi.run(queryDebt, msg);
-    await window.electronAPI.sqliteApi.run(queryCredit, msg);
-    return msg;
-  }
+  // 1. create to table cash
+  const req1 = {
+    CashDateVal: accountingYMDVal,
+    CashTimeVal: accountingHMSVal,
+    CashNameVal: `Investment - ${accountingInvestorNameVal}`,
+    CashBalanceVal: accountingPriceVal,
+    CashInfoVal: accountingInfoVal,
+    CashImgVal: accountingImg,
+  };
+  await createCash(req1);
+  // 2. create to table equity
+  const req2 = {
+    EquityDateVal: accountingYMDVal,
+    EquityTimeVal: accountingHMSVal,
+    EquityUserIdVal: accountingInvestorIdVal,
+    EquityBalanceVal: accountingPriceVal,
+    EquityInformationVal: accountingInfoVal,
+  };
+  await createEquity(req2);
+  // 3. create to table accounting
+  const queryDebt = queryCreate(
+    accountingYMDVal,
+    accountingHMSVal,
+    111,
+    "Cash",
+    accountingPriceVal,
+    0,
+    accountingInfoVal
+  );
+  const queryCredit = queryCreate(
+    accountingYMDVal,
+    accountingHMSVal,
+    311,
+    `Equity - ${accountingInvestorNameVal}`,
+    0,
+    accountingPriceVal,
+    accountingInfoVal
+  );
+  const msg = `Accounting - Investment ${accountingInvestorNameVal} has been added`;
+  await window.electronAPI.sqliteApi.run(queryDebt, msg);
+  await window.electronAPI.sqliteApi.run(queryCredit, msg);
+  return msg;
+};
+// cash out product / purchasement
+const createAccounting2 = async (req) => {
+  const {
+    accountingYMDVal,
+    accountingHMSVal,
+    accountingProductId,
+    accountingProductName,
+    accountingBalanceVal,
+    accountingInfoVal,
+  } = req;
+  // 1.validate date and time
+  validateDateAndTime(accountingYMDVal, accountingHMSVal);
+  // 2.validate productid
+  validateProductAdd(accountingProductId);
+  // 3.validate cash
+  await validateCash(accountingBalanceVal);
+  // 3. create to table accounting
+  const queryDebt = queryCreate(
+    accountingYMDVal,
+    accountingHMSVal,
+    511,
+    `Purchase - ${accountingProductName}`,
+    accountingBalanceVal,
+    0,
+    accountingInfoVal
+  );
+  const queryCredit = queryCreate(
+    accountingYMDVal,
+    accountingHMSVal,
+    111,
+    `Cash`,
+    0,
+    accountingBalanceVal,
+    accountingInfoVal
+  );
+  console.log(queryDebt);
+  console.log(queryCredit);
+  return false;
+  const msg = "Accounting has been added";
+  await window.electronAPI.sqliteApi.run(queryDebt, msg);
+  await window.electronAPI.sqliteApi.run(queryCredit, msg);
+  return msg;
+};
+
+// cash out asset
+const createAccounting3 = async (req) => {
+  const {
+    accountingDateVal,
+    accountingTimeVal,
+    accountingAssetIdVal,
+    accountingAssetNameVal,
+    accountingBalanceTotalVal,
+    accountingInfoVal,
+  } = req;
+  // 1.validate date and time
+  validateDateAndTime(accountingDateVal, accountingTimeVal);
+  // 2.validate cash
+  await validateCash(accountingBalanceTotalVal);
+  // accountingYMDVal,
+  // accountingHMSVal,
+  // accountingRefVal,
+  // accountingNameVal,
+  // accountingDebtVal,
+  // accountingCreditVal,
+  // accountingInfoVal,
 };
 // general-entries
 const getAccountingPagination = async (req) => {
@@ -140,36 +215,6 @@ const getAccounting1 = () => {
     });
   });
 };
-// const updateAccounting = (req, res) => {
-//   const {
-//     accountingYMDVal,
-//     accountingHMSVal,
-//     accountingRefVal,
-//     accountingNameVal,
-//     accountingPositionVal,
-//     accountingRpVal,
-//     accountingInfoVal,
-//     accountingId,
-//   } = req;
-//   const query = queryUpdate(
-//     accountingYMDVal,
-//     accountingHMSVal,
-//     accountingRefVal,
-//     accountingNameVal,
-//     accountingPositionVal,
-//     accountingRpVal,
-//     accountingInfoVal,
-//     accountingId
-//   );
-//   db.run(query, (err) => {
-//     if (!err) {
-//       return res(true, "berhasil");
-//     }
-//     if (err) {
-//       return res(false, err);
-//     }
-//   });
-// };
 // const deleteAccounting = (req, res) => {
 //   const { accountingIdVal } = req;
 //   const query = queryDeleteAccounting(accountingIdVal);
@@ -185,6 +230,8 @@ const getAccounting1 = () => {
 export {
   createAccounting,
   createAccounting1,
+  createAccounting2,
+  createAccounting3,
   getAccounting,
   getAccounting1,
   getAccountingDate,

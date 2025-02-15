@@ -1,8 +1,8 @@
 const categorySchema = `
 CREATE TABLE IF NOT EXISTS 
-Category(
-    CategoryId integer primary key autoincrement,
-    CategoryName varchar(100),
-    CategoryInfo text
+Category (
+    CategoryId INTEGER PRIMARY KEY AUTOINCREMENT,
+    CategoryName VARCHAR(100),
+    CategoryInfo TEXT
 );`;
 export default categorySchema;

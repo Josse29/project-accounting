@@ -120,7 +120,7 @@
                 <input
                   type="text"
                   class="form-control py-2"
-                  placeholder="masukkan keyword persediaan..."
+                  placeholder="input keyword persediaan..."
                   id="persediaan-search"
                 />
                 <span
@@ -202,7 +202,7 @@
                     <!-- day / date -->
                     <th style="width: 260px" class="text-nowrap">Day / Date</th>
                     <!-- hours -->
-                    <th style="width: 140px" class="text-nowrap">Hours</th>
+                    <th style="width: 80px" class="text-nowrap">Hour</th>
                     <!-- product name -->
                     <th style="width: 190px" class="text-nowrap">
                       Product Name
@@ -283,7 +283,7 @@
             class="card-header text-white fs-3"
             style="background-color: #273eec"
           >
-            Products
+            Product
           </div>
           <div class="card-body">
             <!-- tambah. export products total -->
@@ -340,7 +340,7 @@
                 <input
                   type="text"
                   class="form-control focus-by-me"
-                  placeholder="masukkan nama product..."
+                  placeholder="input nama product..."
                   id="product-search-input"
                 />
                 <span
@@ -431,8 +431,123 @@
             </div>
           </div>
         </div>
-        <!-- section third table category & supplier -->
+        <!-- section third table asset category -->
         <div class="d-flex w-100 gap-4 mb-5">
+          <!-- asset -->
+          <div class="card w-50 overflow-x-auto" id="asset-section">
+            <div
+              class="card-header text-white fs-3"
+              style="background-color: #152eec"
+            >
+              Asset
+            </div>
+            <div class="card-body">
+              <!-- tambah asset, total assets -->
+              <div class="d-flex justify-content-between mb-3">
+                <!-- create-assets -->
+                <button
+                  class="btn btn-primary text-white tooltip-bottom-container"
+                  data-bs-toggle="modal"
+                  data-bs-target="#assetCreateModal"
+                >
+                  <div class="tooltip-bottom-text">add-asset</div>
+                  <span class="text-nowrap d-flex gap-2 align-items-center">
+                    <i class="fa-solid fa-folder-plus fs-5"></i>
+                    <span class="text-nowrap fs-6 ms-1">Add Asset</span>
+                  </span>
+                </button>
+                <p id="assets-total-row" class="mb-0 fs-4"></p>
+              </div>
+              <!-- search & limit asset -->
+              <div class="d-flex mb-3 gap-3">
+                <select
+                  class="form-select w-auto"
+                  aria-label="Default select example"
+                  id="asset-limit"
+                >
+                  <option value="10">10</option>
+                  <option value="20">20</option>
+                  <option value="50">50</option>
+                </select>
+                <div class="input-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="input keyword asset..."
+                    id="asset-search"
+                  />
+                  <span
+                    class="input-group-text bg-primary text-white"
+                    id="asset-search-btn"
+                    >Search</span
+                  >
+                </div>
+              </div>
+              <!-- alert success -->
+              <div id="alertSuccess"></div>
+              <!-- table asset -->
+              <div class="py-2 overflow-x-auto" id="asset-table">
+                <table class="table table-striped" style="table-layout: fixed">
+                  <thead>
+                    <tr>
+                      <th class="text-center text-nowrap" style="width: 100px">
+                        #
+                      </th>
+                      <th class="text-nowrap" style="width: 190px">Name</th>
+                      <th class="text-nowrap" style="width: 210px">Price</th>
+                      <th class="text-center text-nowrap" style="width: 220px">
+                        Action
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td colspan="4" class="text-center fw-bold fst-italic">
+                        loading.....
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- pagination asset-->
+              <div
+                id="asset-pagination"
+                class="w-100 d-flex justify-content-center py-2 pt-3 d-none"
+              >
+                <div class="btn-group">
+                  <button
+                    type="button"
+                    class="btn border border-2"
+                    id="asset-first-page"
+                  >
+                    <i class="fa-solid fa-backward-fast fs-6"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn border border-2"
+                    id="asset-prev-page"
+                  >
+                    <i class="fa-solid fa-backward-step fs-6"></i>
+                  </button>
+                  <div class="btn-group" id="asset-number-page"></div>
+                  <button
+                    type="button"
+                    class="btn border border-2"
+                    id="asset-next-page"
+                  >
+                    <i class="fa-solid fa-forward-step fs-6"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn border border-2"
+                    id="asset-last-page"
+                  >
+                    <i class="fa-solid fa-forward-fast fs-6"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
           <!-- category -->
           <div class="card w-50" id="category-section">
             <div class="card-header text-white fs-3 bg-primary">Category</div>
@@ -454,7 +569,7 @@
                 </button>
                 <p id="categories-total-row" class="mb-0 fs-4"></p>
               </div>
-              <!-- search & limit category -->
+              <!-- search & limit asset -->
               <div class="d-flex mb-3 gap-3">
                 <select
                   class="form-select w-auto"
@@ -469,7 +584,7 @@
                   <input
                     type="text"
                     class="form-control"
-                    placeholder="masukkan keyword kategori..."
+                    placeholder="input keyword category..."
                     id="category-search-input"
                   />
                   <span
@@ -537,6 +652,100 @@
                     class="btn border border-2"
                     id="category-last-page"
                   >
+                    <i class="fa-solid fa-forward-fast fs-6"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- section fourth -->
+        <div class="d-flex w-100 gap-4 mb-5">
+          <!-- expense -->
+          <div class="card w-50 overflow-x-auto" id="expense-section">
+            <div class="card-header" style="background-color: #5163e9">
+              <h3 class="text-white mb-0">Expense</h3>
+            </div>
+            <div class="card-body">
+              <!-- button & total row -->
+              <div class="d-flex justify-content-between mb-3">
+                <button
+                  class="btn btn-primary text-white"
+                  data-bs-toggle="modal"
+                  data-bs-target="#expense-create-modal"
+                >
+                  <span class="d-flex align-items-center text-white gap-2">
+                    <i class="fa fa-solid fa-folder-plus fs-5"></i>
+                    <span class="fs-6">Add Expense</span>
+                  </span>
+                </button>
+                <p class="mb-0 fs-4" id="expense-total-row"></p>
+              </div>
+              <!-- search & limit  -->
+              <div class="d-flex mb-3 gap-3">
+                <select id="expense-limit" class="form-select w-auto">
+                  <option value="10">10</option>
+                  <option value="20">20</option>
+                  <option value="50">50</option>
+                </select>
+                <div class="input-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="input keyword expense...."
+                    id="expense-search"
+                  />
+                  <span class="input-group-text bg-primary text-white"
+                    >Search</span
+                  >
+                </div>
+              </div>
+              <!-- alert -->
+              <div class="alert-success"></div>
+              <!-- table -->
+              <div class="py-2 overflow-x-auto" id="expense-table">
+                <table class="table table-striped" style="table-layout: fixed">
+                  <thead>
+                    <tr>
+                      <th class="text-center text-nowrap" style="width: 100px">
+                        #
+                      </th>
+                      <th class="text-nowrap" style="width: 190px">Name</th>
+                      <th class="text-nowrap" style="width: 210px">Price</th>
+                      <th class="text-center" style="width: 202px">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="fst-italic fw-bold text-center" colspan="4">
+                        loading.....
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- pagination -->
+              <div
+                id="expense-pagination"
+                class="w-100 d-flex justify-content-center py-2 d-none"
+              >
+                <div class="btn-group">
+                  <!-- first  -->
+                  <button class="btn border border-2" id="expense-first-page">
+                    <i class="fa-solid fa-backward-fast fs-6"></i>
+                  </button>
+                  <!-- prev -->
+                  <button class="btn border border-2" id="expense-prev-page">
+                    <i class="fa-solid fa-backward-step fs-6"></i>
+                  </button>
+                  <!-- by number -->
+                  <div class="btn-group" id="expense-number-page"></div>
+                  <!-- next -->
+                  <button class="btn border border-2" id="expense-next-page">
+                    <i class="fa-solid fa-forward-step fs-6"></i>
+                  </button>
+                  <!-- last -->
+                  <button class="btn border border-2" id="expense-last-page">
                     <i class="fa-solid fa-forward-fast fs-6"></i>
                   </button>
                 </div>
@@ -628,24 +837,6 @@
                     class="form-control"
                     id="persediaan-create-info"
                   ></textarea>
-                </div>
-                <!-- send to request -->
-                <div>
-                  <!-- productname  -->
-                  <input
-                    type="hidden"
-                    class="form-control text-capitalize"
-                    id="persediaan-refproduct-create-name"
-                  />
-                  <!-- productid -->
-                  <input type="hidden" id="persediaan-refproduct-create-id" />
-                  <!-- productprice -->
-                  <input
-                    type="hidden"
-                    class="border-0 fs-3 mx-2 p-1 text-center"
-                    id="persediaan-refproduct-create-rp"
-                    value="0"
-                  />
                 </div>
               </div>
               <div class="modal-footer">
@@ -771,7 +962,7 @@
                     id="persediaan-refproduct-update-search"
                     type="text"
                     class="form-control text-capitalize"
-                    placeholder="masukkan nama product"
+                    placeholder="input nama product"
                     disabled
                   />
                 </div>
@@ -1155,7 +1346,7 @@
                     placeholder="ex : product-1."
                   />
                 </div>
-                <!-- price beli-->
+                <!-- price buy-->
                 <div class="mb-3">
                   <label for="product-price-beli" class="form-label fs-4"
                     >Price Buy</label
@@ -1167,7 +1358,7 @@
                     placeholder="ex : $ 1.2"
                   />
                 </div>
-                <!-- price jual -->
+                <!-- price sell -->
                 <div class="mb-3">
                   <label for="product-price-jual" class="form-label fs-4"
                     >Price Sell</label
@@ -1179,7 +1370,7 @@
                     placeholder="ex : $ 1.9"
                   />
                 </div>
-                <!-- kategori -->
+                <!-- category from db -->
                 <div class="mb-3">
                   <label
                     for="product-refcategory-create"
@@ -1508,7 +1699,7 @@
                     type="text"
                     class="form-control text-capitalize"
                     id="category-nama"
-                    placeholder="masukkan kata kategori"
+                    placeholder="input kata kategori"
                   />
                 </div>
                 <!-- CategoryInfo -->
@@ -1567,7 +1758,7 @@
                     type="text"
                     class="form-control text-capitalize"
                     id="edit-category-nama"
-                    placeholder="masukkan kata kategori"
+                    placeholder="input kata kategori"
                   />
                 </div>
                 <!-- CategoryInfo -->
@@ -1645,6 +1836,430 @@
           </div>
         </div>
       </div>
+      <!-- Asset-Modal -->
+      <div>
+        <!-- create Asset modal-->
+        <div class="modal fade" id="assetCreateModal">
+          <div
+            class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+          >
+            <div class="modal-content">
+              <div class="modal-header bg-primary">
+                <h2 class="modal-title text-white" id="exampleModalLabel">
+                  Asset
+                </h2>
+              </div>
+              <div class="modal-body">
+                <div id="failed"></div>
+                <!-- assetName -->
+                <div class="mb-3">
+                  <label
+                    for="asset-name"
+                    class="form-label fs-4 text-capitalize"
+                    >Asset Name</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control text-capitalize"
+                    id="asset-name"
+                    placeholder="input name of asset"
+                  />
+                </div>
+                <!-- asset price -->
+                <div class="mb-3">
+                  <label
+                    for="asset-price"
+                    class="form-label fs-4 text-capitalize"
+                    >Asset Price</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control text-capitalize"
+                    id="asset-price"
+                    placeholder="$ 1.0"
+                  />
+                </div>
+                <!-- asset userid -->
+                <div class="mb-3">
+                  <label for="asset-userid" class="form-label fs-4"
+                    >Asset Person</label
+                  >
+                  <select
+                    id="asset-userid"
+                    class="form-control text-capitalize"
+                  >
+                    <option class="text-muted" disabled selected>
+                      loading....
+                    </option>
+                  </select>
+                </div>
+                <!-- asset img -->
+                <div class="mb-3">
+                  <label for="asset-img" class="form-label fs-4"
+                    >Asset Image</label
+                  >
+                  <div class="position-relative d-none" id="section-img">
+                    <i
+                      class="fa-solid fa-circle-xmark text-danger"
+                      id="cancel-image"
+                    ></i>
+                    <img src="" alt="" class="w-100 h-auto mb-3" />
+                  </div>
+                  <input type="file" class="form-control" id="asset-img" />
+                </div>
+                <!-- assetInfo -->
+                <div class="mb-3">
+                  <label for="asset-info" class="form-label fs-4"
+                    >Asset Information</label
+                  >
+                  <textarea class="form-control" id="asset-info"></textarea>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button type="button" class="btn btn-primary" id="asset-submit">
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- detail Asset Modal  -->
+        <div class="modal fade" id="asset-detail-modal">
+          <div
+            class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+          >
+            <div class="modal-content">
+              <div class="modal-header bg-success"></div>
+              <div class="modal-body"></div>
+            </div>
+          </div>
+        </div>
+        <!-- update asset modal -->
+        <div class="modal fade" id="asset-update-modal">
+          <div
+            class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+          >
+            <div class="modal-content">
+              <div class="modal-header bg-primary">
+                <h3 class="modal-title text-white text-capitalize">
+                  Update Modal
+                </h3>
+              </div>
+              <div class="modal-body">
+                <div class="failed"></div>
+                <!-- assetname  -->
+                <div class="mb-3">
+                  <label for="asset-update-name" class="form-label fs-4"
+                    >Asset Name</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control text-capitalize"
+                    id="asset-update-name"
+                    placeholder="input name of asset"
+                  />
+                </div>
+                <!-- asset price -->
+                <div class="mb-3">
+                  <label for="asset-update-price" class="form-label fs-4"
+                    >Asset Price</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="asset-update-price"
+                    placeholder="$ 10.000"
+                  />
+                </div>
+                <!-- asset userid -->
+                <div class="mb-3">
+                  <label for="asset-update-userid" class="form-label fs-4"
+                    >Asset Person</label
+                  >
+                  <select
+                    id="asset-update-userid"
+                    class="form-control"
+                  ></select>
+                </div>
+                <!-- asset img  -->
+                <div class="mb-3">
+                  <label for="asset-update-img" class="form-label fs-4"
+                    >Asset Img</label
+                  >
+                  <div class="position-relative" id="section-img">
+                    <i
+                      class="fa-solid fa-circle-xmark text-danger"
+                      id="cancel-image"
+                    ></i>
+                    <img src="" alt="" class="w-100 mb-3" />
+                  </div>
+                  <input
+                    type="file"
+                    class="form-control"
+                    id="asset-update-img"
+                  />
+                </div>
+                <!-- asset info -->
+                <div class="mb-3">
+                  <label for="asset-update-info" class="form-label fs-4"
+                    >Asset Info</label
+                  >
+                  <textarea
+                    class="form-control"
+                    id="asset-update-info"
+                  ></textarea>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-danger" data-bs-dismiss="modal">
+                  Cancel
+                </button>
+                <button class="btn btn-primary">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- delete asset modal -->
+        <div class="modal fade" id="asset-delete-modal">
+          <div
+            class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
+          >
+            <div class="modal-content">
+              <div class="modal-header bg-danger"></div>
+              <div class="modal-body"></div>
+              <div class="modal-footer">
+                <button
+                  class="btn btn-secondary d-flex align-items-center gap-2"
+                  data-bs-dismiss="modal"
+                >
+                  <i class="fa-solid fa-times me-1 fs-4"></i>
+                  <span class="fs-5">No</span>
+                </button>
+                <button
+                  class="btn btn-danger text-white d-flex align-items-center gap-2"
+                >
+                  <i class="fa-solid fa-check me-1 fs-4"></i>
+                  <span class="fs-5">Yes</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- expense-modal -->
+      <div>
+        <!-- create -->
+        <div class="modal fade" id="expense-create-modal">
+          <div
+            class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+          >
+            <div class="modal-content">
+              <div class="modal-header bg-primary">
+                <h2 class="modal-title text-white">Expense</h2>
+              </div>
+              <div class="modal-body">
+                <div class="failed"></div>
+                <!-- expense name  -->
+                <div class="mb-3">
+                  <label
+                    for="expense-create-name"
+                    class="form-label fs-4 text-capitalize"
+                  >
+                    Expense Name
+                  </label>
+                  <input
+                    type="text"
+                    class="form-control text-capitalize"
+                    id="expense-create-name"
+                    placeholder="input name of expense...."
+                  />
+                </div>
+                <!-- expense price -->
+                <div class="mb-3">
+                  <label for="expense-create-price" class="form-label fs-4">
+                    Expense Price
+                  </label>
+                  <input
+                    type="text"
+                    id="expense-create-price"
+                    class="form-control"
+                    placeholder="$ 10,00"
+                  />
+                </div>
+                <!-- expense user id -->
+                <div class="mb-3">
+                  <label for="expense-user-id" class="form-label fs-4"
+                    >Expense Person</label
+                  >
+                  <select
+                    class="form-control text-capitalize"
+                    id="expense-user-id"
+                  ></select>
+                </div>
+                <!-- expense img  -->
+                <div class="mb-3">
+                  <label for="expense-create-img" class="form-label fs-4"
+                    >Expense Img</label
+                  >
+                  <div class="position-relative d-none" id="section-img">
+                    <i
+                      class="fa-solid fa-circle-xmark text-danger"
+                      id="cancel-image"
+                    ></i>
+                    <img src="" alt="" class="w-100 mb-3" />
+                  </div>
+                  <input
+                    type="file"
+                    class="form-control"
+                    id="expense-create-img"
+                  />
+                </div>
+                <!-- expense info -->
+                <div class="mb-3">
+                  <label for="expense-create-info" class="form-label fs-4"
+                    >Expense Info</label
+                  >
+                  <textarea
+                    id="expense-create-info"
+                    class="form-control"
+                  ></textarea>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-danger" data-bs-dismiss="modal">
+                  Cancel
+                </button>
+                <button class="btn btn-primary">Save Changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- detail -->
+        <div class="modal fade" id="expense-detail-modal">
+          <div
+            class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+          >
+            <div class="modal-content">
+              <div class="modal-header bg-success"></div>
+              <div class="modal-body"></div>
+            </div>
+          </div>
+        </div>
+        <!-- update -->
+        <div class="modal fade" id="expense-update-modal">
+          <div
+            class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+          >
+            <div class="modal-content">
+              <div class="modal-header bg-primary"></div>
+              <div class="modal-body">
+                <div class="failed"></div>
+                <!-- expenses name  -->
+                <div class="mb-3">
+                  <label
+                    for="expense-update-name"
+                    class="form-label fs-4 text-capitalize"
+                    >Expense Name</label
+                  >
+                  <input
+                    type="text"
+                    id="expense-update-name"
+                    class="form-control text-capitalize"
+                  />
+                </div>
+                <!-- expense price -->
+                <div class="mb-3">
+                  <label for="expense-update-price" class="form-label fs-4"
+                    >Expense Price</label
+                  >
+                  <input
+                    type="text"
+                    id="expense-update-price"
+                    class="form-control"
+                  />
+                </div>
+                <!-- expense img -->
+                <div class="mb-3">
+                  <label for="expense-update-img" class="form-label fs-4"
+                    >Expense Image</label
+                  >
+                  <div class="position-relative" id="section-img">
+                    <i
+                      id="cancel-image"
+                      class="fa-solid fa-circle-xmark text-danger"
+                    ></i>
+                    <img src="" alt="" class="mb-3 w-100" />
+                  </div>
+                  <input
+                    type="file"
+                    id="expense-update-img"
+                    class="form-control"
+                  />
+                </div>
+                <!-- expense user id  -->
+                <div class="mb-3">
+                  <label for="expense-update-user-id" class="form-label fs-4">
+                    Expense Person
+                  </label>
+                  <select
+                    id="expense-update-user-id"
+                    class="form-control text-capitalize"
+                  ></select>
+                </div>
+                <!-- expense  info -->
+                <div class="mb-3">
+                  <label for="expense-update-info" class="form-label fs-4">
+                    Expense Info
+                  </label>
+                  <textarea
+                    id="expense-update-info"
+                    class="form-control"
+                  ></textarea>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-danger" data-bs-dismiss="modal">
+                  Cancel
+                </button>
+                <button class="btn btn-primary">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- delete -->
+        <div class="modal fade" id="expense-delete-modal">
+          <div
+            class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
+          >
+            <div class="modal-content">
+              <div class="modal-header bg-danger"></div>
+              <div class="modal-body"></div>
+              <div class="modal-footer">
+                <button
+                  class="btn btn-secondary d-flex align-items-center gap-2"
+                  data-bs-dismiss="modal"
+                >
+                  <i class="fa fa-solid fa-times fs-4 me-1"></i>
+                  <span class="fs-5">No</span>
+                </button>
+                <button
+                  class="btn btn-danger text-white d-flex align-items-center gap-2"
+                >
+                  <i class="fa-solid fa-check me-1 fs-4"></i>
+                  <span class="fs-5">Yes</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <!-- jquery -->
     <script>
@@ -1666,5 +2281,7 @@
     <!-- <script type="module" src="./../js/models/users/index.js"></script> -->
     <script type="module" src="./../js/models/products/index.js"></script>
     <script type="module" src="./../js/models/persediaan/index.js"></script>
+    <script type="module" src="./../js/models/assetlist/index.js"></script>
+    <script type="module" src="./../js/models/expenselist/index.js"></script>
   </body>
 </html>

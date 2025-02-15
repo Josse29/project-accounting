@@ -1,6 +1,7 @@
 import {
   deleteUserId,
   getUser,
+  getUserCreditor,
   getUserCustomer,
   getUserInvestor,
   getUserPagination,
@@ -147,13 +148,25 @@ const getListInvestor = async () => {
     return { status: false, response: error };
   }
 };
-
+// 9.endpoint : api/user/creditor
+// method : GET
+// payLoad : ""
+// return : list creditonr
+const getListCreditor = async () => {
+  try {
+    const creditorList = await getUserCreditor();
+    return { status: true, response: creditorList };
+  } catch (error) {
+    return { status: false, response: error };
+  }
+};
 export {
   addUser,
   deleteById,
   fetchLimitOffset,
   fetchRowPage,
   getListCustomer,
+  getListCreditor,
   getListInvestor,
   getListSales,
   getListSupplier,

@@ -29,3 +29,16 @@
 .container-custome-me .user h1 {
   font-size: 55px;
 }
+div.scrollme::-webkit-scrollbar {
+  /* Width of the vertical scrollbar */
+  width: 8px;
+}
+div.scrollme::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+div.scrollme::-webkit-scrollbar-thumb {
+  background: #888;
+}
+div.scrollme::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

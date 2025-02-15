@@ -48,7 +48,7 @@ export const getPagination = async (req) => {
   try {
     const payLoad = {
       searchVal: req.searchVal,
-      limitVal: req.limitVal,
+      limitVal: parseInt(req.limitVal),
     };
     const totalPageRow = await getCashPagination(payLoad);
     return { status: true, response: totalPageRow };
@@ -64,8 +64,8 @@ export const getCashByLimitOffset = async (req) => {
   try {
     const payLoad = {
       searchVal: req.searchVal,
-      limitVal: req.limitVal,
-      offsetVal: req.offsetVal,
+      limitVal: parseInt(req.limitVal),
+      offsetVal: parseInt(req.offsetVal),
     };
     const cash = await getCash(payLoad);
     return { status: true, response: cash };

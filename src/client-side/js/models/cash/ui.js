@@ -1,7 +1,7 @@
 import { formatPrice, formatRupiah2 } from "../../utils/formatPrice.js";
 import { formatWaktuIndo, timeIndonesian } from "../../utils/formatTime.js";
 
-export const uiTbody = (response) => {
+const uiTbody = (response) => {
   let tbody = ``;
   response.forEach((rows) => {
     const CashDate = formatWaktuIndo(rows.CashDate);
@@ -23,7 +23,7 @@ export const uiTbody = (response) => {
       <td class="text-truncate align-content-center pe-3">
         ${CashTime}
       </td>
-      <td class="text-truncate align-content-center pe-3">${cashName}</td>
+      <td class="text-truncate align-content-center pe-3 text-capitalize">${cashName}</td>
       <td class="text-truncate align-content-center text-center pe-3">
         <span class="text-truncate badge fs-6" 
               style="background-color: ${bgCashBalance}; max-width: 100%"
@@ -47,7 +47,7 @@ export const uiTbody = (response) => {
   });
   $("tbody#cash").html(tbody);
 };
-export const uiTbodyEmpty = (searchVal) => {
+const uiTbodyEmpty = (searchVal) => {
   let search = "empty....";
   if (searchVal !== "") {
     search = `${searchVal} not found....`;
@@ -66,26 +66,27 @@ export const uiTbodyEmpty = (searchVal) => {
   $("tbody#cash").html(tr);
   $("div#cash-pagination-container").addClass("d-none");
 };
-export const uiTbodyLoad = () => {
+const uiTbodyLoad = () => {
   const tr = `
-      <tr>
-        <td
-          colspan="6"
-          class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize"
-          style="background-color: #f2f2f2"
-        >
-          loading....
-        </td>
-      </tr>`;
+  <tr>
+    <td
+      colspan="6"
+      class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize"
+      style="background-color: #f2f2f2"
+    >
+      loading....
+    </td>
+  </tr>
+  `;
   $("tbody#cash").html(tr);
   $("div#cash-pagination-container").addClass("d-none");
 };
-export const uiBtnPageActive = (number) => {
+const uiBtnPageActive = (number) => {
   const btnCashPage = $("button.cash-page-number");
   btnCashPage.removeClass("cash-page-active");
   btnCashPage.eq(number - 1).addClass("cash-page-active");
 };
-export const uiBtnPage = (totalPage) => {
+const uiBtnPage = (totalPage) => {
   let btn = ``;
   for (let i = 1; i <= totalPage; i++) {
     const actived = i === 1 && "cash-page-active";
@@ -98,7 +99,7 @@ export const uiBtnPage = (totalPage) => {
   $("div#cash-pagination").html(btn);
   $("div#cash-pagination-container").removeClass("d-none");
 };
-export const uiAlertSuccess = (res) => {
+const uiAlertSuccess = (res) => {
   const alert = `
   <div
     class="alert alert-success alert-dismissible fade show text-start"
@@ -116,7 +117,7 @@ export const uiAlertSuccess = (res) => {
   $("#section-alert").html(alert);
 };
 // for pdf
-export const uiPDF = (response, sumCash) => {
+const uiPDF = (response, sumCash) => {
   const { indonesiaDDMY, indonesiaHour, indonesiaMinute, indonesiaSecond } =
     timeIndonesian();
   const html = `
@@ -184,7 +185,7 @@ export const uiPDF = (response, sumCash) => {
   </div>`;
   return html2;
 };
-export const uiAlertFailed = (res) => {
+const uiAlertFailed = (res) => {
   const alert = `
   <div class="alert alert-danger alert-dismissible fade show text-start" role="alert">
     <strong class="text-capitalize">${res}</strong>
@@ -192,7 +193,7 @@ export const uiAlertFailed = (res) => {
   </div>`;
   $("#cash-modal-convert-csv .failed").html(alert);
 };
-export const uiAlertFailed1 = (res) => {
+const uiAlertFailed1 = (res) => {
   const alert = `
   <div class="alert alert-danger alert-dismissible fade show text-start" role="alert">
     <strong class="text-capitalize">${res}</strong>
@@ -200,14 +201,14 @@ export const uiAlertFailed1 = (res) => {
   </div>`;
   $("#cash-modal-convert-pdf .failed").html(alert);
 };
-export const uiAlertFailed2 = (res) => {
+const uiAlertFailed2 = (res) => {
   const alert = `<div class="alert alert-danger alert-dismissible fade show text-start" role="alert">
                     <strong class="text-capitalize">${res}</strong>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                  </div>`;
   $("#section-alert").html(alert);
 };
-export const uiSummary = (rupiah, startDateVal, endDateVal) => {
+const uiSummary = (rupiah, startDateVal, endDateVal) => {
   const price = rupiah !== "" ? formatRupiah2(rupiah) : formatRupiah2(0);
   const uiSummary = `
   <h4 class="text-capitalize fw-bold">
@@ -217,4 +218,18 @@ export const uiSummary = (rupiah, startDateVal, endDateVal) => {
   <h5>Total : ${price}</h5>
   `;
   $("div#cash-summary").html(uiSummary);
+};
+
+export {
+  uiAlertFailed,
+  uiAlertFailed1,
+  uiAlertFailed2,
+  uiAlertSuccess,
+  uiBtnPage,
+  uiBtnPageActive,
+  uiPDF,
+  uiSummary,
+  uiTbody,
+  uiTbodyEmpty,
+  uiTbodyLoad,
 };

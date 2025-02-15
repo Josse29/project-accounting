@@ -15,18 +15,14 @@ export function formatRupiah1(angka) {
   return "Rp " + rupiah;
 }
 export function disFormatRupiah1(angka) {
-  let price = angka
+  const price = angka
     .replace(/^Rp\s*/, "")
     .replace(/\./g, "")
     .replace(/,/g, ".");
-  if (price > 0) {
-    return parseFloat(price);
-  } else {
-    return 0;
-  }
+  return price;
 }
 export function formatRupiah2(input) {
-  let formattedValue = new Intl.NumberFormat("id-ID", {
+  const formattedValue = new Intl.NumberFormat("id-ID", {
     style: "currency",
     currency: "IDR",
   }).format(input);

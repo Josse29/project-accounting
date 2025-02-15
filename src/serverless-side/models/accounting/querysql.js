@@ -7,10 +7,13 @@ const queryCreate = (
   accountingCreditVal,
   accountingInfoVal
 ) => {
-  let query = `INSERT INTO Accounting
-               (AccountingYMD, AccountingHMS, AccountingRef, AccountingName, AccountingDebt, AccountingCredit, AccountingInfo)
-               VALUES
-               ('${accountingYMDVal}', '${accountingHMSVal}', '${accountingRefVal}', '${accountingNameVal}', '${accountingDebtVal}', '${accountingCreditVal}', '${accountingInfoVal}')`;
+  let query = `
+  INSERT 
+  INTO Accounting 
+  (AccountingYMD, AccountingHMS, AccountingRef, AccountingName, AccountingDebt, AccountingCredit, AccountingInfo) 
+  VALUES
+  ('${accountingYMDVal}', '${accountingHMSVal}', '${accountingRefVal}', '${accountingNameVal}', '${accountingDebtVal}', '${accountingCreditVal}', '${accountingInfoVal}')
+  `;
   return query;
 };
 const queryReadTotal = () => {
