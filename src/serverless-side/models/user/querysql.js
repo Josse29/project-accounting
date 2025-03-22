@@ -49,21 +49,51 @@ const queryGetCreditor = () => {
   let query = `
   SELECT 
   UserId,
-  UserFullname
+  UserFullname,
+  UserEmail
   FROM User `;
-  //  ONlY CUSTOMER
+  //  ONlY Creditor
   query += `WHERE UserPosition = 'creditor' `;
   // sort by fullname ascending
   query += `ORDER BY UserFullname ASC`;
   return query;
 };
+const queryGetDebt = () => {
+  let query = `
+  SELECT 
+  UserId,
+  UserFullname,
+  UserEmail
+  FROM User `;
+  //  ONlY Creditor
+  query += `WHERE UserPosition = 'creditor' OR `;
+  query += `UserPosition = 'supplier' `;
+  // sort by fullname ascending
+  query += `ORDER BY UserFullname ASC`;
+  return query;
+};
 const queryGetCustomer = () => {
-  let query = `SELECT 
-                 UserId,
-                 UserFullname
-                 FROM User `;
+  let query = `
+  SELECT 
+  UserId, 
+  UserFullname,
+  UserEmail 
+  FROM User
+  `;
   //  ONlY CUSTOMER
   query += `WHERE UserPosition = 'customer' `;
+  // sort by fullname ascending
+  query += `ORDER BY UserFullname ASC`;
+  return query;
+};
+const queryGetUser = () => {
+  let query = `
+  SELECT 
+  UserId, 
+  UserFullname,
+  UserEmail 
+  FROM User
+  `;
   // sort by fullname ascending
   query += `ORDER BY UserFullname ASC`;
   return query;
@@ -82,6 +112,7 @@ const queryGetSale = () => {
 const queryGetInvestor = () => {
   let query = `SELECT 
                UserId,
+               UserEmail,
                UserFullname
                FROM User `;
   //  ONlY sales
@@ -93,7 +124,8 @@ const queryGetInvestor = () => {
 const queryGetSupplier = () => {
   let query = `SELECT 
                UserId,
-               UserFullname
+               UserFullname,
+               UserEmail
                FROM User `;
   //  ONlY sales
   query += `WHERE UserPosition = 'supplier' `;
@@ -131,9 +163,11 @@ const queryDeleteUser = (userId) => {
 export {
   queryDeleteUser,
   queryGet,
+  queryGetDebt,
   queryGetCreditor,
   queryGetCustomer,
   queryGetInvestor,
+  queryGetUser,
   queryGetSale,
   queryGetSupplier,
   queryGetTotal,

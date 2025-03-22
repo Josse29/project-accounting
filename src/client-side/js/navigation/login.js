@@ -1,20 +1,20 @@
 $("#minimize-window")
   .off("click")
   .on("click", () => {
-    window.electronAPI.minimize();
+    window.ElectronAPI.minimize();
   });
 $("#restore-window")
   .off("click")
   .on("click", () => {
-    window.electronAPI.restore();
+    window.ElectronAPI.restore();
   });
 $("#close-window")
   .off("click")
   .on("click", () => {
-    window.electronAPI.close();
+    window.ElectronAPI.close();
   });
 $("button#login")
   .off("click")
   .on("click", () => {
-    window.electronAPI.navigateTo("dashboard");
+    window.ElectronAPI.navigateTo("dashboard");
   });

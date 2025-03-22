@@ -1,6 +1,6 @@
-import { debounce } from "../../utils/debounce.js";
-import { uiLoad } from "./ui.js";
 import { executeRead } from "./utils.js";
+import debounce from "../../utils/debounce.js";
+import { uiLoad } from "./ui.js";
 
 // value
 let searchVal = $("input#user-search").val();

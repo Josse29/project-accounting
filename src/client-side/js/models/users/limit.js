@@ -1,4 +1,4 @@
-import { debounce } from "../../utils/debounce.js";
+import debounce from "../../utils/debounce.js";
 import { uiLoad } from "./ui.js";
 import { executeRead } from "./utils.js";
 

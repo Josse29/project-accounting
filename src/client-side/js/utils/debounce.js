@@ -1,5 +1,4 @@
-// for searching
-export const debounce = (func, delay) => {
+const debounce = (func, delay) => {
   let timeoutId;
   return function (...args) {
     if (timeoutId) {
@@ -10,3 +9,4 @@ export const debounce = (func, delay) => {
     }, delay);
   };
 };
+export default debounce;

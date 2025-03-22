@@ -115,3 +115,33 @@ END :
 - setup vm, react, react native 
 - update schema assetName and expense
 - research flowchart to balance sheet....
+16/17/18/19
+- implement fullstack accounting all huffttt 
+-20/21
+- fixing backend hufftt
+22/23/24 - 02-2025
+- fixing backend hufft accounting create 
+03/03/2025
+- validate assetlist (DONE) 15 minute
+- cash-in-asset-sell (DONE) 1.15 hour
+- cash-in-asset-sell with circumstance profit or loss (DONE)  45 minute
+- etc-asset-buy-credit with both interest and not interest (DONE) 30 Minute
+- etc-asset-sell-credit with circumstance profit or loss 1.5 Hour
+- etc-investment-asset and withdraw-investment-asset with all changing (DONE) 1.5 Hour
+- etc-depreciation-asset 1.2 hour (DONE)
+04/03/2025
+- etc-depreciation-asset 25m minute continue... (DONE)
+- cash-in-product-sell-discount 25 minute (DONE)
+- cash-out-product-buy-discount 30 minute (DONE)
+- cash-out-expense-buy 45 MINUTE (DONE) 
+- cash-in-from-others 45 MINUTE (DONE)
+05/03/2025
+- make exercise HRD complete as well as review all 4 hour (DONE)
+17/03/2025 - 18/03/2025
+- stock management (fixingui, export-pdf, export-csv) 100% (DONE)
+- sales management (fixingui, export-pdf, export-csv) 90% (UNDONE)
+- convert react 
+- auth + jwt 
+(Consolidated Statement Of Financial Position)
+(Consolidate Statement Of Profit Or Loss)
+(Consolidate Statement OF Changes In Equity)

@@ -11,7 +11,7 @@ $(() => {
           <i
             id="minimize"
             class="fa-solid fa-minus text-white custome-me tooltip-bottom-container"
-            onClick="window.electronAPI.minimize();"
+            onClick="window.ElectronAPI.minimize();"
           >
             <p class="tooltip-bottom-text fs-5 p-2">Minimize</p>
           </i>
@@ -19,7 +19,7 @@ $(() => {
           <i
             class="fa-regular fa-window-restore custome-me tooltip-bottom-container"
             id="restore"
-            onClick="window.electronAPI.restore();"
+            onClick="window.ElectronAPI.restore();"
           >
             <p class="tooltip-bottom-text fs-5 p-2">Restore</p>
           </i>
@@ -27,7 +27,7 @@ $(() => {
           <i
             class="fa-solid fa-right-from-bracket custome-me tooltip-bottom-container"
             id="logout"
-            onClick="window.electronAPI.logout();"
+            onClick="window.ElectronAPI.logout();"
           >
             <p class="tooltip-bottom-text fs-5 p-2">Close</p>
           </i>

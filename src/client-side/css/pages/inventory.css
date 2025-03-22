@@ -2,6 +2,7 @@
 @import "./../components/body.css";
 @import "./../components/left-side.css";
 
+@import "./../components/tables.css";
 @import "./../components/tooltip-bottom.css";
 @import "./../components/tooltip-right.css";
 @import "./../components/text.css";
@@ -13,10 +14,7 @@
 
 @import "./../models/persediaan.css";
 @import "./../models/product.css";
-@import "./../models/category.css";
-@import "./../models/supplier.css";
-@import "./../models/assetname.css";
-@import "./../models/expense.css";
+@import "./../models/sales.css";
 
 .border-l-custome-me {
   border-left: 15px solid #3c50e0;

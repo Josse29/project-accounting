@@ -1,11 +1,10 @@
 import { addProduct } from "./services.js";
 
 import { listUserRefProductCreate } from "../users/list.js";
-import { listCategoryRefProductCreate } from "./../categories/list.js";
 import { uiAlertFailCreate, uiAlertSuccess, uiBlankVal } from "./ui.js";
 import { disFormatRupiah1, formatRupiah1 } from "../../utils/formatPrice.js";
 import { capitalizeWord } from "../../utils/formatCapitalize.js";
-import { listProductRefPersediaanCreate } from "./list.js";
+import { listProductRefStockCreate } from "./list.js";
 import { previewLoadImg } from "../../utils/loadImg.js";
 import { getProductAll, getProductRef } from "./utils.js";
 
@@ -13,7 +12,6 @@ $("button#product-create")
   .off("click")
   .on("click", async function () {
     $("div#productCreateFailed").html("");
-    await listCategoryRefProductCreate();
     await listUserRefProductCreate();
   });
 // Format as Rupiah when input
@@ -51,7 +49,6 @@ $("#submit_product")
     const productPriceBuy = disFormatRupiah1($("#product-price-beli").val());
     const productPriceSell = disFormatRupiah1($("#product-price-jual").val());
     const productInfo = $("#product-keterangan").val();
-    const productCategoryId = $("#product-refcategory-create").val();
     const productSupplierId = $("#product-refsupplier-create").val();
     const productImg = $("#create-image-product")[0].files;
     const req = {
@@ -59,7 +56,6 @@ $("#submit_product")
       productPriceBuy,
       productPriceSell,
       productInfo,
-      productCategoryId,
       productSupplierId,
       productImg,
     };
@@ -67,7 +63,7 @@ $("#submit_product")
     if (status) {
       await getProductAll();
       await getProductRef();
-      await listProductRefPersediaanCreate();
+      await listProductRefStockCreate();
       uiAlertSuccess(response);
       uiBlankVal();
       $("#productCreateModal").modal("hide");

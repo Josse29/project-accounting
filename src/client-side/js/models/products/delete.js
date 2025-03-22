@@ -1,7 +1,6 @@
-import { deleteByProductId } from "../persediaan/services.js";
-import { deletedById } from "./services.js";
-import { uiAlertSuccess } from "./ui.js";
-import { getProductAll, getProductRef } from "./utils.js";
+// import { deletedById } from "./services.js";
+// import { uiAlertSuccess } from "./ui.js";
+// import { getProductAll, getProductRef } from "./utils.js";
 
 // Delete Product event binding mckkkk
 $("tbody#product-table")
@@ -21,16 +20,17 @@ $("tbody#product-table")
           productid,
           productName,
         };
-        await deleteByProductId(productid);
-        const { status, response } = await deletedById(req);
-        if (status) {
-          await getProductAll();
-          await getProductRef();
-          uiAlertSuccess(response);
-          $("#confirmDeleteProductModal").modal("hide");
-        }
-        if (!status) {
-          console.error(response);
-        }
+        console.log(req);
+        // await deleteByProductId(productid);
+        // const { status, response } = await deletedById(req);
+        // if (status) {
+        //   await getProductAll();
+        //   await getProductRef();
+        //   uiAlertSuccess(response);
+        //   $("#confirmDeleteProductModal").modal("hide");
+        // }
+        // if (!status) {
+        //   console.error(response);
+        // }
       });
   });

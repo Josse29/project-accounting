@@ -1,10 +1,10 @@
-import { debounce } from "../../utils/debounce.js";
+import debounce from "../../utils/debounce.js";
 import { uiTBodyLoad } from "./ui.js";
 import { getProductAll } from "./utils.js";
 
 // get all value
 let searchVal = $("#product-search-input").val();
-let limitVal = parseInt($("#product-limit").val());
+let limitVal = $("#product-limit").val();
 let offsetVal = 1;
 
 // debouncing
@@ -16,7 +16,7 @@ const handleBounce = debounce(() => {
 $("#product-limit")
   .off("change")
   .on("change", function () {
-    limitVal = parseInt($(this).val());
+    limitVal = $(this).val();
     searchVal = $("#product-search-input").val();
     uiTBodyLoad();
     handleBounce();

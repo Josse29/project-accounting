@@ -1,19 +1,19 @@
-button.general-entries-page-active {
+button.general-page-active {
   background-color: #273eec !important;
   color: white !important;
   border: 4px solid #99a4f9 !important;
 }
 /* accounting-card */
-div#accounting-card::-webkit-scrollbar {
+div#general-section::-webkit-scrollbar {
   height: 7px;
 }
-div#accounting-card::-webkit-scrollbar-track {
+div#general-section::-webkit-scrollbar-track {
   background: #f1f1f1;
 }
-div#accounting-card::-webkit-scrollbar-thumb {
+div#general-section::-webkit-scrollbar-thumb {
   background: #888;
 }
-div#accounting-card::-webkit-scrollbar-thumb:hover {
+div#general-section::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
 /* accounting-table */
@@ -60,6 +60,12 @@ div#accountingCashInModal input:focus {
   border: 3px solid #119687;
   box-shadow: 0 0 0 0.1rem #7ef3e5;
 }
+div#accounting-modal-convert-csv input:focus {
+  box-shadow: 0 0 0 0.2rem #0fd025;
+}
+div#accounting-modal-convert-csv select:focus {
+  box-shadow: 0 0 0 0.2rem #0fd025;
+}
 div#accountingCashInModal select:focus {
   border: 3px solid #119687;
   box-shadow: 0 0 0 0.1rem #7ef3e5;
@@ -80,4 +86,10 @@ div#accountingCashOutModal select:focus {
 div#accountingCashOutModal textarea:focus {
   border: 2px solid #e11d48;
   box-shadow: 0 0 0 0.1rem #efb1be;
+}
+div#select-mode button.active {
+  background-color: #612bde;
+}
+div#select-mode button {
+  background-color: #a68be7;
 }

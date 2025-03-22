@@ -3,7 +3,10 @@ import {
   getUser,
   getUserCreditor,
   getUserCustomer,
+  getUserCustomer1,
+  getUserDebt,
   getUserInvestor,
+  getUserList,
   getUserPagination,
   getUserSale,
   getUserSupplier,
@@ -102,7 +105,6 @@ const update = async (req) => {
 };
 // 6.endpoint : api/user/list-customer
 // method : GET
-// payload : ""
 // return : list of customer
 const getListCustomer = async () => {
   try {
@@ -142,20 +144,52 @@ const getListSupplier = async () => {
 // return : user only investor
 const getListInvestor = async () => {
   try {
-    const supplier = await getUserInvestor();
-    return { status: true, response: supplier };
+    const investor = await getUserInvestor();
+    return { status: true, response: investor };
   } catch (error) {
     return { status: false, response: error };
   }
 };
 // 9.endpoint : api/user/creditor
 // method : GET
-// payLoad : ""
 // return : list creditonr
 const getListCreditor = async () => {
   try {
     const creditorList = await getUserCreditor();
     return { status: true, response: creditorList };
+  } catch (error) {
+    return { status: false, response: error };
+  }
+};
+// 9.endpoint : api/user/debt
+// method : GET
+// return : list creditonr
+const getListDebt = async () => {
+  try {
+    const debtList = await getUserDebt();
+    return { status: true, response: debtList };
+  } catch (error) {
+    return { status: false, response: error };
+  }
+};
+// 10. endpoint : api/user-list
+// method : GET
+// return : list user
+const getListUser = async () => {
+  try {
+    const response = await getUserList();
+    return { status: true, response };
+  } catch (error) {
+    return { status: false, response: error };
+  }
+};
+// 6.endpoint : api/user/list-customer
+// method : GET
+// return : list of customer
+const getListCustomer1 = async () => {
+  try {
+    const customer = await getUserCustomer1();
+    return { status: true, response: customer };
   } catch (error) {
     return { status: false, response: error };
   }
@@ -166,9 +200,12 @@ export {
   fetchLimitOffset,
   fetchRowPage,
   getListCustomer,
+  getListCustomer1,
   getListCreditor,
   getListInvestor,
+  getListDebt,
   getListSales,
+  getListUser,
   getListSupplier,
   update,
 };

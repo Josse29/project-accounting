@@ -98,66 +98,11 @@ tbody#persediaan-table::-webkit-scrollbar-thumb {
 tbody#persediaan-table::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
-div#persediaan-section {
-  overflow: auto;
+div#persediaan-modal-convert-csv input:focus {
+  border: 2px solid #11964d;
+  box-shadow: 0 0 0 0.1rem #19c767;
 }
-div#persediaan-section::-webkit-scrollbar {
-  /* Width of the vertical scrollbar */
-  height: 8px;
-}
-div#persediaan-section::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-div#persediaan-section::-webkit-scrollbar-thumb {
-  background: #888;
-}
-div#persediaan-section::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-div#persediaan-scroll-byme {
-  overflow: auto;
-}
-div#persediaan-scroll-byme::-webkit-scrollbar {
-  /* Width of the vertical scrollbar */
-  height: 8px;
-}
-div#persediaan-scroll-byme::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-div#persediaan-scroll-byme::-webkit-scrollbar-thumb {
-  background: #888;
-}
-div#persediaan-scroll-byme::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-input#persediaan-start-date-csv {
-  outline: none;
-}
-input#persediaan-start-date-csv:focus {
-  box-shadow: none;
-  outline: #4caf50 solid 2px;
-}
-input#persediaan-end-date-csv {
-  outline: none;
-}
-input#persediaan-end-date-csv:focus {
-  box-shadow: none;
-  outline: #4caf50 solid 2px;
-}
-input#persediaan-start-date-pdf {
-  outline: none;
-}
-input#persediaan-start-date-pdf:focus {
-  border: none;
-  box-shadow: none;
-  outline: rgb(249, 97, 46) solid 1px;
-}
-input#persediaan-end-date-pdf {
-  outline: none;
-  box-shadow: none;
-}
-input#persediaan-end-date-pdf:focus {
-  border: none;
-  box-shadow: none;
-  outline: rgb(249, 97, 46) solid 1px;
+div#persediaan-modal-convert-pdf input:focus {
+  border: 1px solid rgb(236, 71, 17);
+  box-shadow: 0 0 0 0.1rem rgb(236, 71, 17);
 }

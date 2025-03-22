@@ -1,22 +1,28 @@
 import {
   getListCreditor,
   getListCustomer,
+  getListCustomer1,
+  getListDebt,
   getListInvestor,
   getListSales,
   getListSupplier,
+  getListUser,
 } from "./services.js";
+import { formatRupiah2 } from "../../utils/formatPrice.js";
 
 const listSales = async () => {
   // user sales
   const { status, response } = await getListSales();
   if (status) {
     const existed = response.length >= 1;
-    let option = `<option selected disabled>Choose One Of Sales</option>`;
+    let option = `<option selected disabled value="">Choose One Of Sales</option>`;
     if (existed) {
       response.forEach((el) => {
         const userId = el.UserId;
         const userFullname = el.UserFullname;
-        option += `<option value="${userId}" class="text-capitalize">${userFullname}</option>`;
+        option += `
+        <option value="${userId}" class="text-capitalize" 
+        data-userfullname="${userFullname}">${userFullname}</option>`;
       });
     }
     if (!existed) {
@@ -34,12 +40,90 @@ const listCustomer = async () => {
   const { status, response } = await getListCustomer();
   if (status) {
     const existed1 = response.length >= 1;
-    let option = `<option selected disabled>Choose One Of Customers</option>`;
+    let option = `<option selected disabled value="">Choose One Of Customers</option>`;
     if (existed1) {
       response.forEach((el) => {
         const userId = el.UserId;
         const userFullname = el.UserFullname;
-        option += `<option value="${userId}" class="text-capitalize">${userFullname}</option>`;
+        const userEmail = el.UserEmail;
+        option += `
+        <option 
+        value="${userId}" 
+        class="text-capitalize"
+        data-userfullname="${userFullname}"
+        data-useremail="${userEmail}"
+        >
+          ${userFullname}
+        </option>
+        `;
+      });
+    }
+    if (!existed1) {
+      option += `<option selected disabled class="fst-italic text-center">Customers Empty...</option>`;
+    }
+    return option;
+  }
+  if (!status) {
+    console.error(response);
+    throw new Error(response);
+  }
+};
+const listUser = async () => {
+  // user customer id
+  const { status, response } = await getListUser();
+  if (status) {
+    const existed1 = response.length >= 1;
+    let option = `<option selected disabled>Choose One Of Users</option>`;
+    if (existed1) {
+      response.forEach((el) => {
+        const userId = el.UserId;
+        const userFullname = el.UserFullname;
+        const userEmail = el.UserEmail;
+        option += `
+        <option 
+        value="${userId}" 
+        class="text-capitalize"
+        data-userfullname="${userFullname}"
+        data-useremail="${userEmail}"
+        >
+          ${userFullname}
+        </option>
+        `;
+      });
+    }
+    if (!existed1) {
+      option += `<option selected disabled class="fst-italic text-center">User Empty...</option>`;
+    }
+    return option;
+  }
+  if (!status) {
+    console.error(response);
+    throw new Error(response);
+  }
+};
+const listCustomer1 = async () => {
+  // user customer id
+  const { status, response } = await getListCustomer1();
+  if (status) {
+    const existed1 = response.length >= 1;
+    let option = `<option selected disabled value="">Choose One Of Customers</option>`;
+    if (existed1) {
+      response.forEach((el) => {
+        const userId = el.UserId;
+        const userFullname = el.UserFullname;
+        const userEmail = el.UserEmail;
+        const totalReceivable = el.TotalReceivable;
+        option += `
+        <option 
+        value="${userId}" 
+        class="text-capitalize"
+        data-userfullname="${userFullname}"
+        data-useremail="${userEmail}"
+        data-receivable="${totalReceivable}"
+        >
+          ${userFullname} - ${formatRupiah2(totalReceivable)}
+        </option>
+        `;
       });
     }
     if (!existed1) {
@@ -62,8 +146,13 @@ const listSupplier = async () => {
       response.forEach((el) => {
         const userId = el.UserId;
         const userFullname = el.UserFullname;
+        const userEmail = el.UserEmail;
         option += `
-        <option value="${userId}" class="text-capitalize">${userFullname}</option>`;
+        <option 
+        value="${userId}" 
+        class="text-capitalize" 
+        data-useremail="${userEmail}"
+        data-userfullname="${userFullname}">${userFullname}</option>`;
       });
     }
     if (!existed1) {
@@ -103,41 +192,28 @@ const listSupplier1 = async (selectedId) => {
     throw new Error(response);
   }
 };
-const listSupplier2 = async () => {
-  const { status, response } = await getListSupplier();
-  if (status) {
-    const existed1 = response.length >= 1;
-    let option = `<option selected disabled>Choose One Of Suppliers</option>`;
-    if (existed1) {
-      response.forEach((el) => {
-        option += `<option value="${el.UserId}" class="text-capitalize">${el.UserFullname}</option>`;
-      });
-    }
-    if (!existed1) {
-      option += `<option disabled class="fst-italic text-center">Supplier Empty...</option>`;
-    }
-    return option;
-  }
-  if (!status) {
-    console.error(response);
-    throw new Error(response);
-  }
-};
 const listInvestor = async () => {
   const { status, response } = await getListInvestor();
   if (status) {
     const existed1 = response.length >= 1;
-    let option = `<option selected disabled>Choose One Of Investor</option>`;
+    let option = `<option selected disabled>Choose One Of Investors</option>`;
     if (existed1) {
       response.forEach((el) => {
         const userId = el.UserId;
-        const userNFullname = el.UserFullname;
+        const userFullname = el.UserFullname;
+        const userEmail = el.UserEmail;
+        const investBalance = el.TotalEquity;
         option += `
-        <option value="${userId}" class="text-capitalize">${userNFullname}</option>`;
+        <option class="text-capitalize" 
+                value="${userId}"
+                data-userfullname="${userFullname}"
+                data-useremail="${userEmail}"  
+                data-investbalance="${investBalance}"  
+                >${userFullname} : ${formatRupiah2(investBalance)}</option>`;
       });
     }
     if (!existed1) {
-      option += `<option disabled class="fst-italic text-center">Investor Empty...</option>`;
+      option += `<option disabled class="fst-italic text-center text-muted">Investor Empty...</option>`;
     }
     return option;
   }
@@ -156,11 +232,49 @@ const listCreditor = async () => {
       response.forEach((el) => {
         const userId = el.UserId;
         const userFullname = el.UserFullname;
+        const userEmail = el.UserEmail;
+        const totalLiability = el.TotalLiability;
         option += `
         <option
-        value="${userId}" 
+        value="${userId}"
+        data-useremail="${userEmail}" 
+        data-userfullname="${userFullname}" 
+        data-totalliability="${totalLiability}" 
         class="text-capitalize">
-          ${userFullname}
+          ${userFullname} : ${formatRupiah2(totalLiability)}
+        </option>`;
+      });
+    }
+    if (!existed) {
+      option += `<option selected disabled class="text-muted text-center">creditor is empty....</option>`;
+    }
+    return option;
+  }
+  if (!status) {
+    console.error(response);
+    throw new Error(response);
+  }
+};
+const listDebt = async () => {
+  const { status, response } = await getListDebt();
+  if (status) {
+    const existed = response.length >= 1;
+    let option = ``;
+    if (existed) {
+      option += `<option selected disabled>Choose One Of Creditors</option>`;
+      response.forEach((el) => {
+        const userId = el.UserId;
+        const userFullname = el.UserFullname;
+        const userEmail = el.UserEmail;
+        const totalLiability = el.TotalLiability;
+        option += `
+        <option
+        value="${userId}"
+        data-useremail="${userEmail}" 
+        data-userfullname="${userFullname}" 
+        data-totalliability="${totalLiability}" 
+        class="text-capitalize">
+          ${userFullname} : ${formatRupiah2(totalLiability)}
         </option>`;
       });
     }
@@ -198,7 +312,7 @@ const listUserRefProductCreate = async () => {
   $("select#product-refsupplier-create").html(supplier);
 };
 const listUserRefPersediaanRead = async () => {
-  const supplier = await listSupplier2();
+  const supplier = await listSupplier();
   $("select#persediaan-refsupplier-search").html(supplier);
 };
 const listUserRefProductUpdate = async (selectedId) => {
@@ -222,10 +336,14 @@ const listUserRefExpenseUpdate = async (selected) => {
   $("select#expense-update-user-id").html(supplierList);
 };
 export {
-  listInvestor,
   listCreditor,
   listCustomer,
+  listCustomer1,
+  listDebt,
+  listUser,
+  listInvestor,
   listSales,
+  listSupplier,
   listUserRefAssetCreate,
   listUserRefAssetUpdate,
   listUserRefExpenseCreate,

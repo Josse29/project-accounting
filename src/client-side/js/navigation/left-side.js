@@ -1,5 +1,5 @@
 $(async () => {
-  // const currentPage = await window.electronAPI.getCurrentPage();
+  // const currentPage = await window.ElectronAPI.getCurrentPage();
   const currentPage = document.title;
   const ui = `
         <div class="logo" id="dragWin">
@@ -10,7 +10,7 @@ $(async () => {
           <!-- dashboard -->
           <div
             class="text-center mb-5 custome-me tooltip-right-container"
-            onClick='window.electronAPI.navigateTo("dashboard")'
+            onClick='window.ElectronAPI.navigateTo("dashboard")'
           >
             <i class="fa-solid fa-house fs-3 ${
               currentPage === "Dashboard" && "custome-me-active"
@@ -21,7 +21,7 @@ $(async () => {
           <!-- order -->
           <div
             class="text-center mb-5 custome-me tooltip-right-container"
-            onClick='window.electronAPI.navigateTo("order")'
+            onClick='window.ElectronAPI.navigateTo("order")'
           >
             <i class="fa-solid fa-cart-shopping fs-3 ${
               currentPage === "Order" && "custome-me-active"
@@ -32,7 +32,7 @@ $(async () => {
           <!-- inventory -->
           <div
             class="text-center mb-5 custome-me tooltip-right-container"
-            onClick='window.electronAPI.navigateTo("inventory")'
+            onClick='window.ElectronAPI.navigateTo("inventory")'
           >
             <i class="fa-solid fa-file-circle-plus fs-3 ${
               currentPage === "Inventory" && "custome-me-active"
@@ -43,7 +43,7 @@ $(async () => {
           <!-- transaksi -->
           <div
             class="text-center mb-5 custome-me tooltip-right-container"
-            onClick='window.electronAPI.navigateTo("transaksi")'
+            onClick='window.ElectronAPI.navigateTo("transaksi")'
           >
             <i class="fa-solid fa-chart-simple fs-3 ${
               currentPage === "Transaksi" && "custome-me-active"
@@ -54,7 +54,7 @@ $(async () => {
           <!-- users -->
           <div
             class="text-center mb-5 custome-me tooltip-right-container"
-            onClick='window.electronAPI.navigateTo("users")'>
+            onClick='window.ElectronAPI.navigateTo("users")'>
             <i class="fa-solid fa-users fs-3 ${
               currentPage === "User" && "custome-me-active"
             }">
@@ -64,7 +64,7 @@ $(async () => {
           <!-- about -->
           <div 
             class="text-center mb-5 custome-me tooltip-right-container"
-            onClick='window.electronAPI.navigateTo("about-us")'>
+            onClick='window.ElectronAPI.navigateTo("about-us")'>
             <i class="fa-solid fa-city fs-3 ${
               currentPage === "About" && "custome-me-active"
             }">

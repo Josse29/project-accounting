@@ -1,81 +1,102 @@
-import { readpage } from "./utils.js";
-import { uiBtnPage } from "./ui.js";
+import { getAccountingAPI1 } from "./utils.js";
+import { uiBtnPage, uiBtnPageActived } from "./ui.js";
 
 function handlePagination(totalPage) {
   // ui btn page
   uiBtnPage(totalPage);
   //  get value
-  const searchVal = $("input#general-entries-search").val();
-  const limitVal = 10;
+  const selectedAccount = $("div#select-mode button.active").data("value");
+  const searchVal = $("#general-section #limit-search input").val();
+  const limitVal = parseInt($("#general-section #limit-search select").val());
+  let offsetVal = 1;
   // first page
-  $("button#general-entry-first")
+  $("div#general-section div#pagination button#first-page")
     .off("click")
     .on("click", async function () {
+      offsetVal = 1;
       const req = {
+        selectedAccount,
         searchVal,
-        limitVal: parseInt(limitVal),
-        offsetVal: 1,
+        limitVal,
+        offsetVal,
       };
-      await readpage(req);
+      await getAccountingAPI1(req);
+      uiBtnPageActived(offsetVal);
     });
   // prev page
-  $("button#general-entry-prev")
+  $("div#general-section div#pagination button#prev-page")
     .off("click")
     .on("click", async function () {
       let activePage = parseInt(
-        $("button.general-entries-page-active").text().trim()
+        $("div#general-section div#pagination button.general-page-active")
+          .text()
+          .trim()
       );
       let decrementPage = activePage - 1;
       if (decrementPage < 1) {
         decrementPage = totalPage;
       }
+      offsetVal = decrementPage;
       const req = {
+        selectedAccount,
         searchVal,
-        limitVal: parseInt(limitVal),
-        offsetVal: parseInt(decrementPage),
+        limitVal,
+        offsetVal,
       };
-      await readpage(req);
+      await getAccountingAPI1(req);
+      uiBtnPageActived(offsetVal);
     });
   // by number page
-  $("div#general-entries-page-number")
-    .off("click", "button.general-entries-page")
-    .on("click", "button.general-entries-page", async function () {
+  $("div#general-section div#pagination")
+    .off("click", "div.btn-group div.btn-group button")
+    .on("click", "div.btn-group div.btn-group button", async function () {
       const pageNumber = parseInt(this.textContent.trim());
+      offsetVal = pageNumber;
       const req = {
+        selectedAccount,
         searchVal,
-        limitVal: parseInt(limitVal),
-        offsetVal: pageNumber,
+        limitVal,
+        offsetVal,
       };
-      await readpage(req);
+      await getAccountingAPI1(req);
+      uiBtnPageActived(offsetVal);
     });
   // next page
-  $("button#general-entry-next")
+  $("div#general-section div#pagination button#next-page")
     .off("click")
     .on("click", async function () {
       let activePage = parseInt(
-        $("button.general-entries-page-active").text().trim()
+        $("div#general-section div#pagination button.general-page-active")
+          .text()
+          .trim()
       );
       let incrementPage = activePage + 1;
       if (incrementPage > totalPage) {
         incrementPage = 1;
       }
+      offsetVal = incrementPage;
       const req = {
+        selectedAccount,
         searchVal,
-        limitVal: parseInt(limitVal),
-        offsetVal: parseInt(incrementPage),
+        limitVal,
+        offsetVal,
       };
-      await readpage(req);
+      await getAccountingAPI1(req);
+      uiBtnPageActived(offsetVal);
     });
   // last page
-  $("button#general-entry-last")
+  $("div#general-section div#pagination button#last-page")
     .off("click")
     .on("click", async function () {
+      offsetVal = totalPage;
       const req = {
+        selectedAccount,
         searchVal,
-        limitVal: parseInt(limitVal),
-        offsetVal: totalPage,
+        limitVal,
+        offsetVal,
       };
-      await readpage(req);
+      await getAccountingAPI1(req);
+      uiBtnPageActived(offsetVal);
     });
 }
 export default handlePagination;

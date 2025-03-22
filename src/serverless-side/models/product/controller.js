@@ -2,10 +2,10 @@ import {
   queryDeleteProductId,
   queryGetProductCSV,
   queryGetProduct,
-  queryGetProductListRefPersediaan,
+  queryGetProductListRefStock,
   queryGetProductListRefSale,
   queryGetProductPDF,
-  queryGetProductRefPersediaan,
+  queryGetProductRefStock,
   queryGetProductTotalRow,
   queryGetProductTotalRow1,
   queryInsertProduct,
@@ -17,6 +17,7 @@ import {
   validatePrice,
   validateProductName,
 } from "../../utils/validation.js";
+import { capitalizeWord } from "../../utils/formatTxt.js";
 
 // 1.CREATE
 const createProduct = async (req) => {
@@ -25,7 +26,6 @@ const createProduct = async (req) => {
     productPriceBuy,
     productPriceSell,
     productInfo,
-    productCategoryId,
     productSupplierId,
     productImg,
   } = req;
@@ -37,63 +37,69 @@ const createProduct = async (req) => {
   const imgBase64 = await validateLoadImg(productImg);
   // execute
   const query = queryInsertProduct(
-    productName,
+    capitalizeWord(productName),
     productPriceBuy,
     productPriceSell,
     productInfo,
-    productCategoryId,
     productSupplierId,
     imgBase64
   );
-  const msg = `Product <b class='text-capitalize'>${productName}</b> has been added `;
-  const created = await window.electronAPI.sqliteApi.run(query, msg);
+  const msg = `Product <b class='text-capitalize'>${capitalizeWord(
+    productName
+  )}</b> has been added `;
+  const created = await window.ElectronAPI.sqlite3.run(query, msg);
   return created;
 };
 // 2.READ
 const getProductPagination = async (req) => {
   const { searchVal, limitVal } = req;
   const query = queryGetProductTotalRow(searchVal);
-  const totalPageRow = await window.electronAPI.sqliteApi.each(query, limitVal);
+  const totalPageRow = await window.ElectronAPI.sqlite3.each(
+    query,
+    parseInt(limitVal)
+  );
   return totalPageRow;
 };
 const getProductPagination1 = async (req) => {
   const { searchVal, limitVal } = req;
   const query = queryGetProductTotalRow1(searchVal);
-  const totalPageRow = await window.electronAPI.sqliteApi.each(query, limitVal);
+  const totalPageRow = await window.ElectronAPI.sqlite3.each(query, limitVal);
   return totalPageRow;
 };
 const getProduct = async (req) => {
   const { searchVal, limitVal, offsetVal } = req;
-  const startOffset = (offsetVal - 1) * limitVal;
-  const query = queryGetProduct(searchVal, limitVal, startOffset);
-  const products = await window.electronAPI.sqliteApi.all(query);
+  const limitVal1 = parseInt(limitVal);
+  const offsetVal1 = parseInt(offsetVal);
+  const startOffset = (offsetVal1 - 1) * limitVal1;
+  const query = queryGetProduct(searchVal, limitVal1, startOffset);
+  const products = await window.ElectronAPI.sqlite3.all(query);
   return products;
 };
-const getProductRefPersediaan = async (req) => {
+const getProductRefStock = async (req) => {
   const { searchVal, limitVal, offsetVal } = req;
   const startOffset = (offsetVal - 1) * limitVal;
-  const query = queryGetProductRefPersediaan(searchVal, limitVal, startOffset);
-  const products = await window.electronAPI.sqliteApi.all(query);
+  const query = queryGetProductRefStock(searchVal, limitVal, startOffset);
+  const products = await window.ElectronAPI.sqlite3.all(query);
   return products;
 };
-const getProductListRefPersediaan = async () => {
-  const query = queryGetProductListRefPersediaan();
-  const product = await window.electronAPI.sqliteApi.all(query);
+const getProductListRefStock = async () => {
+  const query = queryGetProductListRefStock();
+  const product = await window.ElectronAPI.sqlite3.all(query);
   return product;
 };
 const getProductListRefSale = async () => {
   const query = queryGetProductListRefSale();
-  const product = await window.electronAPI.sqliteApi.all(query);
+  const product = await window.ElectronAPI.sqlite3.all(query);
   return product;
 };
 const getProductReport = async () => {
   const query = queryGetProductPDF();
-  const product = await window.electronAPI.sqliteApi.all(query);
+  const product = await window.ElectronAPI.sqlite3.all(query);
   return product;
 };
 const getProductReport1 = async () => {
   const query = queryGetProductCSV();
-  const product = await window.electronAPI.sqliteApi.all(query);
+  const product = await window.ElectronAPI.sqlite3.all(query);
   return product;
 };
 // 3.UPDATE
@@ -103,7 +109,6 @@ const updateProduct = async (req) => {
     productName,
     productPriceBuy,
     productPriceSell,
-    productCategoryId,
     productSupplierId,
     productInfo,
     productImgVal,
@@ -115,20 +120,20 @@ const updateProduct = async (req) => {
   validatePrice(productPriceBuy, productPriceSell);
   // 3.Validation image
   const imgBase64 = await validateLoadImg(productImgVal);
+
   // execute
   const query = queryUpdateProduct(
     productId,
-    productName,
+    capitalizeWord(productName),
     productPriceBuy,
     productPriceSell,
-    productCategoryId,
     productSupplierId,
     productInfo,
     imgBase64,
     productCancelImg
   );
   const msg = `Product <b class='text-capitalize'>${productName}</b> has been updated`;
-  const updated = await window.electronAPI.sqliteApi.run(query, msg);
+  const updated = await window.ElectronAPI.sqlite3.run(query, msg);
   return updated;
 };
 // 4.DELETE
@@ -136,7 +141,7 @@ const deleteProductId = async (req) => {
   const { productid, productName } = req;
   const query = queryDeleteProductId(productid);
   const msg = `Product <b class='text-capitalize'>${productName}</b> has been deleted`;
-  const updated = await window.electronAPI.sqliteApi.run(query, msg);
+  const updated = await window.ElectronAPI.sqlite3.run(query, msg);
   return updated;
 };
 
@@ -144,9 +149,9 @@ export {
   createProduct,
   deleteProductId,
   getProduct,
-  getProductListRefPersediaan,
+  getProductListRefStock,
   getProductListRefSale,
-  getProductRefPersediaan,
+  getProductRefStock,
   getProductPagination,
   getProductPagination1,
   getProductReport,

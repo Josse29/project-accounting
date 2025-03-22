@@ -1,5 +1,7 @@
+import { numberRgx } from "./regex.js";
+
 export function formatRupiah1(angka) {
-  let number_string = angka.toString().replace(/[^,\d]/g, "");
+  let number_string = angka.toString().replace(numberRgx, "");
   let split = number_string.split(",");
   let sisa = split[0].length % 3;
   let rupiah = split[0].substr(0, sisa);
@@ -30,14 +32,15 @@ export function formatRupiah2(input) {
 }
 export function formatPrice(num) {
   let priceTxt = ``;
-  if (num < 0) {
-    priceTxt = `- ${formatRupiah2(Math.abs(num))}`;
-  }
   if (num === 0) {
     priceTxt = `${formatRupiah2(num)}`;
+  }
+  if (num < 0) {
+    priceTxt = `- ${formatRupiah2(Math.abs(num))}`;
   }
   if (num > 0) {
     priceTxt = `+ ${formatRupiah2(num)}`;
   }
+
   return priceTxt;
 }

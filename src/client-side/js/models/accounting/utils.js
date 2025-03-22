@@ -1,29 +1,32 @@
-import {
-  getGeneralEntry,
-  getPagination,
-  getSumDebtCredit,
-} from "./services.js";
+import { getAccountingAPI, getAccountingPaginationAPI } from "./services.js";
 
 import handlePagination from "./pagination.js";
-import { uiBtnPageActived, uiTbody, uiTbodyZero } from "./ui.js";
+import { uiTbody, uiTbody1 } from "./ui.js";
 
-export const getAccountingAll = async () => {
-  const req = {
-    searchVal: "",
-    limitVal: 10,
-    offsetVal: 1,
-  };
-  const { status, response } = await getPagination(req);
+const getAccountingAllAPI = async (data) => {
+  const req =
+    data !== undefined
+      ? {
+          selectedAccount: data.selectedAccount,
+          searchVal: data.searchVal,
+          limitVal: data.limitVal,
+          offsetVal: data.offsetVal,
+        }
+      : {
+          selectedAccount: 111,
+          searchVal: "",
+          limitVal: 10,
+          offsetVal: 1,
+        };
+  const { status, response } = await getAccountingPaginationAPI(req);
   if (status) {
     const { totalPage, totalRow } = response;
     if (totalRow >= 1) {
-      await readpage(req);
+      await getAccountingAPI1(req);
       handlePagination(totalPage);
-      $("div#general-entries-pagination").removeClass("d-none");
     }
     if (totalRow < 1) {
-      uiTbodyZero();
-      $("div#general-entries-pagination").addClass("d-none");
+      uiTbody1(`empty.....`);
     }
   }
   if (!status) {
@@ -31,22 +34,14 @@ export const getAccountingAll = async () => {
     throw new Error(response);
   }
 };
-export async function readpage(req) {
-  const { status, response } = await getGeneralEntry(req);
+async function getAccountingAPI1(req) {
+  const { status, response } = await getAccountingAPI(req);
   if (status) {
     uiTbody(response);
-    uiBtnPageActived(req.offsetVal);
   }
   if (!status) {
     console.error(response);
-  }
-}
-export const sumDebtCredit = async (req) => {
-  const { status, response } = await getSumDebtCredit(req);
-  if (status) {
-    return response;
-  }
-  if (!status) {
     throw new Error(response);
   }
-};
+}
+export { getAccountingAllAPI, getAccountingAPI1 };

@@ -8,7 +8,7 @@ $("#product-export-excel")
     if (status) {
       const existed = response.length >= 1;
       if (existed) {
-        const savedPath = await window.electronAPI.saveCSV(response);
+        const savedPath = await window.ElectronAPI.saveCSV(response);
         if (savedPath) {
           uiAlertSuccess(`File Save On ${savedPath}`);
         }

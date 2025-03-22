@@ -10,7 +10,7 @@ $("#product-export-pdf")
       const existed = response.length >= 1;
       if (existed) {
         const htmlContent = uiPDF(response);
-        const filePath = await window.electronAPI.savePDF(htmlContent);
+        const filePath = await window.ElectronAPI.savePDF(htmlContent);
         if (filePath) {
           uiAlertSuccess(`File PDF Savded on ${filePath}`);
         } else {

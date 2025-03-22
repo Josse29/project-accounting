@@ -2,11 +2,11 @@ import {
   createProduct,
   deleteProductId,
   getProduct,
-  getProductListRefPersediaan,
+  getProductListRefStock,
   getProductListRefSale,
   getProductPagination,
   getProductPagination1,
-  getProductRefPersediaan,
+  getProductRefStock,
   getProductReport,
   getProductReport1,
   updateProduct,
@@ -56,7 +56,6 @@ const addProduct = async (req) => {
       productPriceBuy: req.productPriceBuy,
       productPriceSell: req.productPriceSell,
       productInfo: req.productInfo,
-      productCategoryId: req.productCategoryId,
       productSupplierId: req.productSupplierId,
       productImg: req.productImg,
     };
@@ -77,7 +76,6 @@ const update = async (req) => {
       productName: req.productName,
       productPriceBuy: req.productPriceBuy,
       productPriceSell: req.productPriceSell,
-      productCategoryId: req.productCategoryId,
       productSupplierId: req.productSupplierId,
       productInfo: req.productInfo,
       productImgVal: req.productImgVal,
@@ -129,13 +127,13 @@ const getCSV = async () => {
     return { status: false, response: error };
   }
 };
-// 8.endpoint : api/product/list-ref-persediaan
+// 8.endpoint : api/product/list-ref-Stock
 // method : GET
 // payload : ""
-// return : product list ref persediaan
-const getListRefPersediaan = async () => {
+// return : product list ref Stock
+const getListRefStock = async () => {
   try {
-    const list = await getProductListRefPersediaan();
+    const list = await getProductListRefStock();
     return { status: true, response: list };
   } catch (error) {
     return { status: false, response: error };
@@ -144,7 +142,7 @@ const getListRefPersediaan = async () => {
 // 9. endpoint : api/product/pagination-1
 // methode = GET
 // payload = 1.searchVal, 2.limitVal
-// return = only row and page product ref persediaan
+// return = only row and page product ref Stock
 const getPagination1 = async (req) => {
   try {
     const req1 = {
@@ -157,7 +155,7 @@ const getPagination1 = async (req) => {
     return { status: false, response: error };
   }
 };
-// 10.endpoint : api/product-ref-persediaan/:limit/:offset
+// 10.endpoint : api/product-ref-Stock/:limit/:offset
 // method : GET
 // payload : 1.searchVal, 2.limitVal, 3.offsetVal
 // return all product with searchval, limitVal, offsetVal
@@ -168,7 +166,7 @@ const getLimitOffset1 = async (req) => {
       limitVal: req.limitVal,
       offsetVal: req.offsetVal,
     };
-    const product = await getProductRefPersediaan(payLoad);
+    const product = await getProductRefStock(payLoad);
     return { status: true, response: product };
   } catch (error) {
     return { status: false, response: error };
@@ -177,7 +175,7 @@ const getLimitOffset1 = async (req) => {
 // 11.endpoint : api/product/list-ref-sale
 // method : GET
 // payload : ""
-// return : product list ref persediaan
+// return : product list ref Stock
 const getListRefSale = async () => {
   try {
     const productList = await getProductListRefSale();
@@ -194,7 +192,7 @@ export {
   getCSV,
   getLimitOffset,
   getLimitOffset1,
-  getListRefPersediaan,
+  getListRefStock,
   getListRefSale,
   getPagination,
   getPagination1,

@@ -25,7 +25,7 @@ const DbHandlers = (ipcMain, appPath, sqlite3) => {
           let totalRow = parseInt(res.TOTAL_ROW);
           const isEven = totalRow % limitVal === 0;
           if (isEven) {
-            totalPage = totalRow / limitVal;
+            totalPage = parseInt(totalRow / limitVal);
           } else {
             totalPage = parseInt(totalRow / limitVal) + 1;
           }
@@ -45,6 +45,17 @@ const DbHandlers = (ipcMain, appPath, sqlite3) => {
         }
         if (err) {
           reject(err);
+        }
+      });
+    });
+  });
+  ipcMain.handle("db-get", async (event, query) => {
+    return new Promise((resolve, reject) => {
+      db.get(query, (err, res) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(res);
         }
       });
     });

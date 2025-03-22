@@ -4,92 +4,105 @@ const queryInsertProduct = (
   productPriceBuy,
   productPriceSell,
   productInfo,
-  productCategoryId,
   productSupplierId,
   imgBase64
 ) => {
   let query = `
   INSERT 
   INTO Product 
-  (ProductName, ProductPriceBuy, ProductPriceSell, ProductInfo, ProductCategoryId, ProductSupplierId, ProductImage) 
+  (ProductName, ProductPriceBuy, ProductPriceSell, ProductInfo, ProductSupplierId, ProductImage) 
   VALUES
-  ('${productName}', '${productPriceBuy}', '${productPriceSell}', '${productInfo}', '${productCategoryId}', '${productSupplierId}','${imgBase64}')
+  ('${productName}', '${productPriceBuy}', '${productPriceSell}', '${productInfo}', '${productSupplierId}','${imgBase64}')
   `;
   return query;
 };
 // 2.READ
 const queryGetProduct = (productSearch, productLimit, productOffset) => {
-  let query = `SELECT
-               Product.ProductId,
-               Product.ProductName,
-               Product.ProductPriceBuy,
-               Product.ProductPriceSell,
-               Product.ProductInfo,
-               Product.ProductImage,
-               Category.CategoryId,
-               Category.CategoryName,
-               User.UserId,
-               User.UserFullname
-               FROM Product
-               LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
-               LEFT JOIN User ON Product.ProductSupplierId = User.UserId `;
+  let query = `
+  SELECT 
+  Product.ProductId, 
+  Product.ProductName, 
+  Product.ProductPriceBuy,
+  Product.ProductPriceSell, 
+  Product.ProductInfo, 
+  Product.ProductImage,
+  User.UserId, 
+  User.UserFullname 
+  FROM Product `;
+  // left join
+  query += `  
+  LEFT JOIN User ON Product.ProductSupplierId = User.UserId `;
   //  with search value
   if (productSearch !== "") {
-    query += `WHERE Product.ProductName LIKE '%${productSearch}%' ESCAPE '!' OR
-                    Product.ProductPriceBuy LIKE '%${productSearch}%' ESCAPE '!' OR
-                    Product.ProductPriceSell LIKE '%${productSearch}%' ESCAPE '!' OR
-                    Product.ProductInfo LIKE '%${productSearch}%' ESCAPE '!' OR
-                    Category.CategoryName LIKE '%${productSearch}%' ESCAPE '!' OR 
-                    User.UserFullname LIKE '%${productSearch}%' ESCAPE '!' `;
+    query += `
+    WHERE 
+    Product.ProductName LIKE '%${productSearch}%' ESCAPE '!' OR
+    Product.ProductPriceBuy LIKE '%${productSearch}%' ESCAPE '!' OR
+    Product.ProductPriceSell LIKE '%${productSearch}%' ESCAPE '!' OR
+    Product.ProductInfo LIKE '%${productSearch}%' ESCAPE '!' OR
+    User.UserFullname LIKE '%${productSearch}%' ESCAPE '!' `;
   }
   // witth order limit offset
-  query += `ORDER BY Product.ProductName ASC
-            LIMIT ${productLimit} 
-            OFFSET ${productOffset}`;
+  query += `
+  ORDER BY Product.ProductName ASC 
+  LIMIT ${productLimit} 
+  OFFSET ${productOffset} `;
   return query;
 };
-const queryGetProductRefPersediaan = (searchVal, limitVal, offsetVal) => {
-  let query = `SELECT
-               Product.ProductId,
-               Product.ProductName,
-               Product.ProductImage,
-               Product.ProductPriceBuy AS PriceBuy,
-               Product.ProductPriceSell AS PriceSell,
-               SUM(Persediaan.PersediaanQty) AS TotalQty
-               FROM Product `;
+const queryGetProductRefStock = (searchVal, limitVal, offsetVal) => {
+  let query = `
+  SELECT 
+  Product.ProductId,
+  Product.ProductName, 
+  Product.ProductImage,
+  Product.ProductPriceBuy AS PriceBuy, 
+  Product.ProductPriceSell AS PriceSell,
+  SUM(Stock.StockQty) AS TotalQty 
+  FROM Product
+  `;
   // left join
-  query += `LEFT JOIN Persediaan ON Product.ProductId = Persediaan.PersediaanProductId `;
+  query += `
+  LEFT JOIN Stock ON Product.ProductId = Stock.StockProductId `;
   // with search AND PRODUCT IS STILL EXIST
   if (searchVal !== "") {
-    query += `WHERE Product.ProductName LIKE '%${searchVal}%' ESCAPE '!' `;
+    query += `
+    WHERE Product.ProductName LIKE '%${searchVal}%' ESCAPE '!' `;
   }
   // with group,HAVING
-  query += `GROUP BY Persediaan.PersediaanProductId 
-            HAVING TotalQty >= 1 `;
+  query += `
+  GROUP BY Stock.StockProductId 
+  HAVING TotalQty >= 1 `;
   // order, limit, offset
-  query += `ORDER BY Product.ProductName ASC 
-            LIMIT ${limitVal}
-            OFFSET ${offsetVal}`;
+  query += `
+  ORDER BY Product.ProductName ASC 
+  LIMIT ${limitVal}
+  OFFSET ${offsetVal} `;
+  console.log(query);
   return query;
 };
-const queryGetProductListRefPersediaan = () => {
-  let query = `SELECT 
-               Product.ProductId,
-               Product.ProductName,
-               Product.ProductPriceBuy,
-               Product.ProductPriceSell,
-               COALESCE(SUM(Persediaan.PersediaanQty), 0) AS TotalPersediaanQty,
-               COALESCE(SUM(Persediaan.PersediaanRp), 0) AS TotalPersediaanRp
-               FROM Product `;
-  //  left join with persediaan table
-  query += `LEFT JOIN 
-            Persediaan ON Product.ProductId = Persediaan.PersediaanProductId `;
+const queryGetProductListRefStock = () => {
+  let query = `
+  SELECT 
+  Product.ProductId,
+  Product.ProductName,
+  Product.ProductPriceBuy,
+  Product.ProductPriceSell,
+  COALESCE(SUM(Stock.StockQty), 0) AS TotalStockQty,
+  User.UserFullname,
+  User.UserEmail
+  FROM Product `;
+  //  left join with Stock table
+  query += `
+  LEFT JOIN Stock ON Product.ProductId = Stock.StockProductId `;
+  //  left join with User table
+  query += `
+  LEFT JOIN User ON Product.ProductSupplierId = User.UserId `;
   // group by
-  query += `GROUP BY 
-            Product.ProductId `;
+  query += `
+  GROUP BY Product.ProductId `;
   //  with ascending ordername
-  query += `ORDER BY 
-            Product.ProductName ASC `;
+  query += `
+  ORDER BY Product.ProductName ASC `;
   return query;
 };
 const queryGetProductListRefSale = () => {
@@ -101,7 +114,7 @@ const queryGetProductListRefSale = () => {
                COALESCE(SUM(Sales.SalesProductQty), 0) AS TotalSalesProductQty,
                COALESCE(SUM(Sales.SalesProductRp), 0) AS TotalSalesProductRp
                FROM Product `;
-  //  left join with persediaan table
+  //  left join with Stock table
   query += `LEFT JOIN 
             Sales ON Product.ProductId = Sales.SalesProductId `;
   // group by
@@ -113,32 +126,35 @@ const queryGetProductListRefSale = () => {
   return query;
 };
 const queryGetProductTotalRow1 = (searchVal) => {
-  let query = `SELECT 
-               COUNT(*) AS TOTAL_ROW `;
+  let query = `
+  SELECT 
+  COUNT(*) AS TOTAL_ROW `;
   //  with subquery
-  query += `FROM (
-            SELECT Product.ProductId
-            FROM Product
-            LEFT JOIN Persediaan ON Product.ProductId = Persediaan.PersediaanProductId
-            WHERE Product.ProductName LIKE '%${searchVal}%' ESCAPE '!'
-            GROUP BY Product.ProductId
-            HAVING SUM(Persediaan.PersediaanQty) > 0) AS Subquery`;
+  query += `
+  FROM (
+  SELECT Product.ProductId
+  FROM Product
+  LEFT JOIN Stock ON Product.ProductId = Stock.StockProductId
+  WHERE Product.ProductName LIKE '%${searchVal}%' ESCAPE '!'
+  GROUP BY Product.ProductId
+  HAVING SUM(Stock.StockQty) > 0) AS Subquery `;
   return query;
 };
 const queryGetProductTotalRow = (productSearch) => {
-  let query = `SELECT COUNT(*) 
-               AS TOTAL_ROW
-               FROM Product `;
+  let query = `
+  SELECT COUNT(*) 
+  AS TOTAL_ROW
+  FROM Product `;
   //  left join
-  query += `LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId
-            LEFT JOIN User ON Product.ProductSupplierId = User.UserId `;
+  query += `
+  LEFT JOIN User ON Product.ProductSupplierId = User.UserId `;
   // with search value product
   if (productSearch !== "") {
-    query += `WHERE Product.ProductName LIKE '%${productSearch}%' ESCAPE '!' OR 
-                      Product.ProductPriceBuy LIKE '%${productSearch}%' ESCAPE '!' OR 
-                      Product.ProductInfo LIKE '%${productSearch}%' ESCAPE '!' OR
-                      Category.CategoryName LIKE '%${productSearch}%' ESCAPE '!' OR 
-                      User.UserFullname LIKE '%${productSearch}%' ESCAPE '!' `;
+    query += `
+    WHERE Product.ProductName LIKE '%${productSearch}%' ESCAPE '!' OR 
+          Product.ProductPriceBuy LIKE '%${productSearch}%' ESCAPE '!' OR 
+          Product.ProductInfo LIKE '%${productSearch}%' ESCAPE '!' OR
+          User.UserFullname LIKE '%${productSearch}%' ESCAPE '!' `;
   }
   return query;
 };
@@ -153,13 +169,10 @@ const queryGetProductCSV = () => {
                Product.ProductName AS ProductName,
                Product.ProductPriceBuy AS ProductPriceBuy,
                Product.ProductPriceSell AS ProductPriceSell,
-               Supplier.SupplierName AS SupplieName,
-               Category.CategoryName AS CategoryName
+               User.UserFullname AS SupplierName
                FROM Product `;
-  // left join table supplier
-  query += `LEFT JOIN Supplier ON Product.ProductSupplierId = Supplier.SupplierId `;
-  // left join table Category
-  query += `LEFT JOIN Category ON Product.ProductCategoryId = Category.CategoryId `;
+  // left join table user
+  query += `LEFT JOIN User ON Product.ProductSupplierId = User.UserId `;
   // ascending product name
   query += `ORDER BY Product.ProductName ASC`;
   return query;
@@ -170,19 +183,20 @@ const queryUpdateProduct = (
   productName,
   productPriceBuy,
   productPriceSell,
-  productCategoryId,
   productSupplierId,
   productInfo,
   imgBase64,
   productCancelImg
 ) => {
-  let query = `UPDATE Product
-                 SET ProductName = '${productName}',
-                     ProductPriceBuy = ${productPriceBuy},
-                     ProductPriceSell = ${productPriceSell},
-                     ProductCategoryId = ${productCategoryId},
-                     ProductSupplierId = ${productSupplierId}, 
-                     ProductInfo = '${productInfo}' `;
+  let query = `
+  UPDATE 
+  Product
+  SET 
+  ProductName = '${productName}',
+  ProductPriceBuy = ${productPriceBuy},
+  ProductPriceSell = ${productPriceSell},
+  ProductSupplierId = ${productSupplierId}, 
+  ProductInfo = '${productInfo}' `;
   // condition image
   //  1. if remove image
   if (productCancelImg) {
@@ -206,10 +220,10 @@ export {
   queryDeleteProductId,
   queryGetProduct,
   queryGetProductCSV,
-  queryGetProductListRefPersediaan,
+  queryGetProductListRefStock,
   queryGetProductListRefSale,
   queryGetProductPDF,
-  queryGetProductRefPersediaan,
+  queryGetProductRefStock,
   queryGetProductTotalRow,
   queryGetProductTotalRow1,
   queryUpdateProduct,

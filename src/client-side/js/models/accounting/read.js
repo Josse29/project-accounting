@@ -1,31 +1,30 @@
-import { getPagination } from "./services.js";
+import { getAccountingPaginationAPI } from "./services.js";
 
+import { getAccountingAPI1 } from "./utils.js";
 import handlePagination from "./pagination.js";
-import { uiTbodyZero } from "./ui.js";
-import { readpage } from "./utils.js";
+import { uiTbody1 } from "./ui.js";
 
 // getvalue
-const searchVal = "";
-const limitVal = 10;
-const offSetVal = 1;
-
+const selectedAccount = $("div#select-mode button.active").data("value");
+const searchVal = $("#general-section #limit-search input").val();
+const limitVal = $("#general-section #limit-search select").val();
+const offsetVal = 1;
 // request
 const req = {
+  selectedAccount,
   searchVal,
-  limitVal: parseInt(limitVal),
-  offsetVal: parseInt(offSetVal),
+  limitVal,
+  offsetVal,
 };
-const { status, response } = await getPagination(req);
+const { status, response } = await getAccountingPaginationAPI(req);
 if (status) {
   const { totalPage, totalRow } = response;
   if (totalRow >= 1) {
-    await readpage(req);
+    await getAccountingAPI1(req);
     handlePagination(totalPage);
-    $("div#general-entries-pagination").removeClass("d-none");
   }
   if (totalRow < 1) {
-    uiTbodyZero();
-    $("div#general-entries-pagination").addClass("d-none");
+    uiTbody1(`empty....`);
   }
 }
 if (!status) {

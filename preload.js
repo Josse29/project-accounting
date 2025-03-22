@@ -1,7 +1,7 @@
 // import { contextBridge, ipcRenderer } from "electron"; // es6
 const { contextBridge, ipcRenderer } = require("electron"); // CommonJS
-contextBridge.exposeInMainWorld("electronAPI", {
-  sqliteApi: {
+contextBridge.exposeInMainWorld("ElectronAPI", {
+  sqlite3: {
     all: (...args) => ipcRenderer.invoke("db-all", ...args),
     run: (...args) => ipcRenderer.invoke("db-run", ...args),
     get: (...args) => ipcRenderer.invoke("db-get", ...args),

@@ -1,8 +1,6 @@
 import { update } from "./services.js";
 
-import { listCategoryRefProductUpdate } from "../categories/list.js";
 import { uiAlertSuccess, uiAlertFailUpdate } from "./ui.js";
-import { capitalizeWord } from "../../utils/formatCapitalize.js";
 import { disFormatRupiah1, formatRupiah1 } from "../../utils/formatPrice.js";
 import { getImageBase64, validateImg } from "../../utils/loadImg.js";
 import { getProductAll, getProductRef } from "./utils.js";
@@ -21,18 +19,15 @@ $("tbody#product-table")
     const productPriceBeli = formatRupiah1(product.productpricebeli);
     const productPriceSell = formatRupiah1(product.productpricejual);
     const productImg = product.productimage;
-    const productCategoryId = product.productcategoryid;
     const productSupplierId = product.productsupplierid;
     const productInfo = product.productketerangan;
     // list option
-    await listCategoryRefProductUpdate(productCategoryId);
     await listUserRefProductUpdate(productSupplierId);
     // all-input-product
     $("#editProductModalLabel").html(productName);
     $("#edit-product-name").val(productName);
     $("input#edit-product-price-buy").val(productPriceBeli);
     $("input#edit-product-price-sell").val(productPriceSell);
-    $("select#product-refcategory-update").val(productCategoryId);
     $("select#product-refsupplier-update").val(productSupplierId);
     $("#edit-product-keterangan").val(productInfo);
     // Format as Rupiah
@@ -93,31 +88,15 @@ $("tbody#product-table")
       .off("click")
       .on("click", async () => {
         // all - input
-        // productid
         const productId = parseInt(product.productid);
-        // productname
-        const productName = capitalizeWord(
-          $("#edit-product-name").val().trim()
-        );
-        // price buy
+        const productName = $("#edit-product-name").val().trim();
         const productPriceBuy = disFormatRupiah1(
           $("#edit-product-price-buy").val()
         );
-        // price sell
         const productPriceSell = disFormatRupiah1(
           $("#edit-product-price-sell").val()
         );
-        // information
         const productInfo = $("#edit-product-keterangan").val();
-        // category id
-        let productCategoryId;
-        const productCategoryVal = $("select#product-refcategory-update").val();
-        if (productCategoryVal !== "null") {
-          productCategoryId = parseInt(productCategoryVal);
-        }
-        if (productCategoryVal === "null") {
-          productCategoryId = "null";
-        }
         // supplier id
         let productSupplierId;
         const productSupplierVal = $("select#product-refsupplier-update").val();
@@ -134,7 +113,6 @@ $("tbody#product-table")
           productName,
           productPriceBuy,
           productPriceSell,
-          productCategoryId,
           productSupplierId,
           productInfo,
           productImgVal,

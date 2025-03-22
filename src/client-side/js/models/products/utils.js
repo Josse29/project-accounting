@@ -14,16 +14,15 @@ import {
   uiTBodyEmpty,
 } from "./ui.js";
 import { reinitTooltip } from "../../utils/updateUi.js";
-import { listProductRefPersediaanRead } from "./list.js";
+import { listProductRefStockRead } from "./list.js";
 import { handlePagination, handlePagination1 } from "./pagination.js";
-import { executeRead } from "../categories/utils.js";
 import { uiQty } from "../../component/card/qty.js";
 import { list } from "../../component/list/index.js";
-import { uiInit } from "../persediaan/ui.js";
-import { getAll } from "../persediaan/utils.js";
+import { uiInit } from "../stock/ui.js";
+// import { getAll } from "../stock/utils.js";
 
 // get paginaton and by page
-export const getProductAll = async (data) => {
+const getProductAll = async (data) => {
   // get all value
   const req =
     data !== undefined
@@ -48,7 +47,7 @@ export const getProductAll = async (data) => {
       handlePagination(totalPage);
     }
     if (totalRow < 1) {
-      uiTBodyEmpty(req.searchVal);
+      uiTBodyEmpty(data.searchVal);
     }
   }
   if (!status) {
@@ -56,7 +55,7 @@ export const getProductAll = async (data) => {
   }
 };
 // get paginaton and by page ref persediaaan
-export const getProductAll1 = async (data) => {
+const getProductAll1 = async (data) => {
   // 1. get total page and row
   const req =
     data !== undefined
@@ -86,7 +85,7 @@ export const getProductAll1 = async (data) => {
   }
 };
 // get by page
-export async function getPage(req) {
+async function getPage(req) {
   const { status, response } = await getLimitOffset(req);
   if (status) {
     uiTbody(response);
@@ -97,10 +96,11 @@ export async function getPage(req) {
     console.error(response);
   }
 }
-// ref persediaan
-export async function getPage1(req) {
+// ref Stock
+async function getPage1(req) {
   const { status, response } = await getLimitOffset1(req);
   if (status) {
+    console.log(response);
     uiCard(response);
     // update qty to card menu as well as btn plus/min triggered
     uiQty();
@@ -113,11 +113,9 @@ export async function getPage1(req) {
     console.error(response);
   }
 }
-export const getProductRef = async () => {
-  // get persediaan again
-  await getAll();
+const getProductRef = async () => {
+  // await getAll();
   uiInit();
-  // get category again
-  await executeRead();
-  await listProductRefPersediaanRead();
+  await listProductRefStockRead();
 };
+export { getProductAll, getProductAll1, getPage, getPage1, getProductRef };

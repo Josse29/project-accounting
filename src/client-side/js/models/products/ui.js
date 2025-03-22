@@ -1,7 +1,7 @@
 import { formatRupiah2 } from "../../utils/formatPrice.js";
 import { timeIndonesian } from "../../utils/formatTime.js";
 // UI tr Product from dbsqlite
-export const uiTbody = (response) => {
+const uiTbody = (response) => {
   let tr = "";
   response.forEach((el) => {
     const productId = el.ProductId;
@@ -10,14 +10,11 @@ export const uiTbody = (response) => {
     const productSell = el.ProductPriceSell;
     const productInfo = el.ProductInfo;
     const productImg = el.ProductImage;
-    const categoryId = el.CategoryId;
-    const categoryName = el.CategoryName;
     const supplierId = el.UserId;
     const supplierName = el.UserFullname;
     const priceBuy = formatRupiah2(productBuy);
     const priceSell = formatRupiah2(productSell);
     const supplierNameTxt = supplierName === null ? " - " : supplierName;
-    const categoryNameTxt = categoryName === null ? " - " : categoryName;
     tr += `
     <tr
       data-productid="${productId}"
@@ -26,8 +23,6 @@ export const uiTbody = (response) => {
       data-productpricejual=${productSell}
       data-productketerangan="${productInfo}"
       data-productimage="${productImg}"
-      data-productcategoryid="${categoryId}"
-      data-productcategoryname="${categoryName}"
       data-productsupplierid="${supplierId}"
       data-productsuppliername="${supplierName}"
     >
@@ -39,9 +34,6 @@ export const uiTbody = (response) => {
       </td>
       <td class="align-content-center text-truncate pe-3">${priceBuy}</td>
       <td class="align-content-center text-truncate pe-3">${priceSell}</td>
-      <td class="align-content-center text-capitalize text-truncate pe-3">
-        ${categoryNameTxt}
-      </td>
       <td class="align-content-center text-capitalize text-truncate pe-3">
         ${supplierNameTxt}
       </td>
@@ -96,18 +88,18 @@ export const uiTbody = (response) => {
   $("#product-table").html(tr);
 };
 // when total product row 0 being seaching
-export const uiTBodyEmpty = (searchVal) => {
+const uiTBodyEmpty = (searchVal) => {
   let search = `Product Empty....`;
   if (searchVal !== "") {
     search = `Product - ${searchVal} Not found...`;
   }
   const tr = `<tr>
-                <td colspan="7" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">${search}</td>
+                <td colspan="6" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">${search}</td>
               </tr>`;
   $("#product-table").html(tr);
   $("#product-pagination").addClass("d-none");
 };
-export const uiTBodyLoad = () => {
+const uiTBodyLoad = () => {
   const tr = `<tr>
                 <td colspan="7" class="text-center align-content-center px-3 fst-italic fw-bold text-capitalize" style="background-color:#f2f2f2">Loading....</td>
               </tr>`;
@@ -115,7 +107,7 @@ export const uiTBodyLoad = () => {
   $("#product-pagination").addClass("d-none");
 };
 // blank value after submit action
-export const uiBlankVal = () => {
+const uiBlankVal = () => {
   $("#product-name").val("");
   $("#product-refcategory-create").val("");
   $("#product-refsupplier-create").val("");
@@ -126,7 +118,7 @@ export const uiBlankVal = () => {
   $("#product-price-jual").val("");
 };
 // button pagination
-export const uiBtnPage = (totalPage) => {
+const uiBtnPage = (totalPage) => {
   let btn = "";
   for (let i = 1; i <= totalPage; i++) {
     const actived = i === 1 ? "product-active-page" : "";
@@ -139,7 +131,7 @@ export const uiBtnPage = (totalPage) => {
   $("#product-number-page").html(btn);
   $("#product-pagination").removeClass("d-none");
 };
-export const uiBtnPage1 = (totalPage) => {
+const uiBtnPage1 = (totalPage) => {
   let btn = ``;
   for (let i = 1; i <= totalPage; i++) {
     const activePage = i === 1 ? "product-ref-persediaan-page-active" : "";
@@ -151,18 +143,18 @@ export const uiBtnPage1 = (totalPage) => {
   $("div#product-refpersediaan-pagination").removeClass("d-none");
 };
 // Function to update active page button
-export const uiBtnPageActive = (numberPage) => {
+const uiBtnPageActive = (numberPage) => {
   const btnPage = $("button.product-btn-page");
   btnPage.removeClass("product-active-page");
   btnPage.eq(numberPage - 1).addClass("product-active-page");
 };
-export const uiBtnPageActive1 = (pageNumber) => {
+const uiBtnPageActive1 = (pageNumber) => {
   const btnPage = $("button.product-ref-persediaan-page");
   btnPage.removeClass("product-ref-persediaan-page-active");
   btnPage.eq(pageNumber - 1).addClass("product-ref-persediaan-page-active");
 };
 // make alert success after action crud
-export const uiAlertSuccess = (res) => {
+const uiAlertSuccess = (res) => {
   const alertSuccessMe = `
     <div
       class="alert alert-success alert-dismissible fade show text-start"
@@ -179,26 +171,26 @@ export const uiAlertSuccess = (res) => {
   `;
   $("#sectionSuccessActionProduct").html(alertSuccessMe);
 };
-export const uiAlertFail = (res) => {
+const uiAlertFail = (res) => {
   const alert = `<div class="alert alert-danger alert-dismissible fade show text-start" role="alert">
                     <strong class="text-capitalize">${res}</strong> 
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                  </div>`;
   $("#sectionSuccessActionProduct").html(alert);
 };
-export const uiAlertFailCreate = (res) => {
+const uiAlertFailCreate = (res) => {
   const alert = `<div class="alert alert-danger" role="alert">
                   <i class="fa-solid fa-triangle-exclamation me-1"></i> ${res}
                 </div>`;
   $("div#productCreateFailed").html(alert);
 };
-export const uiAlertFailUpdate = (res) => {
+const uiAlertFailUpdate = (res) => {
   const alertFail = `<div class="alert alert-danger fs-6" role="alert">
                       <i class="fa-solid fa-triangle-exclamation me-1"></i> ${res}
                     </div>`;
   $("#product-update-failed").html(alertFail);
 };
-export const uiPDF = (response) => {
+const uiPDF = (response) => {
   const { indonesiaDDMY, indonesiaHour, indonesiaMinute, indonesiaSecond } =
     timeIndonesian();
   const html = `
@@ -217,8 +209,8 @@ export const uiPDF = (response) => {
   response.forEach((row) => {
     const productName = row.ProductName;
     const productImg = row.ProductImage;
-    const productPriceBuy = formatRupiah2(row.ProductPriceBeli);
-    const productPriceSell = formatRupiah2(row.ProductPriceJual);
+    const productPriceBuy = formatRupiah2(row.ProductPriceBuy);
+    const productPriceSell = formatRupiah2(row.ProductPriceSell);
     // const productInfo = row.ProductInfo !== "" ? row.ProductInfo : "-"; || if needed
     tr += `
       <tr>
@@ -242,9 +234,9 @@ export const uiPDF = (response) => {
       <thead>
         <tr>
           <th>No</th>
-          <th>Date</th>
           <th>Name</th>
-          <th>Price</th>
+          <th>Price Buy</th>
+          <th>Price Sell</th>
           <th class="text-center">Image</th>
         </tr>
       </thead>
@@ -272,7 +264,7 @@ export const uiPDF = (response) => {
   </div>`;
   return html2;
 };
-export const uiCard = (response) => {
+const uiCard = (response) => {
   let card = ``;
   response.forEach((rows) => {
     const productId = parseInt(rows.ProductId);
@@ -287,7 +279,7 @@ export const uiCard = (response) => {
       imgSrc = "./../images/no-img.jpg";
     }
     const productImg = `
-    <img src="${imgSrc}" class="card-img-top" alt="..." />`;
+    <img src="${imgSrc}" class="card-img-top w-100" alt="..." style="height:200px;" />`;
     card += `
     <div class="card w-full shadow-sm">
       ${productImg}
@@ -321,7 +313,7 @@ export const uiCard = (response) => {
   const parentCard = `<div class="container-by-me">${card}</div>`;
   $("div#product-refpersediaan-read").html(parentCard);
 };
-export const uiCardLoad = () => {
+const uiCardLoad = () => {
   const div = `
   <div class="container-by-me">
     <div class="card">
@@ -371,7 +363,7 @@ export const uiCardLoad = () => {
   $("div#product-refpersediaan-read").html(div);
   $("div#product-refpersediaan-pagination").addClass("d-none");
 };
-export const uiCardEmpty = (searchVal) => {
+const uiCardEmpty = (searchVal) => {
   let search = `stock empty...`;
   if (searchVal !== "") {
     search = `${searchVal} - not found....`;
@@ -383,4 +375,22 @@ export const uiCardEmpty = (searchVal) => {
   `;
   $("div#product-refpersediaan-read").html(emptyP);
   $("div#product-refpersediaan-pagination").addClass("d-none");
+};
+export {
+  uiAlertFail,
+  uiAlertFailCreate,
+  uiAlertFailUpdate,
+  uiAlertSuccess,
+  uiBlankVal,
+  uiBtnPage,
+  uiBtnPage1,
+  uiBtnPageActive,
+  uiBtnPageActive1,
+  uiCard,
+  uiCardEmpty,
+  uiCardLoad,
+  uiPDF,
+  uiTbody,
+  uiTBodyEmpty,
+  uiTBodyLoad,
 };

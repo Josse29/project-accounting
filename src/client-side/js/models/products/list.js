@@ -1,8 +1,8 @@
-import { getListRefPersediaan, getListRefSale } from "./services.js";
+import { getListRefStock, getListRefSale } from "./services.js";
 import { formatRupiah2 } from "../../utils/formatPrice.js";
 
-const productListRefPersediaan = async () => {
-  const { status, response } = await getListRefPersediaan();
+const productListRefStock = async () => {
+  const { status, response } = await getListRefStock();
   if (status) {
     const existed = response.length >= 1;
     let option = ``;
@@ -13,18 +13,22 @@ const productListRefPersediaan = async () => {
         const productName = row.ProductName;
         const productPriceBuy = row.ProductPriceBuy;
         const productPriceSell = row.ProductPriceSell;
-        const productPersediaanQty = row.TotalPersediaanQty;
+        const productStockQty = row.TotalStockQty;
+        const supplierFullName = row.UserFullname;
+        const supplierEmail = row.UserEmail;
         option += `
         <option
           value="${productId}"
           data-productname="${productName}"
           data-pricebuy="${productPriceBuy}"
           data-pricesell="${productPriceSell}"
-          data-qty="${productPersediaanQty}"
+          data-qty="${productStockQty}"
+          data-suppliername="${supplierFullName}"
+          data-supplieremail="${supplierEmail}"
         >
           ${productName} - ${formatRupiah2(
           productPriceBuy
-        )} - Qty : ${productPersediaanQty} 
+        )} - Qty : ${productStockQty} 
         </option>
         `;
       });
@@ -39,8 +43,8 @@ const productListRefPersediaan = async () => {
     throw new Error(response);
   }
 };
-const productListRefPersediaan1 = async () => {
-  const { status, response } = await getListRefPersediaan();
+const productListRefStock1 = async () => {
+  const { status, response } = await getListRefStock();
   if (status) {
     const existed = response.length >= 1;
     let option = `<option selected disabled>Choose One Of Products</option>`;
@@ -50,15 +54,18 @@ const productListRefPersediaan1 = async () => {
         const productName = row.ProductName;
         const productPriceBuy = row.ProductPriceBuy;
         const productPriceSell = row.ProductPriceSell;
-        const productPersediaanQty = row.TotalPersediaanQty;
-        option += `<option 
-                      value="${productId}"
-                      data-productname="${productName}"
-                      data-pricebuy="${productPriceBuy}" 
-                      data-pricesell="${productPriceSell}"
-                      data-qty="${productPersediaanQty}">
-                        ${productName}
-                  </option>`;
+        const productStockQty = row.TotalStockQty;
+        option += `
+        <option
+          value="${productId}"
+          data-productname="${productName}"
+          data-pricebuy="${productPriceBuy}"
+          data-pricesell="${productPriceSell}"
+          data-qty="${productStockQty}"
+        >
+          ${productName}
+        </option>
+        `;
       });
     }
     if (!existed) {
@@ -71,8 +78,8 @@ const productListRefPersediaan1 = async () => {
     throw new Error(response);
   }
 };
-const productListRefPersediaan2 = async () => {
-  const { status, response } = await getListRefPersediaan();
+const productListRefStock2 = async () => {
+  const { status, response } = await getListRefStock();
   if (status) {
     const existed = response.length >= 1;
     let option = `<option selected disabled>Choose One Of Products</option>`;
@@ -82,17 +89,17 @@ const productListRefPersediaan2 = async () => {
         const productName = row.ProductName;
         const productPriceBuy = row.ProductPriceBuy;
         const productPriceSell = row.ProductPriceSell;
-        const productPersediaanQty = row.TotalPersediaanQty;
+        const productStockQty = row.TotalStockQty;
         option += `
         <option
           value="${productId}"
           data-productname="${productName}"
           data-pricebuy="${productPriceBuy}"
           data-pricesell="${productPriceSell}"
-          data-qty="${productPersediaanQty}"
+          data-qty="${productStockQty}"
         >
           ${productName} - ${formatRupiah2(productPriceSell)} - Qty :
-          ${productPersediaanQty}
+          ${productStockQty}
         </option>
         `;
       });
@@ -139,18 +146,18 @@ const productListRefSale = async () => {
     throw new Error(response);
   }
 };
-const listProductRefPersediaanCreate = async () => {
-  const option = await productListRefPersediaan();
-  $("select#persediaan-refproduct-search-name").html(option);
+const listProductRefStockCreate = async () => {
+  const option = await productListRefStock();
+  $("select#Stock-refproduct-search-name").html(option);
 };
-const listProductRefPersediaanRead = async () => {
-  const option = await productListRefPersediaan1();
-  $("select#persediaan-refproduct-search").html(option);
+const listProductRefStockRead = async () => {
+  const option = await productListRefStock1();
+  $("select#Stock-refproduct-search").html(option);
 };
-const listProductRefPersediaanReadDate = async () => {
+const listProductRefStockReadDate = async () => {
   const list = await productList();
   const option = `
-  <select class="form-control w-auto mb-3" id="persediaan-date-product">
+  <select class="form-control w-auto mb-3" id="Stock-date-product">
     ${list}
   </select>`;
   return option;
@@ -164,11 +171,11 @@ const listProductRefSalesReadDate = async () => {
   $("select#sales-read-productid-date").html(option);
 };
 export {
-  productListRefPersediaan,
-  productListRefPersediaan2,
-  listProductRefPersediaanCreate,
-  listProductRefPersediaanRead,
-  listProductRefPersediaanReadDate,
+  productListRefStock,
+  productListRefStock2,
+  listProductRefStockCreate,
+  listProductRefStockRead,
+  listProductRefStockReadDate,
   listProductRefSalesRead,
   listProductRefSalesReadDate,
 };
