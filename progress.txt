@@ -1,5 +1,5 @@
 START : 06-05-2024
-END :
+END : 31-03-2025
 ==========================================================
 10/18/2024 
 - refactoring services all models persediaan
@@ -137,11 +137,13 @@ END :
 - cash-in-from-others 45 MINUTE (DONE)
 05/03/2025
 - make exercise HRD complete as well as review all 4 hour (DONE)
-17/03/2025 - 18/03/2025
+17/03/2025 - 23/03/2025
 - stock management (fixingui, export-pdf, export-csv) 100% (DONE)
-- sales management (fixingui, export-pdf, export-csv) 90% (UNDONE)
+- sales management (fixingui, export-pdf, export-csv) 100% (DONE)
+(Consolidated Statement Of Financial Position) 90%
+(Consolidate Statement Of Profit Or Loss) 90%
+(Consolidate Statement OF Changes In Equity) 90%
+24/03/2025-30/03/2025 
+- github dive in 
 - convert react 
 - auth + jwt 
-(Consolidated Statement Of Financial Position)
-(Consolidate Statement Of Profit Or Loss)
-(Consolidate Statement OF Changes In Equity)
