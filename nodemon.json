@@ -1,4 +1,0 @@
-{
-  "ignore": ["src/"],
-  "ext": "js, json, html, ts"
-}
