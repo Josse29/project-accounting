@@ -1,71 +1,99 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@font-face {
+  font-family: "poppins";
+  src: url("./assets/font/Poppins-Regular.ttf");
 }
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+* {
+  font-family: "poppins" !important;
 }
-a:hover {
-  color: #535bf2;
+body::-webkit-scrollbar {
+  display: none;
 }
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
+input[type="file"]::file-selector-button {
+  background-color: #d7d9dd;
+  color: black;
   cursor: pointer;
-  transition: border-color 0.25s;
 }
-button:hover {
-  border-color: #646cff;
+input[type="file"]::file-selector-button:hover {
+  background-color: #d7d9dd;
+  color: black;
+  cursor: pointer;
 }
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+input[type="file"] {
+  border: 2px solid #e1e9f4;
+}
+.app-region-drag {
+  -webkit-app-region: drag;
+}
+/* scroll vertical */
+.overflow-y-auto::-webkit-scrollbar {
+  width: 9px;
+}
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background: #888;
+}
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+/* scroll horizontal */
+.overflow-x-auto::-webkit-scrollbar {
+  height: 9px;
+}
+.overflow-x-auto::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+.overflow-x-auto::-webkit-scrollbar-thumb {
+  background: #888;
+}
+.overflow-x-auto::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+/* animation */
+.animate-load {
+  background: #b3b2b2;
+  position: relative;
+  overflow: hidden;
+}
+.animate-load::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(236, 236, 236, 0.6),
+    transparent
+  );
+  animation: skeleton-loading 1.5s infinite;
+}
+@keyframes skeleton-loading {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+/* loader */
+.loader {
+  animation: spin 1s linear infinite;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
   }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
+  100% {
+    transform: rotate(360deg);
   }
 }
