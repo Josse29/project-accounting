@@ -1,3 +1,4 @@
+import { executeGet1, executeGet2 } from "../database/runQuery.js";
 import formatPrice from "./formatPrice.js";
 import { capitalizeWord } from "./formatTxt.js";
 import { email, number } from "./regex.js";
@@ -17,19 +18,40 @@ const validateUserFullname = (UserFullnameVal) => {
 };
 const validateSamePassword = (UserPasswordVal, UserPassword1Val) => {
   if (UserPasswordVal === "" && UserPassword1Val === "") {
-    const msg = `password must be filled`;
+    const msg = `Password must be filled`;
     throw new Error(msg);
   }
   if (UserPasswordVal !== UserPassword1Val) {
-    const msg = `password must be same with confirm password`;
+    const msg = `Password must be same with Confirm Password`;
     throw new Error(msg);
   }
 };
 const validatePosition = (UserPositionVal) => {
-  if (UserPositionVal === null) {
-    const msg = `position field required`;
+  if (
+    UserPositionVal === null ||
+    UserPositionVal === "null" ||
+    UserPositionVal === ""
+  ) {
+    const msg = `User Position is required`;
     throw new Error(msg);
   }
+};
+const validateLoadImg1 = async (base64) => {
+  if (base64.length > 0) {
+    if (!base64.startsWith("data:image")) {
+      const msg = `Invalid Image File`;
+      throw new Error(msg);
+    }
+    const base64Str = base64.split(",")[1];
+    const sizeInBytes =
+      4 * Math.ceil(base64Str.length / 3) * 0.5624896334383812;
+    const sizeInKB = sizeInBytes / 1024;
+    if (sizeInKB > 1024) {
+      const msg = `Invalid Image Size (Maximize 1 MB)`;
+      throw new Error(msg);
+    }
+  }
+  return base64;
 };
 const validateLoadImg = (file) => {
   if (file.length >= 1) {
@@ -65,21 +87,20 @@ const validateLoadImg = (file) => {
     return "null";
   }
 };
-const validateCash = async (balanceVal) => {
+const validateCash = async (db, balanceVal) => {
   const query = `
   SELECT 
   COALESCE(SUM(AccountingBalance), 0) AS Total_Cash
   FROM Accounting 
   WHERE AccountingRef = 111 `;
-  const { Total_Cash } = await window.ElectronAPI.sqlite3.each1(query);
+  const { Total_Cash } = await executeGet2(db, query);
   if (Math.abs(balanceVal) > Total_Cash) {
     const totalPayment = formatPrice(balanceVal);
     const totalCash1 = formatPrice(Total_Cash);
-    const msg = `Uppppss, Sorry Cash is insufficient <p class="mb-0"> Total Cash Only : ${totalCash1}, </p> <p class="mb-0">But Total Payment is ${totalPayment} </p>`;
+    const msg = `Uppppss, Sorry Cash is insufficient , Total Cash Only = ${totalCash1}, But Total Payment is ${totalPayment} `;
     throw new Error(msg);
   }
 };
-
 const validateProductAdd = (productId) => {
   const productSelect = productId >= 1;
   if (productSelect === false) {
@@ -88,6 +109,7 @@ const validateProductAdd = (productId) => {
   }
 };
 const validateQty = async (
+  db,
   stockProductQtyVal,
   productIdVal,
   productNameVal
@@ -106,12 +128,18 @@ const validateQty = async (
     FROM Stock
     WHERE 
     StockProductId = '${productIdVal}' `;
-    const { TotalQty } = await window.ElectronAPI.sqlite3.each1(query);
+    const { TotalQty } = await executeGet2(db, query);
     if (Math.abs(stockProductQtyVal) > TotalQty) {
       const msg = `Upppsss, Sorry 
-                  <p class="mb-0">Total Stock - ${productNameVal} is only : ${TotalQty}</p> `;
+                  Total Stock - ${productNameVal} is only ${TotalQty} `;
       throw new Error(msg);
     }
+  }
+};
+const validateQty1 = (qty) => {
+  if (qty === 0 || qty === "0" || qty === "") {
+    const msg = `Please correct input number in field qty...`;
+    throw new Error(msg);
   }
 };
 const validatePrice = (buy, sell) => {
@@ -136,10 +164,10 @@ const validatePrice = (buy, sell) => {
     throw new Error(msg);
   }
   // 2. must be profit
-  const isProfit = buy < sell;
+  const isProfit = parseFloat(buy) < parseFloat(sell);
   if (isProfit === false) {
     const msg =
-      "Upppsss, Sorry, Price Buy is lower than Price Sell , It's not profit";
+      "Upppsss, Sorry, Price Buy Must be lower than Price Sell , It's not profit";
     throw new Error(msg);
   }
 };
@@ -152,12 +180,6 @@ const validateProductName = (productName) => {
 const validateSupplierName = (supplierName) => {
   if (supplierName === "") {
     const msg = "Supplier Name must be filled...";
-    throw new Error(msg);
-  }
-};
-const validateCategoryName = (categoryName) => {
-  if (categoryName === "") {
-    const msg = "Category Name must be filled...";
     throw new Error(msg);
   }
 };
@@ -176,10 +198,9 @@ const validateDate = (startDateVal, endDateVal) => {
   }
 };
 const validateAccountingBalance = (balance) => {
-  // 1. must be integer with regex buy and sell
   const isNumeric = number.test(balance);
   if (isNumeric === false) {
-    const msg = "Please Input Number in Balance Field...";
+    const msg = "Please Input Number in field Balance ....";
     throw new Error(msg);
   }
   if (balance === 0 || balance === "0") {
@@ -187,7 +208,7 @@ const validateAccountingBalance = (balance) => {
     throw new Error(msg);
   }
   if (balance === "") {
-    const msg = "Balance required";
+    const msg = "Balance is required";
     throw new Error(msg);
   }
 };
@@ -207,32 +228,32 @@ const validateAssetValueUse = (balance, assetName, assetPrice) => {
     throw new Error(msg);
   }
   if (balance > assetPrice) {
-    const msg = `Uppssss, Price ${assetName} is only : ${formatPrice(
+    const msg = `Uppssss, Price ${assetName} is only = ${formatPrice(
       assetPrice
     )} `;
     throw new Error(msg);
   }
 };
-const validateInvestorBalance = async (investorNameVal, balanceVal) => {
+const validateInvestorBalance = async (db, investorNameVal, balanceVal) => {
   const query = `
   SELECT
   COALESCE(SUM(AccountingBalance), 0) AS TotalBalance
   FROM Accounting
   WHERE 
-  AccountingName LIKE '%${investorNameVal}%'
+  AccountingName LIKE '%equity - ${investorNameVal}%' AND AccountingRef = 311 
   `;
-  const { TotalBalance } = await window.ElectronAPI.sqlite3.each1(query);
+  const { TotalBalance } = await executeGet2(db, query);
   if (Math.abs(balanceVal) > TotalBalance) {
     const msg = `Upppsss , 
-                <p class="mb-0">Total Investment ${capitalizeWord(
+                Total Investment ${capitalizeWord(
                   investorNameVal
-                )} only is : ${formatPrice(TotalBalance)}</p>`;
+                )} only is = ${formatPrice(TotalBalance)}`;
     throw new Error(msg);
   }
 };
 const validateInvestorName = (investorName) => {
-  if (investorName === "" || investorName === undefined) {
-    const msg = `Investor Name must be filled`;
+  if (investorName === "") {
+    const msg = `Please Choose One of Investor`;
     throw new Error(msg);
   }
 };
@@ -246,10 +267,10 @@ const validateDateAndTime = (date, time) => {
     throw new Error(msg);
   }
 };
-const validateAccountingName = async (nameVal) => {
+const validateAccountingName = async (db, nameVal) => {
   if (nameVal === "") {
     const msg = `Uppsss, Sorry
-                <p class="mb-0">Title is Required</p>`;
+                 Title is Required`;
     throw new Error(msg);
   }
   const query = `
@@ -258,16 +279,22 @@ const validateAccountingName = async (nameVal) => {
   FROM Accounting
   WHERE AccountingName LIKE '%${nameVal}%'
   `;
-  const { Total } = await window.ElectronAPI.sqlite3.each1(query);
+  const { Total } = await executeGet2(db, query);
   if (Total >= 1) {
     const msg = `Upsssss, Sorry
-                 <p class="mb-0">Title ${nameVal} is already existed, Please Change The Title</p>`;
+                 Title ${nameVal} is already existed, Please Change The Title `;
     throw new Error(msg);
   }
 };
-const validateAssetName = async (assetNameVal) => {
+const validateAssetName1 = (assetNameVal) => {
   if (assetNameVal === "") {
-    const msg = `Asset of Name must be filled`;
+    const msg = `Asset of Name is required`;
+    throw new Error(msg);
+  }
+};
+const validateAssetName = async (db, assetNameVal) => {
+  if (assetNameVal === "") {
+    const msg = `Asset of Name is required`;
     throw new Error(msg);
   }
   const query = `
@@ -277,23 +304,17 @@ const validateAssetName = async (assetNameVal) => {
   Accounting 
   WHERE 
   AccountingRef BETWEEN 113 AND 121 AND 
-  AccountingName LIKE '%${assetNameVal}%'
+  AccountingName LIKE '%${assetNameVal.trim()}%'
   `;
-  const { TotalAsset } = await window.ElectronAPI.sqlite3.each1(query);
+  const { TotalAsset } = await executeGet2(db, query);
   if (TotalAsset >= 1) {
     const msg = `Upsss, Sorry 
-                <p class="mb-0">${assetNameVal} is already existed </p>
-                <p class="mb-0">Please, Use Another Asset Name </p>`;
+                ${capitalizeWord(assetNameVal)} is already existed
+                Please, Use Another Asset Name`;
     throw new Error(msg);
   }
 };
-const validateAssetName1 = (assetNameVal) => {
-  if (assetNameVal === "") {
-    const msg = `Asset of Name must be filled`;
-    throw new Error(msg);
-  }
-};
-const validateExpenseName = async (expenseNameVal) => {
+const validateExpenseName = async (db, expenseNameVal) => {
   if (expenseNameVal === "") {
     const msg = `Expense of Name must be filled`;
     throw new Error(msg);
@@ -302,12 +323,14 @@ const validateExpenseName = async (expenseNameVal) => {
   SELECT 
   COUNT(*) AS TotalExpense
   FROM Accounting
-  WHERE AccountingName LIKE "%${expenseNameVal}%"
+  WHERE AccountingName LIKE "%${expenseNameVal.trim()}%"
   `;
-  const { TotalExpense } = await window.ElectronAPI.sqlite3.each1(query);
+  const { TotalExpense } = await executeGet2(db, query);
   if (TotalExpense >= 1) {
     const msg = `Upppsss Sorry, 
-                 <p class="mb-0">Expense Name : ${expenseNameVal} is already existed</p>`;
+                 Expense Name - ${capitalizeWord(
+                   expenseNameVal
+                 )} is already existed`;
     throw new Error(msg);
   }
 };
@@ -348,6 +371,7 @@ const validateExpensePrice = (priceVal) => {
   }
 };
 const validateLiabilityBalance = async (
+  db,
   liabilityNameVal,
   liabilityBalanceVal
 ) => {
@@ -358,19 +382,19 @@ const validateLiabilityBalance = async (
   WHERE
   AccountingName LIKE '%Liability - ${liabilityNameVal}%' AND
   AccountingRef = 211 `;
-  const { Total_Liability } = await window.ElectronAPI.sqlite3.each1(query);
+  const { Total_Liability } = await executeGet2(db, query);
   // if don't have liability at all
   if (Total_Liability === 0) {
-    const msg = `Upsss Sorry, <p class="mb-0">Total Liability ${liabilityNameVal} is ${formatPrice(
+    const msg = `Upsss Sorry, Total Liability ${liabilityNameVal} is ${formatPrice(
       0
-    )}</p>`;
+    )}`;
     throw new Error(msg);
   }
   // if it execeed payment
   if (liabilityBalanceVal > Total_Liability) {
-    const msg = `Uppppsss Sorry, <p class='mb-0'>Total Liability ${liabilityNameVal} is ${formatPrice(
+    const msg = `Uppppsss Sorry, Total Liability ${liabilityNameVal} is ${formatPrice(
       Total_Liability
-    )}</p>`;
+    )}`;
     throw new Error(msg);
   }
 };
@@ -381,6 +405,7 @@ const validateLiabilityName = (liabilityNameVal) => {
   }
 };
 const validateReceivableBalance = async (
+  db,
   receivableNameVal,
   receivableBalanceVal
 ) => {
@@ -391,27 +416,31 @@ const validateReceivableBalance = async (
   WHERE 
   AccountingName LIKE '%Receivable - ${capitalizeWord(receivableNameVal)}%' AND 
   AccountingRef = 112 `;
-  const { Total_Receivable } = await window.ElectronAPI.sqlite3.each1(query);
+  const { Total_Receivable } = await executeGet2(db, query);
   // if it's no have receviable
   if (Total_Receivable === 0) {
-    const msg = `Uppppsss, Sorry 
-    <p class="mb-0">Total Receivable - ${capitalizeWord(
+    const msg = `Uppppsss, Sorry Total Receivable - ${capitalizeWord(
       receivableNameVal
-    )} is : ${formatPrice(Total_Receivable)}</p>`;
+    )} is : ${formatPrice(Total_Receivable)} `;
     throw new Error(msg);
   }
   // if it execeed payment
   if (receivableBalanceVal > Total_Receivable) {
-    const msg = `Uppsss, Sorry 
-    <p class="mb-0">Total Receivable - ${receivableNameVal} is only ${formatPrice(
+    const msg = `Uppsss, Sorry Total Receivable - ${receivableNameVal} is only ${formatPrice(
       Total_Receivable
-    )}</p>`;
+    )} `;
     throw new Error(msg);
   }
 };
 const validateReceivableName = (receivableNameVal) => {
   if (receivableNameVal === undefined || receivableNameVal === "") {
-    const msg = `Customer must be required`;
+    const msg = `Customer is required`;
+    throw new Error(msg);
+  }
+};
+const validateExisted = (data, table) => {
+  if (data.length === 0) {
+    const msg = `${table} is Empty`;
     throw new Error(msg);
   }
 };
@@ -423,15 +452,16 @@ export {
   validateAssetPrice,
   validateAssetValueUse,
   validateCash,
-  validateCategoryName,
   validateDate,
   validateDateAndTime,
   validateEmail,
+  validateExisted,
   validateExpensePrice,
   validateExpenseName,
   validateInvestorName,
   validateInvestorBalance,
   validateLoadImg,
+  validateLoadImg1,
   validateLiabilityName,
   validateLiabilityBalance,
   validatePosition,
@@ -439,6 +469,7 @@ export {
   validateProductAdd,
   validateProductName,
   validateQty,
+  validateQty1,
   validateReceivableName,
   validateReceivableBalance,
   validateSamePassword,

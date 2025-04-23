@@ -1,4 +1,4 @@
-const schema = `
+const UserSchema = `
 CREATE TABLE User ( 
   UserId INTEGER PRIMARY KEY AUTOINCREMENT,
   UserEmail VARCHAR(255) NOT NULL UNIQUE,
@@ -8,4 +8,4 @@ CREATE TABLE User (
   UserPosition VARCHAR(255),
   UserInfo TEXT
 )`;
-export default schema;
+export default UserSchema;

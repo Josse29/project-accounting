@@ -25,24 +25,29 @@ const queryGetTotal = (searchVal) => {
   return query;
 };
 const queryGet = (searchVal, limitVal, offsetVal) => {
-  let query = `SELECT
-               UserId,
-               UserEmail,
-               UserFullname,
-               UserImg,
-               UserPosition,
-               UserInfo
-               FROM User `;
+  let query = `
+  SELECT
+  UserId,
+  UserEmail,
+  UserFullname,
+  UserImg,
+  UserPosition,
+  UserInfo
+  FROM 
+  User   
+  `;
   //  with search value
   if (searchVal !== "") {
-    query += `WHERE User.UserFullname LIKE '%${searchVal}%' ESCAPE '!' OR 
-                    User.UserEmail LIKE '%${searchVal}%' ESCAPE '!' OR  
-                    User.UserPosition LIKE '%${searchVal}%' ESCAPE '!' `;
+    query += `
+    WHERE User.UserFullname LIKE '%${searchVal}%' ESCAPE '!' OR 
+          User.UserEmail LIKE '%${searchVal}%' ESCAPE '!' OR  
+          User.UserPosition LIKE '%${searchVal}%' ESCAPE '!' `;
   }
   //  with limit, offset, order
-  query += `ORDER BY User.UserFullname ASC
-            LIMIT ${limitVal} 
-            OFFSET ${offsetVal}`;
+  query += `
+  ORDER BY User.UserFullname ASC
+  LIMIT ${limitVal} 
+  OFFSET ${offsetVal}`;
   return query;
 };
 const queryGetCreditor = () => {
@@ -101,7 +106,8 @@ const queryGetUser = () => {
 const queryGetSale = () => {
   let query = `SELECT 
                UserId,
-               UserFullname
+               UserFullname,
+               UserEmail
                FROM User `;
   //  ONlY sales
   query += `WHERE UserPosition = 'sale' `;
@@ -155,9 +161,9 @@ const queryUpdate = (
   query += `WHERE UserId = ${UserIdVal} `;
   return query;
 };
-const queryDeleteUser = (userId) => {
+const queryDeleteUser = (UserId) => {
   let query = `DELETE FROM User
-               WHERE User.UserId = ${userId} `;
+               WHERE User.UserId = ${UserId} `;
   return query;
 };
 export {

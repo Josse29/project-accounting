@@ -26,8 +26,8 @@ const queryGetProduct = (productSearch, productLimit, productOffset) => {
   Product.ProductPriceSell, 
   Product.ProductInfo, 
   Product.ProductImage,
-  User.UserId, 
-  User.UserFullname 
+  User.UserId AS SupplierId, 
+  User.UserFullname AS SupplierName
   FROM Product `;
   // left join
   query += `  
@@ -42,7 +42,7 @@ const queryGetProduct = (productSearch, productLimit, productOffset) => {
     Product.ProductInfo LIKE '%${productSearch}%' ESCAPE '!' OR
     User.UserFullname LIKE '%${productSearch}%' ESCAPE '!' `;
   }
-  // witth order limit offset
+  // with order limit offset
   query += `
   ORDER BY Product.ProductName ASC 
   LIMIT ${productLimit} 
@@ -57,7 +57,7 @@ const queryGetProductRefStock = (searchVal, limitVal, offsetVal) => {
   Product.ProductImage,
   Product.ProductPriceBuy AS PriceBuy, 
   Product.ProductPriceSell AS PriceSell,
-  SUM(Stock.StockQty) AS TotalQty 
+  COALESCE(SUM(Stock.StockQty), 0) AS TotalQty 
   FROM Product
   `;
   // left join
@@ -77,7 +77,6 @@ const queryGetProductRefStock = (searchVal, limitVal, offsetVal) => {
   ORDER BY Product.ProductName ASC 
   LIMIT ${limitVal}
   OFFSET ${offsetVal} `;
-  console.log(query);
   return query;
 };
 const queryGetProductListRefStock = () => {
@@ -106,14 +105,16 @@ const queryGetProductListRefStock = () => {
   return query;
 };
 const queryGetProductListRefSale = () => {
-  let query = `SELECT 
-               Product.ProductId,
-               Product.ProductName,
-               Product.ProductPriceBuy,
-               Product.ProductPriceSell,
-               COALESCE(SUM(Sales.SalesProductQty), 0) AS TotalSalesProductQty,
-               COALESCE(SUM(Sales.SalesProductRp), 0) AS TotalSalesProductRp
-               FROM Product `;
+  let query = `
+  SELECT 
+  Product.ProductId,
+  Product.ProductName,
+  Product.ProductPriceBuy,
+  Product.ProductPriceSell,
+  COALESCE(SUM(Sales.SalesProductQty), 0) AS TotalSalesProductQty,
+  COALESCE(SUM(Sales.SalesProductRp), 0) AS TotalSalesProductRp
+  FROM Product 
+  `;
   //  left join with Stock table
   query += `LEFT JOIN 
             Sales ON Product.ProductId = Sales.SalesProductId `;
@@ -159,22 +160,29 @@ const queryGetProductTotalRow = (productSearch) => {
   return query;
 };
 const queryGetProductPDF = () => {
-  let query = `SELECT * FROM Product `;
+  let query = `
+  SELECT * FROM Product `;
   // ascending product name
-  query += `ORDER BY Product.ProductName ASC`;
+  query += `
+  ORDER BY Product.ProductName ASC`;
   return query;
 };
 const queryGetProductCSV = () => {
-  let query = `SELECT 
-               Product.ProductName AS ProductName,
-               Product.ProductPriceBuy AS ProductPriceBuy,
-               Product.ProductPriceSell AS ProductPriceSell,
-               User.UserFullname AS SupplierName
-               FROM Product `;
+  let query = `
+  SELECT 
+  Product.ProductName AS ProductName,
+  Product.ProductPriceBuy AS ProductPriceBuy,
+  Product.ProductPriceSell AS ProductPriceSell,
+  User.UserFullname AS SupplierName
+  FROM Product   
+  `;
   // left join table user
-  query += `LEFT JOIN User ON Product.ProductSupplierId = User.UserId `;
+  query += `
+  LEFT JOIN User ON Product.ProductSupplierId = User.UserId 
+  `;
   // ascending product name
-  query += `ORDER BY Product.ProductName ASC`;
+  query += `
+  ORDER BY Product.ProductName ASC`;
   return query;
 };
 // 3.UPDATE
@@ -185,8 +193,7 @@ const queryUpdateProduct = (
   productPriceSell,
   productSupplierId,
   productInfo,
-  imgBase64,
-  productCancelImg
+  imgBase64
 ) => {
   let query = `
   UPDATE 
@@ -196,16 +203,9 @@ const queryUpdateProduct = (
   ProductPriceBuy = ${productPriceBuy},
   ProductPriceSell = ${productPriceSell},
   ProductSupplierId = ${productSupplierId}, 
-  ProductInfo = '${productInfo}' `;
-  // condition image
-  //  1. if remove image
-  if (productCancelImg) {
-    query += `, ProductImage = 'null' `;
-  }
-  //  2. if change image
-  if (!productCancelImg && imgBase64 !== "null") {
-    query += `, ProductImage = '${imgBase64}' `;
-  }
+  ProductInfo = '${productInfo}',
+  ProductImage = '${imgBase64}'
+  `;
   query += `WHERE ProductId = ${productId} `;
   return query;
 };

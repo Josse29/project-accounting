@@ -7,7 +7,7 @@ Product(
   ProductInfo TEXT,
   ProductPriceBuy TEXT,
   ProductPriceSell TEXT,
-  ProductSupplierId INTEGER,
+  ProductSupplierId INTEGER DEFAULT NULL,
   FOREIGN KEY (ProductSupplierId) REFERENCES User(UserId)
 );`;
 export default productSchema;

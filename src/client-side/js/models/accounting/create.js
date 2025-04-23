@@ -1600,7 +1600,7 @@ $("div#accounting-create-etc .modal-footer button.btn-primary")
         throw new Error(response);
       }
     }
-    // 7. etc-withdrawls-investment-asset
+    // 7. etc-withdrawl-investment-asset
     if (selectedMethod === "return-investment-with-asset") {
       // asset
       const selectedAsset = $("select#asset-1");

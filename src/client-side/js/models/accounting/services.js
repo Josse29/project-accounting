@@ -113,7 +113,7 @@ const getAccountingAPI = async (req) => {
     return { status: false, response: error };
   }
 };
-// 5.endpoint : api/accounting/cash-out-product-buy
+// 5. endpoint : api/accounting/cash-out-product-buy
 // METHOD : POST
 // return messsage
 const createAccounting2API = async (req) => {
@@ -413,6 +413,23 @@ const createAccounting15API = async (req) => {
     return { status: false, response: error };
   }
 };
+// endpoint : api/accounting/cash-in-others
+// method : POST
+const createAccounting16API = async (req) => {
+  try {
+    const data = {
+      accountingDateVal: req.accountingDateVal,
+      accountingTimeVal: req.accountingTimeVal,
+      accountingNameVal: req.accountingNameVal,
+      accountingBalanceVal: req.accountingBalanceVal,
+      accountingInfoVal: req.accountingInfoVal,
+    };
+    const response = await createAccounting16(data);
+    return { status: true, response };
+  } catch (error) {
+    return { status: false, response: error };
+  }
+};
 // 20. endpoint : api/accounting/cash-out-withdrawl-investment
 // method : POSt
 // return : message
@@ -496,16 +513,6 @@ const createAccounting20API = async (req) => {
     return { status: false, response: error };
   }
 };
-// endpoint : accounting/asset-list
-// method : GET
-const getAccountingAssetAPI = async () => {
-  try {
-    const response = await getAccountingAsset();
-    return { status: true, response };
-  } catch (error) {
-    return { status: false, response: error };
-  }
-};
 // endpoint : api/etc-asset-sell-credit
 // method : POST
 const createAccounting21API = async (req) => {
@@ -528,23 +535,17 @@ const createAccounting21API = async (req) => {
     return { status: false, response: error };
   }
 };
-// endpoint : api/accounting/cash-in-others
-// method : POST
-const createAccounting16API = async (req) => {
+// endpoint : accounting/asset-list
+// method : GET
+const getAccountingAssetAPI = async () => {
   try {
-    const data = {
-      accountingDateVal: req.accountingDateVal,
-      accountingTimeVal: req.accountingTimeVal,
-      accountingNameVal: req.accountingNameVal,
-      accountingBalanceVal: req.accountingBalanceVal,
-      accountingInfoVal: req.accountingInfoVal,
-    };
-    const response = await createAccounting16(data);
+    const response = await getAccountingAsset();
     return { status: true, response };
   } catch (error) {
     return { status: false, response: error };
   }
 };
+
 // endpoint : api/accounting/cash
 // method : GET
 const getAccountingCashAPI = async () => {
@@ -732,8 +733,8 @@ export {
   createAccounting14API,
   createAccounting15API,
   createAccounting16API,
-  createAccounting18API,
   createAccounting17API,
+  createAccounting18API,
   createAccounting19API,
   createAccounting20API,
   createAccounting21API,

@@ -75,7 +75,7 @@ const queryRead = (searchVal, limitVal, offsetVal) => {
   `;
   query += `
   ORDER BY Stock.StockDate DESC,
-           Stock.StockTime DESC 
+           Stock.StockTime DESC
   LIMIT ${limitVal}
   OFFSET ${offsetVal}
   `;
@@ -84,13 +84,13 @@ const queryRead = (searchVal, limitVal, offsetVal) => {
 const queryRead1 = (searchVal, limitVal, offsetVal) => {
   let query = `
   SELECT 
-  Stock.StockId,
-  Stock.StockDate,
-  Stock.StockTime,
+  Stock.StockId AS SaleId,
+  Stock.StockDate AS SaleDate,
+  Stock.StockTime AS SaleTime,
   SUBSTR(Stock.StockInfo, INSTR(Stock.StockInfo, 'Sale : ') + 7, INSTR(Stock.StockInfo || '|', ' |') - (INSTR(Stock.StockInfo, 'Sale : ') + 7)) AS SaleName,
   Product.ProductName,
   Product.ProductPriceSell AS ProductPriceSell,
-  (Stock.StockQty * -1)AS StockQty,
+  (Stock.StockQty * -1) AS SaleQty,
   (Product.ProductPriceSell * Stock.StockQty * -1) AS SaleBalance,
   Stock.StockInfo,
   SUBSTR(Stock.StockInfo, INSTR(Stock.StockInfo, 'Customer : ') + 11, INSTR(Stock.StockInfo, ' - Sale :') - (INSTR(Stock.StockInfo, 'Customer : ') + 11)) AS CustomerName

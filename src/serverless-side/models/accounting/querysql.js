@@ -96,11 +96,8 @@ const queryReadDate = (selectedAccount, start, end) => {
 const queryReadAsset = () => {
   const query = `
   SELECT 
-  AccountingDate,
-  AccountingTime,
   AccountingRef,
   AccountingName,
-  AccountingInfo,
   COALESCE(SUM(AccountingBalance), 0) AS AssetBalance
   FROM 
   Accounting 

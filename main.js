@@ -2,11 +2,14 @@ import { app, BrowserWindow, dialog, ipcMain } from "electron";
 import fs from "fs";
 import path from "path";
 import sqlite3 from "sqlite3";
-
-import DbHandlers from "./src/serverless-side/database/config.js";
 import convertCSV from "./src/client-side/js/utils/convertCSV.js";
 import convertPDF from "./src/client-side/js/utils/convertPDF.js";
-
+import {
+  Accounting,
+  Product,
+  Stock,
+  User,
+} from "./src/serverless-side/index.js";
 let mainWindow;
 function createWindow() {
   const appPath = (...paths) => {
@@ -15,15 +18,25 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 850,
+    // fullscreen: true,
     webPreferences: {
       preload: path.join(appPath("preload.js")),
       contextIsolation: true,
     },
     frame: false,
   });
-  mainWindow.loadFile(appPath("index.html"));
+  // production
+  // mainWindow.loadFile(appPath("index.html"));
+  // development
+  mainWindow.loadURL("http://localhost:5173/");
   // db
-  DbHandlers(ipcMain, appPath, sqlite3);
+  const dbPath = appPath("src", "serverless-side", "database", "myapps.db");
+  const db = new sqlite3.Database(dbPath);
+  // Product(ipcMain, db);
+  User(ipcMain, db);
+  Product(ipcMain, db);
+  Stock(ipcMain, db);
+  Accounting(ipcMain, db);
   // export-csv
   convertCSV(ipcMain, dialog, fs, appPath);
   // convertpdf
@@ -31,14 +44,6 @@ function createWindow() {
   // close apps
   ipcMain.on("close-apps", () => {
     app.quit();
-  });
-  // logout apps
-  ipcMain.on("logout-apps", () => {
-    mainWindow.loadFile(appPath("index.html"));
-  });
-  // navigate page
-  ipcMain.on("navigate", (event, page) => {
-    mainWindow.loadFile(appPath("src", "client-side", "pages", `${page}.html`));
   });
   // minimze
   ipcMain.on("minimize-apps", () => {
