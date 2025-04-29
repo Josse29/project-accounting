@@ -1,5 +1,5 @@
-import React from "react";
-import { Line } from "react-chartjs-2";
+import React, { useEffect, useState } from "react";
+import { Bar, Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -19,16 +19,24 @@ ChartJS.register(
   Tooltip,
   Legend
 );
-const CardChartSale = () => {
+const CardChartSale = ({ saleGroup }) => {
+  const [saleName, setSaleName] = useState([]);
+  const [saleBalance, setSaleBalance] = useState([]);
+  useEffect(() => {
+    if (saleGroup && saleGroup.length > 0) {
+      saleGroup.sort((a, b) => a.SaleBalance - b.SaleBalance);
+      setSaleName(saleGroup.map((el) => el.SaleName));
+      setSaleBalance(saleGroup.map((el) => el.SaleBalance));
+    }
+  }, [saleGroup]);
   const data = {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+    labels: saleName,
     datasets: [
       {
-        label: "Pendapatan",
-        data: [30, 45, 25, 60, 50, 70, 90],
+        label: "Sales",
+        data: saleBalance,
         borderColor: "#1c64f2",
-        backgroundColor: "rgba(75, 192, 192, 0.2)",
-        tension: 0.3, // Membuat garis lebih halus
+        backgroundColor: "#7b9ff9",
       },
     ],
   };
@@ -38,7 +46,14 @@ const CardChartSale = () => {
     plugins: {
       legend: { display: false },
     },
+    scales: {
+      x: {
+        barThickness: 5,
+        maxBarThickness: 15,
+      },
+    },
   };
+
   return (
     <>
       {/* card header */}
@@ -47,7 +62,7 @@ const CardChartSale = () => {
       </div>
       {/* card body */}
       <div className="bg-white p-3 h-[400px] rounded-b-2xl">
-        <Line data={data} options={options} className="w-full h-full" />
+        <Line data={data} options={options} />
       </div>
     </>
   );

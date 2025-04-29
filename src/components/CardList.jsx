@@ -24,14 +24,14 @@ const List = (props) => {
   const { imgSrc, listName, listBalance } = props;
   return (
     <>
-      <div className="flex gap-3">
+      <div className="flex gap-4">
         <img
           src={imgSrc}
           alt="person.jpg"
-          className="h-[71px] w-[71px] rounded-full"
+          className="h-[61px] w-[61px] rounded-full"
         />
         <div className="overflow-hidden">
-          <div className="text-xl font-bold mb-1 truncate hover:text-wrap">
+          <div className="text-xl font-bold mb-1 truncate hover:text-wrap capitalize">
             {listName}
           </div>
           <div className="text-xl ps-2">{listBalance}</div>

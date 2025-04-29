@@ -34,6 +34,11 @@ const ModaCsvAccounting = (props) => {
       };
       const data = await getAccountingCSVAPI(req);
       await convertCSV({ data, setSuccessMsg, setErrMsg, setOpenCsv });
+      setFormData({
+        selectedAccount: "111",
+        startDateVal: "",
+        endDateVal: "",
+      });
     } catch (error) {
       setErrMsg(error.message.split(":")[2] || error);
       setSuccessMsg("");

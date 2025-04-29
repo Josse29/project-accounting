@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   FaCity,
   FaMinus,
@@ -13,11 +13,14 @@ import {
   FaHouse,
   FaRightFromBracket,
 } from "react-icons/fa6";
-import { Link, useLocation } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { InnostackLogo1 } from "./../assets/";
 import { Tooltip } from "flowbite-react";
+import { AllContext } from "../context/AllProvider";
 
 const Top = () => {
+  const navigate = useNavigate();
+  const { userLogin, setUserLogin } = useContext(AllContext);
   return (
     <div className="bg-[#262848] w-100 p-6 fixed z-10 left-[100px] right-0 top-0">
       <div className="flex justify-between">
@@ -27,7 +30,7 @@ const Top = () => {
         <div className="flex items-center gap-10">
           <div className="flex gap-3 items-center">
             <FaUser className="text-white text-2xl" />
-            <div className="text-xl text-white">Josse Surya Pinem</div>
+            <div className="text-xl text-white">{userLogin.fullname}</div>
           </div>
           <div className="flex gap-5">
             <div onClick={() => window.ElectronAPI.minimize()}>
@@ -39,14 +42,24 @@ const Top = () => {
                 <FaMinus className="text-white text-2xl cursor-pointer" />
               </Tooltip>
             </div>
-            <div onClick={() => window.ElectronAPI.restore()}>
+            <div
+              onClick={() => {
+                window.ElectronAPI.restore();
+              }}
+            >
               <Tooltip content="Restore" placement="bottom" className="text-xl">
                 <FaRegWindowRestore className="text-white text-2xl cursor-pointer" />
               </Tooltip>
             </div>
-            <Link to="/">
+            <div
+              onClick={() => {
+                setUserLogin({});
+                localStorage.removeItem("verifyToken");
+                navigate("/");
+              }}
+            >
               <FaRightFromBracket className="text-white text-2xl cursor-pointer" />
-            </Link>
+            </div>
           </div>
         </div>
       </div>

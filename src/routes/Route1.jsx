@@ -1,5 +1,5 @@
 import React from "react";
-import { HashRouter as BrowserRouter, Route, Routes } from "react-router";
+import { Route, Routes } from "react-router";
 import {
   About,
   Accounting,
@@ -11,17 +11,15 @@ import {
 } from "../pages";
 const Route1 = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/order" element={<Order />} />
-        <Route path="/inventory" element={<Inventory />} />
-        <Route path="/accounting" element={<Accounting />} />
-        <Route path="/users" element={<User />} />
-        <Route path="/about" element={<About />} />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route path="/" element={<Login />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/order" element={<Order />} />
+      <Route path="/inventory" element={<Inventory />} />
+      <Route path="/accounting" element={<Accounting />} />
+      <Route path="/users" element={<User />} />
+      <Route path="/about" element={<About />} />
+    </Routes>
   );
 };
 export default Route1;

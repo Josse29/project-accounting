@@ -1,52 +1,38 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { InputBtn, Select } from "../../components";
-import { useDebounce } from "../../hooks";
-import { getUser, getUser2 } from "../../utils";
+import { getUser2 } from "../../utils";
 
 const SearchLimitUser = (props) => {
   const { setUser, setReq, req, setTotalRows, setTotalPages, setLoading } =
     props;
-  const [searchInput, setSearchInput] = useState("");
-  const debouncedSearch = useDebounce(searchInput, 1500);
+  const [hasSearched, setHasSearched] = useState(false);
+  const searchTimeout = useRef(null);
   const handleChange = (e) => {
-    setLoading(true),
-      setSearchInput(e.target.value),
-      setReq((prev) => ({
-        ...prev,
-        searchVal: e.target.value,
-      }));
+    const { name, value } = e.target;
+    setLoading(true);
+    setReq((prev) => ({ ...prev, [name]: value, offsetVal: 1 }));
+    setHasSearched(true);
   };
-  // for search
   useEffect(() => {
-    const params = {
-      req,
-      setLoading,
-      setTotalRows,
-      setTotalPages,
-      setUser,
-    };
-    getUser(params);
-  }, [debouncedSearch]);
-  // for limit
-  useEffect(() => {
-    const params = {
-      req,
-      setTotalRows,
-      setTotalPages,
-      setUser,
-    };
-    getUser2(params);
-  }, [req.limitVal]);
+    if (!hasSearched) return;
+    clearTimeout(searchTimeout.current);
+    searchTimeout.current = setTimeout(() => {
+      getUser2({
+        req,
+        setLoading,
+        setTotalRows,
+        setTotalPages,
+        setUser,
+      });
+    }, 1000);
+    return () => clearTimeout(searchTimeout.current);
+  }, [req.searchVal, req.limitVal]);
   return (
-    <div className="flex gap-4">
+    <div className="flex gap-4 w-full">
       <Select
-        className="focus:ring-[#6f67c9]"
-        onChange={(e) =>
-          setReq((prev) => ({
-            ...prev,
-            limitVal: e.target.value,
-          }))
-        }
+        className="focus:ring-[#6f67c9] w-[90px]"
+        onChange={handleChange}
+        name="limitVal"
       >
         <Select.Option value="10" title="10" />
         <Select.Option value="20" title="20" />
@@ -59,6 +45,7 @@ const SearchLimitUser = (props) => {
           className="focus:ring-[#6f67c9] w-[400px]"
           placeholder="Please input a keyword User...."
           onChange={handleChange}
+          name="searchVal"
         />
         <InputBtn.Btn title="Search" className="bg-[#4338ca]" />
       </InputBtn>

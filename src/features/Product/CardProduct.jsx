@@ -115,8 +115,6 @@ const CardProduct = () => {
             setLoading={setLoading}
           />
         </div>
-        {/* loading */}
-        {loading && <Loading />}
         {/* alert */}
         <>
           <Alert.Success
@@ -125,6 +123,8 @@ const CardProduct = () => {
           />
           <Alert.Failed errMsg={errMsg} setErrMsg={setErrMsg} />
         </>
+        {/* loading */}
+        {loading && <Loading />}
         {/* table product */}
         {!loading && (
           <div className="mb-4">

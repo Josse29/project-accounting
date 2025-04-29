@@ -2,7 +2,8 @@ import React from "react";
 import { NavigationContainer } from "../navigation";
 import { Card, Card1, Container } from "../components";
 import { FaCity } from "react-icons/fa6";
-import { Company, Innostack, Josse } from "../assets";
+import { Josse } from "../assets";
+import { CardCompany } from "../features/Company";
 
 const About = () => {
   return (
@@ -10,43 +11,7 @@ const About = () => {
       <Card1 page="About" icon={<FaCity />} className="border-[#2563eb]" />
       <Container>
         {/* company */}
-        <div className="mb-5">
-          <Card>
-            <Card.Header
-              headerTitle="About Company"
-              className="text-center bg-[#2563eb]"
-            />
-            <Card.Body>
-              <div className="flex gap-4 px-4 py-2 items-center">
-                <div className="flex-1">
-                  <img src={Company} alt="" className="w-full" />
-                </div>
-                <div className="flex-[2]">
-                  <div className="text-4xl mb-2">Name Company</div>
-                  <div className="text-2xl mb-2">Est</div>
-                  <div className="mb-1 text-xl">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Est
-                    necessitatibus qui velit blanditiis vero autem soluta amet
-                    odio nam officiis harum minus ratione, similique placeat
-                    ullam commodi quo! Eligendi, omnis!
-                  </div>
-                  <div className="mb-1 text-xl">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Est
-                    necessitatibus qui velit blanditiis vero autem soluta amet
-                    odio nam officiis harum minus ratione, similique placeat
-                    ullam commodi quo! Eligendi, omnis!
-                  </div>
-                  <div className="mb-1 text-xl">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Est
-                    necessitatibus qui velit blanditiis vero autem soluta amet
-                    odio nam officiis harum minus ratione, similique placeat
-                    ullam commodi quo! Eligendi, omnis!
-                  </div>
-                </div>
-              </div>
-            </Card.Body>
-          </Card>
-        </div>
+        <CardCompany />
         {/* developer */}
         <div className="mb-5">
           <Card>

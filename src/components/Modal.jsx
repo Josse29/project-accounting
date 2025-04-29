@@ -32,7 +32,7 @@ const Modal = (props) => {
   );
 };
 const Header = (props) => {
-  const { className, icon, headerText } = props;
+  const { headerText, className, icon } = props;
   return (
     <div
       className={`${className} px-4 py-3 flex items-center gap-4 rounded-t-lg text-3xl text-white`}

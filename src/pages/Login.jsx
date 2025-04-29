@@ -4,7 +4,6 @@ import { Accounting, InnostackLogo } from "./../assets";
 import { closeApp, formatTime } from "../utils";
 import { FaPowerOff } from "react-icons/fa6";
 import { Tooltip } from "flowbite-react";
-
 // import
 const Login = () => {
   const [date, setDate] = useState("");

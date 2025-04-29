@@ -13,11 +13,14 @@ import SearchLimitUser from "./SearchLimitUser";
 import SelectCreditor from "./SelectCreditor";
 import SelectCustomer from "./SelectCustomer";
 import SelectInvestor from "./SelectInvestor";
+import SelectLiability from "./SelectLiability";
 import SelectReceivable from "./SelectReceivable";
 import SelectSale from "./SelectSale";
 import SelectSupplier from "./SelectSupplier";
 import SelectUser from "./SelectUser";
 import TableUser from "./TableUser";
+import ModalResetPassword from "./ModalResetPassword";
+import SelectAdmin from "./SelectAdmin";
 
 export {
   CardUser1,
@@ -28,12 +31,15 @@ export {
   CardListReceivable,
   ModalDeleteUser,
   ModalRegister,
+  ModalResetPassword,
   ModalUpdateUser,
   ModaDeleteUser,
+  SelectAdmin,
   SearchLimitUser,
   SelectCustomer,
   SelectCreditor,
   SelectInvestor,
+  SelectLiability,
   SelectReceivable,
   SelectSale,
   SelectSupplier,

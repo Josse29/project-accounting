@@ -1,50 +1,69 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Modal } from "../../components";
 import { FaEye } from "react-icons/fa6";
 import { formatCurrency1 } from "../../utils/formatCurrency";
 
 const ModalDetailProduct = (props) => {
   const { openDetail, setOpenDetail, dataDetail } = props;
-  const {
-    ProductName,
-    ProductPriceBuy,
-    ProductPriceSell,
-    ProductImage,
-    SupplierName,
-    ProductInfo,
-  } = dataDetail;
+  const [product, setProduct] = useState({
+    ProductName: "",
+    ProductPriceBuy: "",
+    ProductPriceSell: "",
+    ProductImage: "",
+    SupplierName: "",
+    ProductInfo: "",
+  });
+  useEffect(() => {
+    const {
+      ProductName,
+      ProductPriceBuy,
+      ProductPriceSell,
+      ProductImage,
+      SupplierName,
+      ProductInfo,
+    } = dataDetail;
+    setProduct({
+      ProductName,
+      ProductPriceBuy,
+      ProductPriceSell,
+      ProductImage,
+      SupplierName,
+      ProductInfo,
+    });
+  }, [openDetail, dataDetail]);
+
   return (
     <Modal openModal={openDetail} width="w-[540px]">
       <Modal.Header
         className="bg-green-500"
-        headerText={ProductName}
+        headerText={product.ProductName}
         icon={<FaEye />}
       />
       <Modal.Body>
         {/* product name*/}
         <div className="mb-5">
           <div className="text-2xl mb-2">Product Name :</div>
-          <div className="text-2xl ms-2">{ProductName}</div>
+          <div className="text-2xl ms-2">{product.ProductName}</div>
         </div>
         {/* price buy */}
         <div className="mb-5">
           <div className="text-2xl mb-2">Price Buy :</div>
           <div className="text-2xl ms-2">
-            {formatCurrency1(ProductPriceBuy)}
+            {formatCurrency1(product.ProductPriceBuy)}
           </div>
         </div>
         {/* price sell */}
         <div className="mb-5">
           <div className="text-2xl mb-2">Price Sell :</div>
           <div className="text-2xl ms-2">
-            {formatCurrency1(ProductPriceSell)}
+            {formatCurrency1(product.ProductPriceSell)}
           </div>
         </div>
         {/* image */}
         <div className="mb-5">
           <div className="text-2xl mb-3">Image : </div>
-          {ProductImage !== "" ? (
-            <img src={ProductImage} alt="" className="w-full h-fit" />
+          {product.ProductImage !== "" ? (
+            <img src={product.ProductImage} alt="" className="w-full h-fit" />
           ) : (
             <div className="text-xl italic text-slate-500 ms-2">
               No Preview Image
@@ -54,8 +73,8 @@ const ModalDetailProduct = (props) => {
         {/* supplier name */}
         <div className="mb-5">
           <div className="text-2xl mb-2">Supplier Name :</div>
-          {SupplierName !== null ? (
-            <div className="text-2xl ms-2">{SupplierName}</div>
+          {product.SupplierName !== null ? (
+            <div className="text-2xl ms-2">{product.SupplierName}</div>
           ) : (
             <div className="text-2xl ms-2">-</div>
           )}
@@ -63,8 +82,8 @@ const ModalDetailProduct = (props) => {
         {/* info */}
         <div className="mb-5">
           <div className="text-2xl mb-2">More Information :</div>
-          {ProductInfo !== "" ? (
-            <div className="text-lg ms-2">{ProductInfo}</div>
+          {product.ProductInfo !== "" ? (
+            <div className="text-lg ms-2">{product.ProductInfo}</div>
           ) : (
             <div className="text-lg ms-2">-</div>
           )}

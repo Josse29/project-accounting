@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Pagination } from "../../components";
 import { getUser1 } from "../../utils";
 
@@ -16,8 +16,10 @@ const PaginationUser = (props) => {
     setUser,
     ...rest
   } = props;
+  const [eventPage, setEventPage] = useState(false);
   useEffect(() => {
-    getUser1(req, setUser);
+    if (!eventPage) return;
+    getUser1({ req, setUser, setEventPage });
   }, [req.offsetVal]);
   return (
     <Pagination
@@ -30,6 +32,7 @@ const PaginationUser = (props) => {
           ...prev,
           offsetVal: 1,
         }));
+        setEventPage(true);
       }}
       prevPage={() => {
         setReq((prev) => ({
@@ -42,6 +45,7 @@ const PaginationUser = (props) => {
             offsetVal: totalPages,
           }));
         }
+        setEventPage(true);
       }}
       currentPage={(e) => {
         const targetText = e.target.textContent;
@@ -49,6 +53,7 @@ const PaginationUser = (props) => {
           ...prev,
           offsetVal: parseInt(targetText),
         }));
+        setEventPage(true);
       }}
       nextPage={() => {
         setReq((prev) => ({
@@ -61,12 +66,14 @@ const PaginationUser = (props) => {
             offsetVal: 1,
           }));
         }
+        setEventPage(true);
       }}
       lastPage={() => {
         setReq((prev) => ({
           ...prev,
           offsetVal: totalPages,
         }));
+        setEventPage(true);
       }}
     />
   );

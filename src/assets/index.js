@@ -4,7 +4,7 @@ import Company from "./img/company.jpg";
 import InnostackLogo1 from "./img/innostack-logo-1.png";
 import PoppinsFont from "./font/Poppins-Regular.ttf";
 import Accounting from "./img/accounting.jpg";
-import Person from "./img/person.jpg";
+import Person from "./img/user-default.jpg";
 import Product1 from "./img/product-1.jpg";
 import Product2 from "./img/product-2.jpg";
 import Product3 from "./img/product-3.jpg";

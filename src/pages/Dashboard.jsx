@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { NavigationContainer } from "../navigation";
 import { CardCash } from "../features/Accounting";
 import {
@@ -9,8 +9,24 @@ import {
   CardUser1,
 } from "../features/User";
 import { CardChartSale } from "../features/Stock";
+import { getSalesAPI } from "../services";
 
 const Dashboard = () => {
+  const [saleTotal, setSaleTotal] = useState(0);
+  const [saleGroup, setSaleGroup] = useState([]);
+  const getSales = async () => {
+    try {
+      const api = await getSalesAPI();
+      const { SaleGroup, SaleTotal } = api;
+      setSaleTotal(SaleTotal);
+      setSaleGroup(SaleGroup);
+    } catch (error) {
+      throw error;
+    }
+  };
+  useEffect(() => {
+    getSales();
+  }, []);
   return (
     <NavigationContainer>
       {/* section first */}
@@ -23,10 +39,10 @@ const Dashboard = () => {
       {/* section second */}
       <div className="flex gap-7 mb-7 w-full">
         <div className="w-[65%] shadow-md rounded-b-2xl">
-          <CardChartSale />
+          <CardChartSale saleGroup={saleGroup} />
         </div>
         <div className="w-[35%] shadow-md rounded-b-2xl">
-          <CardListSale />
+          <CardListSale saleTotal={saleTotal} saleGroup={saleGroup} />
         </div>
       </div>
       {/* section third */}

@@ -4,6 +4,7 @@ import { FaTimes } from "react-icons/fa";
 
 const InputImg = (props) => {
   const {
+    title = "Image",
     img,
     setImg,
     imgRef,
@@ -48,7 +49,7 @@ const InputImg = (props) => {
   return (
     <div className="mb-5">
       <label htmlFor="img" className="text-2xl block mb-2">
-        Image
+        {title}
       </label>
       {/* displayed img */}
       {img && (

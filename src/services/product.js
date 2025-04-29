@@ -46,8 +46,8 @@ const createProductAPI = async (req) => {
 const deleteProductAPI = async (req) => {
   try {
     const data = {
-      productid: req.productid,
-      productName: req.productName,
+      ProductId: req.ProductId,
+      ProductName: req.ProductName,
     };
     const deleted = await window.ElectronAPI.Product.delete(data);
     return deleted;

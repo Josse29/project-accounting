@@ -19,42 +19,40 @@ const StatementFinancialPosition = () => {
   const [equityTotal, setEquityTotal] = useState(0);
   const [liabiltyEquityTotal, setLiabiltyEquityTotal] = useState(0);
   useEffect(() => {
-    if (financialPositions?.Assets && financialPositions?.LiabilityEquity) {
-      const { Assets, LiabilityEquity } = financialPositions;
-      const { CurrentAssets, FixedAssets, TotalAssetsChanges } = Assets;
-      // current-assets
-      const {
-        TotalCash,
-        TotalReceivable,
-        CurrentAsset,
-        MerchandiseInventory,
-        TotalCurrentAssetChanges,
-      } = CurrentAssets;
-      setCash(TotalCash);
-      setReceivable(TotalReceivable);
-      setInventory(MerchandiseInventory);
-      setCurrentAsset(CurrentAsset);
-      setCurrentAssetTotal(TotalCurrentAssetChanges);
-      // fixed-assets
-      const { FixedAsset, FixedAccumulated, TotalFixedAsset } = FixedAssets;
-      setFixAsset(FixedAsset);
-      setFixAssetAccm(FixedAccumulated);
-      setFixAssetTotal(TotalFixedAsset);
-      // total assets
-      setAssetTotal(TotalAssetsChanges);
-      // liability
-      const { Liabilities, EquityChanges, TotalLiabilityEquityChanges } =
-        LiabilityEquity;
-      const { Liability, TotalLiability } = Liabilities;
-      setLiability(Liability);
-      setLiabilityTotal(TotalLiability);
-      // equity
-      const { Equity, TotalEquity1 } = EquityChanges;
-      setEquity(Equity);
-      setEquityTotal(TotalEquity1);
-      // total liability & changes
-      setLiabiltyEquityTotal(TotalLiabilityEquityChanges);
-    }
+    const { Assets, LiabilityEquity } = financialPositions;
+    const { CurrentAssets, FixedAssets, TotalAssetsChanges } = Assets;
+    // current-assets
+    const {
+      TotalCash,
+      TotalReceivable,
+      CurrentAsset,
+      MerchandiseInventory,
+      TotalCurrentAssetChanges,
+    } = CurrentAssets;
+    setCash(TotalCash);
+    setReceivable(TotalReceivable);
+    setInventory(MerchandiseInventory);
+    setCurrentAsset(CurrentAsset);
+    setCurrentAssetTotal(TotalCurrentAssetChanges);
+    // fixed-assets
+    const { FixedAsset, FixedAccumulated, TotalFixedAsset } = FixedAssets;
+    setFixAsset(FixedAsset);
+    setFixAssetAccm(FixedAccumulated);
+    setFixAssetTotal(TotalFixedAsset);
+    // total assets
+    setAssetTotal(TotalAssetsChanges);
+    // liability
+    const { Liabilities, EquityChanges, TotalLiabilityEquityChanges } =
+      LiabilityEquity;
+    const { Liability, TotalLiability } = Liabilities;
+    setLiability(Liability);
+    setLiabilityTotal(TotalLiability);
+    // equity
+    const { Equity, TotalEquity1 } = EquityChanges;
+    setEquity(Equity);
+    setEquityTotal(TotalEquity1);
+    // total liability & changes
+    setLiabiltyEquityTotal(TotalLiabilityEquityChanges);
   }, [financialPositions]);
   return (
     <div className="flex flex-col">

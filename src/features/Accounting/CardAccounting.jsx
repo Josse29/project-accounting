@@ -6,6 +6,7 @@ import {
   FaMoneyCheckDollar,
   FaSquareMinus,
   FaSquarePlus,
+  FaTrashCan,
 } from "react-icons/fa6";
 import TableAccounting from "./TableAccounting";
 import PaginationAccounting from "./PaginationAccounting";
@@ -16,6 +17,7 @@ import ModaCsvAccounting from "./ModaCsvAccounting";
 import ModalPdfAccounting from "./ModalPdfAccounting";
 import SearchLimitAccounting from "./SearchLimitAccounting";
 import { getAccounting, getAccounting2 } from "../../utils";
+import ModalDeleteAccounting from "./ModalDeleteAccounting";
 
 const CardAccounting = () => {
   const [accounting, setAccounting] = useState([]);
@@ -42,6 +44,7 @@ const CardAccounting = () => {
   ];
   const [openCashIn, setOpenCashIn] = useState(false);
   const [openCashOut, setOpenCashOut] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
   const [openEtc, setOpenEtc] = useState(false);
   const [openCsv, setOpenCsv] = useState(false);
   const [openPdf, setOpenPdf] = useState(false);
@@ -122,6 +125,14 @@ const CardAccounting = () => {
             icon={<FaFilePdf />}
             className="bg-red-500 hover:bg-red-600 hover:ring-red-600"
             onClick={() => setOpenPdf(true)}
+          />
+          {/* delete */}
+          <ButtonIcon
+            title="Delete"
+            disabled={totalRows < 1 ? true : false}
+            icon={<FaTrashCan />}
+            className="bg-[#e11d48] hover:bg-[#cf163e] hover:ring-[#cf163e]"
+            onClick={() => setOpenDelete(true)}
           />
         </div>
         {/*  button mode */}
@@ -213,6 +224,15 @@ const CardAccounting = () => {
         openPdf={openPdf}
         setOpenPdf={setOpenPdf}
         setSuccessMsg={setSuccessMsg}
+      />
+      <ModalDeleteAccounting
+        openDelete={openDelete}
+        setOpenDelete={setOpenDelete}
+        setSuccessMsg={setSuccessMsg}
+        setReq={setReq}
+        setAccounting={setAccounting}
+        setTotalRows={setTotalRows}
+        setTotalPages={setTotalPages}
       />
     </Card>
   );

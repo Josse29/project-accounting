@@ -46,8 +46,8 @@ const ModalUpdateProduct = (props) => {
     }
   };
   useEffect(() => {
-    setLoading(true);
-    if (dataUpdate) {
+    if (openUpdate && dataUpdate?.ProductId) {
+      setLoading(true);
       const {
         ProductId,
         ProductName,
@@ -58,30 +58,30 @@ const ModalUpdateProduct = (props) => {
         ProductInfo,
       } = dataUpdate;
       setFormData(() => ({
-        productId: ProductId || "",
-        productName: ProductName || "",
-        priceBuy: formatCurrency(parseFloat(ProductPriceBuy)) || "",
-        priceSell: formatCurrency(parseFloat(ProductPriceSell)) || "",
-        img: ProductImage || "",
-        supplierId: SupplierId || "",
-        productInfo: ProductInfo || "",
+        productId: ProductId,
+        productName: ProductName,
+        priceBuy: formatCurrency(parseFloat(ProductPriceBuy)),
+        priceSell: formatCurrency(parseFloat(ProductPriceSell)),
+        img: ProductImage,
+        supplierId: SupplierId,
+        productInfo: ProductInfo,
       }));
       if (ProductImage?.startsWith("data:image")) {
         setImg(true);
       } else {
         setImg(false);
       }
+      setLoading(false);
     }
-    setLoading(false);
-  }, [dataUpdate]);
+  }, [openUpdate, dataUpdate]);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
-      setLoading(true);
       // send api
       const {
         productId,
@@ -193,7 +193,7 @@ const ModalUpdateProduct = (props) => {
               id="product-info"
               type="text"
               className="w-full border-slate-300 rounded-md focus:border-0 focus:ring-2 focus:ring-sky-600 placeholder:text-slate-400"
-              placeholder="ex : $ 10.00 "
+              placeholder="more information.."
               name="productInfo"
               value={formData.productInfo}
               onChange={handleChange}

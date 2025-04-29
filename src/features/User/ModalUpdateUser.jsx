@@ -10,10 +10,11 @@ import {
 } from "../../components";
 import { FaEdit } from "react-icons/fa";
 import { updateUserAPI } from "../../services/user";
-import { getUser2 } from "../../utils";
+import { getUser3 } from "../../utils";
 
 const ModalUpdateUser = (props) => {
   const {
+    setReq,
     setSuccessMsg,
     openUpdate,
     setOpenUpdate,
@@ -23,7 +24,8 @@ const ModalUpdateUser = (props) => {
     setTotalPages,
   } = props;
   const [formData, setFormData] = useState({
-    id: 1,
+    id: "",
+    username: "",
     email: "",
     fullname: "",
     img: "",
@@ -36,34 +38,44 @@ const ModalUpdateUser = (props) => {
   const [img, setImg] = useState(false);
   const imgRef = useRef(null);
   const [loading, setLoading] = useState(false);
+  const modalBodyRef = useRef(null);
+  const scrollToTop = () => {
+    if (modalBodyRef.current) {
+      modalBodyRef.current.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
+  };
   useEffect(() => {
-    setLoading(true);
-    if (updateUser) {
+    if (openUpdate && updateUser?.UserId) {
       const {
-        UserId = "",
-        UserFullname = "",
-        UserEmail = "",
-        UserImg = "",
-        UserInfo = "",
-        UserPosition = "",
+        UserId,
+        UserName,
+        UserFullname,
+        UserEmail,
+        UserImg,
+        UserInfo,
+        UserPosition,
       } = updateUser;
-      setFormData((prev) => ({
-        ...prev,
-        id: UserId || "",
-        fullname: UserFullname || "",
-        email: UserEmail || "",
-        img: UserImg || "",
-        info: UserInfo || "",
-        position: UserPosition || "",
-      }));
+      setLoading(true);
+      setFormData({
+        id: UserId,
+        username: UserName,
+        fullname: UserFullname,
+        email: UserEmail,
+        img: UserImg,
+        info: UserInfo,
+        position: UserPosition,
+      });
       if (UserImg.startsWith("data:image")) {
         setImg(true);
       } else {
         setImg(false);
       }
+      setLoading(false);
     }
-    setLoading(false);
-  }, [updateUser]);
+  }, [openUpdate, updateUser]);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -76,22 +88,24 @@ const ModalUpdateUser = (props) => {
     setLoading(true);
     try {
       // send api
-      const { email, fullname, img, position } = formData;
+      const { id, username, email, fullname, img, position, info } = formData;
       const req = {
+        UserIdVal: id,
+        UserNameVal: username,
         UserEmailVal: email,
         UserFullnameVal: fullname,
         UserImgVal: img,
         UserPositionVal: position,
-        UserIdVal: updateUser.UserId,
+        UserInfoVal: info,
       };
       const response = await updateUserAPI(req);
       // fetch again
-      const params = {
+      await getUser3({
+        setReq,
         setUser,
         setTotalRows,
         setTotalPages,
-      };
-      await getUser2(params);
+      });
       // reset ui
       setSuccessMsg(response);
       setErrMsg("");
@@ -99,6 +113,7 @@ const ModalUpdateUser = (props) => {
     } catch (error) {
       setSuccessMsg("");
       setErrMsg(error.message.split(":")[2] || error);
+      scrollToTop();
       throw error;
     } finally {
       setLoading(false);
@@ -113,11 +128,27 @@ const ModalUpdateUser = (props) => {
         className="bg-sky-600"
       />
       <form onSubmit={handleSubmit}>
-        <Modal.Body>
+        <Modal.Body ref={modalBodyRef}>
           {/* alert */}
           <div className="mb-5">
             <Alert.Failed errMsg={errMsg} setErrMsg={setErrMsg} />
           </div>
+          {formData.position === "admin" && (
+            <>
+              {/* username */}
+              <div className="mb-5">
+                <InputText
+                  title="Username"
+                  htmlFor1="username"
+                  name="username"
+                  value={formData.username}
+                  className="focus:ring-sky-600 capitalize"
+                  placeholder="Ex : Josse Surya Pinem"
+                  onChange={handleChange}
+                />
+              </div>
+            </>
+          )}
           {/* Fullname */}
           <div className="mb-5">
             <InputText

@@ -12,23 +12,21 @@ const StatementOfEquity = () => {
   const [incomeSum, setIncomSum] = useState(0);
   const [equityChanges, setEquityChanges] = useState(0);
   useEffect(() => {
-    if (changesEquity?.Equity) {
-      // equity
-      const {
-        Equity,
-        TotalEquity1,
-        EquityWithDrawl,
-        TotalEquityWithDrawl,
-        NetProfitOrLoss,
-        TotalEquityChanges,
-      } = changesEquity;
-      setEquity(Equity);
-      setEquityTotal(TotalEquity1);
-      setEquityWithDraw(EquityWithDrawl);
-      setEquityWithDrawTotal(TotalEquityWithDrawl);
-      setIncomSum(NetProfitOrLoss);
-      setEquityChanges(TotalEquityChanges);
-    }
+    // equity
+    const {
+      Equity,
+      TotalEquity1,
+      EquityWithDrawl,
+      TotalEquityWithDrawl,
+      NetProfitOrLoss,
+      TotalEquityChanges,
+    } = changesEquity;
+    setEquity(Equity);
+    setEquityTotal(TotalEquity1);
+    setEquityWithDraw(EquityWithDrawl);
+    setEquityWithDrawTotal(TotalEquityWithDrawl);
+    setIncomSum(NetProfitOrLoss);
+    setEquityChanges(TotalEquityChanges);
   }, [changesEquity]);
   return (
     <div className="flex flex-col">

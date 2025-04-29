@@ -14,6 +14,7 @@ import StatementProfitOrLoss from "./StatementProfitOrLoss";
 import StatementOfEquity from "./StatementOfEquity";
 import SearchLimitAccounting from "./SearchLimitAccounting";
 import InputCashAvailable from "./InputCashAvailable";
+import ModalDeleteAccounting from "./ModalDeleteAccounting";
 
 export {
   CardAccounting,
@@ -23,6 +24,7 @@ export {
   ModalCreateAccounting,
   ModalCreateAccounting1,
   ModalCreateAccounting2,
+  ModalDeleteAccounting,
   ModaCsvAccounting,
   ModalPdfAccounting,
   PaginationAccounting,

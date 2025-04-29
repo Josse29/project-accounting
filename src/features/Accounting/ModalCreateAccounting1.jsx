@@ -15,6 +15,7 @@ import {
   SelectCreditor,
   SelectCustomer,
   SelectInvestor,
+  SelectLiability,
   SelectSale,
   SelectUser,
 } from "../User";
@@ -327,7 +328,7 @@ const ModalCreateAccounting1 = (props) => {
                 title="Payment of Purchase Product"
               />
               <Select.Option value="expense" title="Payment of Expense" />
-              <Select.Option value="liability" title="Payment of Creditor" />
+              <Select.Option value="liability" title="Payment of Debt" />
               <Select.Option
                 value="return-product-sale"
                 title="Payment of Return Sale Product"
@@ -489,7 +490,7 @@ const ModalCreateAccounting1 = (props) => {
               <>
                 {/* select creditor */}
                 <div className="mb-5">
-                  <SelectCreditor
+                  <SelectLiability
                     className="focus:ring-red-500"
                     name="liabilityName"
                     value={formData.liabilityName}

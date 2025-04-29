@@ -1,21 +1,18 @@
 import { noNumberRgx } from "./regex";
 
-const formatPercentage = (e) => {
-  let value = e.replace(noNumberRgx, "");
-  if (value) {
-    value = value + "%";
-  } else {
-    value = 0;
+const formatPercentage = (input) => {
+  let value = input.replace(noNumberRgx, "");
+  if (value.startsWith("0") && value.length > 1 && !value.startsWith("0.")) {
+    value = parseFloat(value);
   }
-  return value;
+  return value ? value + "%" : "";
 };
-const formatPercentage1 = (event) => {
-  let input = event.target;
-  let value = input.value.replace("%", "");
-  if (value.length > 0) {
-    input.value = value.slice(0, -1) + "%";
+const formatPercentage1 = (e) => {
+  const { value } = e.target;
+  let raw = value.replace("%", "");
+  if (raw.length > 0) {
+    raw = raw.slice(0, -1);
   }
-  event.preventDefault();
-  return input.value;
+  return raw ? raw + "%" : "";
 };
 export { formatPercentage, formatPercentage1 };

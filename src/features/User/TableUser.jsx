@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { ButtonAction, Table } from "../../components";
-import { FaEye, FaTrashCan } from "react-icons/fa6";
-import { FaEdit } from "react-icons/fa";
 import ModalDetailUser from "./ModalDetailUser";
 import ModalUpdateUser from "./ModalUpdateUser";
 import ModalDeleteUser from "./ModalDeleteUser";
@@ -11,6 +9,7 @@ const TableUser = (props) => {
     totalRows,
     setTotalRows,
     setTotalPages,
+    setReq,
     user,
     setUser,
     setSuccessMsg,
@@ -45,13 +44,16 @@ const TableUser = (props) => {
                     <>
                       <ButtonAction
                         btnDetail={() => {
-                          setOpenDetail(true), setUserData(el);
+                          setOpenDetail(true);
+                          setUserData(el);
                         }}
                         btnUpdate={() => {
-                          setOpenUpdate(true), setUserData(el);
+                          setOpenUpdate(true);
+                          setUserData(el);
                         }}
                         btnDelete={() => {
-                          setOpenDelete(true), setUserData(el);
+                          setOpenDelete(true);
+                          setUserData(el);
                         }}
                       />
                     </>
@@ -77,6 +79,7 @@ const TableUser = (props) => {
         detailUser={userData}
       />
       <ModalUpdateUser
+        setReq={setReq}
         openUpdate={openUpdate}
         setOpenUpdate={setOpenUpdate}
         updateUser={userData}
@@ -86,6 +89,7 @@ const TableUser = (props) => {
         setTotalPages={setTotalPages}
       />
       <ModalDeleteUser
+        setReq={setReq}
         openDelete={openDelete}
         setOpenDelete={setOpenDelete}
         deleteUser={userData}

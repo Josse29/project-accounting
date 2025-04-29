@@ -1,8 +1,7 @@
 import { getUserAPI, getUserPaginationAPI } from "../services/user";
-
-const getUser = async (params) => {
-  const { req, setLoading, setUser, setTotalRows, setTotalPages } = params;
-  setLoading(true);
+// first did compount
+const getUser = async (args) => {
+  const { req, setUser, setTotalRows, setTotalPages } = args;
   try {
     const { totalPage, totalRow } = await getUserPaginationAPI(req);
     const existed = totalRow >= 1;
@@ -16,31 +15,55 @@ const getUser = async (params) => {
     setTotalRows(totalRow);
     setTotalPages(totalPage);
   } catch (error) {
-    console.error(error);
+    throw error;
+  }
+};
+// for pagination
+const getUser1 = async (args) => {
+  const { req, setUser, setEventPage } = args;
+  try {
+    setEventPage(true);
+    const users = await getUserAPI(req);
+    setUser(users);
+  } catch (error) {
+    throw error;
+  } finally {
+    setEventPage(false);
+  }
+};
+// for searching
+const getUser2 = async (args) => {
+  const { req, setUser, setTotalRows, setTotalPages, setLoading } = args;
+  try {
+    const { totalPage, totalRow } = await getUserPaginationAPI(req);
+    const existed = totalRow >= 1;
+    setTotalRows(totalRow);
+    setTotalPages(totalPage);
+    if (existed) {
+      const users = await getUserAPI(req);
+      setUser(users);
+    }
+    if (!existed) {
+      setUser([]);
+    }
+  } catch (error) {
+    throw error;
   } finally {
     setLoading(false);
   }
 };
-const getUser1 = async (req, setUser) => {
+// for callback
+const getUser3 = async (args) => {
+  const { setReq, setUser, setTotalRows, setTotalPages } = args;
   try {
-    const users = await getUserAPI(req);
-    setUser(users);
-  } catch (error) {
-    console.error(error);
-  }
-};
-const getUser2 = async (params) => {
-  const { setUser, setTotalRows, setTotalPages } = params;
-  const req = {
-    searchVal: "",
-    limitVal: 10,
-    offsetVal: 1,
-  };
-  try {
+    setReq({
+      searchVal: "",
+      limitVal: 10,
+      offsetVal: 1,
+    });
+    const req = { searchVal: "", limitVal: 10, offsetVal: 1 };
     const { totalPage, totalRow } = await getUserPaginationAPI(req);
     const existed = totalRow >= 1;
-    setTotalRows(totalRow);
-    setTotalPages(totalPage);
     if (existed) {
       const users = await getUserAPI(req);
       setUser(users);
@@ -48,8 +71,10 @@ const getUser2 = async (params) => {
     if (!existed) {
       setUser([]);
     }
+    setTotalRows(totalRow);
+    setTotalPages(totalPage);
   } catch (error) {
-    console.error(error);
+    throw error;
   }
 };
-export { getUser, getUser1, getUser2 };
+export { getUser, getUser1, getUser2, getUser3 };

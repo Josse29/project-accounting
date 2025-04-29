@@ -1,44 +1,76 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router";
+import Swal from "sweetalert2";
+import { loginUserAPI } from "../../services/user";
 
 const FormLogin = () => {
-  const emailRef = useRef();
-  const passwordRef = useRef();
+  const userNameRef = useRef();
+  const [formData, setFormData] = useState({
+    UserNameVal: "",
+    UserPasswordVal: "",
+  });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
   const [passwordVisible, setpasswordVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
-    emailRef.current.focus();
+    userNameRef.current.focus();
   }, []);
-  const handleLogin = (e) => {
-    e.preventDefault();
+  const handleLogin = async (e) => {
     setLoading(true);
-    setTimeout(() => {
-      const req = {
-        email: emailRef.current.value,
-        password: passwordRef.current.value,
-      };
+    try {
+      e.preventDefault();
+      const response = await loginUserAPI(formData);
+      const { msg, token } = response;
+      localStorage.setItem("verifyToken", JSON.stringify(token));
+      Swal.fire({
+        title: msg,
+        icon: "success",
+        confirmButtonText: "Login",
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/dashboard");
+        }
+      });
+    } catch (error) {
+      const errMsg = error.message.split(":")[2] || error;
+      Swal.fire({
+        title: errMsg,
+        icon: "error",
+      });
+      throw error;
+    } finally {
       setLoading(false);
-      navigate("/dashboard");
-    }, 1000);
+    }
   };
   return (
     <form className="flex flex-col gap-4" onSubmit={handleLogin}>
-      {/* input email */}
+      {/* input userName */}
       <div className="flex flex-col gap-2 mb-2">
         <label
-          htmlFor="email"
+          htmlFor="userName"
           className="font-extrabold text-xl text-[#1f41bb]"
         >
-          Email :
+          UserName :
         </label>
         <input
           type="text"
-          id="email"
+          name="UserNameVal"
+          value={formData.UserNameVal}
+          onChange={handleChange}
+          id="userName"
           className="bg-[#f1f4ff] border-2 border-[#f1f4ff] rounded-md text-[#1f41bb] font-bold placeholder:text-[#1f41bb] placeholder:font-bold focus:ring-4 focus:ring-[#f1f4ff] focus:border-[3px]"
-          placeholder="ex : youremail@gmail.com"
-          ref={emailRef}
+          placeholder="ex : pinemjosse29"
+          ref={userNameRef}
         />
       </div>
       {/* input password */}
@@ -62,11 +94,13 @@ const FormLogin = () => {
           </div>
         </div>
         <input
+          name="UserPasswordVal"
+          value={formData.UserPasswordVal}
+          onChange={handleChange}
           type={passwordVisible ? "text" : "password"}
           id="password1"
           className="bg-[#f1f4ff] border-2 border-[#f1f4ff] rounded-md text-[#1f41bb] font-bold placeholder:text-[#1f41bb] placeholder:font-bold focus:ring-4 focus:ring-[#f1f4ff] focus:border-[3px]"
           placeholder="******"
-          ref={passwordRef}
         />
       </div>
       {/* button login */}

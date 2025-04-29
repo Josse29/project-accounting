@@ -29,12 +29,13 @@ const getUserPaginationAPI = async (req) => {
 const registerAPI = async (req) => {
   try {
     const data = {
-      UserEmailVal: req.UserEmailVal,
-      UserFullnameVal: req.UserFullnameVal,
+      UserPositionVal: req.UserPositionVal,
+      UserNameVal: req.UserNameVal,
       UserPasswordVal: req.UserPasswordVal,
       UserPassword1Val: req.UserPassword1Val,
+      UserEmailVal: req.UserEmailVal,
+      UserFullnameVal: req.UserFullnameVal,
       UserImgVal: req.UserImgVal,
-      UserPositionVal: req.UserPositionVal,
       UserInfoVal: req.UserInfoVal,
     };
     const response = await window.ElectronAPI.User.register(data);
@@ -60,11 +61,13 @@ const deleteUserAPI = async (req) => {
 const updateUserAPI = async (req) => {
   try {
     const data = {
+      UserNameVal: req.UserNameVal,
       UserEmailVal: req.UserEmailVal,
       UserFullnameVal: req.UserFullnameVal,
       UserImgVal: req.UserImgVal,
       UserPositionVal: req.UserPositionVal,
       UserIdVal: req.UserIdVal,
+      UserInfoVal: req.UserInfoVal,
     };
     const response = await window.ElectronAPI.User.update(data);
     return response;
@@ -126,7 +129,7 @@ const getCreditorAPI = async () => {
     throw error;
   }
 };
-// 11. endpoint : api/user-receivable (GET)
+// 12. endpoint : api/user-receivable (GET)
 const getReceivableAPI = async () => {
   try {
     const response = await window.ElectronAPI.User.receivable();
@@ -135,17 +138,107 @@ const getReceivableAPI = async () => {
     throw error;
   }
 };
+// 13. endpoint : api/user-sales (GET)
+const getSalesAPI = async () => {
+  try {
+    const response = await window.ElectronAPI.User.saleGroup();
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+// 14. endpoint : api/user-investor (GET)
+const getInvestor1API = async () => {
+  try {
+    const response = await window.ElectronAPI.User.investorGroup();
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+// 15. endpoint : api/user-receivable (GET)
+const getReceivable1API = async () => {
+  try {
+    const response = await window.ElectronAPI.User.receivableGroup();
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+// 16. endpoint : api/user-liability (GET)
+const getLiabilityAPI = async () => {
+  try {
+    const response = await window.ElectronAPI.User.liabilityGroup();
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+// 17. endpoint : api/user-liability (GET)
+const getLiability1API = async () => {
+  try {
+    const response = await window.ElectronAPI.User.liability();
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+// 18. endpoint : api/user-admin (GET)
+const getAdminAPI = async () => {
+  try {
+    const response = await window.ElectronAPI.User.admin();
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+// 19. endpoint : api/reset-passwword (POST)
+const resetPassAPI = async (req) => {
+  try {
+    const data = {
+      UserIdVal: req.UserIdVal,
+      UserNameVal: req.UserNameVal,
+      UserPasswordVal: req.UserPasswordVal,
+      UserPassword1Val: req.UserPassword1Val,
+    };
+    const response = await window.ElectronAPI.User.resetPass(data);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+// 20. endpoint : api/login (POST)
+const loginUserAPI = async (req) => {
+  try {
+    const data = {
+      UserNameVal: req.UserNameVal,
+      UserPasswordVal: req.UserPasswordVal,
+    };
+    const response = await window.ElectronAPI.User.login(data);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
 export {
   deleteUserAPI,
   getCustomerAPI,
+  getAdminAPI,
   getCreditorAPI,
   getInvestorAPI,
+  getInvestor1API,
+  getLiabilityAPI,
+  getLiability1API,
   getUserAPI,
   getUserListAPI,
   getReceivableAPI,
+  getReceivable1API,
   getSaleAPI,
+  getSalesAPI,
   getSupplierAPI,
   getUserPaginationAPI,
+  loginUserAPI,
   registerAPI,
+  resetPassAPI,
   updateUserAPI,
 };

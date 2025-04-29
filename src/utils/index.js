@@ -28,7 +28,7 @@ import {
 } from "./getProduct1";
 import { getSale, getSale1, getSale2 } from "./getSale";
 import { getStock, getStock1, getStock2 } from "./getStock";
-import { getUser, getUser1, getUser2 } from "./getUser";
+import { getUser, getUser1, getUser2, getUser3 } from "./getUser";
 import { getImageBase64, validateExt } from "./image";
 import { noNumberRgx, noNumberRgx1 } from "./regex";
 import {
@@ -46,9 +46,13 @@ import {
   uiAccountingPDF3,
   uiAccountingPDF4,
   uiAccountingPDF5,
+  uiAccountingPDF6,
+  uiAccountingPDF7,
+  uiAccountingPDF8,
   uiProductPdf,
   uiSalePDF,
   uiStockPDF,
+  uiFinancialStatement,
 } from "./uiPDF";
 
 export {
@@ -73,6 +77,7 @@ export {
   getUser,
   getUser1,
   getUser2,
+  getUser3,
   getProduct,
   getProduct1,
   getProduct2,
@@ -99,9 +104,13 @@ export {
   uiAccountingPDF3,
   uiAccountingPDF4,
   uiAccountingPDF5,
+  uiAccountingPDF6,
+  uiAccountingPDF7,
+  uiAccountingPDF8,
   uiProductPdf,
   uiStockPDF,
   uiSalePDF,
+  uiFinancialStatement,
   noNumberRgx,
   noNumberRgx1,
   validateExt,

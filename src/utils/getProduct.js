@@ -22,6 +22,7 @@ const getProduct = async (args) => {
 const getProduct1 = async (args) => {
   const { req, setProduct, setEventPage } = args;
   try {
+    setEventPage(true);
     const products = await getProductAPI(req);
     setProduct(products);
   } catch (error) {

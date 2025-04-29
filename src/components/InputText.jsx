@@ -1,7 +1,7 @@
 import React from "react";
 
 const InputText = (props) => {
-  const { htmlFor1, title, className, ...rest } = props;
+  const { title, htmlFor1, className, ...rest } = props;
   return (
     <>
       <label htmlFor={htmlFor1} className="text-2xl block mb-2">

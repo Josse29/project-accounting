@@ -1223,8 +1223,8 @@ const uiAccountingPDF7 = (response) => {
   `;
   return html;
 };
-const uiAccountingPDF8 = (response) => {
-  const { AccountingDate, TotalRevenue, Company } = response;
+const uiAccountingPDF8 = (response, Company) => {
+  const { AccountingDate, TotalRevenue } = response;
   const { indonesianDate, indonesiaHour, indonesiaMinute, indonesiaSecond } =
     formatTime();
   const div = `
@@ -1301,6 +1301,469 @@ const uiAccountingPDF8 = (response) => {
   `;
   return html;
 };
+const uiFinancialStatement = (response, Company, Period) => {
+  const { FinancialPosition, ChangesInEquity, ProfitOrLoss } = response;
+  // 1.Financial Position
+  const { Assets, LiabilityEquity } = FinancialPosition;
+  const { CurrentAssets, FixedAssets, TotalAssetsChanges } = Assets;
+  // current-assets
+  const {
+    TotalCash,
+    TotalReceivable,
+    CurrentAsset,
+    MerchandiseInventory,
+    TotalCurrentAssetChanges,
+  } = CurrentAssets;
+  // fixed-assets
+  const { FixedAsset, FixedAccumulated, TotalFixedAsset } = FixedAssets;
+  // liability
+  const { Liabilities, TotalLiabilityEquityChanges } = LiabilityEquity;
+  const { Liability, TotalLiability } = Liabilities;
+  // equity
+  const {
+    Equity,
+    TotalEquity1,
+    EquityWithDrawl,
+    TotalEquityWithDrawl,
+    TotalEquityChanges,
+  } = ChangesInEquity;
+  // profit or loss
+  const {
+    Sales,
+    Purchase,
+    COGS,
+    GrossProfitOrLoss,
+    Expenses,
+    RevenueOthers,
+    NetProfitOrLoss,
+    ProfitAttribute,
+  } = ProfitOrLoss;
+  const { TotalSales, TotalSalesReturn, TotalSalesDiscount, TotalSalesNet } =
+    Sales;
+  const {
+    TotalPurchase,
+    TotalPurchaseReturn,
+    TotalPurchaseDiscount,
+    TotalPurchaseNet,
+  } = Purchase;
+  const { Expense, TotalExpense } = Expenses;
+  const { RevenueOther, TotalRevenue } = RevenueOthers;
+  const financialPosition = `
+    <!-- financial Position -->
+    <div class="mb-3">
+      <!-- head -->
+      <div class="mb-3">
+        <h4 class="fw-bold text-center">Statement Of Financial Position</h4>
+      </div>
+      <!-- body -->
+      <div>
+        <!-- Assets -->
+        <div>
+          <!-- head -->
+          <div class="ms-2 mb-2">
+            <h5 class="fw-bold">Assets</h5>
+          </div>
+          <!-- Body -->
+          <div class="mb-2 ms-2">
+            <!-- current asset -->
+            <h5 class="fw-bold ms-2">Current Assets</h5>
+            <!-- Cash -->
+            <div class="ms-3 d-flex justify-content-between">
+              <h5 class="ms-2">Cash</h5>
+              <h5>${formatCurrency1(TotalCash)}</h5>
+            </div>
+            <!-- Receivable -->
+            <div class="ms-3 d-flex justify-content-between">
+              <h5 class="ms-2">Receivable</h5>
+              <h5>${formatCurrency1(TotalReceivable)}</h5>
+            </div>
+            <!-- Merchandise inventory -->
+            <div class="ms-3 d-flex justify-content-between">
+              <h5 class="ms-2">Merchandise inventory</h5>
+              <h5>${formatCurrency1(MerchandiseInventory)}</h5>
+            </div>
+            <!-- Others Current Asset -->
+            ${
+              CurrentAsset.length > 0
+                ? CurrentAsset.map(
+                    (el) => `
+            <div class="d-flex justify-content-between">
+              <h5 class="ms-2">${el.AccountingName}</h5>
+              <h5>${formatCurrency1(el.AccountingBalance)}</h5>
+            </div>
+            `
+                  ).join("")
+                : ""
+            }
+            <!-- total current assets-->
+            ${`
+            <div class="d-flex justify-content-between">
+              <h5 class="ms-2 fw-bold">Total Current Asset</h5>
+              <h5>${formatCurrency1(TotalCurrentAssetChanges)}</h5>
+            </div>
+            `}
+            <!-- fixed asset -->
+            <h5 class="fw-bold ms-2">Fixed Asset</h5>
+            <!-- Fixed Asset -->
+            ${
+              FixedAsset.length > 0
+                ? FixedAsset.map(
+                    (el) => `
+            <div class="d-flex justify-content-between">
+              <h5 class="ms-4">${el.AccountingName}</h5>
+              <h5>${formatCurrency1(el.Total)}</h5>
+            </div>
+            `
+                  ).join("")
+                : ""
+            }
+            <!-- Fixed Asset Accumulated -->
+            ${
+              FixedAccumulated.length > 0
+                ? FixedAccumulated.map(
+                    (el) => `
+            <div class="d-flex justify-content-between">
+              <h5 class="ms-4">${el.AccountingName}</h5>
+              <h5>${formatCurrency1(el.Total)}</h5>
+            </div>
+            `
+                  ).join("")
+                : ""
+            }
+            <!-- Total Fixed Asset -->
+            <div class="ms-2 mb-2 d-flex justify-content-between">
+              <h5 class="fw-bold">Total Fixed Assets</h5>
+              <h5 class="fw-bold">${formatCurrency1(TotalFixedAsset)}</h5>
+            </div>
+          </div>
+          <!-- footer -->
+          <div class="ms-2 mb-2 d-flex justify-content-between">
+            <h5 class="fw-bold">Total Assets</h5>
+            <h5 class="fw-bold">${formatCurrency1(TotalAssetsChanges)}</h5>
+          </div>
+        </div>
+        <!-- liability & equity -->
+        <div>
+          <!-- head  -->
+          <div class="ms-2 mb-2">
+            <h5 class="fw-bold">Liability & Equity</h5>
+          </div>
+          <!-- liability -->
+          <div class="mb-2 ms-2">
+            <h5 class="fw-bold ms-2">Liability</h5>
+            <!-- Liability -->
+            ${
+              Liability.length > 0
+                ? Liability.map(
+                    (el) => `
+            <div class="d-flex justify-content-between">
+              <h5 class="ms-4">${el.AccountingName}</h5>
+              <h5>${formatCurrency1(el.TotalLiability)}</h5>
+            </div>
+            `
+                  ).join("")
+                : ""
+            }
+            <!-- total liability -->
+            <div class="d-flex justify-content-between">
+              <h5 class="ms-2 fw-bold">Total Liability</h5>
+              <h5>${formatCurrency1(TotalLiability)}</h5>
+            </div>
+          </div>
+          <!-- equity -->
+          <div class="mb-2 ms-2">
+            <h5 class="fw-bold ms-2">Equity</h5>
+            <!-- equity -->
+            ${
+              Equity.length > 0
+                ? Equity.map(
+                    (el) => `
+            <div class="d-flex justify-content-between">
+              <h5 class="ms-4">${el.AccountingName.split("-")[1]}</h5>
+              <h5>${formatCurrency1(el.TotalEquity)}</h5>
+            </div>
+            `
+                  ).join("")
+                : ""
+            }
+            <!-- total equity -->
+            <div class="d-flex justify-content-between">
+              <h5 class="ms-2 fw-bold">Total Equity</h5>
+              <h5>${formatCurrency1(TotalEquity1)}</h5>
+            </div>
+          </div>
+          <!-- total liability & changes  -->
+          <div class="ms-2 mb-2 d-flex justify-content-between">
+            <h5 class="fw-bold">Total Liability & Equity</h5>
+            <h5 class="fw-bold">
+              ${formatCurrency1(TotalLiabilityEquityChanges)}
+            </h5>
+          </div>
+        </div>
+      </div>
+    </div> 
+  `;
+  const equityChange = `
+  <!-- equity changes -->
+  <div class="mb-3">
+    <!-- head -->
+    <div class="mb-3">
+      <h4 class="text-center fw-bold">Statement of Equity in Changes</h4>
+    </div>
+    <!-- body -->
+    <div class="mb-2 ms-2">
+      <!-- equity -->
+      <div class="mb-2">
+        <div>
+          <h5 class="fw-bold">Equity</h5>
+        </div>
+        <!-- equity -->
+        ${
+          Equity.length > 0
+            ? Equity.map(
+                (el) => `
+          <div class="d-flex justify-content-between">
+            <h5 class="ms-2">${el.AccountingName.split("-")[1]}</h5>
+            <h5>${formatCurrency1(el.TotalEquity)}</h5>
+          </div>
+          `
+              ).join("")
+            : ""
+        }
+        <!-- Total Equity -->
+        <div class="d-flex justify-content-between">
+          <h5 class="fw-bold">Total Equity</h5>
+          <h5 class="fw-bold">${formatCurrency1(TotalEquity1)}</h5>
+        </div>
+      </div>
+      <!-- withdrawl -->
+      <div class="mb-2">
+        <div>
+          <h5 class="fw-bold">Withdrawl</h5>
+        </div>
+        <!-- withdrawl -->
+        ${
+          EquityWithDrawl.length > 0
+            ? EquityWithDrawl.map(
+                (el) => `
+          <div class="d-flex justify-content-between">
+            <h5 class="ms-2">${el.AccountingName.split("-")[1]}</h5>
+            <h5>${formatCurrency1(el.TotalEquityWithDrawl)}</h5>
+          </div>
+          `
+              ).join("")
+            : ""
+        }
+        <div class="d-flex justify-content-between">
+          <h5 class="fw-bold">Total Withdrawl</h5>
+          <h5 class="fw-bold">${formatCurrency1(TotalEquityWithDrawl)}</h5>
+        </div>
+      </div>
+      <!-- income summary -->
+      <div class="mb-3 d-flex justify-content-between">
+        <h5 class="fw-bold my-auto">Income Summary</h5>
+        <span class="badge fs-5 
+        ${NetProfitOrLoss >= 1 && "text-bg-success"} 
+        ${NetProfitOrLoss < 0 && "text-bg-danger"} 
+        ${NetProfitOrLoss === 0 && "text-bg-secondary"}
+        ">
+          ${formatCurrency1(NetProfitOrLoss)}
+        </span>
+      </div>
+      <!-- total changes -->
+      <div class="mb-2 d-flex justify-content-between">
+        <h5 class="fw-bold">Total Changes In Equity</h5>
+        <h5 class="fw-bold">${formatCurrency1(TotalEquityChanges)}</h5>
+      </div>
+    </div>
+  </div>  
+  `;
+  const profitOrLoss = `
+  <!-- profit or loss -->
+  <div class="mb-3">
+    <!-- head -->
+    <div class="mb-3 text-center">
+      <h4 class="fw-bold">Statement Of Profit or Loss</h4>
+    </div>
+    <!-- sales -->
+    <div class="ms-2 mb-2">
+      <!-- head -->
+      <div class="mb-2">
+        <h5 class="fw-bold">Sales</h5>
+      </div>
+      <!-- sales discount -->
+      <div class="ms-2 d-flex justify-content-between">
+        <h5>Sales</h5>
+        <h5>${formatCurrency1(TotalSales)}</h5>
+      </div>
+      <!-- sales return -->
+      <div class="ms-2 d-flex justify-content-between">
+        <h5>Sales Return</h5>
+        <h5>${formatCurrency1(TotalSalesReturn)}</h5>
+      </div>
+      <!-- sales discount -->
+      <div class="ms-2 d-flex justify-content-between">
+        <h5>Sales Discount</h5>
+        <h5>${formatCurrency1(TotalSalesDiscount)}</h5>
+      </div>
+      <!-- total net of sale -->
+      <div class="d-flex justify-content-between">
+        <h5 class="fw-bold">Net Of Sales</h5>
+        <h5>+ ${formatCurrency1(TotalSalesNet)}</h5>
+      </div>
+    </div>
+    <!-- purchase -->
+    <div class="ms-2 mb-2">
+      <!-- head -->
+      <div class="mb-2">
+        <h5 class="fw-bold">Purchase</h5>
+      </div>
+      <!-- purchase -->
+      <div class="ms-2 d-flex justify-content-between">
+        <h5>Purhcase</h5>
+        <h5>${formatCurrency1(TotalPurchase)}</h5>
+      </div>
+      <!-- purchase return -->
+      <div class="ms-2 d-flex justify-content-between">
+        <h5>Purhcase Return</h5>
+        <h5>${formatCurrency1(TotalPurchaseReturn * -1)}</h5>
+      </div>
+      <!-- purchase discount -->
+      <div class="ms-2 d-flex justify-content-between">
+        <h5>Purhcase Discount</h5>
+        <h5>${formatCurrency1(TotalPurchaseDiscount * -1)}</h5>
+      </div>
+      <!-- purchase net -->
+      <div class="mb-2 d-flex justify-content-between">
+        <h5 class="fw-bold">Net of Purchase</h5>
+        <h5 class="fw-bold">${formatCurrency1(TotalPurchaseNet)}</h5>
+      </div>
+    </div>
+    <!-- cost of good sold -->
+    <div class="ms-2 mb-2">
+      <!-- head -->
+      <div class="mb-2">
+        <h5 class="fw-bold">Cost of Goods Sold</h5>
+      </div>
+      <!-- net of purchase -->
+      <div class="ms-2 d-flex justify-content-between">
+        <h5>Net of Purchase</h5>
+        <h5 class="fw-bold">${formatCurrency1(TotalPurchaseNet)}</h5>
+      </div>
+      <!-- remain of stock -->
+      <div class="ms-2 d-flex justify-content-between">
+        <h5>Remain of Stock</h5>
+        <h5>${formatCurrency1(MerchandiseInventory)}</h5>
+      </div>
+      <!-- footer -->
+      <div class="d-flex justify-content-between">
+        <h5 class="fw-bold">Total Cost of Goods Sold</h5>
+        <h5 class="fw-bold">- ${formatCurrency1(COGS)}</h5>
+      </div>
+    </div>
+    <!-- gross of profit  -->
+    <div class="ms-2 mb-2">
+      <div class="d-flex justify-content-between">
+        <h5 class="fw-bold">Gross Of Profit</h5>
+        <h5 class="fw-bold">${formatCurrency1(GrossProfitOrLoss)}</h5>
+      </div>
+    </div>
+    <!-- expense -->
+    <div class="ms-2 mb-2">
+      <!-- head -->
+      <div class="mb-2">
+        <h5 class="fw-bold">Expense</h5>
+      </div>
+      <!-- expense -->
+      ${
+        Expense.length > 0
+          ? Expense.map(
+              (el) => `
+        <div class="d-flex justify-content-between">
+          <h5 class="ms-2">${el.AccountingName}</h5>
+          <h5>${formatCurrency1(el.Total)}</h5>
+        </div>
+        `
+            ).join("")
+          : ""
+      }
+      <!-- footer -->
+      <div class="d-flex justify-content-between">
+        <h5 class="fw-bold">Total of Expense</h5>
+        <h5 class="fw-bold">- ${formatCurrency1(TotalExpense)}</h5>
+      </div>
+    </div>
+    <!-- revenue -->
+    <div class="ms-2 mb-2">
+      <!-- head -->
+      <div class="mb-2">
+        <h5 class="fw-bold">Other Revenue</h5>
+      </div>
+      <!-- Revenue -->
+      ${
+        RevenueOther.length > 0
+          ? RevenueOther.map(
+              (el) => `
+        <div class="d-flex justify-content-between ms-2">
+          <h5>${el.AccountingName}</h5>
+          <h5>${formatCurrency1(el.Total)}</h5>
+        </div>
+        `
+            ).join("")
+          : ""
+      }
+      <!-- footer -->
+      <div class="d-flex justify-content-between">
+        <h5 class="fw-bold">Total of Other Revenue</h5>
+        <h5 class="fw-bold">+ ${formatCurrency1(TotalRevenue)}</h5>
+      </div>
+    </div>
+    <!-- net of profit  -->
+    <div class="ms-2 mb-2">
+      <div class="d-flex justify-content-between">
+        <h5 class="fw-bold my-auto">Net Of Profit</h5>
+        <span class="badge fs-5 
+        ${NetProfitOrLoss >= 1 && "text-bg-success"} 
+        ${NetProfitOrLoss < 0 && "text-bg-danger"} 
+        ${NetProfitOrLoss === 0 && "text-bg-secondary"}
+        ">
+          ${formatCurrency1(NetProfitOrLoss)}
+        </span>
+      </div>
+    </div>
+    <!-- Profit attributable to -->
+    <div class="ms-2 mb-2">
+      <div>
+        <h5 class="fw-bold">Profit Attributable To</h5>
+      </div>
+      ${
+        ProfitAttribute.length > 0
+          ? ProfitAttribute.map(
+              (el) => `
+        <div class="d-flex justify-content-between">
+          <h5 class="ms-2 text-capitalize">${el.UserFullname}</h5>
+          <h5>${formatCurrency1(el.ProfitAttributed)}</h5>
+        </div>
+        `
+            ).join("")
+          : ""
+      }
+    </div>
+  </div>  
+  `;
+  const div = `
+  <div>
+    <div class="mb-0">
+      <h3 class="fw-bold text-center">${Company}</h3>
+      <h5 class="fw-bold text-center mb-0">${Period}</h5>
+    </div>;
+    ${financialPosition}
+    ${equityChange}
+    ${profitOrLoss}
+  </div>
+  `;
+  return div;
+};
 export {
   uiAccountingPDF,
   uiAccountingPDF1,
@@ -1311,6 +1774,7 @@ export {
   uiAccountingPDF6,
   uiAccountingPDF7,
   uiAccountingPDF8,
+  uiFinancialStatement,
   uiProductPdf,
   uiStockPDF,
   uiSalePDF,

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaCheck, FaExclamationTriangle, FaTimes } from "react-icons/fa";
 import { ButtonIcon, Modal } from "../../components";
 import { FaTrashCan } from "react-icons/fa6";
@@ -16,18 +16,29 @@ const ModalDeleteProduct = (props) => {
     setTotalRows,
     setTotalPages,
   } = props;
-  const { ProductId, ProductName } = dataDelete;
   const [loading, setLoading] = useState(false);
+  const [formData, setformData] = useState({
+    ProductId: "",
+    ProductName: "",
+  });
+  useEffect(() => {
+    if (openDelete && dataDelete?.ProductId) {
+      setLoading(true);
+      const { ProductId, ProductName } = dataDelete;
+      setformData({
+        ProductId,
+        ProductName,
+      });
+      setLoading(false);
+    }
+  }, [openDelete, dataDelete]);
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      // delete
-      const data = {
-        productid: ProductId,
-        productName: ProductName,
-      };
-      const response = await deleteProductAPI(data);
+      // send api
+      const { ProductId, ProductName } = formData;
+      const response = await deleteProductAPI({ ProductId, ProductName });
       // fetch again
       await getProduct3({ setReq, setProduct, setTotalRows, setTotalPages });
       setSuccessMsg(response);
@@ -42,14 +53,14 @@ const ModalDeleteProduct = (props) => {
     <Modal openModal={openDelete} width="w-[560px]">
       <Modal.Header
         className="bg-red-600"
-        headerText={ProductName}
+        headerText={formData.ProductName}
         icon={<FaTrashCan />}
       />
       <form onSubmit={handleSubmit}>
         <Modal.Body>
           <FaExclamationTriangle className="text-red-600 text-8xl mx-auto mb-3" />
           <div className="text-2xl text-slate-800 text-center font-bold capitalize">
-            Are You Sure to delete - {ProductName} ?
+            Are You Sure to delete - {formData.ProductName} ?
           </div>
         </Modal.Body>
         <Modal.Footer>

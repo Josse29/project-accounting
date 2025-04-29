@@ -596,26 +596,6 @@ const ModalCreateAccounting2 = (props) => {
                   />
                 </div>
               )}
-              {/* customer */}
-              <div className="mb-5">
-                <SelectCustomer
-                  className="focus:ring-violet-500"
-                  onChange={handleChange}
-                  value={formData.customerName}
-                  name="customerName"
-                  setLoading={setLoading}
-                />
-              </div>
-              {/* sale */}
-              <div className="mb-5">
-                <SelectSale
-                  className="focus:ring-violet-500"
-                  onChange={handleChange}
-                  value={formData.saleName}
-                  name="saleName"
-                  setLoading={setLoading}
-                />
-              </div>
               {/* information */}
               <div className="mb-5">
                 <TextArea
@@ -841,26 +821,6 @@ const ModalCreateAccounting2 = (props) => {
                   handleChange={handleChange}
                 />
               )}
-              {/* customer */}
-              <div className="mb-5">
-                <SelectCustomer
-                  className="focus:ring-violet-500"
-                  onChange={handleChange}
-                  value={formData.customerName}
-                  name="customerName"
-                  setLoading={setLoading}
-                />
-              </div>
-              {/* sale */}
-              <div className="mb-5">
-                <SelectSale
-                  className="focus:ring-violet-500"
-                  onChange={handleChange}
-                  value={formData.saleName}
-                  name="saleName"
-                  setLoading={setLoading}
-                />
-              </div>
               {/* information */}
               <div className="mb-5">
                 <TextArea

@@ -23,50 +23,44 @@ const StatementProfitOrLoss = () => {
   const [netProfitLoss, setNetProfitLoss] = useState(0);
   const [attributeTo, setAttributeTo] = useState([]);
   useEffect(() => {
-    if (profitOrLoss?.Sales) {
-      const {
-        Sales,
-        Purchase,
-        StockRemain,
-        COGS,
-        GrossProfitOrLoss,
-        Expenses,
-        RevenueOthers,
-        NetProfitOrLoss,
-        ProfitAttribute,
-      } = profitOrLoss;
-      const {
-        TotalSales,
-        TotalSalesReturn,
-        TotalSalesDiscount,
-        TotalSalesNet,
-      } = Sales;
-      setSale(TotalSales);
-      setSaleReturn(TotalSalesReturn);
-      setSaleDiscount(TotalSalesDiscount);
-      setSaleNet(TotalSalesNet);
-      const {
-        TotalPurchase,
-        TotalPurchaseReturn,
-        TotalPurchaseDiscount,
-        TotalPurchaseNet,
-      } = Purchase;
-      setPurchase(TotalPurchase);
-      setPurchaseReturn(TotalPurchaseReturn);
-      setPurchaseDiscount(TotalPurchaseDiscount);
-      setPurchaseNet(TotalPurchaseNet);
-      setStockRemain(StockRemain);
-      setCogs(COGS);
-      setGrossProfitLoss(GrossProfitOrLoss);
-      const { Expense, TotalExpense } = Expenses;
-      setExpense(Expense);
-      setExpenseTotal(TotalExpense);
-      const { RevenueOther, TotalRevenue } = RevenueOthers;
-      seRevenue(RevenueOther);
-      setRevenueTotal(TotalRevenue);
-      setNetProfitLoss(NetProfitOrLoss);
-      setAttributeTo(ProfitAttribute);
-    }
+    const {
+      Sales,
+      Purchase,
+      StockRemain,
+      COGS,
+      GrossProfitOrLoss,
+      Expenses,
+      RevenueOthers,
+      NetProfitOrLoss,
+      ProfitAttribute,
+    } = profitOrLoss;
+    const { TotalSales, TotalSalesReturn, TotalSalesDiscount, TotalSalesNet } =
+      Sales;
+    setSale(TotalSales);
+    setSaleReturn(TotalSalesReturn);
+    setSaleDiscount(TotalSalesDiscount);
+    setSaleNet(TotalSalesNet);
+    const {
+      TotalPurchase,
+      TotalPurchaseReturn,
+      TotalPurchaseDiscount,
+      TotalPurchaseNet,
+    } = Purchase;
+    setPurchase(TotalPurchase);
+    setPurchaseReturn(TotalPurchaseReturn);
+    setPurchaseDiscount(TotalPurchaseDiscount);
+    setPurchaseNet(TotalPurchaseNet);
+    setStockRemain(StockRemain);
+    setCogs(COGS);
+    setGrossProfitLoss(GrossProfitOrLoss);
+    const { Expense, TotalExpense } = Expenses;
+    setExpense(Expense);
+    setExpenseTotal(TotalExpense);
+    const { RevenueOther, TotalRevenue } = RevenueOthers;
+    seRevenue(RevenueOther);
+    setRevenueTotal(TotalRevenue);
+    setNetProfitLoss(NetProfitOrLoss);
+    setAttributeTo(ProfitAttribute);
   }, [profitOrLoss]);
   return (
     <div className="flex flex-col">

@@ -11,7 +11,8 @@ import {
   getAccountingPDF7API,
   getAccountingPDF8API,
   getAccountingPDFAPI,
-} from "../../services/accounting";
+  getFinancialStatement1API,
+} from "../../services";
 import {
   convertPDF,
   uiAccountingPDF,
@@ -20,12 +21,11 @@ import {
   uiAccountingPDF3,
   uiAccountingPDF4,
   uiAccountingPDF5,
-} from "../../utils";
-import {
   uiAccountingPDF6,
   uiAccountingPDF7,
   uiAccountingPDF8,
-} from "../../utils/uiPDF";
+  uiFinancialStatement,
+} from "../../utils";
 
 const ModalPdfAccounting = (props) => {
   const { openPdf, setOpenPdf, setSuccessMsg } = props;
@@ -45,8 +45,8 @@ const ModalPdfAccounting = (props) => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     try {
+      setLoading(true);
       const { selectedAccount, startDateVal, endDateVal } = formData;
       const req = {
         selectedAccount,
@@ -86,7 +86,12 @@ const ModalPdfAccounting = (props) => {
       if (selectedAccount === "511") {
         const response = await getAccountingPDF6API(req);
         const htmlContent = uiAccountingPDF6(response);
-        await convertPDF({ htmlContent, setSuccessMsg, setErrMsg, setOpenPdf });
+        await convertPDF({
+          htmlContent,
+          setSuccessMsg,
+          setErrMsg,
+          setOpenPdf,
+        });
       }
       if (selectedAccount === "514") {
         const response = await getAccountingPDF7API(req);
@@ -95,9 +100,22 @@ const ModalPdfAccounting = (props) => {
       }
       if (selectedAccount === "611") {
         const response = await getAccountingPDF8API(req);
-        const htmlContent = uiAccountingPDF8(response);
+        const Company = "companies";
+        const htmlContent = uiAccountingPDF8(response, Company);
         await convertPDF({ htmlContent, setSuccessMsg, setErrMsg, setOpenPdf });
       }
+      if (selectedAccount === "report") {
+        const response = await getFinancialStatement1API(req);
+        const Company = "Companies";
+        const Period = `${startDateVal} - ${endDateVal}`;
+        const htmlContent = uiFinancialStatement(response, Company, Period);
+        await convertPDF({ htmlContent, setSuccessMsg, setErrMsg, setOpenPdf });
+      }
+      setFormData({
+        selectedAccount: "111",
+        startDateVal: "",
+        endDateVal: "",
+      });
     } catch (error) {
       setSuccessMsg("");
       setErrMsg(error.message.split(":")[2] || error);
@@ -135,6 +153,7 @@ const ModalPdfAccounting = (props) => {
               <Select.Option title="Purchase" value="511" />
               <Select.Option title="Expense Others" value="514" />
               <Select.Option title="Revenue Others" value="611" />
+              <Select.Option title="Financial Statements" value="report" />
             </Select>
           </div>
           {/* start date */}

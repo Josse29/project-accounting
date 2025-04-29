@@ -459,6 +459,21 @@ const getFinancialStatementAPI = async () => {
     throw error;
   }
 };
+// api/accounting-financial-statement (GET)
+const getFinancialStatement1API = async (req) => {
+  try {
+    const data = {
+      startDateVal: req.startDateVal,
+      endDateVal: req.endDateVal,
+    };
+    const response = await window.ElectronAPI.Accounting.financialStatement1(
+      data
+    );
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
 // api/accounting-csv (GET)
 const getAccountingCSVAPI = async (req) => {
   try {
@@ -617,6 +632,15 @@ const getAssetAPI = async () => {
     throw error;
   }
 };
+// api/accounting-cash
+const deleteAccountingAPI = async () => {
+  try {
+    const response = await window.ElectronAPI.Accounting.delete();
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
 export {
   createAccountingAPI,
   createAccounting1API,
@@ -640,6 +664,7 @@ export {
   createAccounting19API,
   createAccounting20API,
   createAccounting21API,
+  deleteAccountingAPI,
   getAccountingAPI,
   getAccountingCSVAPI,
   getAccountingPaginationAPI,
@@ -655,4 +680,5 @@ export {
   getCashAPI,
   getAssetAPI,
   getFinancialStatementAPI,
+  getFinancialStatement1API,
 };

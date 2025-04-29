@@ -11,13 +11,14 @@ import {
 } from "../../components";
 import { FaAddressBook } from "react-icons/fa6";
 import { registerAPI } from "../../services/user";
-import { getUser2 } from "../../utils";
+import { getUser3 } from "../../utils";
 
 const ModalRegister = (props) => {
   const {
     openRegister,
     setOpenRegister,
     setSuccessMsg,
+    setReq,
     setUser,
     setTotalRows,
     setTotalPages,
@@ -29,6 +30,7 @@ const ModalRegister = (props) => {
     position: "",
     password: "",
     password1: "",
+    username: "",
     info: "",
   });
   const [passwordVisible, setpasswordVisible] = useState(false);
@@ -55,37 +57,48 @@ const ModalRegister = (props) => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       // 1.send api
-      const { email, fullname, position, img, password, password1, info } =
-        formData;
+      const {
+        email,
+        fullname,
+        position,
+        img,
+        password,
+        password1,
+        username,
+        info,
+      } = formData;
       const req = {
-        UserEmailVal: email,
-        UserFullnameVal: fullname,
+        UserPositionVal: position,
+        UserNameVal: username,
         UserPasswordVal: password,
         UserPassword1Val: password1,
+        UserEmailVal: email,
+        UserFullnameVal: fullname,
         UserImgVal: img,
-        UserPositionVal: position,
         UserInfoVal: info,
       };
       const response = await registerAPI(req);
       // 2. fetch again
-      const params = {
+      await getUser3({
+        setReq,
         setUser,
         setTotalRows,
         setTotalPages,
-      };
-      await getUser2(params);
+      });
       // 2. reset form
-      setFormData(() => ({
+      setFormData({
+        position: "",
+        username: "",
+        password: "",
+        password1: "",
         email: "",
         fullname: "",
         img: "",
-        position: "",
-        password: "",
-        password1: "",
         info: "",
-      }));
+      });
       imgRef.current.value = "";
       setImg(false);
       // 3. back to reset
@@ -113,30 +126,6 @@ const ModalRegister = (props) => {
           <div className="mb-5">
             <Alert.Failed errMsg={errMsg} setErrMsg={setErrMsg} />
           </div>
-          {/* fullname */}
-          <div className="mb-5">
-            <InputText
-              htmlFor1="fullname"
-              title="Fullname"
-              name="fullname"
-              value={formData.fullname}
-              className="focus:ring-[#4338ca] capitalize"
-              placeholder="Ex : Josse Surya Pinem"
-              onChange={handleChange}
-            />
-          </div>
-          {/* email */}
-          <div className="mb-5">
-            <InputText
-              title="Email"
-              name="email"
-              value={formData.email}
-              htmlFor1="email1"
-              className="focus:ring-[#4338ca]"
-              placeholder="Ex : pinemjosse@gmail.com"
-              onChange={handleChange}
-            />
-          </div>
           {/* position */}
           <div className="mb-5">
             <Select.Label title="Position" htmlFor="position1" />
@@ -156,21 +145,21 @@ const ModalRegister = (props) => {
               <Select.Option value="supplier" title="Supplier" />
             </Select>
           </div>
-          {/* photo */}
-          <div className="mb-5">
-            <InputImg
-              img={img}
-              setImg={setImg}
-              imgRef={imgRef}
-              setLoading={setLoading}
-              className="focus:ring-[#4338ca]"
-              formData={formData}
-              setFormData={setFormData}
-            />
-          </div>
           {/* selected */}
           {formData.position === "admin" && (
             <>
+              {/* username */}
+              <div className="mb-5">
+                <InputText
+                  title="Username"
+                  htmlFor1="username"
+                  name="username"
+                  value={formData.username}
+                  className="focus:ring-[#4338ca]"
+                  placeholder="Ex : Josse58"
+                  onChange={handleChange}
+                />
+              </div>
               {/* password */}
               <InputPassword className="mb-5">
                 <InputPassword.Label
@@ -207,6 +196,42 @@ const ModalRegister = (props) => {
               </InputPassword>
             </>
           )}
+          {/* fullname */}
+          <div className="mb-5">
+            <InputText
+              htmlFor1="fullname"
+              title="Fullname"
+              name="fullname"
+              value={formData.fullname}
+              className="focus:ring-[#4338ca] capitalize"
+              placeholder="Ex : Josse Surya Pinem"
+              onChange={handleChange}
+            />
+          </div>
+          {/* email */}
+          <div className="mb-5">
+            <InputText
+              title="Email"
+              name="email"
+              value={formData.email}
+              htmlFor1="email1"
+              className="focus:ring-[#4338ca]"
+              placeholder="Ex : pinemjosse@gmail.com"
+              onChange={handleChange}
+            />
+          </div>
+          {/* photo */}
+          <div className="mb-5">
+            <InputImg
+              img={img}
+              setImg={setImg}
+              imgRef={imgRef}
+              setLoading={setLoading}
+              className="focus:ring-[#4338ca]"
+              formData={formData}
+              setFormData={setFormData}
+            />
+          </div>
           {/* more information */}
           <div className="mb-5">
             <TextArea
