@@ -1,15 +1,20 @@
 import { app, BrowserWindow, dialog, ipcMain } from "electron";
 import fs from "fs";
-import path from "path";
 import sqlite3 from "sqlite3";
-import convertCSV from "./src/client-side/js/utils/convertCSV.js";
-import convertPDF from "./src/client-side/js/utils/convertPDF.js";
+import jwt from "jsonwebtoken";
+import convertCSV from "./src/serverless-side/utils/convertCSV.js";
+import convertPDF from "./src/serverless-side/utils/convertPDF.js";
 import {
   Accounting,
   Product,
   Stock,
   User,
 } from "./src/serverless-side/index.js";
+import Company from "./src/serverless-side/models/company/controller.js";
+import bcryptjs from "bcryptjs";
+
+import path from "path";
+
 let mainWindow;
 function createWindow() {
   const appPath = (...paths) => {
@@ -24,19 +29,28 @@ function createWindow() {
       contextIsolation: true,
     },
     frame: false,
+    icon: path.join(appPath("jossstackico.ico")),
   });
-  // production
-  // mainWindow.loadFile(appPath("index.html"));
   // development
-  mainWindow.loadURL("http://localhost:5173/");
+  // mainWindow.loadURL("http://localhost:5173/");
+  // production
+  mainWindow.loadFile(appPath("src", "client-side", "index.html"));
   // db
-  const dbPath = appPath("src", "serverless-side", "database", "myapps.db");
-  const db = new sqlite3.Database(dbPath);
+  const userDataPath = app.getPath("userData");
+  const dbDestination = path.join(userDataPath, "myapps.db");
+  const dbTemplate = path.join(
+    appPath("src", "serverless-side", "database", "myapps.db")
+  );
+  if (!fs.existsSync(dbDestination)) {
+    fs.copyFileSync(dbTemplate, dbDestination);
+  }
+  const db = new sqlite3.Database(dbDestination);
   // Product(ipcMain, db);
-  User(ipcMain, db);
+  User(ipcMain, db, bcryptjs, jwt);
   Product(ipcMain, db);
   Stock(ipcMain, db);
   Accounting(ipcMain, db);
+  Company(ipcMain, db);
   // export-csv
   convertCSV(ipcMain, dialog, fs, appPath);
   // convertpdf
@@ -58,14 +72,14 @@ function createWindow() {
     }
   });
   // inactive devtools
-  // mainWindow.webContents.on("before-input-event", (event, input) => {
-  //   if (
-  //     (input.control && input.shift && input.key === "I") || // Ctrl+Shift+I
-  //     input.key === "F12" // F12
-  //   ) {
-  //     event.preventDefault(); // Mencegah pintasan keyboard ini
-  //   }
-  // });
+  mainWindow.webContents.on("before-input-event", (event, input) => {
+    if (
+      (input.control && input.shift && input.key === "I") ||
+      input.key === "F12"
+    ) {
+      event.preventDefault();
+    }
+  });
 }
 app.whenReady().then(() => {
   createWindow();
