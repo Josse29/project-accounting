@@ -2026,7 +2026,14 @@ const Accounting = (ipcMain, db) => {
     FROM Accounting
     `;
     const { TotalRow } = await executeGet2(db, query);
-    if (TotalRow < 1) return;
+    if (TotalRow < 1) {
+      return {
+        TotalRow: 0,
+        FinancialPosition: {},
+        ChangesInEquity: {},
+        ProfitOrLoss: {},
+      };
+    }
     // 1.cash
     const query1 = queryReadCash();
     const { TotalCash } = await executeGet2(db, query1);
