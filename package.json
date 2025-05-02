@@ -1,22 +1,42 @@
 {
   "type": "module",
-  "name": "accounting-all-in-one",
+  "name": "josstack",
   "version": "1.0.0",
   "description": "this application most of compeleted accounting and modern ui, This App really helps a lot entreperenuer to make financial statement accounting, management stock, management cash, management receivable, sales, even though payable.",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "watch": "electronmon ."
+    "watch": "electronmon .",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "appId": "com.example.app",
+    "productName": "Josstack",
+    "directories": {
+      "buildResources": "src"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "src/**/*"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "src/josstack.ico"
+    }
   },
   "author": "josse",
   "license": "ISC",
   "devDependencies": {
     "electron": "^30.0.1",
+    "electron-builder": "^26.0.12",
     "electronmon": "^2.0.3"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.7.2",
+    "bcryptjs": "^3.0.2",
     "bootstrap": "^5.3.5",
+    "jsonwebtoken": "^9.0.2",
     "sqlite3": "^5.1.7"
   }
 }
