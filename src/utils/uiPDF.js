@@ -80,7 +80,7 @@ const uiProductPdf = (products) => {
     `;
   return html2;
 };
-const uiStockPDF = (response) => {
+const uiStockPDF = (response, Company) => {
   const { Stock, GroupProduct, StockQty, StockBalance } = response;
   const { indonesianDate, indonesiaHour, indonesiaMinute, indonesiaSecond } =
     formatTime();
@@ -207,7 +207,7 @@ const uiStockPDF = (response) => {
         class="card-header text-center text-white fs-3"
         style="background-color: #273eec"
       >
-        PT. ABC, T.bk
+        ${Company || "Your company"}
       </div>
       <!--  cardBody -->
       <div class="card-body">
@@ -220,7 +220,7 @@ const uiStockPDF = (response) => {
   `;
   return html;
 };
-const uiSalePDF = (response) => {
+const uiSalePDF = (response, Company) => {
   const { Sale, SalesGroup1, SaleQty, SaleBalance, ProductGroup } = response;
   const { indonesianDate, indonesiaHour, indonesiaMinute, indonesiaSecond } =
     formatTime();
@@ -426,7 +426,7 @@ const uiSalePDF = (response) => {
       <div
         class="card-header text-center text-white fs-3"
         style="background-color: #273eec">
-        PT. ABC, T.bk
+        ${Company || "Your Company"}
       </div>
       <!--  cardBody -->
       <div class="card-body">
@@ -440,7 +440,7 @@ const uiSalePDF = (response) => {
   console.log("2");
   return html;
 };
-const uiAccountingPDF = (response) => {
+const uiAccountingPDF = (response, Company) => {
   const { AccountingDate, TotalCash } = response;
   const { indonesianDate, indonesiaHour, indonesiaMinute, indonesiaSecond } =
     formatTime();
@@ -502,7 +502,7 @@ const uiAccountingPDF = (response) => {
         class="card-header text-center text-white fs-3"
         style="background-color: #273eec"
       >
-        PT. ABC, T.bk
+        ${Company || "Your Company"}
       </div>
       <!--  cardBody -->
       <div class="card-body">
@@ -518,8 +518,8 @@ const uiAccountingPDF = (response) => {
   `;
   return html;
 };
-const uiAccountingPDF1 = (response) => {
-  const { AccountingDate, TotalReceivable, ReceivableList, Company } = response;
+const uiAccountingPDF1 = (response, Company) => {
+  const { AccountingDate, TotalReceivable, ReceivableList } = response;
   const { indonesianDate, indonesiaHour, indonesiaMinute, indonesiaSecond } =
     formatTime();
   const div = `
@@ -636,8 +636,8 @@ const uiAccountingPDF1 = (response) => {
   `;
   return html;
 };
-const uiAccountingPDF2 = (response) => {
-  const { AccountingDate, TotalAsset, Company } = response;
+const uiAccountingPDF2 = (response, Company) => {
+  const { AccountingDate, TotalAsset } = response;
   const { indonesianDate, indonesiaHour, indonesiaMinute, indonesiaSecond } =
     formatTime();
   const div = `
@@ -714,8 +714,8 @@ const uiAccountingPDF2 = (response) => {
   `;
   return html;
 };
-const uiAccountingPDF3 = (response) => {
-  const { AccountingDate, TotalLiability, LiabilityList, Company } = response;
+const uiAccountingPDF3 = (response, Company) => {
+  const { AccountingDate, TotalLiability, LiabilityList } = response;
   const { indonesianDate, indonesiaHour, indonesiaMinute, indonesiaSecond } =
     formatTime();
   const div = `
@@ -832,8 +832,8 @@ const uiAccountingPDF3 = (response) => {
   `;
   return html;
 };
-const uiAccountingPDF4 = (response) => {
-  const { AccountingDate, TotalEquity, EquityList, Company } = response;
+const uiAccountingPDF4 = (response, Company) => {
+  const { AccountingDate, TotalEquity, EquityList } = response;
   const { indonesianDate, indonesiaHour, indonesiaMinute, indonesiaSecond } =
     formatTime();
   const div = `
@@ -951,14 +951,9 @@ const uiAccountingPDF4 = (response) => {
   `;
   return html;
 };
-const uiAccountingPDF5 = (response) => {
-  const {
-    AccountingDate,
-    TotalSales,
-    TotalSalesReturn,
-    TotalSalesDiscount,
-    Company,
-  } = response;
+const uiAccountingPDF5 = (response, Company) => {
+  const { AccountingDate, TotalSales, TotalSalesReturn, TotalSalesDiscount } =
+    response;
   const { indonesianDate, indonesiaHour, indonesiaMinute, indonesiaSecond } =
     formatTime();
   const div = `
@@ -1048,13 +1043,12 @@ const uiAccountingPDF5 = (response) => {
   `;
   return html;
 };
-const uiAccountingPDF6 = (response) => {
+const uiAccountingPDF6 = (response, Company) => {
   const {
     AccountingDate,
     TotalPurchase,
     TotalPurchaseReturn,
     TotalPurchaseDiscount,
-    Company,
   } = response;
   const { indonesianDate, indonesiaHour, indonesiaMinute, indonesiaSecond } =
     formatTime();
@@ -1145,8 +1139,8 @@ const uiAccountingPDF6 = (response) => {
   `;
   return html;
 };
-const uiAccountingPDF7 = (response) => {
-  const { AccountingDate, TotalExpense, Company } = response;
+const uiAccountingPDF7 = (response, Company) => {
+  const { AccountingDate, TotalExpense } = response;
   const { indonesianDate, indonesiaHour, indonesiaMinute, indonesiaSecond } =
     formatTime();
   const div = `

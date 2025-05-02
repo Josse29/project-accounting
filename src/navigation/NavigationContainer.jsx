@@ -14,7 +14,7 @@ import {
   FaRightFromBracket,
 } from "react-icons/fa6";
 import { Link, useLocation, useNavigate } from "react-router";
-import { InnostackLogo1 } from "./../assets/";
+import { InnostackLogo1, Josstack1 } from "./../assets/";
 import { Tooltip } from "flowbite-react";
 import { AllContext } from "../context/AllProvider";
 
@@ -25,7 +25,7 @@ const Top = () => {
     <div className="bg-[#262848] w-100 p-6 fixed z-10 left-[100px] right-0 top-0">
       <div className="flex justify-between">
         <div className="app-region-drag">
-          <div className="text-3xl text-white">Accounting</div>
+          <div className="text-3xl text-white">Software - Accounting</div>
         </div>
         <div className="flex items-center gap-10">
           <div className="flex gap-3 items-center">
@@ -92,7 +92,7 @@ const Side = () => {
     <div className="fixed z-10 top-0 left-0 bottom-0 bg-[#1b1c30]">
       <div className="flex flex-col h-screen justify-between gap-2 px-4 ">
         <div className="h-[110px] flex items-center justify-center">
-          <img src={InnostackLogo1} alt="" className="w-[60px]" />
+          <img src={Josstack1} alt="" className="w-[60px]" />
         </div>
         <div className="flex flex-col flex-1 gap-12 items-center">
           <NavItem to="/dashboard" icon={FaHouse} title="Dashboard" />

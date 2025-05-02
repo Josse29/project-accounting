@@ -82,7 +82,7 @@ import {
   getStockCSV1API,
   getStockPDF1API,
 } from "./stock";
-import { getCompanyAPI, updateCompanyAPI } from "./company";
+import { getCompanyAPI, getCompany1API, updateCompanyAPI } from "./company";
 export {
   createAccountingAPI,
   createAccounting1API,
@@ -161,5 +161,6 @@ export {
   getStockCSV1API,
   getStockPDF1API,
   getCompanyAPI,
+  getCompany1API,
   updateCompanyAPI,
 };

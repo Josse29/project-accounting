@@ -23,5 +23,13 @@ const updateCompanyAPI = async (req) => {
     throw error;
   }
 };
-
-export { getCompanyAPI, updateCompanyAPI };
+// 1. endpoint : api/company (GET)
+const getCompany1API = async () => {
+  try {
+    const response = await window.ElectronAPI.Company.get1();
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+export { getCompanyAPI, getCompany1API, updateCompanyAPI };

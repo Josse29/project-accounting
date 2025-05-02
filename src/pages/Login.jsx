@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FormLogin } from "../features/User";
-import { Accounting, InnostackLogo } from "./../assets";
+import { Accounting, Josstack } from "./../assets";
 import { closeApp, formatTime } from "../utils";
 import { FaPowerOff } from "react-icons/fa6";
 import { Tooltip } from "flowbite-react";
@@ -29,7 +29,7 @@ const Login = () => {
       <div className="bg-slate-800 flex justify-between items-center py-2 px-5">
         {/* Logo */}
         <div className="h-[40px] app-region-drag">
-          <img src={InnostackLogo} className="h-full" />
+          <img src={Josstack} className="h-full" />
         </div>
         <div className="flex gap-8 items-center">
           {/* Date and Time */}

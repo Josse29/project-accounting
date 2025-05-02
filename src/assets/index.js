@@ -9,6 +9,8 @@ import Product1 from "./img/product-1.jpg";
 import Product2 from "./img/product-2.jpg";
 import Product3 from "./img/product-3.jpg";
 import Josse from "./img/josse.jpg";
+import Josstack from "./img/josstack-logo.png";
+import Josstack1 from "./img/josstack-logo-1.png";
 import NoImg from "./img/no-img.jpg";
 export {
   Accounting,
@@ -17,6 +19,8 @@ export {
   InnostackLogo,
   InnostackLogo1,
   Josse,
+  Josstack,
+  Josstack1,
   NoImg,
   Person,
   PoppinsFont,

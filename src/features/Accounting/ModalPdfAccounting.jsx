@@ -11,6 +11,7 @@ import {
   getAccountingPDF7API,
   getAccountingPDF8API,
   getAccountingPDFAPI,
+  getCompany1API,
   getFinancialStatement1API,
 } from "../../services";
 import {
@@ -34,6 +35,7 @@ const ModalPdfAccounting = (props) => {
     startDateVal: "",
     endDateVal: "",
   });
+  const [companyName, setCompanyName] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [loading, setLoading] = useState(false);
   const handleChange = (e) => {
@@ -42,6 +44,14 @@ const ModalPdfAccounting = (props) => {
       ...prev,
       [name]: value,
     }));
+  };
+  const getCompanyName = async () => {
+    try {
+      const response = await getCompany1API();
+      setCompanyName(response[0].CompanyName);
+    } catch (error) {
+      throw error;
+    }
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -53,34 +63,35 @@ const ModalPdfAccounting = (props) => {
         startDateVal,
         endDateVal,
       };
+      await getCompanyName();
       if (selectedAccount === "111") {
         const response = await getAccountingPDFAPI(req);
-        const htmlContent = uiAccountingPDF(response);
+        const htmlContent = uiAccountingPDF(response, companyName);
         await convertPDF({ htmlContent, setSuccessMsg, setErrMsg, setOpenPdf });
       }
       if (selectedAccount === "112") {
         const response = await getAccountingPDF1API(req);
-        const htmlContent = uiAccountingPDF1(response);
+        const htmlContent = uiAccountingPDF1(response, companyName);
         await convertPDF({ htmlContent, setSuccessMsg, setErrMsg, setOpenPdf });
       }
       if (selectedAccount === "113") {
         const response = await getAccountingPDF2API(req);
-        const htmlContent = uiAccountingPDF2(response);
+        const htmlContent = uiAccountingPDF2(response, companyName);
         await convertPDF({ htmlContent, setSuccessMsg, setErrMsg, setOpenPdf });
       }
       if (selectedAccount === "211") {
         const response = await getAccountingPDF3API(req);
-        const htmlContent = uiAccountingPDF3(response);
+        const htmlContent = uiAccountingPDF3(response, companyName);
         await convertPDF({ htmlContent, setSuccessMsg, setErrMsg, setOpenPdf });
       }
       if (selectedAccount === "311") {
         const response = await getAccountingPDF4API(req);
-        const htmlContent = uiAccountingPDF4(response);
+        const htmlContent = uiAccountingPDF4(response, companyName);
         await convertPDF({ htmlContent, setSuccessMsg, setErrMsg, setOpenPdf });
       }
       if (selectedAccount === "411") {
         const response = await getAccountingPDF5API(req);
-        const htmlContent = uiAccountingPDF5(response);
+        const htmlContent = uiAccountingPDF5(response, companyName);
         await convertPDF({ htmlContent, setSuccessMsg, setErrMsg, setOpenPdf });
       }
       if (selectedAccount === "511") {
@@ -95,20 +106,18 @@ const ModalPdfAccounting = (props) => {
       }
       if (selectedAccount === "514") {
         const response = await getAccountingPDF7API(req);
-        const htmlContent = uiAccountingPDF7(response);
+        const htmlContent = uiAccountingPDF7(response, companyName);
         await convertPDF({ htmlContent, setSuccessMsg, setErrMsg, setOpenPdf });
       }
       if (selectedAccount === "611") {
         const response = await getAccountingPDF8API(req);
-        const Company = "companies";
-        const htmlContent = uiAccountingPDF8(response, Company);
+        const htmlContent = uiAccountingPDF8(response, companyName);
         await convertPDF({ htmlContent, setSuccessMsg, setErrMsg, setOpenPdf });
       }
       if (selectedAccount === "report") {
         const response = await getFinancialStatement1API(req);
-        const Company = "Companies";
         const Period = `${startDateVal} - ${endDateVal}`;
-        const htmlContent = uiFinancialStatement(response, Company, Period);
+        const htmlContent = uiFinancialStatement(response, companyName, Period);
         await convertPDF({ htmlContent, setSuccessMsg, setErrMsg, setOpenPdf });
       }
       setFormData({

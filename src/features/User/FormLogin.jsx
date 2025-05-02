@@ -60,7 +60,7 @@ const FormLogin = () => {
           htmlFor="userName"
           className="font-extrabold text-xl text-[#1f41bb]"
         >
-          UserName :
+          Username :
         </label>
         <input
           type="text"
