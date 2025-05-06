@@ -1,15 +1,10 @@
-import {
-  executeGet1,
-  executeGet2,
-  executeGet3,
-  executeGet4,
-} from "../database/runQuery.js";
+import { executeGet2, executeGet4 } from "../database/runQuery.js";
 import formatPrice from "./formatPrice.js";
 import { capitalizeWord } from "./formatTxt.js";
 import { email, number, password, username } from "./regex.js";
 
 const validateEmail = async (db, val) => {
-  if (val === "") {
+  if (!val) {
     const msg = `Email is required `;
     throw new Error(msg);
   }
@@ -34,7 +29,7 @@ const validateEmail1 = async (db, UserEmailVal, UserIdVal) => {
     const msg = `Email is required `;
     throw new Error(msg);
   }
-  const isEmail = email.test(val);
+  const isEmail = email.test(UserEmailVal);
   if (!isEmail) {
     const msg = `Please input correct email `;
     throw new Error(msg);
@@ -47,7 +42,7 @@ const validateEmail1 = async (db, UserEmailVal, UserIdVal) => {
   UserEmail = ? AND UserId != ? `;
   const { TotalUser } = await executeGet4(db, query, [UserEmailVal, UserIdVal]);
   if (TotalUser >= 1) {
-    const msg = `${val} is already registered `;
+    const msg = `${UserEmailVal} is already registered `;
     throw new Error(msg);
   }
 };
@@ -69,7 +64,7 @@ const validateUserFullname = async (db, UserFullnameVal) => {
   }
 };
 const validateUserFullname1 = async (db, UserFullnameVal, UserIdVal) => {
-  if (UserFullnameVal === "") {
+  if (!UserFullnameVal) {
     const msg = `Fullname is required `;
     throw new Error(msg);
   }
@@ -84,16 +79,12 @@ const validateUserFullname1 = async (db, UserFullnameVal, UserIdVal) => {
     UserIdVal,
   ]);
   if (TotalUser >= 1) {
-    const msg = `${val} is already registered `;
+    const msg = `${UserFullnameVal} is already registered `;
     throw new Error(msg);
   }
 };
 const validatePosition = (UserPositionVal) => {
-  if (
-    UserPositionVal === null ||
-    UserPositionVal === "null" ||
-    UserPositionVal === ""
-  ) {
+  if (!UserPositionVal) {
     const msg = `User Position is required`;
     throw new Error(msg);
   }
@@ -302,7 +293,7 @@ const validateInvestorBalance = async (db, investorNameVal, balanceVal) => {
   COALESCE(SUM(AccountingBalance), 0) AS TotalBalance
   FROM Accounting
   WHERE 
-  AccountingName LIKE '%equity - ${investorNameVal}%' AND AccountingRef = 311 
+  AccountingName = "Equity - ${investorNameVal}" AND AccountingRef = 311 
   `;
   const { TotalBalance } = await executeGet2(db, query);
   if (Math.abs(balanceVal) > TotalBalance) {
@@ -442,7 +433,7 @@ const validateLiabilityBalance = async (
   COALESCE(SUM(AccountingBalance), 0) AS Total_Liability
   FROM Accounting
   WHERE
-  AccountingName LIKE '%Liability - ${liabilityNameVal}%' AND
+  AccountingName = "Liability - ${liabilityNameVal}" AND
   AccountingRef = 211 `;
   const { Total_Liability } = await executeGet2(db, query);
   // if don't have liability at all
@@ -476,7 +467,7 @@ const validateReceivableBalance = async (
   COALESCE(SUM(AccountingBalance), 0) AS Total_Receivable
   FROM Accounting
   WHERE 
-  AccountingName LIKE '%Receivable - ${capitalizeWord(receivableNameVal)}%' AND 
+  AccountingName = "Receivable - ${receivableNameVal}" AND 
   AccountingRef = 112 `;
   const { Total_Receivable } = await executeGet2(db, query);
   // if it's no have receviable
@@ -511,9 +502,10 @@ const validateUserName = async (db, UserNameVal) => {
     const msg = `Username is Required!`;
     throw new Error(msg);
   }
-  const isValid = username.test(val);
+  const isValid = username.test(UserNameVal);
   if (!isValid) {
     const msg = `
+    Requirement Username
     Only contain Alphabet, Number,
     Minimum length Character 3 - 15 
   `;
@@ -536,9 +528,10 @@ const validateUserName1 = async (db, UserNameVal, UserIdVal) => {
     const msg = `Username is Required!`;
     throw new Error(msg);
   }
-  const isValid = username.test(val);
+  const isValid = username.test(UserNameVal);
   if (!isValid) {
     const msg = `
+    Require UserName
     Only contain Alphabet, Number,
     Minimum length Character 3 - 15 `;
     throw new Error(msg);
@@ -563,13 +556,14 @@ const validatePassword = (UserPasswordVal, UserPassword1Val) => {
     const msg = `Password must be same with Confirm Password`;
     throw new Error(msg);
   }
-  const isValid = password.test(val);
+  const isValid = password.test(UserPasswordVal);
   if (!isValid) {
     const msg = `
+    Requirement Password
     Minimum length 8 Character, 
     At least 1 Capital letter (A-Z),
     At least 1 Number (0-9),
-    At least 1 Character sepecial (@,#,$)`;
+    At least 1 Character sepecial (@,#,$) `;
     throw new Error(msg);
   }
 };

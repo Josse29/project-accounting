@@ -1313,7 +1313,7 @@ const Accounting = (ipcMain, db) => {
       accountingDateVal,
       accountingTimeVal,
       311,
-      `Withdrawl Equity - ${accountingInvestorNameVal}`,
+      `Withdrawal Equity - ${accountingInvestorNameVal}`,
       accountingBalanceVal * -1,
       `Invest with Cash | ${accountingInfoVal}`
     );
@@ -1321,7 +1321,7 @@ const Accounting = (ipcMain, db) => {
       accountingDateVal,
       accountingTimeVal,
       111,
-      `Cash - Withdrawl Equity ${accountingInvestorNameVal}`,
+      `Cash - Withdrawal Equity ${accountingInvestorNameVal}`,
       accountingBalanceVal * -1,
       `Invest with Cash | ${accountingInfoVal}`
     );
@@ -1801,7 +1801,7 @@ const Accounting = (ipcMain, db) => {
       SUM(AccountingBalance) AS TotalReceivable
       FROM Accounting
       WHERE 
-      AccountingName LIKE '%Receivable - ${rows.UserFullname}%' AND 
+      AccountingName = "Receivable - ${rows.UserFullname}" AND 
       AccountingRef = 112 AND
       AccountingDate BETWEEN "${startDateVal}" AND "${endDateVal}"
       `;
@@ -1866,7 +1866,7 @@ const Accounting = (ipcMain, db) => {
       FROM 
       Accounting
       WHERE 
-      AccountingName LIKE '%Liability - ${rows.UserFullname}%' AND 
+      AccountingName = "Liability - ${rows.UserFullname}" AND 
       AccountingRef = 211 AND 
       AccountingDate BETWEEN "${startDateVal}" AND "${endDateVal}"
       `;
@@ -1914,7 +1914,7 @@ const Accounting = (ipcMain, db) => {
       FROM Accounting 
       WHERE 
       AccountingRef = 311 AND 
-      AccountingName LIKE '%Equity - ${el.UserFullname}%' AND 
+      AccountingName = "Equity - ${el.UserFullname}" AND 
       AccountingDate BETWEEN "${startDateVal}" AND "${endDateVal}"
       `;
       const { TotalEquity1 } = await executeGet2(db, query5);
@@ -1922,7 +1922,7 @@ const Accounting = (ipcMain, db) => {
         const User = {
           UserFullname: el.UserFullname,
           TotalEquity: TotalEquity1,
-          TotalPercent: `${Math.round((TotalEquity1 / TotalEquity) * 100)} %`,
+          TotalPercent: `${(TotalEquity1 / TotalEquity).toFixed(2) * 100} %`,
         };
         EquityList.push(User);
       }
@@ -2294,16 +2294,19 @@ const Accounting = (ipcMain, db) => {
       FROM Accounting
       WHERE
       AccountingRef = 311 AND
-      AccountingName LIKE "%${el.UserFullname}%" `;
+      AccountingName = "Equity - ${el.UserFullname}" OR 
+      AccountingName = "Withdrawal Equity - ${el.UserFullname}"`;
       const { TotalEquityPerson } = await executeGet2(db, query);
       const UserFullname = el.UserFullname;
-      const TotalPercent = Math.round((TotalEquityPerson / TotalEquity) * 100);
-      const ProfitAttributed = NetProfitOrLoss * (TotalPercent / 100);
+      const TotalPercent = TotalEquityPerson / TotalEquity || 0;
+      const ProfitAttributed = NetProfitOrLoss * TotalPercent || 0;
       const Investor = {
-        UserFullname: `${UserFullname} - ${TotalPercent} %`,
+        UserFullname: `${UserFullname} - ${TotalPercent.toFixed(2) * 100} %`,
         ProfitAttributed,
+        TotalPercent,
       };
       ProfitAttribute.push(Investor);
+      ProfitAttribute.sort((a, b) => b.TotalPercent - a.TotalPercent);
     }
     // totalEquity
     const query28 = `
@@ -2405,6 +2408,8 @@ const Accounting = (ipcMain, db) => {
     SELECT 
     *
     FROM Accounting
+    WHERE 
+    AccountingDate BETWEEN "${startDateVal}" AND "${endDateVal}"
     `;
     const Accounting = await executeGet(db, query);
     validateExisted(Accounting, "Accounting");
@@ -2421,7 +2426,8 @@ const Accounting = (ipcMain, db) => {
     COALESCE(SUM(AccountingBalance), 0) AS Total
     FROM Accounting
     WHERE
-    AccountingRef = 113
+    AccountingRef = 113 AND 
+    AccountingDate BETWEEN "${startDateVal}" AND "${endDateVal}"
     GROUP BY AccountingName
     ORDER BY AccountingRef ASC
     `;
@@ -2686,17 +2692,20 @@ const Accounting = (ipcMain, db) => {
       FROM Accounting
       WHERE
       AccountingRef = 311 AND
-      AccountingName LIKE "%${el.UserFullname}%" AND 
+      AccountingName  = "Equity - ${el.UserFullname}" OR
+      AccountingName = "Withdrawal Equity - ${el.UserFullname}" AND 
       AccountingDate BETWEEN "${startDateVal}" AND "${endDateVal}"`;
       const { TotalEquityPerson } = await executeGet2(db, query);
       const UserFullname = el.UserFullname;
-      const TotalPercent = Math.round((TotalEquityPerson / TotalEquity) * 100);
-      const ProfitAttributed = NetProfitOrLoss * (TotalPercent / 100);
+      const TotalPercent = TotalEquityPerson / TotalEquity || 0;
+      const ProfitAttributed = NetProfitOrLoss * TotalPercent || 0;
       const Investor = {
-        UserFullname: `${UserFullname} - ${TotalPercent} %`,
+        UserFullname: `${UserFullname} - ${TotalPercent.toFixed(2) * 100} %`,
         ProfitAttributed,
+        TotalPercent,
       };
       ProfitAttribute.push(Investor);
+      ProfitAttribute.sort((a, b) => b.TotalPercent - a.TotalPercent);
     }
     // totalEquity
     const query28 = `
@@ -2725,7 +2734,6 @@ const Accounting = (ipcMain, db) => {
       TotalCash + TotalReceivable + TotalCurrentAsset + StockRemain;
     const TotalAssetsChanges = TotalCurrentAssetChanges + TotalFixedAsset;
     return {
-      TotalRow,
       FinancialPosition: {
         Assets: {
           CurrentAssets: {
@@ -2805,7 +2813,6 @@ const Accounting = (ipcMain, db) => {
     LIMIT 2 
     `;
     const accounting = await executeGet3(db, query);
-    console.log(accounting);
     for (const el of accounting) {
       if (
         el.AccountingRef === 411 ||

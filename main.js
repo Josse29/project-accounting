@@ -3,7 +3,7 @@ import fs from "fs";
 import sqlite3 from "sqlite3";
 import jwt from "jsonwebtoken";
 import convertCSV from "./src/serverless-side/utils/convertCSV.js";
-import convertPDF from "./src/serverless-side/utils/convertPDF.js";
+import convertPDF from "./src/serverless-side/utils/convertpdf/index.js";
 import {
   Accounting,
   Product,

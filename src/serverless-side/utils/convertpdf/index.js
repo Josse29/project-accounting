@@ -10,10 +10,10 @@ const convertPDF = (ipcMain, BrowserWindow, dialog, fs, appPath) => {
     }
     const cssPath = appPath(
       "src",
-      "client-side",
-      "css",
-      "components",
-      "textToPDF.css"
+      "serverless-side",
+      "utils",
+      "convertpdf",
+      "index.js"
     );
     const bootstrapPath = appPath(
       "node_modules",

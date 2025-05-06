@@ -29,6 +29,7 @@ const queryGet = (searchVal, limitVal, offsetVal) => {
   UserId,
   UserEmail,
   UserFullname,
+  UserName,
   UserImg,
   UserPosition,
   UserInfo
@@ -38,13 +39,13 @@ const queryGet = (searchVal, limitVal, offsetVal) => {
   //  with search value
   if (searchVal !== "") {
     query += `
-    WHERE User.UserFullname LIKE '%${searchVal}%' ESCAPE '!' OR 
-          User.UserEmail LIKE '%${searchVal}%' ESCAPE '!' OR  
-          User.UserPosition LIKE '%${searchVal}%' ESCAPE '!' `;
+    WHERE UserFullname LIKE '%${searchVal}%' ESCAPE '!' OR 
+          UserEmail LIKE '%${searchVal}%' ESCAPE '!' OR  
+          UserPosition LIKE '%${searchVal}%' ESCAPE '!' `;
   }
   //  with limit, offset, order
   query += `
-  ORDER BY User.UserFullname ASC
+  ORDER BY UserPosition ASC
   LIMIT ${limitVal} 
   OFFSET ${offsetVal}`;
   return query;

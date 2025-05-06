@@ -63,7 +63,7 @@ const User = (ipcMain, db, bcryptjs, jwt) => {
     await validateEmail(db, UserEmailVal);
     const imgBase64 = await validateLoadImg1(UserImgVal);
     if (UserPositionVal === "admin") {
-      await validateUserName(db, UserFullnameVal);
+      await validateUserName(db, UserNameVal);
       validatePassword(UserPasswordVal, UserPassword1Val);
       const salt = await bcryptjs.genSalt(10);
       const hashedPassword = await bcryptjs.hash(UserPasswordVal, salt);
@@ -116,7 +116,7 @@ const User = (ipcMain, db, bcryptjs, jwt) => {
       user.UserPassword
     );
     if (!validPassword) {
-      const msg = `uppppsss, Password is wrong`;
+      const msg = `Uppppsss, Password is wrong`;
       throw new Error(msg);
     }
     const token = jwt.sign(
@@ -143,6 +143,7 @@ const User = (ipcMain, db, bcryptjs, jwt) => {
     const query = `
     SELECT 
     UserId,
+    UserName,
     UserFullname
     FROM User 
     WHERE UserPosition = ?
@@ -152,6 +153,10 @@ const User = (ipcMain, db, bcryptjs, jwt) => {
   });
   ipcMain.handle("resetPassword", async (_, data) => {
     const { UserIdVal, UserNameVal, UserPasswordVal, UserPassword1Val } = data;
+    if (!UserIdVal) {
+      const msg = `Admin is Required!`;
+      throw new Error(msg);
+    }
     validatePassword(UserPasswordVal, UserPassword1Val);
     const query = `
     SELECT 
@@ -169,13 +174,13 @@ const User = (ipcMain, db, bcryptjs, jwt) => {
       const msg = `${UserNameVal} - isn't admin..`;
       throw new Error(msg);
     }
+    const salt = await bcryptjs.genSalt(10);
+    const hashedPassword = await bcryptjs.hash(UserPasswordVal, salt);
     const query1 = `
     UPDATE 
     User
-    SET UserPassword = ?,
+    SET UserPassword = ?
     WHERE UserId = ? `;
-    const salt = await bcryptjs.genSalt(10);
-    const hashedPassword = await bcryptjs.hash(UserPasswordVal, salt);
     await executeCreate1(db, query1, [hashedPassword, parseInt(UserIdVal)]);
     const msg = `Password - ${UserNameVal} has been Updated `;
     return msg;
@@ -205,7 +210,7 @@ const User = (ipcMain, db, bcryptjs, jwt) => {
       SELECT 
       SUM(AccountingBalance) AS TotalReceivable
       FROM Accounting
-      WHERE AccountingName LIKE '%Receivable - ${rows.UserFullname}%'
+      WHERE AccountingName = 'Receivable - ${rows.UserFullname}'
       AND AccountingRef = 112
       `;
       const { TotalReceivable } = await executeGet2(db, query1);
@@ -246,7 +251,7 @@ const User = (ipcMain, db, bcryptjs, jwt) => {
       SELECT 
       SUM(AccountingBalance) AS TotalReceivable
       FROM Accounting
-      WHERE AccountingName LIKE '%Receivable - ${rows.UserFullname}%'
+      WHERE AccountingName = 'Receivable - ${rows.UserFullname}'
       AND AccountingRef = 112
       `;
       const { TotalReceivable } = await executeGet2(db, query1);
@@ -329,8 +334,8 @@ const User = (ipcMain, db, bcryptjs, jwt) => {
       COALESCE(SUM(AccountingBalance), 0) AS TotalEquity
       FROM 
       Accounting
-      WHERE 
-      AccountingName LIKE '%equity - ${rows.UserFullname}% AND AccountingRef = 311 '
+      WHERE AccountingName = "Equity - ${rows.UserFullname}" AND 
+            AccountingRef = 311
       `;
       const { TotalEquity } = await executeGet2(db, query1);
       const investorData = {
@@ -360,11 +365,12 @@ const User = (ipcMain, db, bcryptjs, jwt) => {
       return { investorTotal, investorList };
     }
     const query1 = `
-    SELECT SUM(AccountingBalance) AS Investment 
+    SELECT 
+    COALESCE(SUM(AccountingBalance), 0) AS Investment 
     FROM Accounting 
     WHERE AccountingRef = 311  
     `;
-    const { Investment } = await executeGet2(query1);
+    const { Investment } = await executeGet2(db, query1);
     investorTotal += Investment;
     for (const rows of investor) {
       const query1 = `
@@ -373,10 +379,12 @@ const User = (ipcMain, db, bcryptjs, jwt) => {
       FROM 
       Accounting
       WHERE 
-      AccountingName LIKE '%equity - ${rows.UserFullname}% AND AccountingRef = 311 '
+      AccountingName = "Equity - ${rows.UserFullname}" OR 
+      AccountingName = "Withdrawal Equity - ${rows.UserFullname}" AND 
+      AccountingRef = 311 
       `;
       const { TotalEquity } = await executeGet2(db, query1);
-      const percent = Math.round(TotalEquity / investorTotal);
+      const percent = (TotalEquity / investorTotal).toFixed(2) || 0;
       const investorData = {
         InvestorId: rows.UserId,
         Investorname: rows.UserFullname,
@@ -401,6 +409,9 @@ const User = (ipcMain, db, bcryptjs, jwt) => {
     UserFullname,
     UserImg
     FROM User
+    WHERE 
+    UserPosition = "supplier" OR 
+    UserPosition = "creditor"
     `;
     const liability = await executeGet3(db, query);
     let liabilityTotal = 0;
@@ -416,7 +427,7 @@ const User = (ipcMain, db, bcryptjs, jwt) => {
       SELECT 
       COALESCE(SUM(AccountingBalance), 0) AS TotalLiability
       FROM Accounting 
-      WHERE AccountingName LIKE "%liability - ${rows.UserFullname}%" AND 
+      WHERE AccountingName = "Liability - ${rows.UserFullname}" AND 
             AccountingRef = 211 
       `;
       const { TotalLiability } = await executeGet2(db, query);
@@ -436,8 +447,10 @@ const User = (ipcMain, db, bcryptjs, jwt) => {
     UserId, 
     UserFullname,
     UserEmail
+    FROM User
     WHERE 
-    UserPosition = "supplier" OR "creditor"
+    UserPosition = "supplier" OR
+    UserPosition = "creditor"
     `;
     const liability = await executeGet(db, query);
     const liabilityList = [];
@@ -446,7 +459,7 @@ const User = (ipcMain, db, bcryptjs, jwt) => {
       SELECT 
       COALESCE(SUM(AccountingBalance), 0) AS LiabilitySum
       FROM Accounting 
-      WHERE AccountingName = '%liability - ${el.UserFullname}%' AND AccountingRef = 211
+      WHERE AccountingName = "Liability - ${el.UserFullname}" AND AccountingRef = 211
       `;
       const { LiabilitySum } = await executeGet2(db, query);
       const data = {
@@ -502,7 +515,7 @@ const User = (ipcMain, db, bcryptjs, jwt) => {
     await validateEmail1(db, UserEmailVal, parseInt(UserIdVal));
     const imgBase64 = await validateLoadImg1(UserImgVal);
     if (UserPositionVal === "admin") {
-      await validateUserName1(db, UserNameVal, UserIdVal);
+      await validateUserName1(db, UserNameVal, parseInt(UserIdVal));
       await executeCreate1(db, queryUpdate, [
         UserNameVal,
         UserEmailVal,
