@@ -459,7 +459,7 @@ const getFinancialStatementAPI = async () => {
     throw error;
   }
 };
-// api/accounting-financial-statement (GET)
+// api/accounting-financial-statement-1 (GET)
 const getFinancialStatement1API = async (req) => {
   try {
     const data = {

@@ -10,9 +10,9 @@ const CardListReceivable = () => {
   const getReceivable = async () => {
     try {
       const response = await getReceivable1API();
-      const { receivableList, receivableTotal } = response;
+      const { receivableList, receivableTotals } = response;
       setReceivable(receivableList);
-      setReceivableTotal(receivableTotal);
+      setReceivableTotal(receivableTotals);
     } catch (error) {
       throw error;
     }

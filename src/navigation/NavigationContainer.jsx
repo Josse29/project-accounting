@@ -14,13 +14,13 @@ import {
   FaRightFromBracket,
 } from "react-icons/fa6";
 import { Link, useLocation, useNavigate } from "react-router";
-import { InnostackLogo1, Josstack1 } from "./../assets/";
+import { Josstack1 } from "./../assets/";
 import { Tooltip } from "flowbite-react";
 import { AllContext } from "../context/AllProvider";
+import { ModalLogout } from "../features/User";
 
 const Top = () => {
-  const navigate = useNavigate();
-  const { userLogin, setUserLogin } = useContext(AllContext);
+  const { userLogin, setUserLogin, logout, setLogout } = useContext(AllContext);
   return (
     <div className="bg-[#262848] w-100 p-6 fixed z-10 left-[100px] right-0 top-0">
       <div className="flex justify-between">
@@ -30,7 +30,9 @@ const Top = () => {
         <div className="flex items-center gap-10">
           <div className="flex gap-3 items-center">
             <FaUser className="text-white text-2xl" />
-            <div className="text-xl text-white">{userLogin.fullname}</div>
+            <div className="text-xl text-white">
+              {userLogin.fullname || "Josse Pinem"}
+            </div>
           </div>
           <div className="flex gap-5">
             <div onClick={() => window.ElectronAPI.minimize()}>
@@ -53,16 +55,17 @@ const Top = () => {
             </div>
             <div
               onClick={() => {
-                setUserLogin({});
-                localStorage.removeItem("verifyToken");
-                navigate("/");
+                setLogout(true);
               }}
             >
-              <FaRightFromBracket className="text-white text-2xl cursor-pointer" />
+              <Tooltip content="Logout" placement="bottom" className="text-xl">
+                <FaRightFromBracket className="text-white text-2xl cursor-pointer" />
+              </Tooltip>
             </div>
           </div>
         </div>
       </div>
+      <ModalLogout />
     </div>
   );
 };

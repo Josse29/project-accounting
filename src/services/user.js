@@ -222,8 +222,8 @@ const loginUserAPI = async (req) => {
 };
 export {
   deleteUserAPI,
-  getCustomerAPI,
   getAdminAPI,
+  getCustomerAPI,
   getCreditorAPI,
   getInvestorAPI,
   getInvestor1API,

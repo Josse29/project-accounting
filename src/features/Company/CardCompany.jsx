@@ -31,7 +31,7 @@ const CardCompany = () => {
           <div className="flex gap-4 px-4 py-2 items-center">
             <div className="flex-1">
               <img
-                src={company.CompanyImg || Company}
+                src={company?.CompanyImg || Company}
                 alt=""
                 className="w-full"
               />
@@ -39,7 +39,7 @@ const CardCompany = () => {
             <div className="flex-[2]">
               <div className="flex justify-between gap-3">
                 <div className="text-4xl mb-2 capitalize">
-                  {company.CompanyName}
+                  {company?.CompanyName || "Our Company"}
                 </div>
                 <div
                   className="flex bg-sky-500 hover:bg-sky-600 h-[40px] w-[40px] rounded-lg cursor-pointer "
@@ -49,9 +49,11 @@ const CardCompany = () => {
                 </div>
               </div>
               <div className="text-2xl mb-2">
-                {formatDate(company.CompanyEst)}
+                {company?.CompanyEst ? formatDate(company.CompanyEst) : "2025"}
               </div>
-              <div className="mb-1 text-xl">{company.CompanyInfo}</div>
+              <div className="mb-1 text-xl">
+                {company?.CompanyInfo || "write information..."}
+              </div>
             </div>
           </div>
           <ModalUpdateCompany

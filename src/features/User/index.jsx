@@ -21,6 +21,7 @@ import SelectUser from "./SelectUser";
 import TableUser from "./TableUser";
 import ModalResetPassword from "./ModalResetPassword";
 import SelectAdmin from "./SelectAdmin";
+import ModalLogout from "./ModalLogout";
 
 export {
   CardUser1,
@@ -33,6 +34,7 @@ export {
   ModalRegister,
   ModalResetPassword,
   ModalUpdateUser,
+  ModalLogout,
   ModaDeleteUser,
   SelectAdmin,
   SearchLimitUser,

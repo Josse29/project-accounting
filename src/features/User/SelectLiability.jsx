@@ -5,11 +5,11 @@ import { formatCurrency1 } from "../../utils";
 
 const SelectLiability = (props) => {
   const { className, ...rest } = props;
-  const [liability, setliability] = useState([]);
+  const [liability, setLiability] = useState([]);
   const getLiability = async () => {
     try {
       const response = await getLiability1API();
-      setliability(response);
+      setLiability(response);
     } catch (error) {
       throw error;
     }
