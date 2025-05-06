@@ -16,14 +16,14 @@ export const AllProvider = ({ children }) => {
   const [changesEquity, setChangesEquity] = useState({});
   const [profitOrLoss, setProfitOrLoss] = useState({});
   // for auth
-  // useEffect(() => {
-  //   if (!keyUser) {
-  //     navigate("/");
-  //   } else {
-  //     const data = jwtDecode(keyUser);
-  //     setUserLogin(data);
-  //   }
-  // }, [navigate]);
+  useEffect(() => {
+    if (!keyUser) {
+      navigate("/");
+    } else {
+      const data = jwtDecode(keyUser);
+      setUserLogin(data);
+    }
+  }, [navigate]);
   // for financial statement
   const getFinancialStatement = async () => {
     try {

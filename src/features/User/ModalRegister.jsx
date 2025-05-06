@@ -145,6 +145,30 @@ const ModalRegister = (props) => {
               <Select.Option value="supplier" title="Supplier" />
             </Select>
           </div>
+          {/* fullname */}
+          <div className="mb-5">
+            <InputText
+              htmlFor1="fullname"
+              title="Fullname"
+              name="fullname"
+              value={formData.fullname}
+              className="focus:ring-[#4338ca] capitalize"
+              placeholder="Ex : Josse Surya Pinem"
+              onChange={handleChange}
+            />
+          </div>
+          {/* email */}
+          <div className="mb-5">
+            <InputText
+              title="Email"
+              name="email"
+              value={formData.email}
+              htmlFor1="email1"
+              className="focus:ring-[#4338ca]"
+              placeholder="Ex : pinemjosse@gmail.com"
+              onChange={handleChange}
+            />
+          </div>
           {/* selected */}
           {formData.position === "admin" && (
             <>
@@ -196,30 +220,6 @@ const ModalRegister = (props) => {
               </InputPassword>
             </>
           )}
-          {/* fullname */}
-          <div className="mb-5">
-            <InputText
-              htmlFor1="fullname"
-              title="Fullname"
-              name="fullname"
-              value={formData.fullname}
-              className="focus:ring-[#4338ca] capitalize"
-              placeholder="Ex : Josse Surya Pinem"
-              onChange={handleChange}
-            />
-          </div>
-          {/* email */}
-          <div className="mb-5">
-            <InputText
-              title="Email"
-              name="email"
-              value={formData.email}
-              htmlFor1="email1"
-              className="focus:ring-[#4338ca]"
-              placeholder="Ex : pinemjosse@gmail.com"
-              onChange={handleChange}
-            />
-          </div>
           {/* photo */}
           <div className="mb-5">
             <InputImg

@@ -32,8 +32,6 @@ const ModalUpdateUser = (props) => {
     position: "",
     info: "",
   });
-  // const [passwordVisible, setpasswordVisible] = useState(false);
-  // const [passwordVisible1, setpasswordVisible1] = useState(false);
   const [errMsg, setErrMsg] = useState("");
   const [img, setImg] = useState(false);
   const imgRef = useRef(null);
@@ -49,6 +47,7 @@ const ModalUpdateUser = (props) => {
   };
   useEffect(() => {
     if (openUpdate && updateUser?.UserId) {
+      setErrMsg("");
       const {
         UserId,
         UserName,
@@ -142,7 +141,7 @@ const ModalUpdateUser = (props) => {
                   htmlFor1="username"
                   name="username"
                   value={formData.username}
-                  className="focus:ring-sky-600 capitalize"
+                  className="focus:ring-sky-600"
                   placeholder="Ex : Josse Surya Pinem"
                   onChange={handleChange}
                 />

@@ -46,7 +46,7 @@ const StatementOfEquity = () => {
           {equity.length >= 1 &&
             equity.map((el, i) => (
               <div className="flex justify-between text-xl mb-1 ms-2" key={i}>
-                <div>{el.AccountingName.split("-")[1]}</div>
+                <div>{el.AccountingName.split(" - ").slice(1).join(" - ")}</div>
                 <div>{formatCurrency1(el.TotalEquity)}</div>
               </div>
             ))}
@@ -63,7 +63,7 @@ const StatementOfEquity = () => {
           {equityWithDraw.length >= 1 &&
             equityWithDraw.map((el, i) => (
               <div className="flex justify-between text-xl mb-1 ms-2" key={i}>
-                <div>{el.AccountingName.split("-")[1]}</div>
+                <div>{el.AccountingName.split(" - ").slice(1).join(" - ")}</div>
                 <div>{formatCurrency2(el.TotalEquityWithDrawl)}</div>
               </div>
             ))}

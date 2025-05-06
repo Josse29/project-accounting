@@ -21,7 +21,7 @@ const ModalResetPassword = (props) => {
       setFormData((prev) => ({
         ...prev,
         UserIdVal: value,
-        UserNameVal: options[selectedIndex].text,
+        UserNameVal: options[selectedIndex].getAttribute("data-username"),
       }));
     } else {
       setFormData((prev) => ({
@@ -33,15 +33,17 @@ const ModalResetPassword = (props) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    const { UserIdVal, UserNameVal, UserPasswordVal, UserPassword1Val } =
+      formData;
+    console.log(UserIdVal, UserNameVal, UserPasswordVal, UserPassword1Val);
     try {
-      const { UserIdVal, UserNameVal, UserPasswordVal, UserPassword1Val } =
-        formData;
       const response = await resetPassAPI({
         UserIdVal,
         UserNameVal,
         UserPasswordVal,
         UserPassword1Val,
       });
+
       setErrMsg("");
       setFormData({
         UserIdVal: "",

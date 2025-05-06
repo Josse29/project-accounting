@@ -13,14 +13,14 @@ import {
   FaHouse,
   FaRightFromBracket,
 } from "react-icons/fa6";
-import { Link, useLocation, useNavigate } from "react-router";
-import { Josstack1 } from "./../assets/";
+import { Link, useLocation } from "react-router";
+import { Josstack } from "./../assets";
 import { Tooltip } from "flowbite-react";
 import { AllContext } from "../context/AllProvider";
 import { ModalLogout } from "../features/User";
 
 const Top = () => {
-  const { userLogin, setUserLogin, logout, setLogout } = useContext(AllContext);
+  const { userLogin, setLogout } = useContext(AllContext);
   return (
     <div className="bg-[#262848] w-100 p-6 fixed z-10 left-[100px] right-0 top-0">
       <div className="flex justify-between">
@@ -95,7 +95,7 @@ const Side = () => {
     <div className="fixed z-10 top-0 left-0 bottom-0 bg-[#1b1c30]">
       <div className="flex flex-col h-screen justify-between gap-2 px-4 ">
         <div className="h-[110px] flex items-center justify-center">
-          <img src={Josstack1} alt="" className="w-[60px]" />
+          <img src={Josstack} alt="" className="w-[60px]" />
         </div>
         <div className="flex flex-col flex-1 gap-12 items-center">
           <NavItem to="/dashboard" icon={FaHouse} title="Dashboard" />

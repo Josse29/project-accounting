@@ -30,6 +30,7 @@ const SelectAdmin = (props) => {
               key={el.UserId}
               value={el.UserId}
               title={el.UserFullname}
+              data-username={el.UserName}
             />
           ))}
         {admin.length < 1 && (

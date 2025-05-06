@@ -28,9 +28,11 @@ const Login = () => {
       {/* Top Bar */}
       <div className="bg-slate-800 flex justify-between items-center py-2 px-5">
         {/* Logo */}
-        <div className="h-[40px] app-region-drag">
+        <div className="h-[40px] flex items-center gap-5 app-region-drag">
           <img src={Josstack} className="h-full" />
+          <p className="text-white text-2xl">Josstack</p>
         </div>
+
         <div className="flex gap-8 items-center">
           {/* Date and Time */}
           <div className="flex gap-3">
