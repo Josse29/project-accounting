@@ -6,6 +6,14 @@ const executeCreate = (db, query) => {
     });
   });
 };
+const executeCreate1 = (db, query, params = []) => {
+  return new Promise((resolve, reject) => {
+    db.run(query, params, (err) => {
+      if (err) reject(err);
+      else resolve();
+    });
+  });
+};
 const executeUpdate = (db, query) => {
   return new Promise((resolve, reject) => {
     db.run(query, (err) => {
@@ -50,6 +58,22 @@ const executeGet2 = (db, query) => {
     });
   });
 };
+const executeGet3 = (db, query, params = []) => {
+  return new Promise((resolve, reject) => {
+    db.all(query, params, (err, res) => {
+      if (err) reject(err);
+      else resolve(res);
+    });
+  });
+};
+const executeGet4 = (db, query, params = []) => {
+  return new Promise((resolve, reject) => {
+    db.get(query, params, (err, res) => {
+      if (err) reject(err);
+      else resolve(res);
+    });
+  });
+};
 const executeDelete = (db, query) => {
   return new Promise((resolve, reject) => {
     db.run(query, function (err) {
@@ -60,9 +84,12 @@ const executeDelete = (db, query) => {
 };
 export {
   executeCreate,
+  executeCreate1,
   executeGet,
   executeGet1,
   executeGet2,
+  executeGet3,
+  executeGet4,
   executeDelete,
   executeUpdate,
 };

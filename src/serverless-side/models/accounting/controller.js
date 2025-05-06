@@ -44,9 +44,11 @@ import {
 // import { createStock } from "../stock/controller.js";
 import {
   executeCreate,
+  executeCreate1,
   executeGet,
   executeGet1,
   executeGet2,
+  executeGet3,
 } from "../../database/runQuery.js";
 import AccountingSchema from "./schema.js";
 import { createStock } from "../../utils/etc.js";
@@ -1094,7 +1096,7 @@ const Accounting = (ipcMain, db) => {
       const queryDebt = queryCreate(
         accountingDateVal,
         accountingTimeVal,
-        513,
+        514,
         `${accountingAssetNameVal1} - Expense`,
         accountingAssetValueUse,
         accountingInfoVal
@@ -1448,7 +1450,7 @@ const Accounting = (ipcMain, db) => {
     const queryDebt = queryCreate(
       accountingDateVal,
       accountingTimeVal,
-      411,
+      412,
       `Sales Return - ${accountingProductNameVal1}`,
       accountingBalanceTotalVal1,
       accountingInfoVal1
@@ -2019,7 +2021,7 @@ const Accounting = (ipcMain, db) => {
     };
   });
   // api/accounting-financial-statement
-  ipcMain.handle("financialStatement", async (_req) => {
+  ipcMain.handle("financialStatement", async () => {
     const query = `
     SELECT 
     COUNT(*) AS TotalRow 
@@ -2394,6 +2396,443 @@ const Accounting = (ipcMain, db) => {
         TotalEquityChanges,
       },
     };
+  });
+  // api/accounting-financial-statement-1
+  ipcMain.handle("financialStatement1", async (_, req) => {
+    const { startDateVal, endDateVal } = req;
+    validateDate(startDateVal, endDateVal);
+    const query = `
+    SELECT 
+    *
+    FROM Accounting
+    `;
+    const Accounting = await executeGet(db, query);
+    validateExisted(Accounting, "Accounting");
+    // 1.cash
+    const query1 = queryReadCash1(startDateVal, endDateVal);
+    const { TotalCash } = await executeGet2(db, query1);
+    // 2.receivable
+    const query2 = queryReadReceivable(startDateVal, endDateVal);
+    const { TotalReceivable } = await executeGet2(db, query2);
+    // 3.current-asset
+    const query3 = `
+    SELECT 
+    AccountingName,
+    COALESCE(SUM(AccountingBalance), 0) AS Total
+    FROM Accounting
+    WHERE
+    AccountingRef = 113
+    GROUP BY AccountingName
+    ORDER BY AccountingRef ASC
+    `;
+    const CurrentAsset = await executeGet(db, query3);
+    const query4 = `
+    SELECT 
+    COALESCE(SUM(AccountingBalance), 0) AS TotalCurrentAsset
+    FROM 
+    Accounting
+    WHERE 
+    AccountingRef = 113 AND 
+    AccountingDate BETWEEN "${startDateVal}" AND "${endDateVal}"
+    `;
+    const { TotalCurrentAsset } = await executeGet2(db, query4);
+    // 4 . fixed-asset
+    const query5 = `
+    SELECT 
+    AccountingName,
+    COALESCE(SUM(AccountingBalance), 0) AS Total
+    FROM Accounting
+    WHERE
+    AccountingRef = 121 AND 
+    AccountingDate BETWEEN "${startDateVal}" AND "${endDateVal}"
+    GROUP BY AccountingName
+    ORDER BY AccountingName ASC
+    `;
+    const FixedAsset = await executeGet(db, query5);
+    const query6 = `
+    SELECT 
+    AccountingName,
+    COALESCE(SUM(AccountingBalance), 0) AS Total
+    FROM Accounting
+    WHERE
+    AccountingRef = 131 AND 
+    AccountingDate BETWEEN "${startDateVal}" AND "${endDateVal}"
+    GROUP BY AccountingName
+    ORDER BY AccountingName ASC
+    `;
+    const FixedAccumulated = await executeGet(db, query6);
+    const query8 = `
+    SELECT 
+    COALESCE(SUM(AccountingBalance), 0) AS TotalFixedAsset
+    FROM 
+    Accounting
+    WHERE 
+    AccountingRef BETWEEN 121 AND 131 AND 
+    AccountingDate BETWEEN "${startDateVal}" AND "${endDateVal}"
+    `;
+    const { TotalFixedAsset } = await executeGet2(db, query8);
+    // 5.liability
+    const query10 = `
+    SELECT 
+    AccountingName,
+    COALESCE(SUM(AccountingBalance), 0) AS TotalLiability
+    FROM Accounting
+    WHERE
+    AccountingRef = 211 AND 
+    AccountingDate BETWEEN "${startDateVal}" AND "${endDateVal}"
+    GROUP BY AccountingName
+    ORDER BY AccountingName ASC
+    `;
+    const Liability = await executeGet(db, query10);
+    const query11 = `
+    SELECT 
+    COALESCE(SUM(AccountingBalance), 0) AS TotalLiability
+    FROM 
+    Accounting
+    WHERE 
+    AccountingRef = 211 AND 
+    AccountingDate BETWEEN "${startDateVal}" AND "${endDateVal}"
+    `;
+    const { TotalLiability } = await executeGet2(db, query11);
+    // 5.Equity
+    // equitylist
+    const query12 = `
+    SELECT 
+    AccountingName,
+    COALESCE(SUM(AccountingBalance), 0) AS TotalEquity
+    FROM Accounting
+    WHERE
+    AccountingRef = 311 AND 
+    AccountingBalance > 0 AND 
+    AccountingDate BETWEEN "${startDateVal}" AND "${endDateVal}"
+    GROUP BY AccountingName
+    ORDER BY AccountingName ASC `;
+    const Equity = await executeGet(db, query12);
+    // equitywithdrawl
+    const query13 = `
+    SELECT 
+    AccountingName,
+    COALESCE(SUM(AccountingBalance), 0) AS TotalEquityWithDrawl
+    FROM Accounting 
+    WHERE
+    AccountingRef = 311 AND 
+    AccountingBalance < 0 AND 
+    AccountingDate BETWEEN "${startDateVal}" AND "${endDateVal}"
+    GROUP BY AccountingName
+    ORDER BY AccountingName ASC  `;
+    const EquityWithDrawl = await executeGet(db, query13);
+    // Total Equity
+    const query14 = `
+    SELECT 
+    COALESCE(SUM(AccountingBalance), 0) AS TotalEquity
+    FROM 
+    Accounting
+    WHERE 
+    AccountingRef = 311 AND 
+    AccountingDate BETWEEN "${startDateVal}" AND "${endDateVal}"`;
+    const { TotalEquity } = await executeGet2(db, query14);
+    // Total Sales
+    const query16 = `
+    SELECT 
+    AccountingName,
+    COALESCE(SUM(AccountingBalance), 0) AS TotalSales
+    FROM Accounting
+    WHERE
+    AccountingRef = 411 AND 
+    AccountingDate BETWEEN "${startDateVal}" AND "${endDateVal}"`;
+    const { TotalSales } = await executeGet2(db, query16);
+    // Total Sales Return
+    const query17 = `
+    SELECT 
+    COALESCE(SUM(AccountingBalance), 0) AS TotalSalesReturn
+    FROM 
+    Accounting
+    WHERE 
+    AccountingRef = 412 AND 
+    AccountingDate BETWEEN "${startDateVal}" AND "${endDateVal}"`;
+    const { TotalSalesReturn } = await executeGet2(db, query17);
+    // TotalSalesDiscount
+    const query18 = `
+    SELECT 
+    COALESCE(SUM(AccountingBalance), 0) AS TotalSalesDiscount
+    FROM 
+    Accounting
+    WHERE 
+    AccountingRef = 413 AND 
+    AccountingDate BETWEEN "${startDateVal}" AND "${endDateVal}"`;
+    const { TotalSalesDiscount } = await executeGet2(db, query18);
+    // TotalSalesnet
+    const TotalSalesNet = TotalSales - TotalSalesReturn - TotalSalesDiscount;
+    // purchase
+    // Total Purchase
+    const query19 = `
+    SELECT 
+    COALESCE(SUM(AccountingBalance), 0) AS TotalPurchase
+    FROM 
+    Accounting
+    WHERE 
+    AccountingRef = 511 AND 
+    AccountingDate BETWEEN "${startDateVal}" AND "${endDateVal}"
+    `;
+    const { TotalPurchase } = await executeGet2(db, query19);
+    // Total PurchaseReturn
+    const query20 = `
+    SELECT 
+    COALESCE(SUM(AccountingBalance), 0) AS TotalPurchaseReturn
+    FROM 
+    Accounting
+    WHERE 
+    AccountingRef = 512 AND 
+    AccountingDate BETWEEN "${startDateVal}" AND "${endDateVal}"
+    `;
+    const { TotalPurchaseReturn } = await executeGet2(db, query20);
+    // Total Purchase Discount
+    const query21 = `
+    SELECT 
+    COALESCE(SUM(AccountingBalance), 0) AS TotalPurchaseDiscount
+    FROM 
+    Accounting
+    WHERE 
+    AccountingRef = 513 AND 
+    AccountingDate BETWEEN "${startDateVal}" AND "${endDateVal}"
+    `;
+    const { TotalPurchaseDiscount } = await executeGet2(db, query21);
+    // Total Purchase Net
+    const TotalPurchaseNet =
+      TotalPurchase - TotalPurchaseReturn - TotalPurchaseDiscount;
+    // COGS
+    const queryCOGS = `
+    SELECT
+    (Product.ProductPriceBuy * COALESCE(SUM(Stock.StockQty), 0)) AS StockBalance
+    FROM 
+    Stock
+    LEFT JOIN Product ON Stock.StockProductId = Product.ProductId 
+    WHERE Stock.StockDate BETWEEN "${startDateVal}" AND "${endDateVal}"   
+    GROUP BY Product.ProductId
+    `;
+    const GroupProduct = await executeGet(db, queryCOGS);
+    let StockRemain = 0;
+    for (const el of GroupProduct) {
+      StockRemain += el.StockBalance;
+    }
+    const COGS = TotalPurchaseNet - StockRemain;
+    // GrossProfitOR Loss
+    const GrossProfitOrLoss = TotalSalesNet - COGS;
+    // expense
+    const query22 = `
+    SELECT 
+    AccountingName,
+    COALESCE(AccountingBalance, 0) AS Total
+    FROM 
+    Accounting
+    WHERE 
+    AccountingRef = 514 AND 
+    AccountingDate BETWEEN "${startDateVal}" AND "${endDateVal}"
+    ORDER BY AccountingName ASC
+    `;
+    const Expense = await executeGet(db, query22);
+    const query23 = `
+    SELECT
+    COALESCE(SUM(AccountingBalance), 0) AS TotalExpense
+    FROM 
+    Accounting
+    WHERE
+    AccountingRef = 514 AND 
+    AccountingDate BETWEEN "${startDateVal}" AND "${endDateVal}"
+    `;
+    const { TotalExpense } = await executeGet2(db, query23);
+    // revenue others
+    const query24 = `
+    SELECT 
+    AccountingName,
+    COALESCE(AccountingBalance, 0) AS Total
+    FROM 
+    Accounting 
+    WHERE 
+    AccountingRef = 611 AND 
+    AccountingDate BETWEEN "${startDateVal}" AND "${endDateVal}"
+    ORDER BY AccountingName ASC
+    `;
+    const RevenueOther = await executeGet(db, query24);
+    // Total Revenue
+    const query25 = `
+    SELECT
+    COALESCE(SUM(AccountingBalance), 0) AS TotalRevenue
+    FROM 
+    Accounting
+    WHERE
+    AccountingRef = 611 AND 
+    AccountingDate BETWEEN "${startDateVal}" AND "${endDateVal}"
+    `;
+    const { TotalRevenue } = await executeGet2(db, query25);
+    // Net Profit
+    const NetProfitOrLoss = GrossProfitOrLoss - TotalExpense + TotalRevenue;
+    // profit attributable to
+    const ProfitAttribute = [];
+    const query27 = `
+    SELECT 
+    UserFullname
+    FROM
+    User
+    WHERE 
+    UserPosition = "investor"
+    ORDER BY UserFullname ASC
+    `;
+    const investorList = await executeGet(db, query27);
+    for (const el of investorList) {
+      const query = `
+      SELECT 
+      COALESCE(SUM(AccountingBalance), 0) AS TotalEquityPerson
+      FROM Accounting
+      WHERE
+      AccountingRef = 311 AND
+      AccountingName LIKE "%${el.UserFullname}%" AND 
+      AccountingDate BETWEEN "${startDateVal}" AND "${endDateVal}"`;
+      const { TotalEquityPerson } = await executeGet2(db, query);
+      const UserFullname = el.UserFullname;
+      const TotalPercent = Math.round((TotalEquityPerson / TotalEquity) * 100);
+      const ProfitAttributed = NetProfitOrLoss * (TotalPercent / 100);
+      const Investor = {
+        UserFullname: `${UserFullname} - ${TotalPercent} %`,
+        ProfitAttributed,
+      };
+      ProfitAttribute.push(Investor);
+    }
+    // totalEquity
+    const query28 = `
+    SELECT 
+    COALESCE(SUM(AccountingBalance), 0) AS TotalEquity1
+    FROM Accounting
+    WHERE
+    AccountingRef = 311 AND 
+    AccountingBalance > 0 AND 
+    AccountingDate BETWEEN "${startDateVal}" AND "${endDateVal}"`;
+    const { TotalEquity1 } = await executeGet2(db, query28);
+    // equitywithdrawl
+    const query29 = `
+    SELECT 
+    COALESCE(SUM(AccountingBalance), 0) AS TotalEquityWithDrawl
+    FROM Accounting 
+    WHERE
+    AccountingRef = 311 AND 
+    AccountingBalance < 0  AND 
+    AccountingDate BETWEEN "${startDateVal}" AND "${endDateVal}"`;
+    const { TotalEquityWithDrawl } = await executeGet2(db, query29);
+    // changes equity, assets, liability
+    const TotalEquityChanges = TotalEquity + NetProfitOrLoss;
+    const TotalLiabilityEquityChanges = TotalLiability + TotalEquityChanges;
+    const TotalCurrentAssetChanges =
+      TotalCash + TotalReceivable + TotalCurrentAsset + StockRemain;
+    const TotalAssetsChanges = TotalCurrentAssetChanges + TotalFixedAsset;
+    return {
+      TotalRow,
+      FinancialPosition: {
+        Assets: {
+          CurrentAssets: {
+            TotalCash,
+            TotalReceivable,
+            CurrentAsset,
+            MerchandiseInventory: StockRemain,
+            TotalCurrentAssetChanges,
+          },
+          FixedAssets: {
+            FixedAsset,
+            FixedAccumulated,
+            TotalFixedAsset,
+          },
+          TotalAssetsChanges,
+        },
+        LiabilityEquity: {
+          Liabilities: {
+            Liability,
+            TotalLiability,
+          },
+          EquityChanges: {
+            Equity,
+            TotalEquity1,
+            TotalEquityChanges,
+          },
+          TotalLiabilityEquityChanges,
+        },
+      },
+      ProfitOrLoss: {
+        Sales: {
+          TotalSales,
+          TotalSalesReturn,
+          TotalSalesDiscount,
+          TotalSalesNet,
+        },
+        Purchase: {
+          TotalPurchase,
+          TotalPurchaseReturn,
+          TotalPurchaseDiscount,
+          TotalPurchaseNet,
+        },
+        StockRemain,
+        COGS: COGS,
+        GrossProfitOrLoss,
+        Expenses: {
+          Expense,
+          TotalExpense: TotalExpense,
+        },
+        RevenueOthers: {
+          RevenueOther,
+          TotalRevenue,
+        },
+        NetProfitOrLoss,
+        ProfitAttribute,
+      },
+      ChangesInEquity: {
+        Equity,
+        TotalEquity1,
+        EquityWithDrawl,
+        TotalEquityWithDrawl,
+        NetProfitOrLoss,
+        TotalEquityChanges,
+      },
+    };
+  });
+  ipcMain.handle("delete", async () => {
+    const query = `
+    SELECT 
+    AccountingId,
+    AccountingDate,
+    AccountingRef,
+    AccountingName
+    FROM 
+    Accounting
+    ORDER BY AccountingDate DESC 
+    LIMIT 2 
+    `;
+    const accounting = await executeGet3(db, query);
+    console.log(accounting);
+    for (const el of accounting) {
+      if (
+        el.AccountingRef === 411 ||
+        el.AccountingRef === 412 ||
+        el.AccountingRef === 413 ||
+        el.AccountingRef === 511 ||
+        el.AccountingRef === 512 ||
+        el.AccountingRef === 513
+      ) {
+        const query = `
+        DELETE 
+        FROM Stock
+        WHERE StockId IN (
+          SELECT StockId FROM Stock
+          ORDER BY StockDate DESC
+          LIMIT 1
+        ) `;
+        await executeCreate1(db, query);
+      }
+      const query = `
+      DELETE
+      FROM Accounting 
+      WHERE AccountingId = ?`;
+      await executeCreate1(db, query, [el.AccountingId]);
+    }
+    const msg = `Accounting Last Transaction Has Been Deleted `;
+    return msg;
   });
 };
 export default Accounting;

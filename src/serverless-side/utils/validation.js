@@ -1,28 +1,90 @@
-import { executeGet1, executeGet2 } from "../database/runQuery.js";
+import {
+  executeGet1,
+  executeGet2,
+  executeGet3,
+  executeGet4,
+} from "../database/runQuery.js";
 import formatPrice from "./formatPrice.js";
 import { capitalizeWord } from "./formatTxt.js";
-import { email, number } from "./regex.js";
+import { email, number, password, username } from "./regex.js";
 
-const validateEmail = (val) => {
+const validateEmail = async (db, val) => {
+  if (val === "") {
+    const msg = `Email is required `;
+    throw new Error(msg);
+  }
   const isEmail = email.test(val);
   if (!isEmail) {
     const msg = `Please input correct email `;
     throw new Error(msg);
   }
+  const query = `
+  SELECT 
+  COUNT(*) AS TotalUser 
+  From User 
+  WHERE UserEmail = ?`;
+  const { TotalUser } = await executeGet4(db, query, [val]);
+  if (TotalUser >= 1) {
+    const msg = `${val} is already registered `;
+    throw new Error(msg);
+  }
 };
-const validateUserFullname = (UserFullnameVal) => {
+const validateEmail1 = async (db, UserEmailVal, UserIdVal) => {
+  if (UserEmailVal === "") {
+    const msg = `Email is required `;
+    throw new Error(msg);
+  }
+  const isEmail = email.test(val);
+  if (!isEmail) {
+    const msg = `Please input correct email `;
+    throw new Error(msg);
+  }
+  const query = `
+  SELECT 
+  COUNT(*) AS TotalUser 
+  From User 
+  WHERE 
+  UserEmail = ? AND UserId != ? `;
+  const { TotalUser } = await executeGet4(db, query, [UserEmailVal, UserIdVal]);
+  if (TotalUser >= 1) {
+    const msg = `${val} is already registered `;
+    throw new Error(msg);
+  }
+};
+const validateUserFullname = async (db, UserFullnameVal) => {
   if (UserFullnameVal === "") {
-    const msg = `Fullname required `;
+    const msg = `Fullname is required `;
+    throw new Error(msg);
+  }
+  const query = `
+  SELECT 
+  COUNT(*) AS TotalUser
+  FROM User 
+  WHERE UserFullname = ?
+  `;
+  const { TotalUser } = await executeGet4(db, query, [UserFullnameVal.trim()]);
+  if (TotalUser >= 1) {
+    const msg = `${val} is already registered `;
     throw new Error(msg);
   }
 };
-const validateSamePassword = (UserPasswordVal, UserPassword1Val) => {
-  if (UserPasswordVal === "" && UserPassword1Val === "") {
-    const msg = `Password must be filled`;
+const validateUserFullname1 = async (db, UserFullnameVal, UserIdVal) => {
+  if (UserFullnameVal === "") {
+    const msg = `Fullname is required `;
     throw new Error(msg);
   }
-  if (UserPasswordVal !== UserPassword1Val) {
-    const msg = `Password must be same with Confirm Password`;
+  const query = `
+  SELECT 
+  COUNT(*) AS TotalUser
+  FROM User 
+  WHERE UserFullname = ? AND UserId != ? 
+  `;
+  const { TotalUser } = await executeGet4(db, query, [
+    UserFullnameVal.trim(),
+    UserIdVal,
+  ]);
+  if (TotalUser >= 1) {
+    const msg = `${val} is already registered `;
     throw new Error(msg);
   }
 };
@@ -444,7 +506,87 @@ const validateExisted = (data, table) => {
     throw new Error(msg);
   }
 };
+const validateUserName = async (db, UserNameVal) => {
+  if (!UserNameVal) {
+    const msg = `Username is Required!`;
+    throw new Error(msg);
+  }
+  const isValid = username.test(val);
+  if (!isValid) {
+    const msg = `
+    Only contain Alphabet, Number,
+    Minimum length Character 3 - 15 
+  `;
+    throw new Error(msg);
+  }
+  const query = `
+  SELECT 
+  COUNT(*) AS TotalUser
+  FROM User 
+  WHERE UserName = ?
+  `;
+  const { TotalUser } = await executeGet4(db, query, [UserNameVal]);
+  if (TotalUser >= 1) {
+    const msg = `${UserNameVal} is already registered! `;
+    throw new Error(msg);
+  }
+};
+const validateUserName1 = async (db, UserNameVal, UserIdVal) => {
+  if (!UserNameVal) {
+    const msg = `Username is Required!`;
+    throw new Error(msg);
+  }
+  const isValid = username.test(val);
+  if (!isValid) {
+    const msg = `
+    Only contain Alphabet, Number,
+    Minimum length Character 3 - 15 `;
+    throw new Error(msg);
+  }
+  const query = `
+  SELECT 
+  COUNT(*) AS TotalUser
+  FROM User 
+  WHERE UserName = ? AND UserId != ? `;
+  const { TotalUser } = await executeGet4(db, query, [UserNameVal, UserIdVal]);
+  if (TotalUser >= 1) {
+    const msg = `${UserNameVal} is already registered! `;
+    throw new Error(msg);
+  }
+};
+const validatePassword = (UserPasswordVal, UserPassword1Val) => {
+  if (UserPasswordVal === "" && UserPassword1Val === "") {
+    const msg = `Password and Confirmation Password are required `;
+    throw new Error(msg);
+  }
+  if (UserPasswordVal !== UserPassword1Val) {
+    const msg = `Password must be same with Confirm Password`;
+    throw new Error(msg);
+  }
+  const isValid = password.test(val);
+  if (!isValid) {
+    const msg = `
+    Minimum length 8 Character, 
+    At least 1 Capital letter (A-Z),
+    At least 1 Number (0-9),
+    At least 1 Character sepecial (@,#,$)`;
+    throw new Error(msg);
+  }
+};
+const validateAccounting = async (db) => {
+  const queryAccount = `
+  SELECT 
+  COUNT(*) AS TotalAccounting 
+  FROM 
+  Accounting `;
+  const { TotalAccounting } = await executeGet4(db, queryAccount);
+  if (TotalAccounting >= 1) {
+    const msg = `Please Accounting Must be Empty First...`;
+    throw new Error(msg);
+  }
+};
 export {
+  validateAccounting,
   validateAccountingName,
   validateAccountingBalance,
   validateAssetName,
@@ -455,6 +597,7 @@ export {
   validateDate,
   validateDateAndTime,
   validateEmail,
+  validateEmail1,
   validateExisted,
   validateExpensePrice,
   validateExpenseName,
@@ -468,11 +611,14 @@ export {
   validatePrice,
   validateProductAdd,
   validateProductName,
+  validatePassword,
   validateQty,
   validateQty1,
   validateReceivableName,
   validateReceivableBalance,
-  validateSamePassword,
   validateSupplierName,
   validateUserFullname,
+  validateUserFullname1,
+  validateUserName,
+  validateUserName1,
 };

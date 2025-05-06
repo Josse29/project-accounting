@@ -2,7 +2,7 @@
   "type": "module",
   "name": "josstack",
   "version": "1.0.0",
-  "description": "this application most of compeleted accounting and modern ui, This App really helps a lot entreperenuer to make financial statement accounting, management stock, management cash, management receivable, sales, even though payable.",
+  "description": "elevate your company with us",
   "main": "main.js",
   "scripts": {
     "start": "electron .",

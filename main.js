@@ -12,9 +12,8 @@ import {
 } from "./src/serverless-side/index.js";
 import Company from "./src/serverless-side/models/company/controller.js";
 import bcryptjs from "bcryptjs";
-
 import path from "path";
-
+const isDev = !app.isPackaged;
 let mainWindow;
 function createWindow() {
   const appPath = (...paths) => {
@@ -32,20 +31,16 @@ function createWindow() {
     icon: path.join(appPath("jossstackico.ico")),
   });
   // development
-  // mainWindow.loadURL("http://localhost:5173/");
-  // production
-  mainWindow.loadFile(appPath("src", "client-side", "index.html"));
+  if (isDev) {
+    mainWindow.loadURL("http://localhost:5173/");
+  } else {
+    mainWindow.loadFile(appPath("src", "client-side", "index.html"));
+  }
   // db
   const userDataPath = app.getPath("userData");
+  // console.log(userDataPath); C:\Users\ASUS\AppData\Roaming\josstack
   const dbDestination = path.join(userDataPath, "myapps.db");
-  const dbTemplate = path.join(
-    appPath("src", "serverless-side", "database", "myapps.db")
-  );
-  if (!fs.existsSync(dbDestination)) {
-    fs.copyFileSync(dbTemplate, dbDestination);
-  }
   const db = new sqlite3.Database(dbDestination);
-  // Product(ipcMain, db);
   User(ipcMain, db, bcryptjs, jwt);
   Product(ipcMain, db);
   Stock(ipcMain, db);
@@ -72,15 +67,23 @@ function createWindow() {
     }
   });
   // inactive devtools
-  mainWindow.webContents.on("before-input-event", (event, input) => {
-    if (
-      (input.control && input.shift && input.key === "I") ||
-      input.key === "F12"
-    ) {
-      event.preventDefault();
-    }
-  });
+  if (isDev) {
+    mainWindow.webContents.openDevTools();
+  } else {
+    mainWindow.webContents.on("before-input-event", (event, input) => {
+      if (
+        (input.control && input.shift && input.key.toUpperCase() === "I") ||
+        input.key === "F12"
+      ) {
+        event.preventDefault();
+      }
+    });
+    mainWindow.webContents.on("context-menu", (e) => {
+      e.preventDefault();
+    });
+  }
 }
+
 app.whenReady().then(() => {
   createWindow();
 

@@ -3,73 +3,133 @@ import {
   queryGet,
   queryGetCreditor,
   queryGetCustomer,
-  queryGetDebt,
   queryGetInvestor,
   queryGetSale,
   queryGetSupplier,
   queryGetTotal,
   queryGetUser,
   queryRegister,
+  queryRegister1,
   queryUpdate,
+  queryUpdate1,
 } from "./querysql.js";
-
 import {
+  validateAccounting,
   validateEmail,
-  validateLoadImg,
+  validateEmail1,
   validateLoadImg1,
+  validatePassword,
   validatePosition,
-  validateSamePassword,
   validateUserFullname,
+  validateUserFullname1,
+  validateUserName,
+  validateUserName1,
 } from "../../utils/validation.js";
 import { capitalizeWord } from "../../utils/formatTxt.js";
 import {
   executeCreate,
-  executeDelete,
+  executeCreate1,
   executeGet,
   executeGet1,
   executeGet2,
-  executeUpdate,
+  executeGet3,
+  executeGet4,
 } from "../../database/runQuery.js";
 import UserSchema from "./schema.js";
+import formatPrice from "../../utils/formatPrice.js";
 
-const User = (ipcMain, db) => {
+const User = (ipcMain, db, bcryptjs, jwt) => {
   // init db user
   const initUser = async () => {
     await executeCreate(db, UserSchema);
   };
   initUser();
   // 1.CREATE
-  ipcMain.handle("registerUser", async (_, data) => {
+  ipcMain.handle("register", async (_, data) => {
     // payload
     const {
-      UserEmailVal,
-      UserFullnameVal,
+      UserPositionVal,
+      UserNameVal,
       UserPasswordVal,
       UserPassword1Val,
+      UserEmailVal,
+      UserFullnameVal,
       UserImgVal,
-      UserPositionVal,
       UserInfoVal,
     } = data;
     // Validations
-    validateEmail(UserEmailVal);
-    validateUserFullname(UserFullnameVal);
-    if (UserPositionVal === "admin") {
-      validateSamePassword(UserPasswordVal, UserPassword1Val);
-    }
-    const imgBase64 = await validateLoadImg1(UserImgVal);
     validatePosition(UserPositionVal);
-    // Query & execute
-    const query = queryRegister(
-      UserEmailVal,
-      capitalizeWord(UserFullnameVal),
-      UserPasswordVal,
-      imgBase64,
-      UserPositionVal,
-      UserInfoVal
-    );
-    await executeCreate(db, query);
-    const msg = `${UserPositionVal} - ${UserFullnameVal} has been registered !`;
+    await validateUserFullname(db, capitalizeWord(UserFullnameVal));
+    await validateEmail(db, UserEmailVal);
+    const imgBase64 = await validateLoadImg1(UserImgVal);
+    if (UserPositionVal === "admin") {
+      await validateUserName(db, UserFullnameVal);
+      validatePassword(UserPasswordVal, UserPassword1Val);
+      const salt = await bcryptjs.genSalt(10);
+      const hashedPassword = await bcryptjs.hash(UserPasswordVal, salt);
+      await executeCreate1(db, queryRegister, [
+        UserNameVal,
+        UserEmailVal,
+        capitalizeWord(UserFullnameVal),
+        hashedPassword,
+        imgBase64,
+        UserPositionVal,
+        UserInfoVal,
+      ]);
+    } else {
+      await executeCreate1(db, queryRegister1, [
+        UserEmailVal,
+        capitalizeWord(UserFullnameVal),
+        imgBase64,
+        UserPositionVal,
+        UserInfoVal,
+      ]);
+    }
+    const msg = `${UserFullnameVal} - ${UserPositionVal} has been registered !`;
     return msg;
+  });
+  ipcMain.handle("login", async (_, data) => {
+    const { UserNameVal, UserPasswordVal } = data;
+    if (!UserNameVal || !UserPasswordVal) {
+      const msg = `Uppsss ,Username and Password is Required !`;
+      throw new Error(msg);
+    }
+    const query = `
+    SELECT 
+    UserId,
+    UserFullname,
+    UserName, 
+    UserPassword
+    FROM User 
+    WHERE 
+    UserName = ?
+    `;
+    const user = await executeGet4(db, query, [UserNameVal]);
+    if (!user) {
+      const msg = `
+      Uppss, ${UserNameVal} isn't registered yet
+      `;
+      throw new Error(msg);
+    }
+    const validPassword = await bcryptjs.compare(
+      UserPasswordVal,
+      user.UserPassword
+    );
+    if (!validPassword) {
+      const msg = `uppppsss, Password is wrong`;
+      throw new Error(msg);
+    }
+    const token = jwt.sign(
+      {
+        id: user.UserId,
+        fullname: user.UserFullname,
+      },
+      "JWT_SECRET"
+    );
+    return {
+      msg: "Success Login !",
+      token,
+    };
   });
   // 2.READ
   ipcMain.handle("getUser", async (_, data) => {
@@ -78,6 +138,47 @@ const User = (ipcMain, db) => {
     const query = queryGet(searchVal, limitVal, startOffsetVal);
     const User = await executeGet(db, query);
     return User;
+  });
+  ipcMain.handle("getAdmin", async () => {
+    const query = `
+    SELECT 
+    UserId,
+    UserFullname
+    FROM User 
+    WHERE UserPosition = ?
+    `;
+    const user = await executeGet3(db, query, ["admin"]);
+    return user;
+  });
+  ipcMain.handle("resetPassword", async (_, data) => {
+    const { UserIdVal, UserNameVal, UserPasswordVal, UserPassword1Val } = data;
+    validatePassword(UserPasswordVal, UserPassword1Val);
+    const query = `
+    SELECT 
+    COUNT(*) AS TotalAdmin
+    FROM User
+    WHERE UserName = ? AND 
+          UserId = ? AND 
+          UserPosition = 'admin' 
+    `;
+    const { TotalAdmin } = await executeGet4(db, query, [
+      UserNameVal,
+      parseInt(UserIdVal),
+    ]);
+    if (TotalAdmin < 1) {
+      const msg = `${UserNameVal} - isn't admin..`;
+      throw new Error(msg);
+    }
+    const query1 = `
+    UPDATE 
+    User
+    SET UserPassword = ?,
+    WHERE UserId = ? `;
+    const salt = await bcryptjs.genSalt(10);
+    const hashedPassword = await bcryptjs.hash(UserPasswordVal, salt);
+    await executeCreate1(db, query1, [hashedPassword, parseInt(UserIdVal)]);
+    const msg = `Password - ${UserNameVal} has been Updated `;
+    return msg;
   });
   ipcMain.handle("paginationUser", async (_, data) => {
     const { searchVal, limitVal } = data;
@@ -108,21 +209,115 @@ const User = (ipcMain, db) => {
       AND AccountingRef = 112
       `;
       const { TotalReceivable } = await executeGet2(db, query1);
+      if (TotalReceivable >= 1) {
+        const receivable = {
+          UserId: rows.UserId,
+          UserFullname: rows.UserFullname,
+          UserEmail: rows.UserEmail,
+          TotalReceivable,
+        };
+        // push to array
+        receivableList.push(receivable);
+      }
+    }
+    return receivableList;
+  });
+  ipcMain.handle("getReceivable1", async () => {
+    const query = `
+    SELECT 
+    UserId,
+    UserFullname,
+    UserEmail,
+    UserImg
+    FROM User
+    WHERE UserPosition = 'customer'
+    `;
+    const customer = await executeGet(db, query);
+    let receivableTotals = 0;
+    const receivableList = [];
+    if (customer.length < 1) {
+      return {
+        receivableTotals,
+        receivableList,
+      };
+    }
+    for (const rows of customer) {
+      const query1 = `
+      SELECT 
+      SUM(AccountingBalance) AS TotalReceivable
+      FROM Accounting
+      WHERE AccountingName LIKE '%Receivable - ${rows.UserFullname}%'
+      AND AccountingRef = 112
+      `;
+      const { TotalReceivable } = await executeGet2(db, query1);
       const receivable = {
         UserId: rows.UserId,
         UserFullname: rows.UserFullname,
-        UserEmail: rows.UserEmail,
+        UserImg: rows.UserImg,
         TotalReceivable,
       };
-      // push to array
       receivableList.push(receivable);
     }
-    return receivableList;
+    receivableList.sort((a, b) => b.TotalReceivable - a.TotalReceivable);
+    return {
+      receivableTotals,
+      receivableList,
+    };
   });
   ipcMain.handle("getSales", async () => {
     const query = queryGetSale();
     const userSale = await executeGet(db, query);
     return userSale;
+  });
+  ipcMain.handle("getSales1", async () => {
+    const query = `
+    SELECT 
+    UserId,
+    UserFullname,
+    UserImg
+    FROM User
+    WHERE UserPosition = 'sale'
+    `;
+    const userSale = await executeGet(db, query);
+    let SaleTotal = 0;
+    const SaleGroup = [];
+    if (userSale.length < 1) {
+      return {
+        SaleTotal,
+        SaleGroup,
+      };
+    }
+    for (const el of userSale) {
+      const query = `
+      SELECT 
+      SUBSTR(Stock.StockInfo, INSTR(Stock.StockInfo, 'Sale : ') + 7, INSTR(Stock.StockInfo, ' |') - (INSTR(Stock.StockInfo, 'Sale : ') + 7)) AS SaleName,
+      Product.ProductName,
+      Product.ProductPriceSell,
+      COALESCE((Stock.StockQty) * -1, 0) AS SaleQty,
+      (COALESCE((Stock.StockQty) * -1, 0) * Product.ProductPriceSell) AS SaleIdBalance
+      FROM 
+      Stock
+      LEFT JOIN Product ON Stock.StockProductId = Product.ProductId
+      WHERE 
+      Stock.StockActivity LIKE "%Sales%" AND 
+      Stock.StockInfo LIKE "%Sale : ${el.UserFullname}%" `;
+      let balance = 0;
+      const SalesId = await executeGet(db, query);
+      for (const el of SalesId) {
+        const data = {
+          SaleId: el.UserId,
+          SaleName: el.UserFullname,
+          SaleImg: el.UserImg,
+          SaleBalance: (balance += el.SaleIdBalance),
+        };
+        SaleGroup.push(data);
+      }
+    }
+    SaleGroup.sort((a, b) => b.SaleBalance - a.SaleBalance);
+    return {
+      SaleTotal,
+      SaleGroup,
+    };
   });
   ipcMain.handle("getInvestor", async () => {
     const query = queryGetInvestor();
@@ -135,7 +330,7 @@ const User = (ipcMain, db) => {
       FROM 
       Accounting
       WHERE 
-      AccountingName LIKE '%equity - ${rows.UserFullname}%'
+      AccountingName LIKE '%equity - ${rows.UserFullname}% AND AccountingRef = 311 '
       `;
       const { TotalEquity } = await executeGet2(db, query1);
       const investorData = {
@@ -149,39 +344,120 @@ const User = (ipcMain, db) => {
     }
     return investorList;
   });
+  ipcMain.handle("getInvestor1", async () => {
+    const query = `
+    SELECT
+    UserId,
+    UserFullname,
+    UserImg
+    FROM User 
+    WHERE UserPosition = 'investor'
+    `;
+    const investor = await executeGet(db, query);
+    let investorTotal = 0;
+    const investorList = [];
+    if (investor.length < 1) {
+      return { investorTotal, investorList };
+    }
+    const query1 = `
+    SELECT SUM(AccountingBalance) AS Investment 
+    FROM Accounting 
+    WHERE AccountingRef = 311  
+    `;
+    const { Investment } = await executeGet2(query1);
+    investorTotal += Investment;
+    for (const rows of investor) {
+      const query1 = `
+      SELECT 
+      COALESCE(SUM(AccountingBalance), 0) AS TotalEquity
+      FROM 
+      Accounting
+      WHERE 
+      AccountingName LIKE '%equity - ${rows.UserFullname}% AND AccountingRef = 311 '
+      `;
+      const { TotalEquity } = await executeGet2(db, query1);
+      const percent = Math.round(TotalEquity / investorTotal);
+      const investorData = {
+        InvestorId: rows.UserId,
+        Investorname: rows.UserFullname,
+        InvestorEquity: `${formatPrice(TotalEquity)} - ${percent * 100} %`,
+        TotalEquity,
+        InvestorImg: rows.UserImg,
+      };
+      investorList.push(investorData);
+    }
+    investorList.sort((a, b) => b.TotalEquity - a.TotalEquity);
+    return { investorList, investorTotal };
+  });
   ipcMain.handle("getSupplier", async () => {
     const query = queryGetSupplier();
     const supplier = await executeGet(db, query);
     return supplier;
   });
-  const getUserDebt = async () => {
-    const query = queryGetDebt();
-    const debt = await window.ElectronAPI.sqlite3.all(query);
-    const listDebt = [];
-    for (const rows of debt) {
-      const query1 = `
-    SELECT
-    COALESCE(SUM(AccountingBalance), 0) AS TotalLiability
-    FROM 
-    Accounting
-    WHERE 
-    AccountingRef = 211 AND 
-    AccountingName LIKE '%liability - ${rows.UserFullname}%' 
+  ipcMain.handle("getLiability", async () => {
+    const query = `
+    SELECT 
+    UserId,
+    UserFullname,
+    UserImg
+    FROM User
     `;
-      const { TotalLiability } = await window.ElectronAPI.sqlite3.each1(query1);
-      if (TotalLiability > 0) {
-        const dataDebt = {
-          UserId: rows.UserId,
-          UserFullname: rows.UserFullname,
-          UserEmail: rows.UserEmail,
-          TotalLiability,
-        };
-        // filter array and push
-        listDebt.push(dataDebt);
-      }
+    const liability = await executeGet3(db, query);
+    let liabilityTotal = 0;
+    const liabilityList = [];
+    if (liability.length < 1) {
+      return {
+        liabilityTotal,
+        liabilityList,
+      };
     }
-    return listDebt;
-  };
+    for (const rows of liability) {
+      const query = `
+      SELECT 
+      COALESCE(SUM(AccountingBalance), 0) AS TotalLiability
+      FROM Accounting 
+      WHERE AccountingName LIKE "%liability - ${rows.UserFullname}%" AND 
+            AccountingRef = 211 
+      `;
+      const { TotalLiability } = await executeGet2(db, query);
+      const data = {
+        UserFullname: rows.UserFullname,
+        UserImg: rows.UserImg,
+        TotalLiability,
+      };
+      liabilityList.push(data);
+    }
+    liabilityList.sort((a, b) => b.TotalLiability - a.TotalLiability);
+    return { liabilityTotal, liabilityList };
+  });
+  ipcMain.handle("getLiability1", async () => {
+    const query = `
+    SELECT 
+    UserId, 
+    UserFullname,
+    UserEmail
+    WHERE 
+    UserPosition = "supplier" OR "creditor"
+    `;
+    const liability = await executeGet(db, query);
+    const liabilityList = [];
+    for (const el of liability) {
+      const query = `
+      SELECT 
+      COALESCE(SUM(AccountingBalance), 0) AS LiabilitySum
+      FROM Accounting 
+      WHERE AccountingName = '%liability - ${el.UserFullname}%' AND AccountingRef = 211
+      `;
+      const { LiabilitySum } = await executeGet2(db, query);
+      const data = {
+        UserFullname: el.UserFullname,
+        UserEmail: el.UserEmail,
+        LiabilitySum,
+      };
+      liabilityList.push(data);
+    }
+    return liabilityList;
+  });
   ipcMain.handle("getCreditor", async () => {
     const query = queryGetCreditor();
     const creditor = await executeGet(db, query);
@@ -211,34 +487,95 @@ const User = (ipcMain, db) => {
   // 3. UPDATE
   ipcMain.handle("updateUser", async (_, req) => {
     const {
+      UserNameVal,
       UserEmailVal,
       UserFullnameVal,
       UserImgVal,
       UserPositionVal,
+      UserInfoVal,
       UserIdVal,
     } = req;
+    await validateAccounting(db);
     // 1.validation email
-    validateEmail(UserEmailVal);
-    validateUserFullname(UserFullnameVal);
-    const imgBase64 = await validateLoadImg1(UserImgVal);
     validatePosition(UserPositionVal);
-    // execute
-    const query = queryUpdate(
-      UserEmailVal,
-      capitalizeWord(UserFullnameVal),
-      UserPositionVal,
-      UserIdVal,
-      imgBase64
-    );
-    await executeUpdate(db, query);
+    await validateUserFullname1(db, UserFullnameVal, parseInt(UserIdVal));
+    await validateEmail1(db, UserEmailVal, parseInt(UserIdVal));
+    const imgBase64 = await validateLoadImg1(UserImgVal);
+    if (UserPositionVal === "admin") {
+      await validateUserName1(db, UserNameVal, UserIdVal);
+      await executeCreate1(db, queryUpdate, [
+        UserNameVal,
+        UserEmailVal,
+        capitalizeWord(UserFullnameVal),
+        imgBase64,
+        UserPositionVal,
+        UserInfoVal,
+        parseInt(UserIdVal),
+      ]);
+    } else {
+      const query = `
+      SELECT 
+      COUNT(*) AS TotalAdmin
+      FROM USER
+      WHERE 
+      UserPosition = ? AND UserId = ?
+      `;
+      const { TotalAdmin } = await executeGet4(db, query, [
+        "admin",
+        parseInt(UserIdVal),
+      ]);
+      if (TotalAdmin === 1) {
+        const query1 = `
+        SELECT 
+        COUNT(*) AS TotalsAdmin 
+        FROM User 
+        WHERE UserPosition = ? `;
+        const { TotalsAdmin } = await executeGet4(db, query1, ["admin"]);
+        if (TotalsAdmin === 1) {
+          const msg = "Uppss, Total Admin is only 1 ,";
+          throw new Error(msg);
+        }
+      }
+      await executeCreate1(db, queryUpdate1, [
+        UserEmailVal,
+        capitalizeWord(UserFullnameVal),
+        imgBase64,
+        UserPositionVal,
+        UserInfoVal,
+        parseInt(UserIdVal),
+      ]);
+    }
     const msg = `${UserFullnameVal} has been updated`;
     return msg;
   });
   // 4. DELETE
   ipcMain.handle("deleteUser", async (_, req) => {
     const { UserFullname, UserId } = req;
-    const query = queryDeleteUser(UserId);
-    await executeDelete(db, query);
+    await validateAccounting(db);
+    const query = `
+    SELECT 
+    COUNT(*) AS TotalAdmin
+    FROM USER
+    WHERE 
+    UserPosition = ? AND UserId = ?
+    `;
+    const { TotalAdmin } = await executeGet4(db, query, [
+      "admin",
+      parseInt(UserId),
+    ]);
+    if (TotalAdmin === 1) {
+      const query1 = `
+      SELECT 
+      COUNT(*) AS TotalsAdmin 
+      FROM User 
+      WHERE UserPosition = ? `;
+      const { TotalsAdmin } = await executeGet4(db, query1, ["admin"]);
+      if (TotalsAdmin === 1) {
+        const msg = "Uppss, Total Admin is only 1 ,";
+        throw new Error(msg);
+      }
+    }
+    await executeCreate1(db, queryDeleteUser, [parseInt(UserId)]);
     const msg = `${UserFullname} has been deleted `;
     return msg;
   });

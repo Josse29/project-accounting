@@ -1,18 +1,17 @@
-const queryRegister = (
-  UserEmailVal,
-  UserFullnameVal,
-  UserPasswordVal,
-  imgBase64,
-  UserPositionVal,
-  UserInfoVal
-) => {
-  let query = `INSERT 
-               INTO User
-               (UserEmail, UserFullname, UserPassword, UserImg, UserPosition, UserInfo) 
-               VALUES 
-               ('${UserEmailVal}', '${UserFullnameVal}', '${UserPasswordVal}', '${imgBase64}', '${UserPositionVal}', '${UserInfoVal}') `;
-  return query;
-};
+const queryRegister = `
+INSERT 
+INTO User
+(UserName, UserEmail, UserFullname, UserPassword, UserImg, UserPosition, UserInfo) 
+VALUES 
+(?, ?, ?, ?, ?, ?, ?)  
+`;
+const queryRegister1 = `
+INSERT 
+INTO User
+(UserEmail, UserFullname, UserImg, UserPosition, UserInfo) 
+VALUES 
+(?, ?, ?, ?, ?)  
+`;
 const queryGetTotal = (searchVal) => {
   let query = `SELECT 
                COUNT(*) AS TOTAL_ROW 
@@ -59,20 +58,6 @@ const queryGetCreditor = () => {
   FROM User `;
   //  ONlY Creditor
   query += `WHERE UserPosition = 'creditor' `;
-  // sort by fullname ascending
-  query += `ORDER BY UserFullname ASC`;
-  return query;
-};
-const queryGetDebt = () => {
-  let query = `
-  SELECT 
-  UserId,
-  UserFullname,
-  UserEmail
-  FROM User `;
-  //  ONlY Creditor
-  query += `WHERE UserPosition = 'creditor' OR `;
-  query += `UserPosition = 'supplier' `;
   // sort by fullname ascending
   query += `ORDER BY UserFullname ASC`;
   return query;
@@ -139,37 +124,34 @@ const queryGetSupplier = () => {
   query += `ORDER BY UserFullname ASC`;
   return query;
 };
-const queryUpdate = (
-  UserEmailVal,
-  UserFullnameVal,
-  UserPositionVal,
-  UserIdVal,
-  imgBase64,
-  CancelImg
-) => {
-  let query = `UPDATE 
-               User 
-               SET UserEmail = '${UserEmailVal}',
-                   UserFullname = '${UserFullnameVal}',
-                   UserPosition = '${UserPositionVal}' `;
-  if (!CancelImg && imgBase64 !== "null") {
-    query += `, UserImg = '${imgBase64}' `;
-  }
-  if (CancelImg) {
-    query += `, UserImg = 'null' `;
-  }
-  query += `WHERE UserId = ${UserIdVal} `;
-  return query;
-};
-const queryDeleteUser = (UserId) => {
-  let query = `DELETE FROM User
-               WHERE User.UserId = ${UserId} `;
-  return query;
-};
+const queryUpdate = `
+UPDATE 
+User
+SET UserName = ?,
+    UserEmail = ?, 
+    UserFullname = ?, 
+    UserImg = ?, 
+    UserPosition = ?,
+    UserInfo = ?
+WHERE UserId = ? 
+`;
+const queryUpdate1 = `
+UPDATE 
+User
+SET UserEmail = ?, 
+    UserFullname = ?, 
+    UserImg = ?, 
+    UserPosition = ?,
+    UserInfo = ?
+WHERE UserId = ? 
+`;
+const queryDeleteUser = `
+DELETE FROM User 
+WHERE UserId = ?
+`;
 export {
   queryDeleteUser,
   queryGet,
-  queryGetDebt,
   queryGetCreditor,
   queryGetCustomer,
   queryGetInvestor,
@@ -178,5 +160,7 @@ export {
   queryGetSupplier,
   queryGetTotal,
   queryRegister,
+  queryRegister1,
   queryUpdate,
+  queryUpdate1,
 };

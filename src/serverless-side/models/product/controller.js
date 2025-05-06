@@ -12,6 +12,7 @@ import {
   queryUpdateProduct,
 } from "./querysql.js";
 import {
+  validateAccounting,
   validateExisted,
   validateLoadImg,
   validateLoadImg1,
@@ -123,6 +124,7 @@ const Product = (ipcMain, db) => {
       productInfo,
       productImgVal,
     } = req;
+    await validateAccounting(db);
     // 1.validate name
     validateProductName(productName);
     validatePrice(productPriceBuy, productPriceSell);
@@ -144,6 +146,7 @@ const Product = (ipcMain, db) => {
   // 4.DELETE
   ipcMain.handle("deleteProduct", async (_, req) => {
     const { productid, productName } = req;
+    await validateAccounting(db);
     const query = queryDeleteProductId(productid);
     await executeDelete(db, query);
     const msg = `Product - ${productName} has been deleted`;
