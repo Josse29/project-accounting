@@ -3,9 +3,18 @@ const convertCSV = async (ipcMain, dialog, fs, appPath) => {
     try {
       // 1. convert JSON to CSV
       const jsonToCsv = (data) => {
+        if (!data || !data.length) return "";
+        const escapeCell = (value) => {
+          if (value == null) return ""; // handle null or undefined
+          const str = String(value)
+            .replace(/[\x00-\x1F\x7F]/g, " ") // remove control characters
+            .replace(/"/g, '""') // escape double quotes
+            .replace(/\r?\n|\r/g, " "); // replace newlines with space
+          return `"${str}"`; // wrap in quotes
+        };
         const headers = Object.keys(data[0]);
         const rows = data.map((row) =>
-          headers.map((field) => `"${row[field]}"`).join(",")
+          headers.map((field) => escapeCell(row[field])).join(",")
         );
         return [headers.join(","), ...rows].join("\n");
       };

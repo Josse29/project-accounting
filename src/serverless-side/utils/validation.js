@@ -57,7 +57,7 @@ const validateUserFullname = async (db, UserFullnameVal) => {
   FROM User 
   WHERE UserFullname = ?
   `;
-  const { TotalUser } = await executeGet4(db, query, [UserFullnameVal.trim()]);
+  const { TotalUser } = await executeGet4(db, query, [UserFullnameVal]);
   if (TotalUser >= 1) {
     const msg = `${UserFullnameVal} is already registered `;
     throw new Error(msg);
@@ -75,7 +75,7 @@ const validateUserFullname1 = async (db, UserFullnameVal, UserIdVal) => {
   WHERE UserFullname = ? AND UserId != ? 
   `;
   const { TotalUser } = await executeGet4(db, query, [
-    UserFullnameVal.trim(),
+    UserFullnameVal,
     UserIdVal,
   ]);
   if (TotalUser >= 1) {
@@ -196,6 +196,10 @@ const validateQty1 = (qty) => {
   }
 };
 const validatePrice = (buy, sell) => {
+  if (!buy || !sell) {
+    const msg = `Price Buy and Sell are required`;
+    throw new Error(msg);
+  }
   // 1. must be integer with regex buy and sell
   const isNumeric = number.test(buy);
   if (isNumeric === false) {
@@ -224,9 +228,37 @@ const validatePrice = (buy, sell) => {
     throw new Error(msg);
   }
 };
-const validateProductName = (productName) => {
+const validateProductName = async (db, productName) => {
+  if (!productName) {
+    const msg = "Product Name is required..";
+    throw new Error(msg);
+  }
+  const query = `
+  SELECT 
+  COUNT(*) AS TotalProduct 
+  FROM Product 
+  WHERE ProductName = ? `;
+  const { TotalProduct } = await executeGet4(db, query, [productName]);
+  if (TotalProduct >= 1) {
+    const msg = `${productName} is already existed !`;
+    throw new Error(msg);
+  }
+};
+const validateProductName1 = async (db, productName, productId) => {
   if (productName === "") {
-    const msg = "Product Name must be filled...";
+    const msg = "Product Name is require..";
+    throw new Error(msg);
+  }
+  const query = `
+  SELECT COUNT(*) AS TotalProduct 
+  FROM Product 
+  WHERE ProductName = ? AND ProductId != ?`;
+  const { TotalProduct } = await executeGet4(db, query, [
+    productName,
+    parseInt(productId),
+  ]);
+  if (TotalProduct >= 1) {
+    const msg = `${productName} is already existed !`;
     throw new Error(msg);
   }
 };
@@ -266,6 +298,10 @@ const validateAccountingBalance = (balance) => {
   }
 };
 const validateAssetValueUse = (balance, assetName, assetPrice) => {
+  if (!balance) {
+    const msg = "Asset Value is Required";
+    throw new Error(msg);
+  }
   // 1. must be integer with regex buy and sell
   const isNumeric = number.test(balance);
   if (isNumeric === false) {
@@ -274,10 +310,6 @@ const validateAssetValueUse = (balance, assetName, assetPrice) => {
   }
   if (balance === 0 || balance === "0") {
     const msg = "Asset Value Us must be greater than 0";
-    throw new Error(msg);
-  }
-  if (balance === "") {
-    const msg = "Asset Value Us must be Filled";
     throw new Error(msg);
   }
   if (balance > assetPrice) {
@@ -346,7 +378,7 @@ const validateAssetName1 = (assetNameVal) => {
   }
 };
 const validateAssetName = async (db, assetNameVal) => {
-  if (assetNameVal === "") {
+  if (!assetNameVal) {
     const msg = `Asset of Name is required`;
     throw new Error(msg);
   }
@@ -357,12 +389,12 @@ const validateAssetName = async (db, assetNameVal) => {
   Accounting 
   WHERE 
   AccountingRef BETWEEN 113 AND 121 AND 
-  AccountingName LIKE '%${assetNameVal.trim()}%'
+  AccountingName LIKE '%${assetNameVal}%'
   `;
   const { TotalAsset } = await executeGet2(db, query);
   if (TotalAsset >= 1) {
     const msg = `Upsss, Sorry 
-                ${capitalizeWord(assetNameVal)} is already existed
+                ${assetNameVal} is already existed
                 Please, Use Another Asset Name`;
     throw new Error(msg);
   }
@@ -605,6 +637,7 @@ export {
   validatePrice,
   validateProductAdd,
   validateProductName,
+  validateProductName1,
   validatePassword,
   validateQty,
   validateQty1,

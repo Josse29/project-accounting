@@ -745,7 +745,7 @@ const Accounting = (ipcMain, db) => {
     } = req;
     // 1. validate date and time, assetName, investorName, balance
     validateDateAndTime(accountingDateVal, accountingTimeVal);
-    await validateAssetName(db, accountingAssetNameVal);
+    await validateAssetName(db, capitalizeWord(accountingAssetNameVal));
     validateInvestorName(accountingInvestorNameVal);
     validateAccountingBalance(accountingAssetPriceVal);
     // 2. sendToInvestor(accountingInvestorEmail)
@@ -1347,7 +1347,7 @@ const Accounting = (ipcMain, db) => {
     } = req;
     // 1.validate date-time
     validateDateAndTime(accountingDateVal, accountingTimeVal);
-    await validateAssetName(db, accountingAssetNameVal);
+    await validateAssetName(db, capitalizeWord(accountingAssetNameVal));
     // 2.sendPDFGmail(accountingUserEmailVal)
     // 3.convert
     const accountingAssetNameVal1 = capitalizeWord(accountingAssetNameVal);

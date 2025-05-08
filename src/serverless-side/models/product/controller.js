@@ -18,6 +18,7 @@ import {
   validateLoadImg1,
   validatePrice,
   validateProductName,
+  validateProductName1,
 } from "../../utils/validation.js";
 import { capitalizeWord } from "../../utils/formatTxt.js";
 import {
@@ -46,7 +47,7 @@ const Product = (ipcMain, db) => {
       productImg,
     } = req;
     // 1 validation
-    validateProductName(productName);
+    await validateProductName(db, capitalizeWord(productName));
     validatePrice(productPriceBuy, productPriceSell);
     const imgBase64 = await validateLoadImg1(productImg);
     // 2.query
@@ -126,7 +127,7 @@ const Product = (ipcMain, db) => {
     } = req;
     await validateAccounting(db);
     // 1.validate name
-    validateProductName(productName);
+    await validateProductName1(db, capitalizeWord(productName), productId);
     validatePrice(productPriceBuy, productPriceSell);
     const imgBase64 = await validateLoadImg1(productImgVal);
     // execute

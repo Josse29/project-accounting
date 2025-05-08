@@ -8,37 +8,22 @@ const convertPDF = (ipcMain, BrowserWindow, dialog, fs, appPath) => {
     if (canceled) {
       return null;
     }
-    const cssPath = appPath(
-      "src",
-      "serverless-side",
-      "utils",
-      "convertpdf",
-      "style.css"
-    );
-    const bootstrapPath = appPath(
-      "node_modules",
-      "bootstrap",
-      "dist",
-      "css",
-      "bootstrap.min.css"
-    );
-    const fontAwesomePath = appPath(
-      "node_modules",
-      "@fortawesome",
-      "fontawesome-free",
-      "css",
-      "all.min.css"
-    );
+    const pdfPath = (...paths) => {
+      return appPath("assets", ...paths);
+    };
+    const styleCss = pdfPath("style.css");
+    const bootstrapCss = pdfPath("bootstrap.css");
+    const fontawesomeCss = pdfPath("fontawesome.css");
     const fullHtml = `
       <html>
-        <link rel="stylesheet" href="${cssPath}" />
+        <link rel="stylesheet" href="${styleCss}" />
         <link
           rel="stylesheet"
-          href="${bootstrapPath}"
+          href="${bootstrapCss}"
         />
         <link
           rel="stylesheet"
-          href="${fontAwesomePath}"
+          href="${fontawesomeCss}"
         />
         <body>
           ${section}
@@ -49,11 +34,9 @@ const convertPDF = (ipcMain, BrowserWindow, dialog, fs, appPath) => {
     // save html in a filetemporary
     const tempPath = appPath("data.html");
     await fs.promises.writeFile(tempPath, fullHtml);
-
     // load file
     const pdfWin = new BrowserWindow({ show: true });
     pdfWin.loadFile(tempPath);
-
     //  change destination directory
     return new Promise((resolve, reject) => {
       pdfWin.webContents.on("did-finish-load", async () => {
