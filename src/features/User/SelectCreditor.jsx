@@ -34,7 +34,11 @@ const SelectCreditor = (props) => {
             />
           ))}
         {creditor.length < 1 && (
-          <Select.Option value="" title="Creditor is Empty..." />
+          <Select.Option
+            value=""
+            title="Creditor is Empty..."
+            className="text-center italic"
+          />
         )}
       </Select>
     </>

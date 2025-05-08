@@ -32,7 +32,11 @@ const SelectLiability = (props) => {
             />
           ))}
         {liability.length < 1 && (
-          <Select.Option value="" title="Liabilities is Empty..." />
+          <Select.Option
+            value=""
+            title="Liabilities is Empty..."
+            className="text-center italic"
+          />
         )}
       </Select>
     </>

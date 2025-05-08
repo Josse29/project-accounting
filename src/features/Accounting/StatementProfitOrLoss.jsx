@@ -4,7 +4,7 @@ import { formatCurrency1, formatCurrency2 } from "../../utils";
 import { AllContext } from "../../context/AllProvider";
 
 const StatementProfitOrLoss = () => {
-  const { profitOrLoss } = useContext(AllContext);
+  const { profitOrLoss, companyName } = useContext(AllContext);
   const [sale, setSale] = useState(0);
   const [saleReturn, setSaleReturn] = useState(0);
   const [saleDiscount, setSaleDiscount] = useState(0);
@@ -18,7 +18,7 @@ const StatementProfitOrLoss = () => {
   const [grossProfitLoss, setGrossProfitLoss] = useState(0);
   const [expense, setExpense] = useState([]);
   const [expenseTotal, setExpenseTotal] = useState(0);
-  const [reveneu, seRevenue] = useState([]);
+  const [revenue, seRevenue] = useState([]);
   const [revenueTotal, setRevenueTotal] = useState(0);
   const [netProfitLoss, setNetProfitLoss] = useState(0);
   const [attributeTo, setAttributeTo] = useState([]);
@@ -69,7 +69,7 @@ const StatementProfitOrLoss = () => {
         <div className="font-bold text-2xl text-center">
           Statement Of Profit or Loss
         </div>
-        <div className="font-bold text-xl text-center">Josstack</div>
+        <div className="font-bold text-xl text-center">{companyName}</div>
       </div>
       {/* body */}
       <div className="mb-2">
@@ -181,8 +181,8 @@ const StatementProfitOrLoss = () => {
         <div className="mb-1">
           <div className="text-xl font-bold mb-1">Other Revenue </div>
           <div className="ms-2 mb-1">
-            {reveneu.length >= 1 &&
-              reveneu.map((el, i) => (
+            {revenue.length >= 1 &&
+              revenue.map((el, i) => (
                 <div className="flex justify-between text-xl mb-1" key={i}>
                   <div>{el.AccountingName}</div>
                   <div>{formatCurrency1(el.Total)}</div>

@@ -8,6 +8,7 @@ import { AllContext } from "../../context/AllProvider";
 const CardFinancialStatement = () => {
   const {
     getFinancialStatement,
+    companyName,
     totalRows,
     financialPositions,
     changesEquity,
@@ -31,12 +32,19 @@ const CardFinancialStatement = () => {
           <div className="flex gap-7 w-full overflow-x-auto">
             <div className="w-1/2">
               <StatementFinancialPosition
+                companyName={companyName}
                 financialPositions={financialPositions}
               />
-              <StatementOfEquity changesEquity={changesEquity} />
+              <StatementOfEquity
+                companyName={companyName}
+                changesEquity={changesEquity}
+              />
             </div>
             <div className="w-1/2">
-              <StatementProfitOrLoss profitOrLoss={profitOrLoss} />
+              <StatementProfitOrLoss
+                companyName={companyName}
+                profitOrLoss={profitOrLoss}
+              />
             </div>
           </div>
         )}

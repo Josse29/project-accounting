@@ -37,7 +37,11 @@ const SelectReceivable = (props) => {
             />
           ))}
         {receive.length < 1 && (
-          <Select.Option title="No Receivable Available" value="" />
+          <Select.Option
+            title="No Receivable Available"
+            value=""
+            className="text-center italic"
+          />
         )}
       </Select>
     </>

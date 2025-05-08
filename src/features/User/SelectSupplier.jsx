@@ -32,7 +32,7 @@ const SelectSupplier = (props) => {
         {supplier.length < 1 && (
           <Select.Option
             title="Supplier is empty..."
-            className="text-center"
+            className="text-center italic"
             value="null"
           />
         )}

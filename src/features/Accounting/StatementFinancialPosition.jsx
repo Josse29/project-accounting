@@ -3,7 +3,7 @@ import { formatCurrency1, formatCurrency2 } from "../../utils";
 import { AllContext } from "../../context/AllProvider";
 
 const StatementFinancialPosition = () => {
-  const { financialPositions } = useContext(AllContext);
+  const { financialPositions, companyName } = useContext(AllContext);
   const [cash, setCash] = useState(0);
   const [currentAsset, setCurrentAsset] = useState([]);
   const [currentAssetTotal, setCurrentAssetTotal] = useState(0);
@@ -61,7 +61,7 @@ const StatementFinancialPosition = () => {
         <div className="font-bold text-2xl text-center mb-1">
           Statement Of Financial Position
         </div>
-        <div className="text-xl text-center font-bold">Josstack</div>
+        <div className="text-xl text-center font-bold">{companyName}</div>
       </div>
       {/* body */}
       <div className="mb-2">

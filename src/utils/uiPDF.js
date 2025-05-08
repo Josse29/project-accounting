@@ -616,7 +616,7 @@ const uiAccountingPDF1 = (response, Company) => {
         class="card-header text-center text-white fs-3"
         style="background-color: #273eec"
       >
-        ${Company || "Josstack Company"}
+        ${Company || "Company"}
       </div>
       <!--  cardBody -->
       <div class="card-body">
@@ -1748,7 +1748,7 @@ const uiFinancialStatement = (response, Company, Period) => {
   const div = `
   <div>
     <div class="mb-0">
-      <h3 class="fw-bold text-center">${Company}</h3>
+      <h3 class="fw-bold text-center">${Company || "Company"}</h3>
       <h5 class="fw-bold text-center mb-0">${Period}</h5>
     </div>;
     ${financialPosition}

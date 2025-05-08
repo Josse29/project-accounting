@@ -34,7 +34,11 @@ const SelectCustomer = (props) => {
             />
           ))}
         {customers.length < 1 && (
-          <Select.Option value="" title="No Customers" />
+          <Select.Option
+            value=""
+            title="No Customers"
+            className="text-center italic"
+          />
         )}
       </Select>
     </>

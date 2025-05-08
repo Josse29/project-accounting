@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Alert, Button, InputDate, Modal, Select } from "../../components";
 import { FaFilePdf } from "react-icons/fa6";
 import {
@@ -35,7 +35,6 @@ const ModalPdfAccounting = (props) => {
     startDateVal: "",
     endDateVal: "",
   });
-  const [companyName, setCompanyName] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [loading, setLoading] = useState(false);
   const handleChange = (e) => {
@@ -45,10 +44,11 @@ const ModalPdfAccounting = (props) => {
       [name]: value,
     }));
   };
+  // for company name
   const getCompanyName = async () => {
     try {
       const response = await getCompany1API();
-      setCompanyName(response[0].CompanyName);
+      return response[0].CompanyName;
     } catch (error) {
       throw error;
     }
@@ -63,7 +63,7 @@ const ModalPdfAccounting = (props) => {
         startDateVal,
         endDateVal,
       };
-      await getCompanyName();
+      const companyName = await getCompanyName();
       if (selectedAccount === "111") {
         const response = await getAccountingPDFAPI(req);
         const htmlContent = uiAccountingPDF(response, companyName);

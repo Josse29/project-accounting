@@ -4,7 +4,7 @@ import { formatCurrency1, formatCurrency2 } from "../../utils";
 import { AllContext } from "../../context/AllProvider";
 
 const StatementOfEquity = () => {
-  const { changesEquity } = useContext(AllContext);
+  const { changesEquity, companyName } = useContext(AllContext);
   const [equity, setEquity] = useState([]);
   const [equityTotal, setEquityTotal] = useState(0);
   const [equityWithDraw, setEquityWithDraw] = useState([]);
@@ -35,7 +35,7 @@ const StatementOfEquity = () => {
         <div className="font-bold text-2xl text-center">
           Statement Of Equity In Changes
         </div>
-        <div className="font-bold text-xl text-center">Josstack</div>
+        <div className="font-bold text-xl text-center">{companyName}</div>
       </div>
       {/* body */}
       <div className="mb-1">
