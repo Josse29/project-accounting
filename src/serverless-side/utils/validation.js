@@ -486,7 +486,7 @@ const validateReceivableBalance = async (
   }
 };
 const validateReceivableName = (receivableNameVal) => {
-  if (receivableNameVal === undefined || receivableNameVal === "") {
+  if (!receivableNameVal) {
     const msg = `Customer is required`;
     throw new Error(msg);
   }

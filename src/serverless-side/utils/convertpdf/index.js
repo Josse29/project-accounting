@@ -13,7 +13,7 @@ const convertPDF = (ipcMain, BrowserWindow, dialog, fs, appPath) => {
       "serverless-side",
       "utils",
       "convertpdf",
-      "index.js"
+      "style.css"
     );
     const bootstrapPath = appPath(
       "node_modules",

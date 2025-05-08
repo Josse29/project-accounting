@@ -246,6 +246,7 @@ const User = (ipcMain, db, bcryptjs, jwt) => {
         receivableList,
       };
     }
+    // receivable id
     for (const rows of customer) {
       const query1 = `
       SELECT 
@@ -264,6 +265,14 @@ const User = (ipcMain, db, bcryptjs, jwt) => {
       receivableList.push(receivable);
     }
     receivableList.sort((a, b) => b.TotalReceivable - a.TotalReceivable);
+    // receivable sum
+    const query1 = `
+    SELECT
+    COALESCE(SUM(AccountingBalance), 0) AS receivableTotal
+    FROM Accounting
+    WHERE AccountingRef = 112 `;
+    const { receivableTotal } = await executeGet2(db, query1);
+    receivableTotals += receivableTotal;
     return {
       receivableTotals,
       receivableList,
@@ -292,7 +301,7 @@ const User = (ipcMain, db, bcryptjs, jwt) => {
         SaleGroup,
       };
     }
-    for (const el of userSale) {
+    for (const rows of userSale) {
       const query = `
       SELECT 
       SUBSTR(Stock.StockInfo, INSTR(Stock.StockInfo, 'Sale : ') + 7, INSTR(Stock.StockInfo, ' |') - (INSTR(Stock.StockInfo, 'Sale : ') + 7)) AS SaleName,
@@ -305,20 +314,38 @@ const User = (ipcMain, db, bcryptjs, jwt) => {
       LEFT JOIN Product ON Stock.StockProductId = Product.ProductId
       WHERE 
       Stock.StockActivity LIKE "%Sales%" AND 
-      Stock.StockInfo LIKE "%Sale : ${el.UserFullname}%" `;
+      Stock.StockInfo LIKE "%Sale : ${rows.UserFullname} | %" `;
       let balance = 0;
       const SalesId = await executeGet(db, query);
       for (const el of SalesId) {
-        const data = {
-          SaleId: el.UserId,
-          SaleName: el.UserFullname,
-          SaleImg: el.UserImg,
-          SaleBalance: (balance += el.SaleIdBalance),
-        };
-        SaleGroup.push(data);
+        balance += el.SaleIdBalance;
       }
+      const data = {
+        SaleId: rows.UserId,
+        SaleName: rows.UserFullname,
+        SaleImg: rows.UserImg,
+        SaleBalance: balance,
+      };
+      SaleGroup.push(data);
+      SaleGroup.sort((a, b) => b.SaleBalance - a.SaleBalance);
     }
-    SaleGroup.sort((a, b) => b.SaleBalance - a.SaleBalance);
+
+    // summary
+    const query1 = `
+    SELECT 
+    Product.ProductName,
+    Product.ProductPriceSell,
+    COALESCE((Stock.StockQty) * -1, 0) AS SaleQty,
+    (COALESCE((Stock.StockQty) * -1, 0) * Product.ProductPriceSell) AS SaleSum
+    FROM 
+    Stock
+    LEFT JOIN Product ON Stock.StockProductId = Product.ProductId
+    WHERE 
+    Stock.StockActivity LIKE "%Sales%" `;
+    const saleSum = await executeGet3(db, query1);
+    for (const el of saleSum) {
+      SaleTotal += el.SaleSum;
+    }
     return {
       SaleTotal,
       SaleGroup,
@@ -439,6 +466,15 @@ const User = (ipcMain, db, bcryptjs, jwt) => {
       liabilityList.push(data);
     }
     liabilityList.sort((a, b) => b.TotalLiability - a.TotalLiability);
+    // summary
+    const query1 = `
+    SELECT 
+    COALESCE(SUM(AccountingBalance), 0) AS LiablitySum
+    FROM Accounting 
+    WHERE AccountingRef = 211
+    `;
+    const { LiablitySum } = await executeGet4(db, query1);
+    liabilityTotal += LiablitySum;
     return { liabilityTotal, liabilityList };
   });
   ipcMain.handle("getLiability1", async () => {

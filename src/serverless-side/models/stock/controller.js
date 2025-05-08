@@ -195,7 +195,7 @@ const Stock = (ipcMain, db) => {
       WHERE 
       Stock.StockActivity LIKE "%Sales%" AND 
       Stock.StockDate BETWEEN "${startDateVal}" AND "${endDateVal}" AND
-      Stock.StockInfo LIKE "%Sale : ${el.UserFullname}%" `;
+      Stock.StockInfo LIKE "%Sale : ${el.UserFullname} | %" `;
       const Sales1 = await executeGet(db, query2);
       let qty = 0;
       let balance = 0;
