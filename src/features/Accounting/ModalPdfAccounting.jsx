@@ -190,14 +190,14 @@ const ModalPdfAccounting = (props) => {
           <Button
             title="Cancel"
             type="button"
-            className="bg-slate-500 hover:bg-slate-600 hover:ring-slate-300"
+            className="bg-slate-500 hover:bg-slate-600 hover:ring-slate-600"
             onClick={() => setOpenPdf(false)}
           />
           <Button
             title="Done"
             type="submit"
             disabled={loading ? true : false}
-            className={`bg-orange-500 hover:ring-orange-500 ${
+            className={`bg-orange-500 hover:ring-orange-600 ${
               loading
                 ? "cursor-not-allowed bg-opacity-65"
                 : "hover:bg-orange-600"

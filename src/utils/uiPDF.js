@@ -1451,7 +1451,9 @@ const uiFinancialStatement = (response, Company, Period) => {
                 ? Liability.map(
                     (el) => `
             <div class="d-flex justify-content-between">
-              <h5 class="ms-4">${el.AccountingName}</h5>
+              <h5 class="ms-4">${el.AccountingName.split(" - ")
+                .slice(1)
+                .join(" - ")}</h5>
               <h5>${formatCurrency1(el.TotalLiability)}</h5>
             </div>
             `
@@ -1473,7 +1475,9 @@ const uiFinancialStatement = (response, Company, Period) => {
                 ? Equity.map(
                     (el) => `
             <div class="d-flex justify-content-between">
-              <h5 class="ms-4">${el.AccountingName.split("-")[1]}</h5>
+              <h5 class="ms-4">${el.AccountingName.split(" - ")
+                .slice(1)
+                .join(" - ")}</h5>
               <h5>${formatCurrency1(el.TotalEquity)}</h5>
             </div>
             `
@@ -1517,7 +1521,9 @@ const uiFinancialStatement = (response, Company, Period) => {
             ? Equity.map(
                 (el) => `
           <div class="d-flex justify-content-between">
-            <h5 class="ms-2">${el.AccountingName.split("-")[1]}</h5>
+            <h5 class="ms-2">${el.AccountingName.split(" - ")
+              .slice(1)
+              .join(" - ")}</h5>
             <h5>${formatCurrency1(el.TotalEquity)}</h5>
           </div>
           `
@@ -1541,7 +1547,9 @@ const uiFinancialStatement = (response, Company, Period) => {
             ? EquityWithDrawl.map(
                 (el) => `
           <div class="d-flex justify-content-between">
-            <h5 class="ms-2">${el.AccountingName.split("-")[1]}</h5>
+            <h5 class="ms-2">${el.AccountingName.split(" - ")
+              .slice(1)
+              .join(" - ")}</h5>
             <h5>${formatCurrency1(el.TotalEquityWithDrawl)}</h5>
           </div>
           `
