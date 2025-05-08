@@ -2,7 +2,7 @@ import { app, BrowserWindow, dialog, ipcMain } from "electron";
 import fs from "fs";
 import sqlite3 from "sqlite3";
 import jwt from "jsonwebtoken";
-import convertCSV from "./src/serverless-side/utils/convertCSV.js";
+import convertCSV from "./src/serverless-side/utils/convertcsv.js";
 import convertPDF from "./src/serverless-side/utils/convertpdf/index.js";
 import {
   Accounting,

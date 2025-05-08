@@ -13,16 +13,20 @@
     "appId": "com.example.app",
     "productName": "Josstack",
     "directories": {
-      "buildResources": "src"
+      "buildResources": "icon"
     },
     "files": [
+      "src/client-side/**/*",
+      "src/serverless-side/**/*",
       "main.js",
-      "preload.js",
-      "src/**/*"
+      "preload.js"
     ],
     "win": {
-      "target": "nsis",
-      "icon": "src/josstack.ico"
+      "target": [
+        "zip",
+        "nsis"
+      ],
+      "icon": "icon/josstack.ico"
     }
   },
   "author": "josse",

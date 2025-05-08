@@ -59,7 +59,7 @@ const validateUserFullname = async (db, UserFullnameVal) => {
   `;
   const { TotalUser } = await executeGet4(db, query, [UserFullnameVal.trim()]);
   if (TotalUser >= 1) {
-    const msg = `${val} is already registered `;
+    const msg = `${UserFullnameVal} is already registered `;
     throw new Error(msg);
   }
 };
