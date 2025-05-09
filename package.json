@@ -15,11 +15,16 @@
     "directories": {
       "buildResources": "icon"
     },
+    "extraResources": [
+      {
+        "from": "assets",
+        "to": "assets"
+      }
+    ],
     "files": [
       "src/**/*",
       "main.js",
-      "preload.js",
-      "assets/**/*"
+      "preload.js"
     ],
     "win": {
       "target": [

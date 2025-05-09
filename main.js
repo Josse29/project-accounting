@@ -49,7 +49,7 @@ function createWindow() {
   // export-csv
   convertCSV(ipcMain, dialog, fs, appPath);
   // convertpdf
-  convertPDF(ipcMain, BrowserWindow, dialog, fs, appPath, app, path);
+  convertPDF(ipcMain, BrowserWindow, dialog, fs, app, path);
   // close apps
   ipcMain.on("close-apps", () => {
     app.quit();

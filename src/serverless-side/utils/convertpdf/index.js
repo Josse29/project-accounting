@@ -1,4 +1,4 @@
-const convertPDF = (ipcMain, BrowserWindow, dialog, fs, appPath, app, path) => {
+const convertPDF = (ipcMain, BrowserWindow, dialog, fs, app, path) => {
   ipcMain.handle("generate-pdf", async (event, section) => {
     const { canceled, filePath } = await dialog.showSaveDialog({
       title: "Save PDF",
@@ -8,14 +8,15 @@ const convertPDF = (ipcMain, BrowserWindow, dialog, fs, appPath, app, path) => {
     if (canceled) {
       return null;
     }
+    const isDev = !app.isPackaged;
     const pdfPath = (...paths) => {
-      return appPath("assets", ...paths);
+      return isDev
+        ? path.join(app.getAppPath(), "assets", ...paths)
+        : path.join(process.resourcesPath, "assets", ...paths);
     };
     // Error: ENOENT: no such file or directory, open 'C:\Users\ASUS\AppData\Local\Programs\josstack\resources\app.asar\data.html'
     const styleCss = pdfPath("style.css");
-    console.log(styleCss);
     const bootstrapCss = pdfPath("bootstrap.css");
-    console.log(bootstrapCss);
     const fontawesomeCss = pdfPath("fontawesome.css");
     const fullHtml = `
       <html>
