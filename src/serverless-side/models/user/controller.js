@@ -102,7 +102,7 @@ const User = (ipcMain, db, bcryptjs, jwt) => {
     UserPassword
     FROM User 
     WHERE 
-    UserName = ?
+    UserName = ? AND UserPosition = 'admin'
     `;
     const user = await executeGet4(db, query, [UserNameVal]);
     if (!user) {
