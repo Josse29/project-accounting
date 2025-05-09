@@ -67,21 +67,21 @@ function createWindow() {
     }
   });
   // inactive devtools
-  // if (isDev) {
-  //   mainWindow.webContents.openDevTools();
-  // } else {
-  //   mainWindow.webContents.on("before-input-event", (event, input) => {
-  //     if (
-  //       (input.control && input.shift && input.key.toUpperCase() === "I") ||
-  //       input.key === "F12"
-  //     ) {
-  //       event.preventDefault();
-  //     }
-  //   });
-  //   mainWindow.webContents.on("context-menu", (e) => {
-  //     e.preventDefault();
-  //   });
-  // }
+  if (isDev) {
+    mainWindow.webContents.openDevTools();
+  } else {
+    mainWindow.webContents.on("before-input-event", (event, input) => {
+      if (
+        (input.control && input.shift && input.key.toUpperCase() === "I") ||
+        input.key === "F12"
+      ) {
+        event.preventDefault();
+      }
+    });
+    mainWindow.webContents.on("context-menu", (e) => {
+      e.preventDefault();
+    });
+  }
 }
 
 app.whenReady().then(() => {
