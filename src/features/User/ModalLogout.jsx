@@ -14,7 +14,7 @@ const ModalLogout = () => {
       <Modal.Body>
         <FaDoorOpen className="text-red-600 text-8xl mx-auto my-3" />{" "}
         <div className="text-3xl text-slate-800 text-center font-bold capitalize">
-          Are You Sure to logout?
+          Are You Sure Want To Logout?
         </div>
       </Modal.Body>
       <Modal.Footer>
