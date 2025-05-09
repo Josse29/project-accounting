@@ -24,11 +24,11 @@ function createWindow() {
     height: 850,
     // fullscreen: true,
     webPreferences: {
-      preload: path.join(appPath("preload.js")),
+      preload: appPath("preload.js"),
       contextIsolation: true,
     },
     frame: false,
-    icon: path.join(appPath("jossstackico.ico")),
+    icon: appPath("jossstackico.ico"),
   });
   // development
   if (isDev) {
@@ -49,7 +49,7 @@ function createWindow() {
   // export-csv
   convertCSV(ipcMain, dialog, fs, appPath);
   // convertpdf
-  convertPDF(ipcMain, BrowserWindow, dialog, fs, appPath);
+  convertPDF(ipcMain, BrowserWindow, dialog, fs, appPath, app, path);
   // close apps
   ipcMain.on("close-apps", () => {
     app.quit();
@@ -67,21 +67,21 @@ function createWindow() {
     }
   });
   // inactive devtools
-  if (isDev) {
-    mainWindow.webContents.openDevTools();
-  } else {
-    mainWindow.webContents.on("before-input-event", (event, input) => {
-      if (
-        (input.control && input.shift && input.key.toUpperCase() === "I") ||
-        input.key === "F12"
-      ) {
-        event.preventDefault();
-      }
-    });
-    mainWindow.webContents.on("context-menu", (e) => {
-      e.preventDefault();
-    });
-  }
+  // if (isDev) {
+  //   mainWindow.webContents.openDevTools();
+  // } else {
+  //   mainWindow.webContents.on("before-input-event", (event, input) => {
+  //     if (
+  //       (input.control && input.shift && input.key.toUpperCase() === "I") ||
+  //       input.key === "F12"
+  //     ) {
+  //       event.preventDefault();
+  //     }
+  //   });
+  //   mainWindow.webContents.on("context-menu", (e) => {
+  //     e.preventDefault();
+  //   });
+  // }
 }
 
 app.whenReady().then(() => {

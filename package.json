@@ -18,17 +18,11 @@
     "files": [
       "src/**/*",
       "main.js",
-      "preload.js"
-    ],
-    "extraResources": [
-      {
-        "from": "assets",
-        "to": "assets"
-      }
+      "preload.js",
+      "assets/**/*"
     ],
     "win": {
       "target": [
-        "zip",
         "nsis"
       ],
       "icon": "icon/josstack.ico"
