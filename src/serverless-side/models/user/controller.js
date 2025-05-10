@@ -89,6 +89,7 @@ const User = (ipcMain, db, bcryptjs, jwt) => {
     return msg;
   });
   ipcMain.handle("login", async (_, data) => {
+    // username : josse112, password : billionaireWFH100%
     const { UserNameVal, UserPasswordVal } = data;
     if (!UserNameVal || !UserPasswordVal) {
       const msg = `Uppsss ,Username and Password are Required !`;

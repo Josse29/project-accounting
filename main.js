@@ -39,7 +39,6 @@ function createWindow() {
   // db
   const userDataPath = app.getPath("userData");
   // C:\Users\ASUS\AppData\Roaming\josstack
-  // username : josse112, password : billionaireWFH100%
   const dbDestination = path.join(userDataPath, "myapps.db");
   const db = new sqlite3.Database(dbDestination);
   User(ipcMain, db, bcryptjs, jwt);
