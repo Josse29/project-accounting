@@ -4,11 +4,11 @@ import { capitalizeWord } from "./formatTxt.js";
 import { email, number, password, username } from "./regex.js";
 
 const validateEmail = async (db, val) => {
-  if (!val) {
+  if (!val.trim()) {
     const msg = `Email is required `;
     throw new Error(msg);
   }
-  const isEmail = email.test(val);
+  const isEmail = email.test(val.trim());
   if (!isEmail) {
     const msg = `Please input correct email `;
     throw new Error(msg);
@@ -18,18 +18,18 @@ const validateEmail = async (db, val) => {
   COUNT(*) AS TotalUser 
   From User 
   WHERE UserEmail = ?`;
-  const { TotalUser } = await executeGet4(db, query, [val]);
+  const { TotalUser } = await executeGet4(db, query, [val.trim()]);
   if (TotalUser >= 1) {
     const msg = `${val} is already registered `;
     throw new Error(msg);
   }
 };
 const validateEmail1 = async (db, UserEmailVal, UserIdVal) => {
-  if (UserEmailVal === "") {
+  if (!UserEmailVal.trim()) {
     const msg = `Email is required `;
     throw new Error(msg);
   }
-  const isEmail = email.test(UserEmailVal);
+  const isEmail = email.test(UserEmailVal.trim());
   if (!isEmail) {
     const msg = `Please input correct email `;
     throw new Error(msg);
@@ -40,14 +40,17 @@ const validateEmail1 = async (db, UserEmailVal, UserIdVal) => {
   From User 
   WHERE 
   UserEmail = ? AND UserId != ? `;
-  const { TotalUser } = await executeGet4(db, query, [UserEmailVal, UserIdVal]);
+  const { TotalUser } = await executeGet4(db, query, [
+    UserEmailVal.trim(),
+    UserIdVal,
+  ]);
   if (TotalUser >= 1) {
-    const msg = `${UserEmailVal} is already registered `;
+    const msg = `${UserEmailVal.trim()} is already registered `;
     throw new Error(msg);
   }
 };
 const validateUserFullname = async (db, UserFullnameVal) => {
-  if (UserFullnameVal === "") {
+  if (!UserFullnameVal) {
     const msg = `Fullname is required `;
     throw new Error(msg);
   }
@@ -59,7 +62,7 @@ const validateUserFullname = async (db, UserFullnameVal) => {
   `;
   const { TotalUser } = await executeGet4(db, query, [UserFullnameVal]);
   if (TotalUser >= 1) {
-    const msg = `${UserFullnameVal} is already registered `;
+    const msg = `Fullname - ${UserFullnameVal} is already registered `;
     throw new Error(msg);
   }
 };
@@ -79,7 +82,7 @@ const validateUserFullname1 = async (db, UserFullnameVal, UserIdVal) => {
     UserIdVal,
   ]);
   if (TotalUser >= 1) {
-    const msg = `${UserFullnameVal} is already registered `;
+    const msg = `Fullname - ${UserFullnameVal} is already registered `;
     throw new Error(msg);
   }
 };

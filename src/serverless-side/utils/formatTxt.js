@@ -1,5 +1,5 @@
 function capitalizeWord(string) {
-  if (string === undefined || string === "" || string === null) {
+  if (!string) {
     return "";
   } else {
     const capitalize = string
