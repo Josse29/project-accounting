@@ -541,7 +541,7 @@ const validateUserName = async (db, UserNameVal) => {
   if (!isValid) {
     const msg = `
     Requirement Username
-    Only contain Alphabet, Number,
+    Only contain Alphabet, Number, Without Space 
     Minimum length Character 3 - 15 
   `;
     throw new Error(msg);
@@ -567,7 +567,7 @@ const validateUserName1 = async (db, UserNameVal, UserIdVal) => {
   if (!isValid) {
     const msg = `
     Require UserName
-    Only contain Alphabet, Number,
+    Only contain Alphabet, Number, Without Space 
     Minimum length Character 3 - 15 `;
     throw new Error(msg);
   }
