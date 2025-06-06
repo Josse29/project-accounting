@@ -65,11 +65,10 @@ const Top = () => {
           </div>
         </div>
       </div>
-      <ModalLogout />
     </div>
   );
 };
-const NavItem = (props) => {
+const SideItem = (props) => {
   const { to, icon: Icon, title } = props;
   const location = useLocation();
   const isActive = location.pathname === to;
@@ -93,17 +92,17 @@ const NavItem = (props) => {
 const Side = () => {
   return (
     <div className="fixed z-10 top-0 left-0 bottom-0 bg-[#1b1c30]">
-      <div className="flex flex-col h-screen justify-between gap-2 px-4 ">
+      <div className="flex flex-col h-screen justify-between gap-2 px-4">
         <div className="h-[110px] flex items-center justify-center">
           <img src={Josstack} alt="" className="w-[60px]" />
         </div>
         <div className="flex flex-col flex-1 gap-12 items-center">
-          <NavItem to="/dashboard" icon={FaHouse} title="Dashboard" />
-          <NavItem to="/order" icon={FaCartShopping} title="Order" />
-          <NavItem to="/inventory" icon={FaFileCirclePlus} title="Inventory" />
-          <NavItem to="/accounting" icon={FaChartSimple} title="Accounting" />
-          <NavItem to="/users" icon={FaUsers} title="Users" />
-          <NavItem to="/about" icon={FaCity} title="About" />
+          <SideItem to="/dashboard" icon={FaHouse} title="Dashboard" />
+          <SideItem to="/order" icon={FaCartShopping} title="Order" />
+          <SideItem to="/inventory" icon={FaFileCirclePlus} title="Inventory" />
+          <SideItem to="/accounting" icon={FaChartSimple} title="Accounting" />
+          <SideItem to="/users" icon={FaUsers} title="Users" />
+          <SideItem to="/about" icon={FaCity} title="About" />
         </div>
       </div>
     </div>
@@ -115,6 +114,7 @@ const NavigationContainer = ({ children }) => {
       <Top />
       <Side />
       <div className="p-11">{children}</div>
+      <ModalLogout />
     </div>
   );
 };
