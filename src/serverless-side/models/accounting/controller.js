@@ -49,6 +49,7 @@ import {
   executeGet1,
   executeGet2,
   executeGet3,
+  executeGet4,
 } from "../../database/runQuery.js";
 import AccountingSchema from "./schema.js";
 import { createStock } from "../../utils/etc.js";
@@ -2800,46 +2801,60 @@ const Accounting = (ipcMain, db) => {
       },
     };
   });
+  // api/accounting-delete
   ipcMain.handle("delete", async () => {
-    const query = `
-    SELECT 
-    AccountingId,
-    AccountingDate,
-    AccountingRef,
-    AccountingName
-    FROM 
-    Accounting
-    ORDER BY AccountingDate DESC 
-    LIMIT 2 
-    `;
-    const accounting = await executeGet3(db, query);
-    for (const el of accounting) {
-      if (
-        el.AccountingRef === 411 ||
-        el.AccountingRef === 412 ||
-        el.AccountingRef === 413 ||
-        el.AccountingRef === 511 ||
-        el.AccountingRef === 512 ||
-        el.AccountingRef === 513
-      ) {
-        const query = `
-        DELETE 
-        FROM Stock
-        WHERE StockId IN (
-          SELECT StockId FROM Stock
-          ORDER BY StockDate DESC
-          LIMIT 1
-        ) `;
-        await executeCreate1(db, query);
-      }
+    const deletedAccounting = async () => {
       const query = `
-      DELETE
-      FROM Accounting 
-      WHERE AccountingId = ?`;
-      await executeCreate1(db, query, [el.AccountingId]);
+      DELETE FROM Accounting 
+      WHERE AccountingId IN (
+        SELECT AccountingId 
+        FROM Accounting
+        ORDER BY AccountingDate DESC, 
+                 AccountingTime DESC,
+                 AccountingId DESC
+        LIMIT 2
+      )`;
+      await executeCreate1(db, query);
+    };
+    const deleteStock = async () => {
+      const query = `
+      DELETE FROM Stock
+      WHERE StockId IN (
+        SELECT StockId 
+        FROM Stock
+        ORDER BY StockDate DESC,
+                 StockId DESC
+        LIMIT 1
+      )`;
+      await executeCreate1(db, query);
+    };
+    const query = `
+    SELECT *
+    FROM Accounting
+    ORDER BY AccountingDate DESC, 
+             AccountingTime DESC,
+             AccountingId DESC
+    LIMIT 2
+    `;
+    const accountingId = await executeGet3(db, query);
+    const withDiscount = accountingId.find((el) =>
+      [413, 513].includes(el.AccountingRef)
+    );
+    const withoutDiscount = accountingId.find((el) =>
+      [411, 412, 511, 512].includes(el.AccountingRef)
+    );
+    if (withDiscount) {
+      await deleteStock();
+      await deletedAccounting();
+      await deletedAccounting();
+    } else if (withoutDiscount) {
+      await deleteStock();
+      await deletedAccounting();
+    } else {
+      await deletedAccounting();
     }
-    const msg = `Accounting Last Transaction Has Been Deleted `;
-    return msg;
+    const successMsg = "Accounting Last Transaction Has Been Deleted !";
+    return successMsg;
   });
 };
 export default Accounting;

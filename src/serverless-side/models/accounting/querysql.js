@@ -90,7 +90,8 @@ const queryReadDate = (selectedAccount, start, end) => {
     AccountingRef = "${selectedAccount}" AND `;
   }
   query += `AccountingDate BETWEEN '${start}' AND '${end}' `;
-  query += `ORDER BY AccountingDate DESC `;
+  query += `ORDER BY AccountingDate DESC, 
+                     AccountingTime DESC `;
   return query;
 };
 const queryReadAsset = () => {

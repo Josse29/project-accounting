@@ -42,6 +42,33 @@ const User = (ipcMain, db, bcryptjs, jwt) => {
   // init db user
   const initUser = async () => {
     await executeCreate(db, UserSchema);
+    // getUser
+    const query = `
+    SELECT 
+    COALESCE(COUNT(*), 0) AS TotalAdmin
+    FROM User
+    WHERE UserPosition = 'admin'
+    `;
+    const { TotalAdmin } = await executeGet4(db, query);
+    if (TotalAdmin === 0) {
+      const salt = await bcryptjs.genSalt(10);
+      const hashedPassword = await bcryptjs.hash("billionaireWFA100%", salt);
+      const query = `
+      INSERT 
+      INTO User
+      (UserName, UserEmail, UserFullname, UserPassword, UserImg, UserPosition, UserInfo) 
+      VALUES 
+      (?, ?, ?, ?, ?, ?, ?) `;
+      await executeCreate1(db, query, [
+        "josse",
+        "pinemjosse@gmail.com",
+        "Josse Surya Pinem",
+        hashedPassword,
+        "",
+        "admin",
+        "",
+      ]);
+    }
   };
   initUser();
   // 1.CREATE
