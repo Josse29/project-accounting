@@ -25,7 +25,7 @@ const Top = () => {
     <div className="bg-[#262848] w-100 p-6 fixed z-10 left-[100px] right-0 top-0">
       <div className="flex justify-between">
         <div className="app-region-drag">
-          <div className="text-3xl text-white">Software - Accounting</div>
+          <div className="text-3xl text-white">Cozy - Accounting</div>
         </div>
         <div className="flex items-center gap-10">
           <div className="flex gap-3 items-center">

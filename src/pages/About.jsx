@@ -87,7 +87,7 @@ const About = () => {
                     <div className="mb-1">Contact :</div>
                     <div className="ms-2 text-lg">
                       <div className="mb-1">
-                        Website : https://josse29.github.io/Portofolio/
+                        Website : https://josse29.github.io/portfolio/
                       </div>
                       <div className="mb-1">Email : pinemjosse@gmail.com</div>
                       <div className="mb-1">WhatsApp : +6289524087023</div>

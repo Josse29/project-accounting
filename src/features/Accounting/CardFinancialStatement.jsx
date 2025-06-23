@@ -19,7 +19,10 @@ const CardFinancialStatement = () => {
   }, []);
   return (
     <Card>
-      <Card.Header headerTitle="Financial Statement" className="bg-[#1c1cf0]" />
+      <Card.Header
+        headerTitle="Financial Statement"
+        className="bg-[#1c1cf0] text-center"
+      />
       <Card.Body>
         {totalRows < 1 && (
           <div className="w-full h-[550px] flex">
