@@ -61,7 +61,8 @@ const queryRead = (selectedAccount, searchVal, limitVal, startoffsetVal) => {
   query += `
   AccountingName LIKE "%${searchVal.trim()}%" `;
   query += `
-  ORDER BY AccountingDate DESC, 
+  ORDER BY AccountingId DESC,
+           AccountingDate DESC, 
            AccountingTime DESC
   LIMIT ${limitVal}
   OFFSET ${startoffsetVal}   
@@ -90,7 +91,8 @@ const queryReadDate = (selectedAccount, start, end) => {
     AccountingRef = "${selectedAccount}" AND `;
   }
   query += `AccountingDate BETWEEN '${start}' AND '${end}' `;
-  query += `ORDER BY AccountingDate DESC, 
+  query += `ORDER BY AccountingId DESC,
+                     AccountingDate DESC, 
                      AccountingTime DESC `;
   return query;
 };

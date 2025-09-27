@@ -1,9 +1,9 @@
 {
-  "workbench.colorTheme": "Adapta Evergreen Theme",
+  "workbench.colorTheme": "Mayukai Mirage Gruvbox Darktooth",
   "editor.fontFamily": "Fira Code",
   "editor.fontSize": 16, // Set the default
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "editor.fontLigatures": true,
-  "workbench.iconTheme": "vscode-icons"
+  "workbench.iconTheme": "ayu"
 }

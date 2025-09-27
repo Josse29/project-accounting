@@ -1,0 +1,8 @@
+stay away cheating and copy right 
+1. make user table in database supabase with field client email
+2. when login, check user table auth in sqlite3 
+if table auth in sqlite3 is equal 0
+    create table auth and insert db sqlite3make value email client , and password me hashing.
+    trigger to post api supabase auth with value email client and if clien email previous already just throw errror
+3 . WISH ME LUCk 
+ 

@@ -1,17 +1,20 @@
 {
   "type": "module",
-  "name": "josstack",
+  "name": "cozy-accounting",
   "version": "1.0.0",
   "description": "elevate your company with us",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "watch": "electronmon .",
-    "dist": "electron-builder"
+    "dist": "electron-builder",
+    "build:win": "electron-builder --win nsis",
+    "build:mac": "electron-builder --mac dmg",
+    "build:linux": "electron-builder --linux AppImage deb"
   },
   "build": {
-    "appId": "com.example.app",
-    "productName": "Josstack",
+    "appId": "com.josse.cozyaccounting",
+    "productName": "Cozy Accounting",
     "directories": {
       "buildResources": "icon"
     },
@@ -31,6 +34,43 @@
         "nsis"
       ],
       "icon": "icon/josstack.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "deleteAppDataOnUninstall": true
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "icon": "icon/josstack.icns",
+      "category": "public.app-category.finance"
+    },
+    "dmg": {
+      "background": "icon/dmg-background.png",
+      "iconSize": 100,
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "icon": "icon",
+      "category": "Finance"
     }
   },
   "author": "josse",

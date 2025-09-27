@@ -136,7 +136,8 @@ const queryReadDate = (startDateVal, endDateVal) => {
   Stock.StockDate BETWEEN "${startDateVal}" AND "${endDateVal}"
   `;
   query += `
-  ORDER BY Stock.StockDate DESC,
+  ORDER BY Stock.StockId DESC,
+           Stock.StockDate DESC,
            Stock.StockTime DESC 
   `;
   return query;
